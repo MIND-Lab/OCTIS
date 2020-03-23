@@ -1,0 +1,1 @@
+{"corpus": [["model", "use", "vector", "feature", "space", "classification", "use", "base", "support", "vector", "machine"], ["control", "large", "scale", "system", "use", "adaptive", "neural", "network", "base", "dynamic", "control"]], "doc_labels": [["0"], ["0"]], "total_documents": 2, "words_document_mean": 11, "labels": ["0"], "total_labels": 1}

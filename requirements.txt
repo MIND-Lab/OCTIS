@@ -1,4 +1,4 @@
 gensim
-spacy
 nltk
 pandas
+spacy
