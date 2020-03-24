@@ -16,5 +16,3 @@ def retrieve():
     result["doc_labels"] = labels
     return result
 
-
-

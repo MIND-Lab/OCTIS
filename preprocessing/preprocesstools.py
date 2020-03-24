@@ -6,21 +6,42 @@ from gensim.utils import simple_preprocess
 from nltk.corpus import stopwords
 import multiprocessing as mp
 
+from pathlib import Path
+
 
 stop_words = stopwords.words('english')
 
 
-# Save a file in json serialized format
-def save(file, file_name):
+# Saves metadata in json serialized format
+def _save_metadata(metadata, file_name):
     with open(file_name, 'w') as outfile:
-        json.dump(file, outfile)
+        json.dump(metadata, outfile)
+    return True
 
 
-# Read a file saved in json serialized format
-def load(file_name):
-    with open(file_name) as json_file:
-        result = json.load(json_file)
-    return result
+# Saves the corpus, a document for each line
+def _save_corpus_or_labels(data, file_name):
+    with open(file_name, 'w') as outfile:
+        for element in data:
+            outfile.write("%s\n" % " ".join(element))
+    return True
+
+
+# Saves the vocabulary in list format
+def _save_vocabulary(vocabulary, file_name):
+    with open(file_name, 'w') as outfile:
+        for word in vocabulary:
+            outfile.write("%s\n" % word)
+
+
+# Saves all corpus, vocabulary and metadata
+def save(data, path):
+    Path(path).mkdir(parents=True, exist_ok=True)
+    _save_corpus_or_labels(data[0], path+"/corpus.txt")
+    _save_vocabulary(data[1], path+"/vocabulary.txt")
+    _save_corpus_or_labels(data[2], path+"/labels.txt")
+    _save_metadata(data[3], path+"/metadata.json")
+    return True
 
 
 def create_pool(n_cpu):
@@ -45,7 +66,8 @@ def _multiprocess(pool, n_cpu, function, corpus, arguments=[]):
     results = [pool.apply(function, args=(
         corpus[ranges[y]:ranges[y+1]], arguments)) for y in range(n_cpu)]
     for y in range(n_cpu):
-        corpus[y*documents_for_cpu:y*documents_for_cpu + documents_for_cpu] = results[y]
+        corpus[y*documents_for_cpu:y*documents_for_cpu +
+               documents_for_cpu] = results[y]
     return corpus
 
 
@@ -128,18 +150,33 @@ def remove_docs(corpus, labels, min_doc):
             n += 1
     words_document_mean = 0
     if n > 0:
-        words_document_mean =  round(words_mean/n)
-    result = {}
-    result["corpus"] = new_corpus
-    result["doc_labels"] = new_labels
-    result["total_documents"] = n
-    result["words_document_mean"] = words_document_mean
-    result["labels"] = list(distinct_labels.keys())
-    result["total_labels"] = len(result["labels"])
+        words_document_mean = round(words_mean/n)
+    result = []
+    result.append(new_corpus)
+    result.append(get_vocabulary(new_corpus))
+    result.append(new_labels)
+    extra_info = {}
+    extra_info["total_documents"] = n
+    extra_info["words_document_mean"] = words_document_mean
+    extra_info["labels"] = list(distinct_labels.keys())
+    extra_info["total_labels"] = len(extra_info["labels"])
+    extra_info["vocabulary_length"] = len(result[1])
+    result.append(extra_info)
     return result
 
 
+# Retrieve the vocabulary from the corpus
+def get_vocabulary(corpus):
+    vocabulary = {}
+    for document in corpus:
+        for word in document:
+            if not word in vocabulary:
+                vocabulary[word] = True
+    return list(vocabulary.keys())
+
 # Execute a standard preprocess routine in multicore
+
+
 def preprocess_multiprocess(num_proc, dataset, min_words_for_doc, words_min_freq, words_max_freq, stop_words_extension=[]):
     stop_words.extend(stop_words_extension)
     content = dataset["corpus"]
@@ -197,4 +234,3 @@ def preprocess(dataset, min_words_for_doc, words_min_freq, words_max_freq, stop_
     result = remove_docs(removed_words, categories, min_words_for_doc)
     print("  Documents removed\n\nPreprocess done!")
     return result
-

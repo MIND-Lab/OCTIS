@@ -3,4 +3,5 @@ import preprocessing.sources.tools as nu
 
 # Retrieve the dataset and the labels
 def retrieve():
-    return nu._retrieve("M10")
+    path = 'https://raw.githubusercontent.com/shiruipan/TriDNR/master/data/M10/'
+    return nu._retrieve(path+'docs.txt', path+'labels.txt')
