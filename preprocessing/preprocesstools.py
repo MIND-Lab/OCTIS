@@ -20,10 +20,18 @@ def _save_metadata(metadata, file_name):
 
 
 # Saves the corpus, a document for each line
-def _save_corpus_or_labels(data, file_name):
+def _save_corpus(data, file_name):
     with open(file_name, 'w') as outfile:
         for element in data:
             outfile.write("%s\n" % " ".join(element))
+    return True
+
+
+# Saves the labels, each line contains the labels of a single document
+def _save_labels(data, file_name):
+    with open(file_name, 'w') as outfile:
+        for element in data:
+            outfile.write("%s\n" % json.dumps(element))
     return True
 
 
@@ -37,10 +45,14 @@ def _save_vocabulary(vocabulary, file_name):
 # Saves all corpus, vocabulary and metadata
 def save(data, path):
     Path(path).mkdir(parents=True, exist_ok=True)
-    _save_corpus_or_labels(data[0], path+"/corpus.txt")
-    _save_vocabulary(data[1], path+"/vocabulary.txt")
-    _save_corpus_or_labels(data[2], path+"/labels.txt")
-    _save_metadata(data[3], path+"/metadata.json")
+    if "corpus" in data:
+        _save_corpus(data["corpus"], path+"/corpus.txt")
+    if "vocabulary" in data:
+        _save_vocabulary(data["vocabulary"], path+"/vocabulary.txt")
+    if "labels" in data:
+        _save_labels(data["labels"], path+"/labels.txt")
+    if "metadata" in data:
+        _save_metadata(data["metadata"], path+"/metadata.json")
     return True
 
 
@@ -132,10 +144,11 @@ def remove_words(corpus, words):
 # Remove documents with less then min_doc words
 # from the corpus and create a dictionary with
 # extra data about the corpus
-def remove_docs(corpus, labels, min_doc):
+def remove_docs(corpus, min_doc = 0, labels = []):
     n = 0
     new_corpus = []
     new_labels = []
+    compute_labels = len(labels)>0
     words_mean = 0
     distinct_labels = {}
     for document in corpus:
@@ -143,25 +156,27 @@ def remove_docs(corpus, labels, min_doc):
         if document_length > min_doc:
             words_mean += document_length
             new_corpus.append(document)
-            new_labels.append(labels[n])
-            for label in labels[n]:
-                if not label in distinct_labels:
-                    distinct_labels[label] = True
+            if compute_labels:
+                new_labels.append(labels[n])
+                for label in labels[n]:
+                    if not label in distinct_labels:
+                        distinct_labels[label] = True
             n += 1
     words_document_mean = 0
     if n > 0:
         words_document_mean = round(words_mean/n)
-    result = []
-    result.append(new_corpus)
-    result.append(get_vocabulary(new_corpus))
-    result.append(new_labels)
+    result = {}
+    result["corpus"] = new_corpus
+    result["vocabulary"] = get_vocabulary(new_corpus)
+    result["labels"] = new_labels
     extra_info = {}
     extra_info["total_documents"] = n
     extra_info["words_document_mean"] = words_document_mean
-    extra_info["labels"] = list(distinct_labels.keys())
-    extra_info["total_labels"] = len(extra_info["labels"])
-    extra_info["vocabulary_length"] = len(result[1])
-    result.append(extra_info)
+    extra_info["vocabulary_length"] = len(result["vocabulary"])
+    if compute_labels:   
+        extra_info["labels"] = list(distinct_labels.keys())
+        extra_info["total_labels"] = len(extra_info["labels"])
+    result["metadata"] = extra_info
     return result
 
 
@@ -174,66 +189,179 @@ def get_vocabulary(corpus):
                 vocabulary[word] = True
     return list(vocabulary.keys())
 
-# Execute a standard preprocess routine in multicore
 
 
-def preprocess_multiprocess(num_proc, dataset, min_words_for_doc, words_min_freq, words_max_freq, stop_words_extension=[]):
+# Execute a custom preprocess routine in multicore
+def preprocess_multiprocess(num_proc, dataset, **args):
+    # Default: execute all steps
+    # inizialize variables to execute all steps
+    min_words_for_doc = 0
+    words_min_freq = 0
+    words_max_freq = len(dataset["corpus"])
+    stop_words_extension = []
+    rm_punctuation = True
+    rm_stopwords = True
+    lemmatize = True
+    rm_words = True
+
+    # for each step:
+    # step_name = True to execute the step, False otherwise
+    if "remove_punctuation" in args:
+        rm_punctuation = args["remove_punctuation"]
+    if "remove_stopwords" in args:
+        rm_stopwords = args["remove_stopwords"]
+    if "lemmatize" in args:
+        lemmatize = args["lemmatize"]
+    if "words_min_freq" in args:
+        words_min_freq = args["words_min_freq"]
+    if  "words_max_freq" in args:
+        words_max_freq = args["words_max_freq"]
+    if "remove_words" in args:
+        rm_words = args["remove_words"]
+    if "min_words_for_doc" in args:
+        min_words_for_doc = args["min_words_for_doc"]
+    if "stop_words_extension" in args:
+        stop_words_extension = args["stop_words_extension"]
+    
     stop_words.extend(stop_words_extension)
-    content = dataset["corpus"]
-    categories = dataset["doc_labels"]
+    corpus = dataset["corpus"]
+    categories = []
+    if "doc_labels" in dataset:
+        categories = dataset["doc_labels"]
     print("Creating pool")
     pool = create_pool(num_proc)
-    print("Pool created\nPreprocess initialization\n\n  removing punctuation")
-    corpus = _multiprocess(pool, num_proc, remove_punctuation, content)
-    print("  Punctuation removed\n")
+    print("Pool created\nPreprocess initialization\n\n")
+
+    # Execute steps
+    if rm_punctuation:
+        print("  removing punctuation")
+        corpus = _multiprocess(pool, num_proc, remove_punctuation, corpus)
+        print("  Punctuation removed\n\n")
+
     corpus_bag = list(create_bags_of_words(corpus))
-    print("  Removing Stopwords")
-    lp_nostops = _multiprocess(pool, num_proc, remove_stopwords, corpus_bag)
-    print("  Stopwords removed\n\n  lemmatizing")
-    nlp = spacy.load('en', disable=['parser', 'ner'])
-    data_lemmatized = _multiprocess(pool, num_proc, lemmatization, lp_nostops, [
+
+    if rm_stopwords:
+        print("  Removing Stopwords")
+        corpus_bag = _multiprocess(pool, num_proc, remove_stopwords, corpus_bag)
+        print("  Stopwords removed\n\n")
+
+    if lemmatize:
+        print("  lemmatizing")
+        nlp = spacy.load('en', disable=['parser', 'ner'])
+        corpus_bag = _multiprocess(pool, num_proc, lemmatization, corpus_bag, [
                                     nlp, ['NOUN', 'ADJ', 'VERB', 'ADV']])
-    print("  Lemmatized\n\n  Removing words that are present in less than " +
-          str(words_min_freq)+" documents")
-    print(" and im more than "+str(words_min_freq)+" documents")
-    to_remove = words_to_remove(
-        data_lemmatized, words_min_freq, words_max_freq)
-    removed_words = _multiprocess(
-        pool, num_proc, remove_words, data_lemmatized, to_remove)
-    print("  Words removed\n\n  Removing documents with less then " +
+        print("  Lemmatized\n\n")
+    
+    if rm_words:
+        print("  Removing words that are present in less than " +
+            str(words_min_freq)+" documents")
+        print(" and im more than "+str(words_min_freq)+" documents")
+        to_remove = words_to_remove(
+            corpus_bag, words_min_freq, words_max_freq)
+        corpus_bag = _multiprocess(
+            pool, num_proc, remove_words, corpus_bag, to_remove)
+        print("  Words removed\n\n") 
+    
+    print("  Removing documents with less then " +
           str(min_words_for_doc)+" words")
-    result = remove_docs(removed_words, categories, min_words_for_doc)
+    result = remove_docs(corpus_bag, min_words_for_doc, categories)
     print("  Documents removed\n\nPreprocess done!")
+
     pool.close()
     return result
 
+    
+# Execute a standard preprocess routine in multicore
+def preprocess_multiprocess_standard(num_proc, dataset, min_words_for_doc, words_min_freq, words_max_freq, stop_words_extension=[]):
+    return preprocess_multiprocess(
+    num_proc,
+    dataset,
+    min_words_for_doc = min_words_for_doc,
+    words_min_freq = words_min_freq,
+    words_max_freq =  words_max_freq,
+    stop_words_extension = stop_words_extension)
 
-# Execute a standard preprocess routine
-def preprocess(dataset, min_words_for_doc, words_min_freq, words_max_freq, stop_words_extension=[]):
+
+# Execute a custom preprocess routine
+def preprocess(dataset, **args):
+    # Default: execute all steps
+    # inizialize variables to execute all steps
+    min_words_for_doc = 0
+    words_min_freq = 0
+    words_max_freq = len(dataset["corpus"])
+    stop_words_extension = []
+    rm_punctuation = True
+    rm_stopwords = True
+    lemmatize = True
+    rm_words = True
+
+    # for each step:
+    # step_name = True to execute the step, False otherwise
+    if "remove_punctuation" in args:
+        rm_punctuation = args["remove_punctuation"]
+    if "remove_stopwords" in args:
+        rm_stopwords = args["remove_stopwords"]
+    if "lemmatize" in args:
+        lemmatize = args["lemmatize"]
+    if "words_min_freq" in args:
+        words_min_freq = args["words_min_freq"]
+    if  "words_max_freq" in args:
+        words_max_freq = args["words_max_freq"]
+    if "remove_words" in args:
+        rm_words = args["remove_words"]
+    if "min_words_for_doc" in args:
+        min_words_for_doc = args["min_words_for_doc"]
+    if "stop_words_extension" in args:
+        stop_words_extension = args["stop_words_extension"]
+    
     stop_words.extend(stop_words_extension)
-    content = dataset["corpus"]
-    categories = dataset["doc_labels"]
-    print("Preprocess initialization\n\n  removing punctuation")
-    corpus = remove_punctuation(content)
-    print("  Punctuation removed\n")
+    corpus = dataset["corpus"]
+    categories = []
+    if "doc_labels" in dataset:
+        categories = dataset["doc_labels"]
+
+    # Execute steps
+    if rm_punctuation:
+        print("  removing punctuation")
+        corpus = remove_punctuation(corpus)
+        print("  Punctuation removed\n\n")
+
     corpus_bag = list(create_bags_of_words(corpus))
-    print("  Removing Stopwords")
-    lp_nostops = remove_stopwords(corpus_bag)
-    print("  Stopwords removed\n\n  lemmatizing")
-    nlp = spacy.load('en', disable=['parser', 'ner'])
-    data_lemmatized = lemmatization(
-        lp_nostops, [nlp, ['NOUN', 'ADJ', 'VERB', 'ADV']])
-    print("  Lemmatized\n\n  Removing words that are present in less than " +
-          str(words_min_freq)+" documents")
-    print(" and im more than "+str(words_min_freq)+" documents")
-    to_remove = words_to_remove(
-        data_lemmatized, words_min_freq, words_max_freq)
-    removed_words = remove_words(data_lemmatized, to_remove)
-    print("  Words removed\n\n  Removing documents with less then " +
+
+    if rm_stopwords:
+        print("  Removing Stopwords")
+        corpus_bag = remove_stopwords(corpus_bag)
+        print("  Stopwords removed\n\n")
+
+    if lemmatize:
+        print("  lemmatizing")
+        nlp = spacy.load('en', disable=['parser', 'ner'])
+        corpus_bag = lemmatization(corpus_bag,
+            [nlp, ['NOUN', 'ADJ', 'VERB', 'ADV']])
+        print("  Lemmatized\n\n")
+    
+    if rm_words:
+        print("  Removing words that are present in less than " +
+            str(words_min_freq)+" documents")
+        print(" and im more than "+str(words_min_freq)+" documents")
+        to_remove = words_to_remove(
+            corpus_bag, words_min_freq, words_max_freq)
+        corpus_bag = remove_words(corpus_bag, to_remove)
+        print("  Words removed\n\n") 
+    
+    print("  Removing documents with less then " +
           str(min_words_for_doc)+" words")
-    result = remove_docs(removed_words, categories, min_words_for_doc)
+    result = remove_docs(corpus_bag, min_words_for_doc, categories)
     print("  Documents removed\n\nPreprocess done!")
+
     return result
 
-
-
+    
+# Execute a standard preprocess routine in multicore
+def preprocess_standard(dataset, min_words_for_doc, words_min_freq, words_max_freq, stop_words_extension=[]):
+    return preprocess(
+    dataset,
+    min_words_for_doc = min_words_for_doc,
+    words_min_freq = words_min_freq,
+    words_max_freq =  words_max_freq,
+    stop_words_extension = stop_words_extension)

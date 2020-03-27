@@ -1,7 +1,7 @@
 import gensim.downloader as gd
 
 
-# Retrieve the dataset and the labels
+# Retrieve the corpus and the labels
 def retrieve():
     dataset = gd.load("20-newsgroups")
     corpus = []

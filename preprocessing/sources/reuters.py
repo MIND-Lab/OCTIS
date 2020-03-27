@@ -1,7 +1,7 @@
 from nltk.corpus import reuters
 
 
-# Retrieve the dataset and the labels
+# Retrieve the corpus and the labels
 def retrieve():
     documents = reuters.fileids()
     corpus = []
