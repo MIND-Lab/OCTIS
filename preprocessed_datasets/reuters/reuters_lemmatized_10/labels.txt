@@ -1,8461 +1,8461 @@
-trade
-grain
-crude nat-gas
-corn grain rice rubber sugar tin trade
-palm-oil veg-oil
-ship
-coffee lumber palm-oil rubber veg-oil
-grain wheat
-gold
-acq
-tin
-interest money-fx
-acq copper
-ipi
-carcass corn grain livestock oilseed rice soybean trade
-earn
-earn
-interest money-fx
-bop trade
-gas lead
-acq
-jobs
-earn
-earn
-earn
-earn
-tin
-trade
-zinc
-sugar
-sugar
-acq
-interest money-fx
-cpi gnp
-oilseed palm-oil soy-oil soybean veg-oil
-earn
-acq
-earn
-trade
-acq
-acq
-earn
-trade
-dlr money-fx yen
-cpi
-interest money-fx
-acq
-sugar
-sugar
-earn
-nickel
-earn
-dlr money-fx
-acq
-earn
-earn
-acq
-acq
-acq
-groundnut
-earn
-ship
-earn
-ship
-earn
-earn
-earn
-interest money-fx
-earn
-earn
-earn
-earn
-earn
-earn
-jobs
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-sugar
-money-fx
-sugar
-earn
-earn
-earn
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-earn
-sugar
-earn
-sugar
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-acq
-earn
-corn grain
-acq
-heat
-corn grain oilseed sorghum soybean sunseed wheat
-jobs
-earn
-money-fx
-interest
-acq
-earn
-earn
-earn
-acq
-acq
-earn
-acq crude earn pet-chem
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-interest
-earn
-earn
-cocoa
-interest
-grain wheat
-earn
-earn
-corn grain oilseed soybean
-earn
-earn
-earn
-acq
-tin
-earn
-acq
-earn
-earn
-acq
-acq
-earn
-acq
-oilseed rapeseed
-earn
-grain wheat
-earn
-acq
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-trade
-acq
-earn
-acq
-earn
-trade
-earn
-earn
-cocoa
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-coffee
-crude
-acq
-earn
-rice
-earn
-earn
-acq
-earn
-dlr interest money-fx
-earn
-acq
-tin
-cotton
-earn
-earn
-trade
-earn
-earn
-crude
-earn
-money-fx
-livestock
-crude earn
-acq
-earn
-money-supply
-earn
-crude
-money-supply
-earn
-earn
-money-fx
-carcass livestock
-acq
-earn
-earn
-iron-steel trade
-earn
-copper
-earn
-earn
-grain wheat
-grain wheat
-earn
-acq
-earn
-earn
-acq
-earn
-corn grain
-l-cattle livestock
-earn
-acq
-earn
-earn
-earn
-earn
-acq
-grain
-acq
-earn
-acq
-earn
-interest
-acq
-earn
-iron-steel trade
-earn
-earn
-earn
-crude nat-gas
-earn
-earn
-earn
-earn
-coffee
-acq
-earn
-acq
-crude gas
-corn grain veg-oil wheat
-crude gas
-earn
-earn
-acq
-crude gas
-trade
-earn
-earn
-coffee
-earn
-acq
-interest money-fx
-jobs
-acq
-grain rice
-alum
-acq trade
-money-fx trade
-interest money-fx
-earn
-earn
-earn
-interest
-trade
-earn
-grain wheat
-earn
-earn
-sugar
-earn
-earn
-yen
-acq
-earn
-rubber
-interest
-gold
-earn
-sugar
-nat-gas
-earn
-palladium platinum strategic-metal
-acq
-rubber
-acq
-earn
-trade
-earn
-trade
-dlr money-fx
-yen
-interest money-fx
-earn
-reserves
-dlr money-fx
-interest money-fx
-sugar
-trade
-money-fx
-dlr money-fx
-money-fx
-earn
-money-fx trade
-money-fx
-yen
-yen
-earn
-earn
-dlr money-fx
-sugar
-acq
-acq
-acq
-gold
-grain wheat
-earn
-earn
-earn
-acq
-gold
-earn
-yen
-ship
-jobs
-acq
-earn
-earn
-earn
-earn
-grain groundnut-oil lin-oil meal-feed oilseed rape-oil sorghum soy-oil sun-meal sun-oil veg-oil wheat
-acq
-yen
-livestock
-money-fx
-earn
-earn
-crude heat
-earn
-interest money-fx
-money-fx
-money-fx
-earn
-grain ship
-hog livestock
-earn
-oilseed soybean
-interest money-fx
-coffee
-acq
-bop
-acq
-acq
-earn
-earn
-dlr yen
-interest
-gnp
-interest money-supply trade
-earn
-lead
-earn
-earn
-interest
-acq
-dlr
-lead
-acq
-earn
-grain rice sorghum wheat
-cotton
-earn
-earn
-acq
-grain wheat
-bop
-groundnut oilseed
-acq
-interest
-interest
-grain
-earn
-grain wheat
-earn
-coffee
-earn
-earn
-acq
-earn
-earn
-acq
-acq
-earn
-earn
-acq
-earn
-earn
-interest
-acq
-heat
-interest
-earn
-interest money-fx
-acq
-interest
-barley corn grain wheat
-potato
-money-fx
-iron-steel
-tin
-dlr money-fx
-earn
-acq
-earn
-earn
-money-fx
-earn
-iron-steel
-earn
-earn
-carcass livestock
-cotton
-bop trade
-corn grain
-barley grain
-earn
-cocoa
-earn
-money-fx
-acq
-trade
-earn
-earn
-earn
-acq
-earn
-orange
-barley corn grain wheat
-dlr money-fx
-earn
-earn
-acq
-corn grain oilseed soybean wheat
-earn
-dlr money-fx
-earn
-earn
-money-fx
-earn
-ship sugar
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-grain ship
-acq
-earn
-acq
-earn
-corn grain
-oilseed rapeseed
-earn
-coffee trade
-grain ship
-ship sugar
-barley grain ship wheat
-earn
-earn
-earn
-earn
-coffee trade
-acq
-retail
-earn
-soy-oil veg-oil
-earn
-earn
-earn
-earn
-lead
-reserves
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-earn
-bop
-earn
-carcass livestock
-earn
-earn
-gold
-sugar
-interest
-earn
-earn
-acq
-gold
-interest
-tin
-earn
-earn
-earn
-earn
-heat
-copper
-earn
-earn
-earn
-grain wheat
-strategic-metal
-trade
-earn
-grain
-grain
-corn grain oilseed soybean wheat
-orange
-orange
-earn
-earn
-cotton grain meal-feed oilseed soy-meal soy-oil soybean veg-oil wheat
-orange
-orange
-corn grain
-potato
-potato
-corn grain wheat
-acq
-corn grain wheat
-grain wheat
-oilseed soybean
-grain wheat
-earn
-grain wheat
-grain wheat
-grain wheat
-barley corn cotton cotton-oil grain meal-feed oat oilseed rice sorghum soy-meal soy-oil soybean veg-oil
-strategic-metal
-grain wheat
-barley corn cotton grain meal-feed oat oilseed rice sorghum soy-meal soy-oil soybean veg-oil wheat
-cotton
-corn grain
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-corn cotton grain meal-feed oilseed soy-meal soy-oil soybean veg-oil wheat
-acq
-grain wheat
-acq
-grain wheat
-earn
-earn
-acq
-earn
-acq
-earn
-earn
-meal-feed soy-meal
-corn grain
-corn cotton grain meal-feed oilseed rice soy-meal soy-oil soybean veg-oil wheat
-earn
-earn
-corn grain
-corn grain meal-feed soy-meal wheat
-acq
-earn
-grain
-grain wheat
-corn grain oilseed sorghum soybean sunseed wheat
-acq
-acq
-oilseed soybean
-meal-feed soy-meal
-soy-oil veg-oil
-fuel
-cotton
-grain wheat
-grain rice
-orange
-earn
-copper
-earn
-earn
-earn
-crude
-grain ship
-earn
-livestock
-money-supply
-money-supply
-barley corn grain oat sorghum wheat
-meal-feed oilseed soy-meal soybean
-acq
-earn
-orange
-acq
-acq
-crude
-earn
-acq
-earn
-acq
-cotton
-grain meal-feed oilseed veg-oil
-money-supply
-money-supply
-money-supply
-earn
-earn
-earn
-earn
-earn
-money-supply
-copper
-money-supply
-acq
-acq
-money-supply
-acq
-corn grain oilseed soybean
-acq
-earn
-money-fx
-crude
-money-fx
-acq crude nat-gas
-cotton gold grain livestock money-fx silver
-corn grain
-earn
-grain ship
-earn
-earn
-acq
-earn
-earn
-acq
-acq
-earn
-acq
-acq
-crude ship
-acq
-earn
-trade
-dlr interest money-fx
-earn
-money-supply
-dlr money-fx
-dlr money-fx
-dlr money-fx
-dlr money-fx
-corn grain oat sorghum wheat
-interest money-fx
-interest
-interest
-ship
-crude
-grain rice
-rape-oil soy-oil veg-oil
-interest money-supply
-earn
-trade
-acq
-sugar
-trade
-trade
-interest
-coffee
-cocoa
-corn grain rice
-jobs
-cpi
-dlr money-fx
-cotton
-bop cpi gnp
-copper
-dlr money-fx
-earn
-coffee
-acq
-cpi income retail trade wpi
-earn
-interest
-iron-steel
-copper
-trade
-trade
-acq
-money-fx
-cpi
-acq
-trade
-earn
-earn
-ipi
-money-fx
-grain wheat
-acq
-meal-feed
-corn grain groundnut oilseed rice
-cocoa
-gold
-interest
-acq
-acq
-bop cpi gnp jobs
-acq
-interest money-fx
-gold platinum
-acq
-wpi
-nat-gas
-earn
-gnp
-earn
-acq
-earn
-acq
-money-fx
-alum
-interest money-fx
-sugar
-money-fx
-dlr money-fx
-money-fx trade
-palm-oil veg-oil
-zinc
-wpi
-gnp
-gnp
-dlr
-gnp
-earn
-acq
-earn
-earn
-acq
-acq
-gold
-money-fx
-interest
-acq
-acq
-earn
-earn
-acq
-tea
-bop cpi gnp
-earn
-earn
-acq
-acq
-earn
-livestock
-nat-gas
-cpi
-acq
-earn
-earn
-acq
-gold platinum silver
-money-supply reserves
-money-fx
-earn
-hog livestock
-trade
-trade
-acq
-earn
-earn
-earn
-earn
-grain meal-feed oilseed
-earn
-cpi gnp money-supply
-earn
-wpi
-grain wheat
-interest
-earn
-acq
-earn
-coffee
-lei
-money-supply
-earn
-earn
-money-fx
-gold
-acq
-earn
-lead
-earn
-earn
-earn
-interest
-earn
-earn
-earn
-acq
-earn
-interest
-acq
-lei
-earn
-earn
-fuel
-earn
-livestock
-earn
-alum
-earn
-acq alum
-earn
-sugar
-money-fx
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-trade
-grain
-earn
-palm-oil veg-oil
-earn
-earn
-crude ship
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-acq carcass livestock
-earn
-interest money-fx
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-acq earn
-acq
-acq
-earn
-acq
-interest
-acq
-earn
-cpi
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-acq
-earn
-crude
-earn
-earn
-oilseed rapeseed
-earn
-earn
-crude nat-gas
-earn
-earn
-trade
-acq
-acq
-earn
-acq
-acq
-earn
-acq
-earn
-acq
-acq
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-earn
-earn
-acq earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-nat-gas
-earn
-trade
-acq
-acq
-acq
-earn
-acq livestock
-acq
-earn
-acq
-corn grain oilseed soybean wheat
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-acq
-carcass livestock
-interest money-fx
-earn
-earn
-acq
-earn
-acq
-gas
-acq
-earn
-earn
-earn
-earn
-gold
-earn
-acq
-earn
-crude nat-gas
-acq
-earn
-earn
-earn
-grain rice
-earn
-gold
-earn
-crude
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-corn grain
-earn
-earn
-orange
-earn
-orange
-earn
-earn
-crude
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-crude
-money-supply
-crude
-acq
-earn
-earn
-earn
-acq
-crude
-earn
-acq
-earn
-earn
-acq
-earn
-earn
-earn
-acq
-acq
-acq
-earn
-earn
-acq
-interest
-acq
-acq
-earn
-acq
-acq
-earn
-acq
-earn
-iron-steel
-acq
-earn
-crude
-earn
-acq
-earn
-earn
-acq
-earn
-crude
-earn
-earn
-acq
-acq
-earn
-acq
-crude
-cpi
-dlr money-fx
-dlr money-fx
-trade
-wpi
-acq
-sugar
-alum
-corn grain
-soybean veg-oil
-grain sorghum
-money-fx
-money-supply
-bop
-acq
-crude
-grain trade
-corn grain
-bop trade
-lei
-money-fx
-wpi
-trade
-reserves trade
-rubber
-trade
-money-supply
-cpi
-carcass orange rice trade
-trade
-trade
-grain trade
-earn
-trade
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-ipi
-earn
-earn
-acq
-interest
-ipi
-wpi
-trade
-earn
-earn
-alum
-trade
-acq
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-ipi
-money-fx
-money-supply
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-acq
-acq
-trade
-trade
-trade
-earn
-earn
-earn
-earn
-money-supply
-earn
-coffee
-acq
-dlr money-fx
-money-supply
-dlr money-fx
-dlr
-acq
-dlr money-fx
-acq
-interest money-supply
-interest
-acq
-crude
-ship
-earn
-fuel gas
-cpi
-grain orange sugar
-interest
-gas
-interest
-trade
-trade
-rubber
-gold
-ship
-gas
-interest
-gas
-fuel
-coconut coconut-oil copra-cake meal-feed palm-oil veg-oil
-crude
-acq
-lead strategic-metal zinc
-acq
-acq
-lead strategic-metal zinc
-acq
-acq
-earn
-acq
-nat-gas ship
-acq
-tea
-cocoa
-acq
-acq
-corn grain wheat
-acq
-acq
-copper corn grain sugar
-trade
-acq
-crude nat-gas
-acq
-crude
-grain wheat
-money-fx
-acq
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-acq
-acq
-pet-chem
-acq
-cocoa
-acq
-acq
-acq
-acq
-interest money-fx
-acq
-acq pet-chem
-crude
-acq pet-chem
-acq
-interest
-acq
-acq
-acq
-acq
-earn
-acq
-earn
-earn
-crude
-earn
-dfl dmk interest money-fx
-gold
-acq
-earn
-gold
-jobs
-acq
-acq
-acq
-acq
-acq
-gold silver
-earn
-crude nat-gas
-acq
-earn
-earn
-grain wheat
-cocoa coffee
-acq
-crude nat-gas
-lumber trade
-acq
-earn
-acq
-iron-steel
-acq
-acq
-acq
-earn
-lumber
-acq
-acq
-acq
-alum
-acq
-acq
-alum
-earn
-acq
-cocoa
-acq
-earn
-alum copper gold silver
-acq
-acq
-corn grain soybean wheat
-acq
-acq
-acq
-tin
-cocoa
-acq
-money-fx
-acq pet-chem
-acq
-money-fx
-acq
-crude ship
-earn
-acq
-earn
-grain oilseed wheat
-crude
-interest
-veg-oil
-acq
-acq
-acq
-acq
-barley grain
-barley grain
-acq
-crude
-earn
-acq
-acq
-acq
-crude
-acq
-lead strategic-metal zinc
-acq
-acq
-acq
-earn
-earn
-acq
-earn
-acq
-earn
-lead strategic-metal zinc
-earn
-acq
-acq
-earn
-acq
-crude
-crude
-acq
-hog
-acq
-acq hog
-iron-steel
-earn
-acq
-acq
-acq
-acq
-earn
-acq
-acq
-acq
-acq
-acq
-acq
-acq
-acq
-alum
-dlr money-fx trade
-acq
-acq
-alum
-crude
-acq
-money-fx
-gas
-naphtha
-interest
-gnp interest
-acq crude
-earn
-crude ship
-crude
-rubber
-gnp
-ipi
-interest
-earn
-earn
-gnp
-acq
-acq
-acq crude nat-gas
-money-fx
-bop
-earn
-sugar
-bop trade
-ship
-bop trade
-propane
-crude
-money-fx
-reserves
-reserves
-interest
-interest
-trade
-acq
-money-fx
-grain ship wheat
-acq
-acq
-acq
-acq
-grain rice wheat
-crude
-earn
-earn
-interest reserves
-earn
-acq
-cpi gnp
-earn
-acq
-earn
-acq
-ship
-money-fx
-acq
-acq cocoa
-acq
-earn
-acq
-cpi
-gnp
-dlr money-fx
-interest
-dlr money-fx
-gold platinum silver
-cocoa
-acq
-barley grain
-earn
-acq
-carcass
-corn grain
-acq
-acq
-acq
-acq
-earn
-money-fx
-interest money-fx
-earn
-trade
-earn
-earn
-crude
-earn
-acq
-acq
-acq
-acq
-crude
-interest money-fx
-alum
-gnp
-earn
-carcass
-acq
-trade
-interest
-crude
-reserves
-acq
-earn
-ship sugar
-acq
-dmk money-fx
-acq
-dlr interest money-fx
-acq
-crude gas
-trade
-acq
-veg-oil
-earn
-earn
-acq
-earn
-ship
-earn
-gold
-meal-feed oilseed soy-meal soybean
-earn
-acq
-interest money-fx
-crude
-acq
-acq
-pet-chem
-acq
-acq
-crude ship
-pet-chem
-cocoa
-cocoa
-acq
-copper
-fuel
-acq
-ship
-acq
-crude
-acq
-acq
-acq
-earn
-earn
-earn
-acq
-nat-gas
-iron-steel
-trade
-earn
-barley grain
-ship
-grain wheat
-carcass
-carcass
-copper
-lumber
-earn
-earn
-instal-debt
-grain wheat
-acq
-trade
-earn
-grain oilseed
-earn
-earn
-earn
-crude gas
-acq
-acq copper
-reserves
-coffee
-acq crude nat-gas
-earn
-ship
-crude ship
-crude
-acq
-acq
-lead zinc
-copper
-crude ship
-acq
-grain oilseed rapeseed wheat
-bop trade
-strategic-metal
-acq
-carcass
-earn
-earn
-alum
-ship
-money-fx
-interest
-dlr money-fx yen
-wpi
-gas
-dlr money-fx yen
-interest
-strategic-metal
-acq
-ship
-trade
-acq
-acq
-fuel gas naphtha
-earn
-carcass corn grain livestock meal-feed oilseed rapeseed sorghum soy-meal
-earn
-money-supply
-interest
-platinum silver
-gnp
-crude
-earn
-bop trade
-earn
-acq
-wpi
-earn
-trade
-interest
-crude ship
-crude
-reserves
-reserves
-acq
-sugar
-jobs
-income
-ipi
-money-supply
-interest
-jobs
-income
-oilseed soybean
-interest
-trade
-sugar
-earn
-interest
-veg-oil
-acq
-acq
-acq
-acq
-lead ship
-acq
-acq
-acq
-acq
-acq
-earn
-acq
-interest
-veg-oil
-acq
-earn
-coffee
-acq
-earn
-grain rice sugar
-earn
-corn grain
-jobs
-crude
-money-fx nzdlr
-earn
-acq
-grain rice sugar
-acq
-acq
-earn
-earn
-crude nat-gas
-acq
-crude
-acq
-acq
-acq
-income
-income
-acq
-money-fx
-interest
-income interest jobs reserves
-money-fx
-livestock
-crude
-crude
-acq
-acq
-acq
-crude
-crude
-crude
-earn
-veg-oil
-crude
-earn
-crude
-crude
-crude
-crude
-earn
-earn
-earn
-earn
-earn
-interest money-fx
-crude
-acq
-earn
-crude
-crude
-nat-gas
-crude
-veg-oil
-crude
-crude
-bop trade
-reserves
-interest money-fx
-acq
-iron-steel
-bop trade
-crude
-interest money-fx
-crude
-iron-steel
-earn
-crude
-crude
-acq
-earn
-coconut-oil cotton-oil palm-oil rape-oil soy-oil sun-oil veg-oil
-nat-gas
-acq
-crude
-crude
-reserves trade
-pet-chem
-crude
-acq
-earn
-crude
-earn
-earn
-earn
-trade
-crude
-acq
-copper
-ship
-pet-chem
-acq
-acq crude nat-gas
-fuel
-acq
-coffee
-acq
-acq
-ship
-trade
-earn
-strategic-metal
-cotton
-earn
-acq
-platinum
-acq
-crude nat-gas
-acq
-grain wheat
-fuel
-interest
-acq
-barley grain wheat
-acq
-gnp housing income
-nat-gas
-alum
-acq
-acq
-tin
-alum
-nat-gas
-acq
-zinc
-strategic-metal
-zinc
-money-supply
-iron-steel
-copper
-earn
-corn grain
-earn
-acq
-acq
-acq
-corn grain
-acq
-bop gnp
-acq
-cpi gnp jobs
-acq
-gnp jobs
-bop gnp trade
-trade
-cpi gnp jobs
-gnp
-gnp
-bop gnp jobs
-earn
-cpi gnp jobs
-gnp
-bop cpi gnp
-acq
-earn
-gnp
-interest
-dlr money-fx
-interest
-dlr money-fx
-dlr money-fx money-supply
-earn
-trade
-alum
-money-fx reserves
-alum
-acq
-trade
-earn
-acq
-acq
-earn
-grain ship
-oilseed soybean
-grain rice
-bop dlr gnp money-fx yen
-trade
-tin
-crude
-ship
-bop gnp
-ipi
-cpi
-cpi
-wpi
-gas
-acq
-palm-oil veg-oil
-ship
-ship
-groundnut
-crude nat-gas
-acq
-acq
-interest
-ship
-acq
-crude
-acq
-acq
-earn
-acq gold
-acq
-acq
-trade
-corn grain rice
-interest
-grain wheat
-earn
-earn
-earn
-earn
-acq
-acq
-crude
-interest
-crude
-reserves
-ship
-interest money-fx
-acq
-acq
-grain wheat
-heat
-interest money-fx
-interest money-fx
-ship
-acq
-acq
-earn
-acq
-acq
-acq
-sugar
-acq
-earn
-carcass livestock
-acq
-acq nat-gas
-acq
-trade
-barley grain oat wheat
-oilseed rapeseed
-acq
-acq
-acq
-money-supply
-crude
-acq
-acq
-crude
-trade
-money-supply
-platinum
-acq
-earn
-acq
-earn
-acq
-coffee
-grain wheat
-acq
-acq
-alum
-acq
-acq
-acq
-acq
-acq
-acq
-acq
-acq
-earn
-cocoa
-acq
-acq
-acq
-earn
-alum palm-oil tin veg-oil
-acq
-acq
-lumber
-sugar
-earn
-earn
-trade
-acq
-acq
-acq
-acq
-acq
-acq
-coffee
-grain meal-feed rice
-crude pet-chem propane
-crude ship
-acq
-acq
-earn
-acq
-acq
-money-supply
-money-fx
-acq
-acq
-earn
-earn
-acq
-earn
-acq
-lead zinc
-acq
-trade
-acq
-earn
-acq
-bop trade
-acq
-acq
-earn
-acq
-acq
-coffee
-earn
-acq
-acq
-nat-gas
-acq
-earn
-acq
-nat-gas
-acq
-earn
-earn
-lead zinc
-gnp
-coffee
-acq
-interest
-interest
-money-fx
-ship
-crude
-crude fuel naphtha
-crude
-cocoa
-acq
-crude
-crude
-acq
-crude
-acq
-interest
-interest
-cpi
-earn
-interest
-veg-oil
-money-fx nkr
-trade
-alum
-money-fx nkr
-interest
-trade
-interest
-grain oilseed rapeseed wheat
-veg-oil
-hog livestock trade
-crude
-interest
-crude
-crude
-earn
-earn
-bop
-trade
-cocoa coffee cotton
-earn
-acq
-cpi
-acq oilseed soybean sunseed
-acq
-acq
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-earn
-earn
-cpi
-acq
-earn
-earn
-trade
-acq
-gas
-acq
-earn
-barley grain oat oilseed rapeseed rye sugar wheat
-castor-oil coffee cotton tea trade
-earn
-acq
-acq
-earn
-acq
-acq
-crude ship
-interest money-fx
-acq
-zinc
-interest money-fx
-acq
-acq
-acq
-acq
-earn
-acq
-earn
-acq
-earn
-acq
-acq
-corn grain oilseed soybean
-earn
-acq
-acq
-acq
-acq
-acq
-acq
-earn
-acq
-earn
-acq
-acq
-crude ship
-acq
-acq
-earn
-acq
-acq
-gold lead silver zinc
-acq
-acq
-acq
-acq
-interest
-acq
-copper
-earn
-copper
-earn
-earn
-earn
-acq
-acq
-gold
-earn
-coffee
-gold
-acq
-earn
-earn
-corn grain oilseed soybean wheat
-acq
-acq
-acq
-acq
-acq
-crude
-acq
-cotton grain rice
-acq
-acq
-crude
-earn
-earn
-acq
-acq
-earn
-acq
-earn
-acq
-veg-oil
-crude money-fx
-acq
-acq
-acq
-housing interest
-acq
-ship
-earn
-acq
-acq
-acq
-acq
-acq
-crude naphtha pet-chem
-acq
-acq
-acq
-earn
-trade
-acq
-crude
-acq
-earn
-acq
-acq
-acq
-acq
-cotton grain rice trade
-acq
-acq
-earn
-acq
-acq
-acq
-grain
-acq
-earn
-acq
-acq
-earn
-acq
-tea
-acq
-acq
-jobs
-jobs
-money-fx
-money-fx
-money-fx
-crude ship
-crude
-money-fx
-cocoa
-crude
-money-fx
-money-fx
-money-fx
-money-supply
-corn grain
-cotton
-interest
-money-supply
-crude ship
-jet
-interest
-ship
-acq
-acq
-interest
-acq
-coconut
-interest
-grain rice
-alum
-alum
-money-supply
-money-supply
-money-fx
-money-fx
-rubber
-money-fx
-money-fx
-money-fx
-money-fx
-money-fx
-money-fx
-crude
-crude ship
-crude nat-gas
-crude
-copper gold
-crude ship
-crude ship
-earn
-housing
-earn
-acq
-housing
-earn
-earn
-earn
-reserves
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-interest
-earn
-interest
-interest
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-coffee
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-meal-feed oilseed rapeseed soy-meal soybean sunseed
-acq
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-rubber
-grain wheat
-veg-oil
-earn
-earn
-earn
-earn
-grain wheat
-earn
-cpi
-jobs trade
-earn
-earn
-earn
-earn
-earn
-earn
-grain wheat
-money-fx
-ship
-interest
-interest money-fx
-reserves
-interest
-earn
-rubber
-earn
-crude
-earn
-earn
-interest
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-acq
-earn
-iron-steel
-earn
-acq
-earn
-acq
-earn
-crude ship
-earn
-soybean trade veg-oil
-earn
-earn
-earn
-iron-steel
-interest money-fx
-earn
-money-fx
-money-fx
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-corn grain
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-money-fx
-earn
-acq
-earn
-earn
-coffee
-earn
-earn
-earn
-earn
-veg-oil
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-fuel
-earn
-interest
-earn
-earn
-earn
-earn
-crude
-earn
-earn
-earn
-acq
-earn
-carcass trade
-earn
-earn
-ship
-earn
-earn
-earn
-earn
-earn
-acq
-tin
-crude
-oilseed soybean trade veg-oil
-carcass livestock sugar trade
-earn
-crude ship
-coffee
-acq
-earn
-trade
-earn
-earn
-earn
-crude
-earn
-earn
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-money-fx
-earn
-earn
-earn
-interest money-fx
-earn
-earn
-carcass grain livestock trade wheat
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-interest
-earn
-earn
-earn
-earn
-earn
-grain oilseed sunseed wheat
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-grain wheat
-acq
-l-cattle livestock
-ship
-earn
-earn
-interest money-fx
-crude
-earn
-corn grain
-earn
-earn
-acq
-corn grain oilseed soybean wheat
-earn
-earn
-corn grain trade
-earn
-earn
-earn
-crude
-earn
-earn
-earn
-earn
-earn
-crude
-nat-gas
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-interest money-fx
-acq
-earn
-trade
-earn
-crude
-acq
-earn
-acq
-gold
-earn
-earn
-crude
-pet-chem
-earn
-earn
-earn
-ship
-crude
-corn grain meal-feed soy-meal
-acq
-earn
-crude gas
-acq
-earn
-earn
-grain wheat
-acq
-earn
-earn
-earn
-acq
-acq
-crude ship
-trade
-interest
-corn grain
-interest money-fx
-acq
-earn
-earn
-interest
-earn
-earn
-earn
-crude ship
-acq
-earn
-crude
-earn
-earn
-trade
-lumber
-earn
-acq
-earn
-earn
-money-fx
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-crude ship
-trade
-earn
-acq
-acq
-earn
-earn
-earn
-acq
-money-fx
-dlr money-fx yen
-trade
-dlr money-fx
-crude
-crude
-earn
-crude ship
-crude ship
-earn
-earn
-acq
-earn
-crude ship
-money-fx
-earn
-earn
-acq
-earn
-acq
-ship
-earn
-acq
-money-fx
-crude
-earn
-coconut-oil oilseed palm-oil palmkernel soybean veg-oil
-earn
-earn
-acq
-earn
-crude
-earn
-acq
-money-fx
-money-fx
-earn
-earn
-earn
-earn
-earn
-crude
-earn
-earn
-money-fx
-earn
-crude
-acq
-acq
-earn
-money-fx
-earn
-earn
-money-fx
-crude
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-crude ship
-acq
-earn
-earn
-earn
-trade
-crude ship
-acq
-acq
-crude ship
-acq
-crude ship
-acq
-earn
-crude ship
-earn
-earn
-earn
-crude
-acq
-earn
-money-fx
-earn
-acq
-trade
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-acq
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-acq
-earn
-earn
-crude
-acq
-acq
-acq
-acq
-acq
-crude
-acq
-acq
-crude
-earn
-acq
-oilseed soybean
-earn
-acq
-corn grain oilseed soybean wheat
-acq
-earn
-bop
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-money-fx
-grain
-interest
-money-fx
-acq
-cpi
-crude
-earn
-acq
-acq
-earn
-earn
-money-fx
-acq
-earn
-acq
-earn
-earn
-crude ship
-money-fx
-grain veg-oil
-dlr money-fx
-money-fx
-earn
-earn
-earn
-grain
-dlr money-fx
-earn
-earn
-earn
-coffee
-earn
-earn
-earn
-earn
-trade
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-crude
-earn
-acq
-money-fx
-earn
-earn
-earn
-ipi
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-crude ship
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-corn grain wheat
-earn
-cpu
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-crude
-earn
-earn
-crude
-earn
-money-fx
-acq
-earn
-acq
-earn
-interest
-earn
-acq
-acq
-acq
-gold
-earn
-acq
-earn
-earn
-acq
-earn
-money-fx
-acq
-earn
-gold silver
-earn
-acq
-acq
-sugar
-earn
-money-fx
-earn
-earn
-earn
-interest
-acq
-earn
-earn
-money-fx
-interest
-money-fx
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-crude
-carcass hog livestock
-gnp grain ipi
-crude
-ship
-earn
-earn
-acq
-acq
-earn
-crude
-acq
-earn
-earn
-acq
-earn
-trade
-bop trade
-acq
-acq
-acq
-earn
-acq
-earn
-earn
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-acq crude nat-gas
-acq
-acq
-ipi
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-crude ship
-earn
-earn
-earn
-earn
-acq
-earn
-crude ship
-earn
-acq
-crude
-acq
-interest money-fx
-acq
-bop
-earn
-crude ship
-money-fx
-acq
-earn
-earn
-crude ship
-crude
-crude ship
-propane ship
-earn
-earn
-earn
-crude ship
-corn grain rubber sugar
-dlr dmk money-fx
-oilseed veg-oil
-ship
-crude
-acq
-crude ship
-interest money-fx
-interest money-fx
-interest money-fx
-money-fx
-ship
-bop
-money-fx
-ship
-bop gnp jobs
-alum ship
-cotton grain
-cpi
-money-fx rand
-sugar
-acq
-money-fx
-crude
-dlr dmk money-fx yen
-acq
-earn
-earn
-acq
-money-fx
-rubber
-money-fx nzdlr
-trade
-sugar
-coffee
-crude
-grain rice
-acq
-dlr money-fx yen
-ship
-ipi
-gold
-cocoa
-acq
-money-supply
-acq
-earn
-earn
-acq trade
-earn
-crude nat-gas
-cocoa coffee sugar
-veg-oil
-acq
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-gas
-earn
-earn
-acq
-iron-steel ship
-earn
-money-fx
-acq
-earn
-acq
-earn
-earn
-earn
-acq
-earn
-cotton
-earn
-acq
-acq
-earn
-earn
-earn
-acq
-acq earn
-earn
-dlr money-fx
-earn
-acq crude
-money-supply
-interest money-fx
-crude
-dlr money-fx
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-interest money-fx
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-money-supply
-earn
-coffee
-acq
-earn
-acq crude
-sugar
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-corn grain wheat
-cocoa
-carcass grain livestock sugar
-acq
-acq
-earn
-earn
-gnp jobs
-money-fx
-acq corn grain
-earn
-acq
-earn
-strategic-metal
-money-supply
-money-supply
-money-supply
-interest
-acq
-earn
-earn
-earn
-earn
-acq crude
-earn
-acq
-corn grain oilseed soybean wheat
-earn
-earn
-barley corn grain meal-feed oilseed sorghum soy-oil soybean veg-oil wheat
-money-supply
-money-supply
-money-supply
-earn
-earn
-money-supply
-earn
-earn
-earn
-acq crude nat-gas
-money-fx
-crude
-earn
-earn
-money-supply
-acq
-crude
-earn
-earn
-earn
-trade
-earn
-acq
-gold
-earn
-gold
-acq earn
-acq
-trade
-earn
-acq
-earn
-earn
-crude nat-gas
-lei
-ipi
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-interest money-supply
-earn
-earn
-trade
-alum
-coffee crude
-cpi
-cpi
-reserves
-dlr money-fx
-trade
-trade
-coffee crude grain iron-steel tea trade wheat
-earn
-iron-steel trade
-interest
-earn
-earn
-earn
-ipi
-earn
-ipi
-gnp
-acq
-earn
-earn
-bop
-bop
-bop trade
-sugar
-money-supply
-coffee
-castor-oil oilseed veg-oil
-ship
-grain wheat
-sugar
-dlr money-fx
-acq
-acq
-acq
-ipi
-iron-steel
-earn
-corn grain
-acq
-money-fx
-alum
-dlr money-fx
-alum
-earn
-earn
-rape-oil veg-oil
-tin
-carcass
-acq
-dlr money-fx
-earn
-corn grain
-gnp money-fx
-bop trade
-earn
-dfl money-fx
-trade
-acq
-earn
-housing
-trade
-money-fx
-trade
-money-fx
-dlr money-fx
-money-fx
-money-fx
-housing
-acq
-bop trade
-dlr money-fx yen
-sugar
-money-fx
-dlr money-fx
-acq
-bop trade
-carcass sugar
-trade
-bop trade
-cpi
-earn
-dlr money-fx
-cpi
-cpi
-earn
-ship
-acq
-earn
-ship
-earn
-ship
-crude ship
-interest
-earn
-acq
-cotton
-jobs
-earn
-earn
-cocoa
-acq
-coffee crude grain iron-steel tea trade wheat
-earn
-earn
-acq
-money-fx
-money-fx
-acq
-acq
-earn
-acq
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-acq
-grain wheat
-earn
-acq
-earn
-cocoa
-crude ship
-acq
-acq
-trade
-acq
-earn
-acq
-interest
-acq
-earn
-earn
-cocoa
-earn
-acq
-dlr money-fx
-earn
-earn
-gold lead silver zinc
-corn grain
-corn grain
-gnp
-cocoa
-grain wheat
-earn
-earn
-sugar
-bop
-earn
-interest money-fx
-cocoa
-cocoa
-acq
-earn
-earn
-acq
-corn grain rice wheat
-ship
-ipi trade
-nat-gas
-earn
-acq
-earn
-trade
-gnp reserves
-earn
-earn
-earn
-cotton
-earn
-crude ship
-acq
-earn
-earn
-interest
-gold money-fx
-earn
-earn
-acq
-cpi
-acq
-earn
-ship
-earn
-acq
-earn
-earn
-earn
-cpi crude heat nat-gas propane
-grain wheat
-grain wheat
-earn
-acq
-gnp
-pet-chem
-acq ship
-cocoa
-acq
-cocoa
-acq
-crude ship
-earn
-oilseed
-money-supply
-alum
-money-supply
-acq
-earn
-earn
-earn
-grain ship
-earn
-earn
-income
-income
-money-fx
-trade
-earn
-earn
-earn
-earn
-cocoa
-rubber
-carcass livestock
-dlr money-fx
-money-fx
-cocoa
-crude ship
-crude ship
-money-fx
-trade
-trade
-crude ship
-earn
-crude
-money-fx
-reserves
-money-fx
-money-fx
-coffee
-crude ship
-trade
-grain trade
-earn
-earn
-earn
-dlr money-fx
-dlr money-fx
-dlr money-fx
-dlr money-fx
-dlr money-fx
-dlr money-fx
-dlr money-fx
-dlr money-fx
-earn
-dlr money-fx
-money-fx
-gold
-trade
-crude
-barley grain wheat
-acq
-acq
-nickel
-dlr money-fx yen
-gnp
-dlr money-fx yen
-coffee
-dlr money-fx yen
-earn
-sugar
-earn
-dlr money-fx yen
-grain wheat
-acq
-crude
-acq
-trade
-dlr money-fx yen
-earn
-earn
-corn grain
-earn
-earn
-money-fx
-oilseed soybean
-money-supply
-alum
-earn
-money-fx
-coconut oilseed
-acq
-earn
-ship
-dmk money-fx yen
-gold
-coconut oilseed
-acq
-cpi
-rubber
-dlr money-fx
-money-fx
-dlr money-fx
-money-supply
-earn
-acq
-cocoa
-earn
-acq
-money-supply
-ship
-money-fx
-crude
-dlr dmk money-fx
-coffee
-money-supply
-money-fx
-money-fx
-money-supply
-oilseed rape-oil rapeseed sun-oil sunseed veg-oil
-acq
-cocoa
-dlr money-fx yen
-dlr money-fx yen
-trade
-acq
-dlr money-fx yen
-zinc
-dlr money-fx yen
-money-fx trade
-money-fx
-money-fx
-trade
-interest
-money-fx trade
-trade
-dlr money-fx
-acq
-acq
-acq
-acq
-ipi
-earn
-acq
-money-fx
-crude ship
-earn
-earn
-ship sugar
-money-fx yen
-earn
-money-fx trade
-money-fx
-money-fx
-gold
-acq
-acq
-earn
-gold
-earn
-trade
-earn
-gnp
-grain rice wheat
-acq
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-acq
-acq
-crude
-earn
-acq
-acq
-coffee
-earn
-earn
-earn
-earn
-hog livestock
-money-fx
-fuel
-money-fx
-acq
-gold
-earn
-earn
-acq
-acq
-crude
-acq
-coffee
-earn
-earn
-money-fx
-corn grain oilseed soybean wheat
-acq
-earn
-earn
-pet-chem rubber
-acq
-earn
-acq
-earn
-earn
-acq
-earn
-acq
-money-supply
-earn
-acq
-coffee
-veg-oil
-earn
-trade
-earn
-acq
-acq
-earn
-money-fx
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-nzdlr
-grain wheat
-acq
-earn
-earn
-earn
-crude
-acq
-corn grain wheat
-coffee
-earn
-acq
-acq
-acq
-earn
-earn
-earn
-acq gold
-acq
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-acq
-acq
-acq
-acq
-acq gold
-acq
-earn
-earn
-acq
-bop
-money-fx
-acq
-crude
-earn
-corn grain oilseed soybean wheat
-earn
-earn
-earn
-gnp
-crude
-earn
-earn
-acq
-acq
-iron-steel
-earn
-earn
-earn
-earn
-iron-steel
-acq
-grain wheat
-acq
-sugar
-earn
-earn
-acq
-earn
-earn
-acq
-oilseed rapeseed
-acq
-earn
-earn
-money-fx
-earn
-acq
-cotton
-grain
-acq
-fuel
-orange
-acq
-trade
-acq
-earn
-gnp interest
-corn grain wheat
-acq
-earn
-acq
-earn
-earn
-corn cotton grain sorghum wheat
-nat-gas
-acq
-earn
-money-supply
-carcass livestock veg-oil
-crude
-acq
-acq
-money-fx
-iron-steel
-earn
-earn
-iron-steel
-earn
-earn
-earn
-earn
-acq
-earn
-crude
-grain wheat
-interest money-fx
-dlr money-fx
-iron-steel
-earn
-alum earn iron-steel
-acq
-bop
-earn
-earn
-acq
-acq
-dlr money-fx
-acq
-bop
-acq
-acq
-acq
-earn
-crude
-earn
-earn
-earn
-earn
-jobs
-jobs
-acq
-dlr
-dlr
-dlr
-sugar
-earn
-earn
-housing
-earn
-sugar
-trade
-trade
-acq
-iron-steel
-acq
-earn
-coffee
-bop
-zinc
-gnp
-acq
-money-fx
-earn
-cpi
-trade
-interest
-interest money-fx
-acq
-acq
-money-fx yen
-earn
-barley grain wheat
-money-fx trade
-acq
-earn
-dlr dmk money-fx
-acq crude sugar
-grain rice
-earn
-earn
-earn
-trade
-cocoa coffee grain rubber sugar tin wheat
-trade
-earn
-money-fx
-trade
-acq
-sugar
-crude nat-gas sugar
-earn
-oilseed
-money-fx
-acq
-acq
-interest money-fx
-acq
-earn
-earn
-acq
-earn
-interest money-fx
-earn
-interest
-ship
-acq
-acq
-dlr trade yen
-acq
-money-fx
-acq
-lei
-trade
-lei
-interest money-fx
-coffee
-acq
-corn grain
-earn
-ship
-earn
-alum
-acq
-jobs
-earn
-carcass
-acq
-earn
-money-fx trade
-earn
-earn
-money-fx
-acq
-trade
-acq
-gnp
-acq
-acq
-money-fx
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-corn grain sorghum
-interest
-trade
-barley grain wheat
-earn
-earn
-money-fx
-acq
-gnp
-sugar
-earn
-earn
-earn
-earn
-earn
-earn
-cocoa coffee sugar
-grain wheat
-acq
-acq
-acq
-earn
-crude nat-gas
-trade
-earn
-gnp lei
-trade
-earn
-earn
-acq
-interest money-fx
-acq
-earn
-earn
-alum
-coffee
-acq
-acq
-earn
-acq
-ipi
-earn
-grain wheat
-earn
-trade
-ship
-acq
-sugar
-crude earn
-trade
-corn grain wheat
-acq
-earn
-earn
-acq
-trade
-grain wheat
-earn
-acq
-crude
-acq
-gas
-earn
-earn
-grain wheat
-earn
-money-fx
-earn
-trade
-crude
-interest
-earn
-interest
-grain wheat
-earn
-earn
-earn
-money-fx
-acq
-earn
-earn
-corn grain
-veg-oil
-earn
-acq
-earn
-crude
-grain wheat
-trade
-money-fx
-acq
-money-fx
-earn
-earn
-crude
-cocoa
-trade
-trade
-cocoa coffee sugar
-acq
-acq
-nat-gas
-acq
-acq
-cpi
-earn
-earn
-earn
-acq
-earn
-earn
-copper
-earn
-acq
-trade
-acq
-earn
-crude gas heat
-acq
-earn
-trade
-earn
-trade
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-cotton
-acq
-oilseed rapeseed
-earn
-acq
-acq
-lumber
-earn
-acq
-acq
-acq
-acq
-earn
-earn
-acq
-grain rice
-acq
-interest money-fx
-earn
-oilseed
-earn
-carcass
-trade
-lei
-earn
-acq
-money-fx
-acq
-trade
-trade
-trade
-crude
-iron-steel
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-trade
-earn
-earn
-acq
-ipi
-trade
-acq
-ship
-earn
-acq
-acq
-acq
-acq
-earn
-acq
-corn grain oilseed soybean
-grain wheat
-cotton sorghum
-grain wheat
-sugar
-corn grain oilseed soybean
-earn
-earn
-acq
-earn
-earn
-acq
-pet-chem
-gold
-earn
-earn
-earn
-crude nat-gas
-earn
-trade
-earn
-earn
-earn
-gold
-crude
-acq
-cotton grain rice
-earn
-earn
-grain wheat
-earn
-grain rice wheat
-acq
-trade
-interest
-acq
-earn
-earn
-housing
-earn
-earn
-earn
-earn
-cotton grain veg-oil wheat
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-grain ship wheat
-earn
-earn
-crude gas
-earn
-earn
-earn
-earn
-earn
-iron-steel
-acq
-earn
-earn
-earn
-earn
-interest
-earn
-earn
-acq
-crude
-earn
-earn
-earn
-earn
-earn
-corn grain
-earn
-earn
-crude
-earn
-money-fx
-earn
-acq
-corn grain oilseed soybean
-reserves
-acq
-acq
-interest
-acq
-earn
-acq
-earn
-money-fx
-earn
-acq
-earn
-earn
-earn
-acq
-acq
-dlr money-fx yen
-money-supply
-alum
-grain
-corn cotton grain
-earn
-trade
-dlr money-fx yen
-earn
-dlr money-fx
-rubber
-gnp interest money-fx
-oilseed palm-oil palmkernel veg-oil
-earn
-dlr money-fx
-earn
-gnp
-acq
-acq
-acq
-money-fx
-gnp
-money-fx
-tin
-earn
-acq
-earn
-cocoa
-acq
-iron-steel ship
-grain wheat
-acq coffee
-interest
-earn
-interest money-fx
-acq
-acq
-acq
-sugar
-acq
-gold
-interest
-money-fx
-acq
-grain wheat
-coconut oilseed
-acq
-gold silver
-copper
-grain meal-feed oilseed ship veg-oil
-acq
-cocoa
-dlr money-fx
-acq
-interest
-grain wheat
-earn
-gold silver
-acq
-earn
-earn
-interest
-earn
-acq
-interest
-grain
-acq
-money-fx
-coffee
-acq
-acq
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-gas heat
-bop coffee gnp
-earn
-earn
-barley corn grain oilseed rapeseed ship wheat
-grain veg-oil wheat
-acq
-acq
-acq
-sugar
-cpi
-acq
-earn
-earn
-interest
-interest
-earn
-acq
-interest
-earn
-acq
-earn
-acq
-grain oilseed ship
-interest
-hog livestock
-acq
-acq
-earn iron-steel
-earn
-acq
-acq
-earn
-earn
-earn
-veg-oil
-earn
-interest
-lead
-corn grain oilseed soybean
-money-fx
-corn grain oilseed soybean
-interest
-interest
-dlr dmk money-fx
-copper
-money-fx
-earn
-coffee gnp
-veg-oil
-acq
-livestock
-lead
-interest
-livestock
-acq
-corn grain oilseed soybean sunseed
-earn
-earn
-acq
-trade
-cotton
-dlr dmk money-fx nkr
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-oilseed soybean
-interest
-earn
-earn
-earn
-acq
-acq
-acq strategic-metal
-acq earn
-earn
-earn
-corn grain oilseed soybean wheat
-sugar
-earn
-acq strategic-metal
-coffee
-grain wheat
-trade
-interest
-coffee
-earn
-interest
-earn
-acq
-interest
-earn
-copper
-interest
-acq
-acq
-earn
-acq
-earn
-earn
-earn
-interest
-earn
-earn
-earn
-iron-steel
-earn
-acq
-earn
-earn
-corn grain sorghum
-acq
-acq
-corn grain
-earn
-earn
-earn
-earn
-earn
-acq
-coffee
-interest
-oilseed rapeseed
-earn
-earn
-earn
-earn
-cpi
-grain ship
-acq
-interest
-earn
-acq
-acq
-interest
-acq
-acq
-earn
-carcass livestock
-trade
-interest
-interest
-acq
-veg-oil
-earn
-interest
-earn
-earn
-sugar
-earn
-coffee
-money-fx
-interest
-interest
-acq
-earn
-acq
-interest
-acq
-acq
-sugar
-dlr money-fx
-acq
-acq
-acq
-dlr money-fx yen
-acq
-interest
-earn
-corn grain meal-feed soy-meal
-earn
-coffee
-earn
-earn
-earn
-acq
-earn
-sugar
-corn grain oilseed sorghum soybean sunseed
-grain ship
-ship
-earn
-ship
-earn
-earn
-acq
-acq
-acq
-acq
-ship sugar
-earn
-money-fx
-acq
-ship
-earn
-interest money-fx
-earn
-earn
-acq
-earn
-acq
-grain oilseed soybean wheat
-acq
-interest
-acq
-earn
-earn
-acq
-earn
-acq
-earn
-coffee
-gas
-earn
-acq
-copper
-earn
-acq
-acq
-acq
-copper
-veg-oil
-acq
-acq
-earn
-interest
-earn
-interest
-acq
-earn
-earn
-earn
-silver
-earn
-interest
-ship
-earn
-acq
-interest
-cotton grain groundnut oilseed rapeseed soybean sunseed wheat
-earn
-carcass livestock
-earn
-interest
-trade
-interest
-grain wheat
-earn
-crude
-grain wheat
-ship
-earn
-interest
-groundnut oilseed
-acq
-interest
-acq
-acq
-earn
-earn
-crude
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-interest
-earn
-earn
-acq
-earn
-acq
-corn grain
-nat-gas
-nat-gas
-fuel
-interest
-earn
-earn
-acq
-corn grain
-grain wheat
-grain ship
-acq
-livestock
-interest
-earn
-interest
-dlr interest
-grain
-acq
-earn
-coffee
-earn
-acq
-acq
-earn
-oilseed soybean
-acq
-earn
-earn
-earn
-coffee
-acq
-meal-feed soy-meal sun-meal
-earn
-earn
-grain ship
-acq
-crude ship
-carcass corn cotton grain groundnut livestock oilseed sugar veg-oil wheat
-acq
-meal-feed
-carcass livestock
-acq
-earn
-acq
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-earn
-earn
-acq
-dlr interest money-fx
-earn
-interest
-coffee
-grain
-earn
-cocoa trade
-ipi
-pet-chem
-interest money-fx
-ipi
-earn
-acq
-interest money-fx
-sugar
-money-fx
-sugar
-money-fx reserves
-corn grain sorghum
-interest money-fx
-grain wheat
-earn
-dlr money-fx
-sugar
-coffee
-oilseed soy-meal soy-oil soybean veg-oil
-coffee
-barley grain wheat
-money-supply wpi
-acq
-earn
-reserves
-reserves
-corn grain
-dlr money-fx
-oilseed pet-chem
-earn
-acq
-gold
-acq
-interest money-fx
-earn
-acq
-earn
-interest money-fx
-acq
-interest
-interest money-fx
-trade
-grain wheat
-coffee
-acq
-gnp
-sugar
-earn
-cpi
-coffee
-ipi
-acq
-interest
-dlr interest money-fx yen
-interest money-fx
-trade
-trade
-reserves
-interest
-alum copper lead nickel silver zinc
-acq
-earn
-earn
-copper
-coffee
-acq
-interest money-fx
-interest
-acq
-corn grain wheat
-interest money-fx
-crude
-acq
-earn
-earn
-jobs
-earn
-interest
-earn
-earn
-acq
-interest
-earn
-earn
-earn
-earn
-earn
-earn
-dlr dmk money-fx
-money-fx
-earn
-dmk
-acq
-acq
-earn
-acq
-crude iron-steel
-jobs
-acq
-acq
-grain wheat
-earn
-acq
-earn
-earn
-earn
-interest money-fx
-jobs
-acq
-trade
-earn
-earn
-trade
-trade
-earn
-grain ship wheat
-earn
-interest
-earn
-earn
-earn
-gnp money-supply
-earn
-earn
-earn
-corn grain
-palm-oil veg-oil
-corn grain
-money-fx
-interest
-money-fx
-earn
-earn
-alum
-earn
-earn
-corn grain
-earn
-crude
-earn
-gnp
-nat-gas
-corn grain
-interest
-interest
-carcass livestock orange
-interest money-fx
-jobs
-interest money-fx
-palm-oil veg-oil
-money-supply
-acq
-jobs
-meal-feed soy-meal
-tea
-trade
-oilseed soybean
-money-supply
-acq
-acq
-sugar
-ship
-grain wheat
-cocoa
-acq
-grain ship
-earn
-pet-chem ship
-cpi gnp ipi
-sugar
-interest
-crude
-sugar
-dlr money-fx
-earn
-money-fx
-soy-oil veg-oil
-meal-feed soy-meal
-gnp
-interest money-fx
-sugar
-money-fx
-dlr money-fx
-gold silver
-acq
-earn
-acq
-acq
-money-fx reserves
-grain wheat
-crude
-interest
-money-fx
-interest
-interest money-fx
-cocoa
-coffee
-money-fx
-reserves
-jobs
-interest money-fx
-acq
-ship
-earn
-acq
-reserves
-earn
-grain
-earn
-acq
-alum
-acq
-earn
-interest money-fx
-money-supply
-money-fx
-coffee
-interest
-trade
-grain ship
-earn
-nat-gas
-acq
-acq
-copper
-acq
-earn
-copper
-earn
-acq
-earn
-earn
-corn grain
-earn
-reserves
-dlr dmk money-fx
-earn
-earn
-interest
-interest
-acq
-earn
-earn
-grain wheat
-acq
-acq
-acq
-interest
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-tea
-interest
-acq
-copper
-interest
-earn
-earn
-earn
-interest
-acq
-interest money-fx
-ship
-earn
-earn
-acq
-heat
-acq
-crude
-lumber
-lumber
-earn
-grain wheat
-acq
-rubber
-earn
-gold
-acq
-cotton
-grain wheat
-acq
-acq
-earn
-earn
-copper
-acq
-oilseed rapeseed
-bop gnp
-gold
-acq
-grain
-copper
-acq
-acq
-earn
-earn
-alum
-copper
-acq
-earn
-cpi
-interest
-earn
-money-supply
-acq
-earn
-money-supply
-acq
-acq
-interest
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-acq
-trade
-acq
-acq
-trade
-trade
-strategic-metal
-money-fx
-acq
-earn
-crude
-acq
-earn
-earn
-grain
-grain
-acq
-acq
-earn
-money-supply
-coconut-oil palm-oil veg-oil
-acq
-acq
-acq
-earn
-earn
-grain wheat
-acq
-crude
-grain wheat
-barley grain
-crude nat-gas
-acq
-interest
-earn
-earn
-earn
-earn
-crude
-gold
-earn
-silver
-coffee
-grain ship
-earn
-grain rice
-acq
-earn
-grain rice
-earn
-nat-gas propane
-earn
-earn
-earn
-acq
-earn
-earn
-crude
-money-supply
-interest
-earn
-carcass livestock
-earn
-acq
-money-supply
-money-supply
-money-supply
-acq
-grain ship
-acq
-earn
-acq
-earn
-coffee
-cpi
-corn grain oilseed soy-oil
-earn
-acq
-corn grain oilseed palm-oil rapeseed ship soy-oil wheat
-earn
-acq
-crude
-tin
-earn
-earn
-acq
-acq
-coffee
-earn
-earn
-acq
-acq
-acq
-acq
-acq
-money-supply
-earn
-crude
-coffee
-earn
-earn
-acq
-acq
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-interest
-interest
-wpi
-ipi
-crude
-coffee
-money-fx
-money-fx
-money-fx
-ship
-strategic-metal
-reserves
-crude
-gnp
-earn
-money-fx
-interest
-earn
-acq
-crude
-coffee
-earn
-money-fx
-cocoa
-grain wheat
-gnp
-earn
-grain rice
-money-supply
-crude
-grain oilseed rapeseed wheat
-dlr money-fx
-interest
-alum
-ship
-interest
-cpi
-earn
-crude
-carcass livestock
-carcass livestock
-earn
-acq
-money-fx
-acq
-acq
-money-fx
-earn
-earn
-crude
-earn
-earn
-earn
-grain
-cocoa
-money-supply
-trade
-money-supply
-trade
-acq
-orange
-alum
-earn
-dlr money-fx
-dlr money-fx
-money-fx
-dlr money-fx
-acq
-meal-feed
-acq
-crude ship
-interest
-dlr money-fx yen
-earn
-money-fx
-ipi
-trade
-earn
-grain
-earn
-orange
-crude
-earn
-earn
-crude
-earn
-trade
-earn
-earn
-dlr money-fx
-earn
-ship
-corn grain sorghum
-gold reserves
-copper
-earn
-nat-gas
-acq
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-carcass livestock
-earn
-grain wheat
-earn
-palm-oil veg-oil
-money-fx
-barley wheat
-earn
-acq
-gold
-grain wheat
-acq
-earn
-acq
-earn
-acq
-gold reserves
-barley grain
-earn
-earn
-earn
-dlr money-fx
-coffee
-trade
-earn
-trade
-trade
-corn wheat
-barley corn grain oat sorghum wheat
-earn
-barley corn grain sorghum wheat
-dlr money-fx trade
-crude
-acq
-acq
-copper zinc
-grain wheat
-trade
-earn
-earn
-earn
-dlr money-fx trade
-earn
-trade
-earn
-oilseed soy-oil soybean
-dlr dmk money-fx
-carcass livestock
-oilseed soybean
-trade
-money-fx money-supply
-corn grain
-money-fx
-money-fx
-grain wheat
-crude ship
-earn
-carcass livestock
-dlr money-fx
-corn grain
-money-fx money-supply
-earn
-earn
-trade
-acq
-money-fx
-earn
-cotton grain oat oilseed soybean wheat
-money-fx
-grain
-earn
-carcass
-acq
-earn
-earn
-acq
-earn
-bop trade
-acq
-grain wheat
-acq
-earn
-sugar
-money-fx
-acq
-acq
-earn
-earn
-acq
-money-fx
-earn
-earn
-trade
-earn
-earn
-acq
-money-fx reserves
-interest money-fx
-crude ship
-grain
-interest
-trade
-acq
-acq
-interest
-interest
-earn
-earn
-earn
-acq
-interest
-copper nickel
-acq
-earn
-earn
-earn
-grain
-earn
-acq
-earn
-earn
-earn
-earn
-grain
-earn
-cotton
-sugar
-grain ship
-acq
-earn
-earn
-grain
-earn
-acq
-crude
-crude
-sugar
-earn
-earn
-coffee
-acq
-earn
-livestock sugar
-rubber
-sugar
-earn
-earn
-acq
-copper
-corn grain livestock oilseed
-acq
-earn
-grain ship wheat
-copper
-earn
-acq
-acq
-grain veg-oil wheat
-oilseed
-grain rice
-earn
-earn
-earn
-earn
-earn
-ship
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-heat
-earn
-acq
-instal-debt
-earn
-money-fx
-copper gold lead silver zinc
-money-supply
-acq
-earn
-acq
-earn
-earn
-oilseed rapeseed
-acq
-earn
-instal-debt
-acq
-earn
-acq
-acq
-earn
-earn
-interest
-earn
-money-fx
-earn
-earn
-earn
-earn
-acq
-ship sugar
-money-fx
-grain ship
-pet-chem
-earn
-earn
-crude gas heat
-earn
-grain ship
-crude gas
-grain oilseed soybean
-crude ship
-earn
-acq
-grain wheat
-strategic-metal
-grain wheat
-grain wheat
-earn
-crude fuel gas
-acq
-trade
-earn
-earn
-earn
-earn
-money-fx
-earn
-dlr money-fx yen
-acq
-cpi dlr money-fx money-supply trade
-jobs
-dlr money-fx
-dlr money-fx
-trade
-rubber
-money-fx
-acq
-copper
-ship
-earn
-earn
-earn
-pet-chem
-earn
-earn
-acq
-earn
-trade
-acq
-earn
-interest money-fx
-acq
-earn
-earn
-acq
-dlr money-fx
-sugar
-earn
-gas
-crude
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-dlr money-fx
-rubber
-earn
-sugar
-earn
-earn
-earn
-earn
-cpi
-interest money-fx
-earn
-earn
-crude ship
-carcass grain livestock
-interest money-fx
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-grain wheat
-earn
-earn
-earn
-acq
-coffee
-acq
-corn grain oilseed sorghum soybean sunseed
-acq
-earn
-earn
-trade
-cotton grain rice wheat
-sugar
-earn
-acq
-earn
-acq
-copper gold
-earn
-earn
-bop gnp trade
-crude
-nat-gas
-acq
-earn
-acq
-grain
-acq
-acq
-earn
-grain
-earn
-acq
-earn
-earn
-earn
-grain wheat
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-barley corn grain
-earn
-earn
-trade
-earn
-earn
-acq
-earn
-fuel gas
-crude nat-gas
-acq
-acq
-acq
-earn
-acq
-grain wheat
-trade
-acq
-earn
-acq
-acq
-earn
-trade
-cpi
-earn
-acq
-crude
-earn
-earn
-earn
-crude
-acq
-acq
-earn
-earn
-earn
-crude nat-gas
-crude
-earn
-coffee
-earn
-earn
-acq
-earn
-ship
-interest money-fx
-earn
-acq
-grain
-earn
-earn
-acq
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-nat-gas
-acq
-orange
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-carcass livestock trade
-reserves
-corn grain wheat
-earn
-sugar
-acq
-acq
-cpi gnp
-acq
-grain oilseed soybean wheat
-earn
-earn
-acq
-crude
-earn
-grain wheat
-acq
-earn
-acq
-trade
-money-fx trade
-earn
-sugar
-earn
-earn
-earn
-earn
-alum
-acq
-acq
-earn
-trade
-coffee
-corn grain sorghum
-grain
-earn
-acq
-veg-oil
-earn
-acq
-crude gas
-earn
-acq
-crude fuel gas
-gnp
-acq
-acq earn
-earn
-acq
-trade
-earn
-trade
-earn
-earn
-crude
-earn
-crude gas
-coffee
-cotton grain oilseed rice soybean
-reserves
-acq
-coffee
-crude
-bop trade
-gold
-money-supply
-grain wheat
-grain ship wheat
-ship
-crude ship
-grain wheat
-crude
-crude
-coffee
-money-supply
-reserves
-grain rice
-earn
-gold
-earn
-acq
-earn
-dlr money-fx yen
-tin
-corn grain
-interest money-fx
-trade
-money-supply
-iron-steel
-crude
-reserves trade
-gold silver
-interest money-fx
-sugar
-crude
-money-fx
-trade
-corn grain
-gnp
-earn
-coffee
-bop trade
-trade
-bop trade
-wpi
-oilseed
-interest money-fx
-corn grain oat
-barley carcass grain hog livestock meal-feed potato soy-meal wheat
-interest
-sugar
-interest money-fx
-money-supply
-crude ship
-interest money-fx
-money-fx
-acq
-acq
-acq
-crude
-acq
-interest
-acq
-meal-feed oilseed soy-meal soy-oil soybean veg-oil
-jobs
-earn
-grain wheat
-crude
-earn
-copper
-crude nat-gas
-grain wheat
-earn
-acq
-ship
-acq
-earn
-earn
-earn
-interest money-fx
-acq
-money-fx
-earn
-acq
-earn
-earn
-money-supply
-earn
-earn
-acq
-earn
-barley corn grain wheat
-crude
-earn
-earn
-earn
-acq
-earn
-earn
-crude earn
-interest
-earn
-acq
-gold
-copper grain wheat
-earn
-acq
-oilseed soybean
-earn
-cpi gnp
-earn
-grain wheat
-acq
-reserves
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-crude
-reserves
-earn
-acq
-coffee
-earn
-acq
-earn
-crude
-earn
-acq
-acq
-cpi
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-interest
-earn
-acq
-money-supply
-earn
-earn
-earn
-livestock
-grain wheat
-barley grain
-barley corn grain oilseed rapeseed wheat
-earn
-crude
-crude
-earn
-money-fx yen
-dlr money-fx
-earn
-corn grain
-copper lead strategic-metal zinc
-crude ship
-earn
-dlr money-fx yen
-barley grain wheat
-acq earn
-earn
-acq sugar
-earn
-gnp jobs
-earn
-copper
-money-supply
-acq
-earn
-earn
-sugar
-acq
-interest money-fx
-earn
-earn
-earn
-earn
-barley corn grain wheat
-acq
-acq
-earn
-grain wheat
-acq
-acq
-carcass hog livestock
-earn
-interest
-earn
-crude
-barley grain
-earn
-earn
-acq
-earn
-sugar
-acq
-acq
-sugar
-acq
-earn
-interest
-acq
-earn
-earn
-acq
-earn
-earn
-corn grain
-earn
-earn
-acq
-retail
-bop gnp
-earn
-acq
-earn
-earn
-earn
-gnp trade
-earn
-grain rice
-acq
-money-fx yen
-oilseed soybean
-earn
-acq
-acq
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-ship
-earn
-earn
-coffee
-earn
-acq
-acq
-acq
-ship
-dlr money-fx
-interest
-earn
-earn
-earn
-trade
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-coffee copra-cake corn cotton grain palm-oil palmkernel rice rubber soy-meal soybean sugar tea veg-oil wheat
-earn
-money-fx trade
-earn
-dlr money-fx yen
-earn
-interest
-cotton groundnut oilseed sugar trade
-crude
-acq
-earn
-grain wheat
-crude
-earn
-pet-chem
-acq
-acq
-acq
-earn
-earn
-earn
-corn grain oilseed soybean wheat
-crude
-earn
-earn
-carcass l-cattle livestock sugar
-orange
-earn
-earn
-nat-gas
-earn
-earn
-earn
-earn
-earn
-money-supply
-earn
-money-fx
-earn
-grain wheat
-acq
-gold
-trade
-acq
-crude
-groundnut veg-oil
-earn
-grain wheat
-earn
-earn
-earn
-acq
-earn
-corn grain
-earn
-earn
-money-supply
-money-supply
-acq
-carcass livestock
-crude
-dlr money-fx
-corn cotton grain meal-feed oilseed soy-meal soy-oil soybean veg-oil
-earn
-earn
-crude
-earn
-acq
-money-supply
-money-supply
-coffee
-money-supply
-money-fx
-acq
-earn
-acq
-acq
-acq
-earn
-earn
-crude
-nat-gas
-earn
-earn
-earn
-earn
-coffee
-earn
-acq
-earn
-earn
-carcass livestock
-earn
-acq
-trade
-acq
-earn
-acq
-grain wheat
-crude nat-gas trade
-acq
-earn
-crude nat-gas
-crude
-earn
-earn
-acq
-cocoa coffee oilseed soybean sugar trade
-crude
-grain wheat
-acq
-acq
-cpi
-grain wheat
-crude
-retail
-acq
-acq
-grain trade wheat
-acq
-earn
-grain wheat
-acq
-ship
-acq
-earn
-acq
-earn
-earn
-coffee
-acq
-acq
-coffee
-money-supply
-cpi
-meal-feed
-earn
-gold
-money-fx
-earn
-earn
-earn
-acq
-money-fx
-earn
-earn
-earn
-earn
-acq
-hog livestock
-acq
-interest money-fx
-acq
-acq
-earn
-earn
-acq
-acq
-earn
-crude
-earn
-sugar
-earn
-earn
-earn
-livestock
-corn grain
-acq
-corn grain
-acq
-interest money-fx
-earn
-acq
-coffee
-earn
-acq
-earn
-earn
-corn grain
-gnp income ipi jobs retail trade
-earn
-trade
-trade
-dlr money-fx
-interest money-fx
-earn
-dlr money-fx
-acq
-ship
-acq
-acq
-earn
-acq
-trade
-earn
-acq
-acq
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-copra-cake meal-feed
-earn
-acq
-earn
-earn
-interest money-fx
-ship
-interest money-fx
-money-supply reserves
-earn
-crude
-earn
-earn
-earn
-heat
-interest money-fx
-acq
-earn
-earn
-earn
-gnp interest
-trade
-earn
-acq
-earn
-alum
-earn
-earn
-earn
-interest
-corn grain
-acq
-earn
-crude
-acq
-palm-oil veg-oil
-corn grain wheat
-earn
-money-supply
-money-supply
-jobs
-grain wheat
-earn
-corn grain
-cocoa coffee tea
-earn
-earn
-earn
-earn
-earn
-earn
-sugar
-earn
-gold
-acq
-copper
-money-fx
-crude
-acq
-acq
-earn
-earn
-earn
-crude
-corn grain sugar
-earn
-earn
-copper gold nickel palladium platinum
-acq
-acq
-gold
-earn
-earn
-earn
-acq
-earn
-lumber
-acq
-earn
-acq
-acq
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-ship
-acq
-acq
-acq
-acq
-acq
-ship
-earn
-earn
-earn
-earn
-gas ship
-reserves
-acq
-earn
-earn
-crude
-earn
-reserves
-gnp
-acq
-corn grain
-earn
-earn
-livestock
-ship
-earn
-grain wheat
-money-supply
-trade
-grain wheat
-earn
-acq
-money-supply
-money-supply
-earn
-earn
-copper gold nickel palladium platinum
-livestock
-acq
-earn
-earn
-earn
-acq
-acq
-acq
-housing
-coffee
-acq
-acq
-earn
-acq
-earn
-corn grain meal-feed
-earn
-earn
-acq
-earn
-earn
-earn
-corn grain
-nat-gas
-acq
-crude interest
-acq
-acq
-earn
-earn
-sugar
-earn
-acq
-strategic-metal
-earn
-acq
-acq
-strategic-metal
-ship
-acq
-acq
-corn grain
-acq
-acq
-acq
-interest
-acq
-coffee
-ship
-acq
-crude fuel jet
-ship
-ship
-interest money-fx
-earn
-earn
-earn
-earn
-sugar
-gnp
-interest money-fx
-ship
-oilseed soybean
-crude
-ship
-crude
-meal-feed
-cotton grain sugar veg-oil
-sugar
-rubber
-carcass livestock
-interest
-acq
-iron-steel
-gold
-trade
-earn
-ipi
-money-fx
-money-supply
-ipi
-interest money-fx
-crude
-acq
-money-supply
-money-fx
-interest money-fx
-crude
-interest
-interest
-earn
-acq
-strategic-metal
-acq
-crude nat-gas
-instal-debt
-crude ship
-bop dlr gnp trade
-acq
-dlr interest money-fx
-acq
-bop cpi dfl gnp jobs
-acq
-earn
-ship
-meal-feed oilseed soy-meal soybean
-gnp money-fx
-coffee
-acq
-meal-feed
-earn
-acq
-acq
-acq
-coffee
-acq
-acq
-interest
-interest money-fx
-ship
-ship
-crude
-money-supply
-rubber
-acq
-acq
-hog livestock
-interest money-fx
-acq
-earn
-acq
-bop crude dlr gnp money-fx trade
-money-fx
-interest money-fx
-acq
-interest money-fx
-acq
-acq
-money-supply
-acq
-dlr dmk money-fx
-earn
-trade
-earn
-grain oilseed
-acq
-carcass grain livestock meal-feed soy-meal
-acq
-acq
-interest
-interest
-acq
-gold platinum strategic-metal
-earn
-interest
-acq
-acq
-acq
-acq
-orange
-meal-feed
-acq
-interest
-zinc
-housing
-acq
-orange
-tin
-ship
-interest
-acq
-crude
-earn
-earn
-bop trade
-acq pet-chem
-interest money-fx
-interest
-acq
-interest
-acq
-groundnut-oil oilseed palm-oil rapeseed soy-oil soybean sunseed veg-oil
-interest
-barley grain wheat
-interest
-interest
-meal-feed
-interest money-fx
-corn grain wheat
-acq
-gold
-acq
-crude nat-gas
-crude
-orange
-acq
-acq
-acq
-acq
-rubber
-acq
-money-fx
-earn
-crude
-zinc
-interest money-fx
-acq
-acq
-crude nat-gas
-earn
-acq crude nat-gas
-acq
-acq
-heat
-zinc
-acq
-acq
-coffee
-crude
-cocoa
-corn grain sugar
-interest
-earn
-acq
-trade
-palm-oil rape-oil veg-oil
-crude
-acq
-oilseed rapeseed
-zinc
-nat-gas
-lead
-acq
-ship
-interest
-interest
-money-fx
-acq
-cocoa
-sugar
-acq
-reserves
-acq
-acq
-acq
-acq earn
-earn
-gnp money-supply
-earn
-bop
-acq
-acq
-interest
-earn
-ship
-earn
-ship
-acq
-acq
-acq
-acq
-acq dlr money-fx trade
-earn
-corn grain meal-feed oilseed rapeseed soy-meal
-earn
-grain wheat
-earn
-earn
-acq
-acq
-hog l-cattle livestock
-corn grain oilseed soybean wheat
-interest
-ship
-acq
-acq
-interest money-fx
-acq
-acq
-corn grain oilseed wheat
-money-supply
-acq
-crude
-acq
-corn grain
-acq
-acq
-cocoa coffee heat sugar
-grain
-grain
-acq
-grain wheat
-orange
-potato
-carcass hog livestock
-palm-oil veg-oil
-acq
-gold
-grain wheat
-barley grain
-gold
-ship
-corn grain wheat
-crude
-acq
-grain wheat
-grain wheat
-acq
-corn grain
-bop dlr money-fx trade
-livestock
-acq
-livestock
-instal-debt
-crude
-earn
-earn
-acq
-ship
-money-supply
-ship
-gnp
-gnp
-instal-debt
-crude
-acq
-corn grain rice wheat
-earn
-interest money-fx
-interest
-acq
-crude
-interest
-acq
-acq
-interest
-acq
-acq
-acq
-trade
-earn
-acq
-earn
-acq
-grain ship
-acq
-crude
-grain
-acq
-acq
-acq
-acq
-acq
-corn grain wheat
-earn
-acq
-acq
-interest money-fx
-cpi gnp money-fx
-acq
-acq
-acq
-acq
-acq
-dlr money-fx yen
-trade
-earn
-dlr money-fx yen
-acq
-acq
-corn grain wheat
-sugar
-crude
-money-fx
-money-fx
-rubber
-ship
-trade
-money-fx
-grain rice wheat
-trade
-interest
-interest
-earn
-crude
-oilseed soybean
-copper lead zinc
-crude
-earn
-oilseed soybean
-acq
-strategic-metal
-strategic-metal
-money-fx
-earn
-earn
-oilseed soybean
-earn
-iron-steel
-jobs
-ship
-earn
-earn
-acq
-earn
-earn
-money-fx
-money-fx
-earn
-bop
-crude
-earn
-acq
-sugar
-interest money-fx
-earn strategic-metal
-palm-oil veg-oil
-interest
-earn
-crude
-crude
-sugar
-bop trade
-money-fx
-earn
-crude
-jobs
-interest money-supply
-money-fx
-interest
-crude
-lei
-money-fx trade yen
-money-fx
-interest
-money-fx
-earn
-interest
-trade
-coconut-oil oilseed palm-oil soybean veg-oil
-bop
-interest
-earn
-earn
-acq
-trade
-money-fx
-crude
-earn
-coffee
-earn
-crude
-earn
-acq
-earn
-acq
-crude
-ship
-acq
-gold silver
-earn
-sugar
-earn
-earn
-earn
-earn
-money-fx
-earn
-acq
-acq
-sugar
-acq
-crude
-cpi money-fx reserves trade
-crude
-hog livestock
-acq
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-crude
-acq
-bop trade
-sugar
-money-fx
-copper earn
-bop trade
-sugar
-earn
-acq
-earn
-lei
-acq
-earn
-earn
-gold
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-sugar
-lei
-earn
-acq
-gold silver
-earn
-earn
-earn
-acq
-acq
-reserves
-money-supply
-money-fx
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-crude ship
-earn
-earn
-acq
-earn
-acq
-sugar trade
-money-fx
-earn
-earn
-earn
-earn
-sugar
-interest
-gold
-acq
-housing
-acq
-acq
-earn
-jobs
-acq
-housing
-earn
-housing
-money-fx
-earn
-earn
-money-fx
-grain wheat
-earn
-cotton
-earn
-acq
-earn
-earn
-acq
-acq
-rubber
-earn
-earn
-earn
-earn
-nat-gas
-acq
-acq
-earn
-interest
-earn
-earn
-earn
-acq
-earn
-alum
-trade
-earn
-earn
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-sugar
-gold
-acq
-ship
-acq
-crude nat-gas
-earn
-gnp
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-interest
-acq
-acq
-ship
-earn
-acq
-gnp
-acq
-earn
-earn
-crude
-earn
-corn grain
-earn
-earn
-earn
-corn gas grain
-acq
-earn
-earn
-earn
-copper silver zinc
-acq
-earn
-earn
-acq silver
-crude ship
-acq
-earn
-earn
-acq
-earn
-earn
-acq
-earn
-corn grain
-earn
-earn
-oilseed
-acq
-earn
-orange
-earn
-earn
-earn
-grain wheat
-housing
-earn
-earn
-earn
-carcass livestock
-trade
-earn
-grain wheat
-earn
-acq crude
-earn
-earn
-acq
-acq
-grain wheat
-acq
-earn
-acq
-earn
-acq
-earn
-acq
-sugar
-acq
-money-supply
-trade
-acq
-acq
-earn
-acq
-lumber
-earn
-earn
-acq
-corn grain
-barley corn grain wheat
-rape-oil sun-oil veg-oil
-earn
-earn
-earn
-coffee ship
-alum
-earn
-crude
-earn
-acq
-acq
-acq
-earn
-acq
-earn
-ship
-crude
-earn
-corn grain oilseed soybean
-acq
-crude
-corn grain oilseed sorghum sunseed
-interest
-acq
-acq
-crude
-earn
-earn
-acq
-acq
-acq
-earn
-crude fuel gas
-earn
-gold
-acq
-earn
-acq
-earn
-interest ipi retail
-acq
-earn
-earn
-earn
-crude iron-steel nat-gas
-earn
-coffee
-earn
-carcass livestock
-earn
-earn
-trade
-trade
-crude
-earn
-trade
-acq
-acq
-veg-oil
-jobs
-money-fx
-crude
-earn
-oilseed rapeseed
-crude
-acq
-bop
-corn grain
-trade
-iron-steel ship
-earn
-ship
-acq
-pet-chem
-acq
-cotton
-grain wheat
-acq gold
-earn
-ship
-reserves
-coffee
-acq
-earn
-gold
-earn
-acq
-earn
-coffee
-earn
-earn
-oilseed soybean
-grain sugar wheat
-bop trade
-acq
-gnp
-earn
-oilseed rapeseed soybean sunseed
-trade
-earn
-earn
-money-fx
-earn
-earn
-interest money-fx
-jobs
-earn
-money-fx reserves
-earn
-sugar
-earn
-earn
-sugar
-earn
-earn
-earn
-carcass livestock
-cotton
-earn
-earn
-acq
-interest money-fx
-earn
-reserves
-trade
-trade
-sugar
-earn
-tin
-earn
-crude
-acq
-crude
-interest money-fx
-earn
-corn grain oilseed orange rice soybean
-acq
-palm-oil veg-oil
-money-fx
-earn
-earn
-earn
-earn
-acq
-acq
-cocoa coffee
-acq
-earn
-retail
-retail
-acq
-earn
-trade
-earn
-acq trade
-acq
-reserves
-earn
-acq
-crude nat-gas
-acq
-gnp
-acq
-earn
-grain oat
-money-fx
-crude ship
-trade
-retail
-crude
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-interest money-fx
-earn
-earn
-earn
-earn
-veg-oil
-coffee
-earn
-acq
-grain ship wheat
-acq
-earn
-hog livestock
-acq ship
-earn
-acq
-iron-steel
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-acq
-earn
-cotton
-crude earn nat-gas
-acq
-acq
-acq
-trade
-earn
-acq
-earn
-earn
-earn
-crude
-acq
-dlr grain wheat
-earn
-retail
-earn
-earn
-trade
-earn
-earn
-coffee
-earn
-interest money-fx
-earn
-acq
-grain wheat
-earn
-barley grain
-acq
-acq
-acq
-earn
-earn
-earn
-corn grain
-retail
-copper earn
-earn
-money-fx
-barley corn grain wheat
-gnp
-interest money-fx
-acq
-earn
-acq
-earn
-palm-oil veg-oil
-jobs
-earn
-acq
-earn
-grain rice
-acq crude
-earn
-acq
-earn
-ship
-earn
-earn
-crude
-earn
-earn
-acq
-crude
-earn
-acq
-earn
-ship
-earn
-earn
-coffee
-earn
-earn
-earn
-grain wheat
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-crude
-bop
-acq crude
-acq
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-corn grain wheat
-earn
-earn
-crude
-earn
-earn
-earn
-earn
-oilseed soybean
-earn
-earn
-earn
-acq ship
-acq
-acq
-earn
-rubber
-gold
-acq
-interest
-acq
-earn
-acq
-earn
-earn
-acq
-earn
-crude
-crude
-l-cattle livestock
-copper
-earn
-acq
-veg-oil
-earn
-earn
-earn
-retail
-earn
-crude
-earn
-acq
-interest
-earn
-earn
-crude
-earn
-interest
-earn
-interest
-earn
-earn
-crude
-acq
-crude
-crude nat-gas
-earn
-acq
-cocoa
-earn
-grain wheat
-crude
-earn
-earn
-acq
-grain wheat
-acq gold platinum
-trade
-crude
-interest
-interest
-cpi
-money-supply
-acq
-earn
-corn grain oilseed soybean wheat
-acq
-earn
-earn
-interest
-acq
-ipi
-carcass livestock
-earn
-earn
-gas
-trade
-acq
-oilseed rapeseed
-trade
-carcass livestock
-money-supply
-money-supply
-earn
-acq
-money-supply
-earn
-earn
-grain
-crude
-money-supply
-money-supply
-money-supply
-acq
-acq
-orange
-money-supply
-cpi gnp reserves
-cotton grain oilseed rice soybean wheat
-earn
-earn
-trade
-earn
-cpi
-crude
-earn
-earn
-earn
-l-cattle livestock
-crude nat-gas
-cpi gnp
-earn
-crude
-carcass livestock
-crude
-acq
-earn
-earn
-crude
-earn
-acq
-crude
-crude nat-gas
-acq
-acq
-crude
-trade
-corn grain oilseed soybean wheat
-sugar
-crude
-interest money-supply
-coffee
-crude
-acq
-acq
-crude
-earn
-earn
-earn
-acq
-dlr money-fx
-ship
-earn
-earn
-acq
-acq
-gnp
-bop trade
-sugar
-carcass livestock
-trade
-money-fx yen
-wpi
-trade
-carcass livestock
-grain
-trade
-earn
-ship
-wpi
-earn
-gold
-earn
-palm-oil veg-oil
-earn
-trade
-interest
-earn
-crude
-acq
-earn
-wpi
-crude
-crude
-acq
-money-fx
-acq
-grain wheat
-dlr money-fx yen
-grain rice
-cotton
-money-fx yen
-palm-oil veg-oil
-interest money-fx
-money-supply
-earn
-crude
-acq
-earn
-earn
-earn
-grain wheat
-alum
-jobs
-trade
-earn
-jobs
-money-fx yen
-gold
-money-fx yen
-ship
-money-fx
-crude
-crude
-trade
-grain rice
-interest money-fx
-earn
-acq earn
-earn
-acq
-ship
-ship
-acq
-ship
-cpi
-crude
-wpi
-wpi
-earn
-earn
-acq
-interest money-fx
-earn
-earn
-earn
-acq
-earn
-acq
-interest
-earn
-money-fx
-nickel
-ipi
-ipi
-acq
-earn
-acq
-earn
-earn
-earn
-grain ship
-earn
-acq
-earn
-ship
-earn
-interest money-fx
-coffee
-wpi
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-reserves
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-money-fx
-earn
-acq
-earn
-gold
-acq
-earn
-earn
-earn
-interest money-fx
-rubber
-corn grain
-earn
-money-fx
-earn
-crude
-ship
-hog livestock
-trade
-earn
-acq
-earn
-ship
-crude
-acq
-oilseed
-crude
-gold silver
-interest
-dlr money-fx
-acq
-acq
-acq
-crude
-acq
-earn
-acq
-acq
-sugar
-ship
-earn
-earn
-earn
-trade
-acq
-corn grain
-acq
-acq
-earn
-earn
-acq
-earn
-earn
-interest
-money-supply
-earn
-acq
-earn
-acq
-money-supply
-corn grain
-earn
-rubber
-gnp interest ipi wpi
-crude nat-gas
-acq
-crude ship
-earn
-acq
-earn
-acq
-acq
-earn
-crude nat-gas
-acq
-acq
-sugar
-acq
-acq
-earn
-earn
-acq
-acq
-acq
-crude
-trade
-corn grain
-earn
-earn
-ipi
-earn
-earn
-barley corn grain oat sorghum wheat
-earn
-acq
-coffee
-corn grain
-carcass livestock
-barley corn grain wheat
-earn
-earn
-earn
-corn grain
-earn
-crude
-acq
-earn
-earn
-carcass livestock
-corn grain
-earn
-crude gas nat-gas wpi
-acq
-cotton
-earn
-earn
-acq
-earn
-earn
-acq
-earn
-earn
-ipi
-earn
-earn
-earn
-grain wheat
-trade
-earn
-money-supply
-earn
-money-supply
-crude gas heat nat-gas wpi
-earn
-earn
-money-fx
-earn
-earn
-earn
-acq
-earn
-earn
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-acq
-earn
-acq
-earn
-acq
-earn
-corn grain
-crude
-acq
-acq
-earn
-lumber
-acq crude
-acq
-crude
-crude
-earn
-acq
-crude
-crude
-earn
-interest
-earn
-earn
-lumber
-coffee
-rubber
-rubber
-earn
-acq
-soy-oil veg-oil
-cpi gas
-trade
-iron-steel
-alum
-crude pet-chem
-palm-oil veg-oil
-iron-steel lead zinc
-ship
-crude ship
-corn grain
-trade
-acq
-crude
-crude
-cocoa
-trade veg-oil
-earn
-crude
-earn
-sugar
-money-fx
-acq
-ipi
-ship
-money-fx reserves
-money-fx
-corn grain
-earn
-bop trade
-interest money-fx
-money-fx
-ship
-cocoa
-money-fx reserves
-cpi
-rubber
-ipi
-money-fx
-acq
-money-fx yen
-retail
-gnp money-fx yen
-money-supply
-gold
-earn
-earn
-acq
-sugar
-jobs
-reserves
-palm-oil veg-oil
-earn
-interest money-fx
-trade
-earn
-money-fx
-acq
-earn
-cpi
-interest money-fx
-acq
-interest
-trade
-interest
-cpi
-earn
-ipi
-interest money-fx
-alum
-crude
-cpi
-iron-steel
-earn
-money-supply
-money-supply
-retail
-gold
-retail
-earn
-cocoa
-cpi
-earn
-grain rice
-crude
-money-fx
-crude
-gnp money-fx yen
-acq
-crude
-trade
-earn
-interest money-fx
-trade
-money-fx reserves
-earn
-money-fx trade
-crude
-earn
-acq
-trade veg-oil
-acq
-acq
-trade
-earn
-dlr interest money-fx
-acq
-palm-oil ship veg-oil
-acq
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-acq
-acq
-earn
-acq
-earn
-earn
-earn
-earn
-palm-oil veg-oil
-earn
-earn
-cpi
-acq
-acq
-earn
-gold
-earn
-earn
-earn
-acq
-earn
-ship
-acq
-acq
-hog livestock
-coffee
-acq
-interest money-fx
-corn grain money-fx
-earn
-earn
-acq
-earn
-interest money-fx
-earn
-earn
-acq
-earn
-acq
-earn
-acq
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-money-fx
-acq
-grain
-earn
-earn
-trade
-acq
-cpi
-trade
-earn
-cpi
-acq
-earn
-cocoa
-grain wheat
-earn
-cpu
-cpi
-earn
-earn
-oilseed soybean veg-oil
-jobs
-money-fx
-acq
-acq
-livestock
-earn
-interest money-fx
-earn
-grain
-acq
-earn
-earn
-acq
-money-fx
-earn
-earn
-earn
-earn
-pet-chem
-earn
-earn
-earn
-earn
-crude
-earn
-money-fx
-acq copper
-earn
-earn
-interest money-fx
-nat-gas
-earn
-acq
-acq
-earn
-earn
-carcass livestock
-gnp
-acq
-earn
-earn
-gnp
-earn
-acq
-earn
-gnp trade
-earn
-cpu
-earn
-earn
-acq
-barley corn cotton grain sorghum wheat
-acq
-acq
-earn
-coffee
-gnp
-earn
-earn
-earn
-trade
-acq
-earn
-gold
-earn
-cpu
-carcass livestock
-cpi
-cocoa
-earn
-earn
-earn
-earn
-trade
-ship
-acq
-earn
-earn
-earn
-acq
-veg-oil
-trade
-trade
-acq
-earn
-acq
-acq
-corn grain
-earn
-acq
-earn
-cpi
-earn
-gold
-earn
-acq
-earn
-corn grain oilseed soybean wheat
-earn
-acq
-earn
-earn
-earn
-earn
-earn
-gold
-crude ship trade
-earn
-earn
-earn
-earn
-earn
-earn
-crude ship
-bop
-earn
-earn
-gold
-acq
-trade
-earn
-gold
-earn
-earn
-gold
-earn
-earn
-coffee trade
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-acq
-acq
-cocoa
-earn
-earn
-earn
-earn
-earn
-earn
-corn grain oilseed soybean wheat
-acq
-acq
-barley corn cotton grain oilseed rice sorghum soybean wheat
-grain
-acq
-earn
-coffee
-earn
-earn
-earn
-earn
-crude fuel ship
-earn
-acq
-meal-feed veg-oil
-corn grain sorghum wheat
-corn grain
-grain wheat
-barley grain
-acq
-acq
-earn
-earn
-grain wheat
-earn
-acq
-earn
-veg-oil
-earn
-earn
-acq
-earn
-acq
-earn
-earn
-acq
-acq
-acq
-earn
-acq
-acq
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-crude fuel
-trade
-acq
-earn
-earn
-earn
-acq
-trade
-acq nickel strategic-metal
-earn
-corn grain
-earn
-oilseed soybean
-heat
-earn
-acq
-acq
-earn
-earn
-acq
-earn
-earn
-trade
-earn
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-acq
-ship
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-acq
-trade
-acq
-acq
-acq
-acq
-earn
-oilseed veg-oil
-acq
-bop
-bop
-reserves
-wpi
-wpi
-dlr money-fx
-bop interest money-fx trade
-acq
-money-supply
-gnp
-bop trade
-bop trade
-earn
-copper
-acq
-soy-oil veg-oil
-rubber
-nat-gas
-crude
-money-supply
-money-supply
-money-supply
-grain
-gnp
-gnp
-gnp
-gnp
-acq
-trade
-money-fx
-carcass livestock
-interest money-fx
-earn
-ship
-money-fx
-earn
-grain
-copper
-cpi
-oilseed
-sugar
-interest money-supply
-bop
-wpi
-money-fx reserves
-bop
-ipi
-corn grain
-ipi
-gnp
-trade
-crude ship trade
-acq
-money-fx
-interest money-fx
-crude ship
-alum
-ship
-acq
-acq
-acq
-gnp
-cocoa
-housing
-housing
-meal-feed
-copper
-acq
-earn
-trade
-carcass l-cattle livestock
-earn
-acq
-ship
-acq
-earn
-acq
-money-fx
-earn
-trade
-money-fx
-acq
-earn
-earn
-earn
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-gold
-corn grain
-acq
-earn
-acq
-earn
-bop trade
-bop trade
-money-fx
-acq
-acq
-acq
-earn
-earn
-trade
-acq
-rubber
-gold
-earn
-trade
-earn
-earn
-earn
-earn
-grain
-trade
-acq
-acq
-earn
-acq
-gnp
-bop trade
-earn
-earn
-gnp
-acq
-earn
-earn
-earn
-money-fx
-corn grain lin-oil oilseed sorghum soy-oil soybean sun-oil sunseed veg-oil wheat
-housing
-acq
-earn
-grain wheat
-earn
-earn
-earn
-earn
-earn
-acq
-crude
-copper
-acq
-acq
-acq
-earn
-acq
-earn
-bop gnp
-earn
-earn
-earn
-interest money-fx
-interest money-fx
-earn
-earn
-earn
-earn
-earn
-acq
-veg-oil
-acq
-crude
-soybean veg-oil
-cotton
-acq
-housing
-acq
-acq
-acq
-earn
-earn
-earn
-grain wheat
-grain wheat
-acq
-money-fx
-earn
-acq
-crude
-earn
-acq
-interest
-acq
-acq
-earn
-acq
-acq
-earn
-acq
-earn
-earn
-earn
-earn
-dlr money-fx
-crude
-earn
-grain rice wheat
-earn
-oilseed soybean
-crude
-acq
-acq
-earn
-acq
-crude
-grain wheat
-cocoa
-earn
-earn
-earn
-acq
-money-fx
-earn
-corn grain
-earn
-earn
-earn
-grain rice wheat
-earn
-earn
-bop interest money-supply
-acq
-ipi jobs
-crude
-crude
-earn
-crude
-crude
-earn
-earn
-earn
-interest
-crude
-interest
-earn
-acq
-earn
-crude
-earn
-earn
-earn
-acq
-alum
-gnp housing interest
-earn
-acq
-crude
-earn
-earn
-earn
-crude
-grain wheat
-earn
-acq
-earn
-earn
-earn
-acq
-gold
-earn
-corn grain wheat
-earn
-acq
-acq
-earn
-earn
-earn
-earn
-earn
-earn
-corn grain
-corn wheat
-earn
-earn
-earn
-earn
-acq
-earn
-earn
-grain trade
-earn
-earn
-corn grain wheat
-crude
-grain oilseed soybean
-grain
-carcass corn cotton grain oilseed rice soybean
-earn
-earn
-earn
-earn
-acq
-acq
-acq
-earn
-earn
-acq
-earn
-earn
-earn
-earn
-crude
-earn
-grain wheat
-earn
-earn
-earn
-crude
-earn
-earn
-earn
-earn
-earn
-earn
-earn
-acq
-carcass
-earn
-earn
-earn
-grain wheat
-acq
-earn
-earn
-acq
-money-fx yen
-grain wheat
-acq
-earn
-palm-oil veg-oil
-palm-oil veg-oil
-acq
-earn
-crude
-earn
-interest
-interest
-earn
-palm-oil veg-oil
-earn
-earn
-money-fx yen
-earn
-interest money-fx
-acq
-interest
-interest
-interest
-interest
-acq
-interest
-wpi
-earn
-acq
-ipi
-earn
-acq
-gnp
-cpi
-corn grain
-money-fx
-interest
-interest money-fx
-earn
-interest money-fx
-acq
-crude ship
+["trade"]
+["grain"]
+["crude", "nat-gas"]
+["corn", "grain", "rice", "rubber", "sugar", "tin", "trade"]
+["palm-oil", "veg-oil"]
+["ship"]
+["coffee", "lumber", "palm-oil", "rubber", "veg-oil"]
+["grain", "wheat"]
+["gold"]
+["acq"]
+["tin"]
+["interest", "money-fx"]
+["acq", "copper"]
+["ipi"]
+["carcass", "corn", "grain", "livestock", "oilseed", "rice", "soybean", "trade"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["bop", "trade"]
+["gas", "lead"]
+["acq"]
+["jobs"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["tin"]
+["trade"]
+["zinc"]
+["sugar"]
+["sugar"]
+["acq"]
+["interest", "money-fx"]
+["cpi", "gnp"]
+["oilseed", "palm-oil", "soy-oil", "soybean", "veg-oil"]
+["earn"]
+["acq"]
+["earn"]
+["trade"]
+["acq"]
+["acq"]
+["earn"]
+["trade"]
+["dlr", "money-fx", "yen"]
+["cpi"]
+["interest", "money-fx"]
+["acq"]
+["sugar"]
+["sugar"]
+["earn"]
+["nickel"]
+["earn"]
+["dlr", "money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["groundnut"]
+["earn"]
+["ship"]
+["earn"]
+["ship"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["jobs"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["sugar"]
+["money-fx"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["sugar"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain"]
+["acq"]
+["heat"]
+["corn", "grain", "oilseed", "sorghum", "soybean", "sunseed", "wheat"]
+["jobs"]
+["earn"]
+["money-fx"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq", "crude", "earn", "pet-chem"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["interest"]
+["earn"]
+["earn"]
+["cocoa"]
+["interest"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["corn", "grain", "oilseed", "soybean"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["tin"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["oilseed", "rapeseed"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["cocoa"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["coffee"]
+["crude"]
+["acq"]
+["earn"]
+["rice"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["dlr", "interest", "money-fx"]
+["earn"]
+["acq"]
+["tin"]
+["cotton"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["money-fx"]
+["livestock"]
+["crude", "earn"]
+["acq"]
+["earn"]
+["money-supply"]
+["earn"]
+["crude"]
+["money-supply"]
+["earn"]
+["earn"]
+["money-fx"]
+["carcass", "livestock"]
+["acq"]
+["earn"]
+["earn"]
+["iron-steel", "trade"]
+["earn"]
+["copper"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain"]
+["l-cattle", "livestock"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["grain"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["interest"]
+["acq"]
+["earn"]
+["iron-steel", "trade"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "nat-gas"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["coffee"]
+["acq"]
+["earn"]
+["acq"]
+["crude", "gas"]
+["corn", "grain", "veg-oil", "wheat"]
+["crude", "gas"]
+["earn"]
+["earn"]
+["acq"]
+["crude", "gas"]
+["trade"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["acq"]
+["interest", "money-fx"]
+["jobs"]
+["acq"]
+["grain", "rice"]
+["alum"]
+["acq", "trade"]
+["money-fx", "trade"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["trade"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["yen"]
+["acq"]
+["earn"]
+["rubber"]
+["interest"]
+["gold"]
+["earn"]
+["sugar"]
+["nat-gas"]
+["earn"]
+["palladium", "platinum", "strategic-metal"]
+["acq"]
+["rubber"]
+["acq"]
+["earn"]
+["trade"]
+["earn"]
+["trade"]
+["dlr", "money-fx"]
+["yen"]
+["interest", "money-fx"]
+["earn"]
+["reserves"]
+["dlr", "money-fx"]
+["interest", "money-fx"]
+["sugar"]
+["trade"]
+["money-fx"]
+["dlr", "money-fx"]
+["money-fx"]
+["earn"]
+["money-fx", "trade"]
+["money-fx"]
+["yen"]
+["yen"]
+["earn"]
+["earn"]
+["dlr", "money-fx"]
+["sugar"]
+["acq"]
+["acq"]
+["acq"]
+["gold"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["gold"]
+["earn"]
+["yen"]
+["ship"]
+["jobs"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "groundnut-oil", "lin-oil", "meal-feed", "oilseed", "rape-oil", "sorghum", "soy-oil", "sun-meal", "sun-oil", "veg-oil", "wheat"]
+["acq"]
+["yen"]
+["livestock"]
+["money-fx"]
+["earn"]
+["earn"]
+["crude", "heat"]
+["earn"]
+["interest", "money-fx"]
+["money-fx"]
+["money-fx"]
+["earn"]
+["grain", "ship"]
+["hog", "livestock"]
+["earn"]
+["oilseed", "soybean"]
+["interest", "money-fx"]
+["coffee"]
+["acq"]
+["bop"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["dlr", "yen"]
+["interest"]
+["gnp"]
+["interest", "money-supply", "trade"]
+["earn"]
+["lead"]
+["earn"]
+["earn"]
+["interest"]
+["acq"]
+["dlr"]
+["lead"]
+["acq"]
+["earn"]
+["grain", "rice", "sorghum", "wheat"]
+["cotton"]
+["earn"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["bop"]
+["groundnut", "oilseed"]
+["acq"]
+["interest"]
+["interest"]
+["grain"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["acq"]
+["heat"]
+["interest"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["interest"]
+["barley", "corn", "grain", "wheat"]
+["potato"]
+["money-fx"]
+["iron-steel"]
+["tin"]
+["dlr", "money-fx"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["iron-steel"]
+["earn"]
+["earn"]
+["carcass", "livestock"]
+["cotton"]
+["bop", "trade"]
+["corn", "grain"]
+["barley", "grain"]
+["earn"]
+["cocoa"]
+["earn"]
+["money-fx"]
+["acq"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["orange"]
+["barley", "corn", "grain", "wheat"]
+["dlr", "money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["earn"]
+["dlr", "money-fx"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["ship", "sugar"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "ship"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain"]
+["oilseed", "rapeseed"]
+["earn"]
+["coffee", "trade"]
+["grain", "ship"]
+["ship", "sugar"]
+["barley", "grain", "ship", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["coffee", "trade"]
+["acq"]
+["retail"]
+["earn"]
+["soy-oil", "veg-oil"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["lead"]
+["reserves"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["bop"]
+["earn"]
+["carcass", "livestock"]
+["earn"]
+["earn"]
+["gold"]
+["sugar"]
+["interest"]
+["earn"]
+["earn"]
+["acq"]
+["gold"]
+["interest"]
+["tin"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["heat"]
+["copper"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["strategic-metal"]
+["trade"]
+["earn"]
+["grain"]
+["grain"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["orange"]
+["orange"]
+["earn"]
+["earn"]
+["cotton", "grain", "meal-feed", "oilseed", "soy-meal", "soy-oil", "soybean", "veg-oil", "wheat"]
+["orange"]
+["orange"]
+["corn", "grain"]
+["potato"]
+["potato"]
+["corn", "grain", "wheat"]
+["acq"]
+["corn", "grain", "wheat"]
+["grain", "wheat"]
+["oilseed", "soybean"]
+["grain", "wheat"]
+["earn"]
+["grain", "wheat"]
+["grain", "wheat"]
+["grain", "wheat"]
+["barley", "corn", "cotton", "cotton-oil", "grain", "meal-feed", "oat", "oilseed", "rice", "sorghum", "soy-meal", "soy-oil", "soybean", "veg-oil"]
+["strategic-metal"]
+["grain", "wheat"]
+["barley", "corn", "cotton", "grain", "meal-feed", "oat", "oilseed", "rice", "sorghum", "soy-meal", "soy-oil", "soybean", "veg-oil", "wheat"]
+["cotton"]
+["corn", "grain"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "cotton", "grain", "meal-feed", "oilseed", "soy-meal", "soy-oil", "soybean", "veg-oil", "wheat"]
+["acq"]
+["grain", "wheat"]
+["acq"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["meal-feed", "soy-meal"]
+["corn", "grain"]
+["corn", "cotton", "grain", "meal-feed", "oilseed", "rice", "soy-meal", "soy-oil", "soybean", "veg-oil", "wheat"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["corn", "grain", "meal-feed", "soy-meal", "wheat"]
+["acq"]
+["earn"]
+["grain"]
+["grain", "wheat"]
+["corn", "grain", "oilseed", "sorghum", "soybean", "sunseed", "wheat"]
+["acq"]
+["acq"]
+["oilseed", "soybean"]
+["meal-feed", "soy-meal"]
+["soy-oil", "veg-oil"]
+["fuel"]
+["cotton"]
+["grain", "wheat"]
+["grain", "rice"]
+["orange"]
+["earn"]
+["copper"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["grain", "ship"]
+["earn"]
+["livestock"]
+["money-supply"]
+["money-supply"]
+["barley", "corn", "grain", "oat", "sorghum", "wheat"]
+["meal-feed", "oilseed", "soy-meal", "soybean"]
+["acq"]
+["earn"]
+["orange"]
+["acq"]
+["acq"]
+["crude"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["cotton"]
+["grain", "meal-feed", "oilseed", "veg-oil"]
+["money-supply"]
+["money-supply"]
+["money-supply"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["money-supply"]
+["copper"]
+["money-supply"]
+["acq"]
+["acq"]
+["money-supply"]
+["acq"]
+["corn", "grain", "oilseed", "soybean"]
+["acq"]
+["earn"]
+["money-fx"]
+["crude"]
+["money-fx"]
+["acq", "crude", "nat-gas"]
+["cotton", "gold", "grain", "livestock", "money-fx", "silver"]
+["corn", "grain"]
+["earn"]
+["grain", "ship"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["crude", "ship"]
+["acq"]
+["earn"]
+["trade"]
+["dlr", "interest", "money-fx"]
+["earn"]
+["money-supply"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["corn", "grain", "oat", "sorghum", "wheat"]
+["interest", "money-fx"]
+["interest"]
+["interest"]
+["ship"]
+["crude"]
+["grain", "rice"]
+["rape-oil", "soy-oil", "veg-oil"]
+["interest", "money-supply"]
+["earn"]
+["trade"]
+["acq"]
+["sugar"]
+["trade"]
+["trade"]
+["interest"]
+["coffee"]
+["cocoa"]
+["corn", "grain", "rice"]
+["jobs"]
+["cpi"]
+["dlr", "money-fx"]
+["cotton"]
+["bop", "cpi", "gnp"]
+["copper"]
+["dlr", "money-fx"]
+["earn"]
+["coffee"]
+["acq"]
+["cpi", "income", "retail", "trade", "wpi"]
+["earn"]
+["interest"]
+["iron-steel"]
+["copper"]
+["trade"]
+["trade"]
+["acq"]
+["money-fx"]
+["cpi"]
+["acq"]
+["trade"]
+["earn"]
+["earn"]
+["ipi"]
+["money-fx"]
+["grain", "wheat"]
+["acq"]
+["meal-feed"]
+["corn", "grain", "groundnut", "oilseed", "rice"]
+["cocoa"]
+["gold"]
+["interest"]
+["acq"]
+["acq"]
+["bop", "cpi", "gnp", "jobs"]
+["acq"]
+["interest", "money-fx"]
+["gold", "platinum"]
+["acq"]
+["wpi"]
+["nat-gas"]
+["earn"]
+["gnp"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["money-fx"]
+["alum"]
+["interest", "money-fx"]
+["sugar"]
+["money-fx"]
+["dlr", "money-fx"]
+["money-fx", "trade"]
+["palm-oil", "veg-oil"]
+["zinc"]
+["wpi"]
+["gnp"]
+["gnp"]
+["dlr"]
+["gnp"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["gold"]
+["money-fx"]
+["interest"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["tea"]
+["bop", "cpi", "gnp"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["livestock"]
+["nat-gas"]
+["cpi"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["gold", "platinum", "silver"]
+["money-supply", "reserves"]
+["money-fx"]
+["earn"]
+["hog", "livestock"]
+["trade"]
+["trade"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "meal-feed", "oilseed"]
+["earn"]
+["cpi", "gnp", "money-supply"]
+["earn"]
+["wpi"]
+["grain", "wheat"]
+["interest"]
+["earn"]
+["acq"]
+["earn"]
+["coffee"]
+["lei"]
+["money-supply"]
+["earn"]
+["earn"]
+["money-fx"]
+["gold"]
+["acq"]
+["earn"]
+["lead"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["interest"]
+["acq"]
+["lei"]
+["earn"]
+["earn"]
+["fuel"]
+["earn"]
+["livestock"]
+["earn"]
+["alum"]
+["earn"]
+["acq", "alum"]
+["earn"]
+["sugar"]
+["money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["grain"]
+["earn"]
+["palm-oil", "veg-oil"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq", "carcass", "livestock"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq", "earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["interest"]
+["acq"]
+["earn"]
+["cpi"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["oilseed", "rapeseed"]
+["earn"]
+["earn"]
+["crude", "nat-gas"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq", "earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["nat-gas"]
+["earn"]
+["trade"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq", "livestock"]
+["acq"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["carcass", "livestock"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["gas"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["gold"]
+["earn"]
+["acq"]
+["earn"]
+["crude", "nat-gas"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "rice"]
+["earn"]
+["gold"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["orange"]
+["earn"]
+["orange"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["crude"]
+["money-supply"]
+["crude"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["crude"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["iron-steel"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["crude"]
+["cpi"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["trade"]
+["wpi"]
+["acq"]
+["sugar"]
+["alum"]
+["corn", "grain"]
+["soybean", "veg-oil"]
+["grain", "sorghum"]
+["money-fx"]
+["money-supply"]
+["bop"]
+["acq"]
+["crude"]
+["grain", "trade"]
+["corn", "grain"]
+["bop", "trade"]
+["lei"]
+["money-fx"]
+["wpi"]
+["trade"]
+["reserves", "trade"]
+["rubber"]
+["trade"]
+["money-supply"]
+["cpi"]
+["carcass", "orange", "rice", "trade"]
+["trade"]
+["trade"]
+["grain", "trade"]
+["earn"]
+["trade"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["ipi"]
+["earn"]
+["earn"]
+["acq"]
+["interest"]
+["ipi"]
+["wpi"]
+["trade"]
+["earn"]
+["earn"]
+["alum"]
+["trade"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["ipi"]
+["money-fx"]
+["money-supply"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["trade"]
+["trade"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["money-supply"]
+["earn"]
+["coffee"]
+["acq"]
+["dlr", "money-fx"]
+["money-supply"]
+["dlr", "money-fx"]
+["dlr"]
+["acq"]
+["dlr", "money-fx"]
+["acq"]
+["interest", "money-supply"]
+["interest"]
+["acq"]
+["crude"]
+["ship"]
+["earn"]
+["fuel", "gas"]
+["cpi"]
+["grain", "orange", "sugar"]
+["interest"]
+["gas"]
+["interest"]
+["trade"]
+["trade"]
+["rubber"]
+["gold"]
+["ship"]
+["gas"]
+["interest"]
+["gas"]
+["fuel"]
+["coconut", "coconut-oil", "copra-cake", "meal-feed", "palm-oil", "veg-oil"]
+["crude"]
+["acq"]
+["lead", "strategic-metal", "zinc"]
+["acq"]
+["acq"]
+["lead", "strategic-metal", "zinc"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["nat-gas", "ship"]
+["acq"]
+["tea"]
+["cocoa"]
+["acq"]
+["acq"]
+["corn", "grain", "wheat"]
+["acq"]
+["acq"]
+["copper", "corn", "grain", "sugar"]
+["trade"]
+["acq"]
+["crude", "nat-gas"]
+["acq"]
+["crude"]
+["grain", "wheat"]
+["money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["pet-chem"]
+["acq"]
+["cocoa"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["interest", "money-fx"]
+["acq"]
+["acq", "pet-chem"]
+["crude"]
+["acq", "pet-chem"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["dfl", "dmk", "interest", "money-fx"]
+["gold"]
+["acq"]
+["earn"]
+["gold"]
+["jobs"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["gold", "silver"]
+["earn"]
+["crude", "nat-gas"]
+["acq"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["cocoa", "coffee"]
+["acq"]
+["crude", "nat-gas"]
+["lumber", "trade"]
+["acq"]
+["earn"]
+["acq"]
+["iron-steel"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["lumber"]
+["acq"]
+["acq"]
+["acq"]
+["alum"]
+["acq"]
+["acq"]
+["alum"]
+["earn"]
+["acq"]
+["cocoa"]
+["acq"]
+["earn"]
+["alum", "copper", "gold", "silver"]
+["acq"]
+["acq"]
+["corn", "grain", "soybean", "wheat"]
+["acq"]
+["acq"]
+["acq"]
+["tin"]
+["cocoa"]
+["acq"]
+["money-fx"]
+["acq", "pet-chem"]
+["acq"]
+["money-fx"]
+["acq"]
+["crude", "ship"]
+["earn"]
+["acq"]
+["earn"]
+["grain", "oilseed", "wheat"]
+["crude"]
+["interest"]
+["veg-oil"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["barley", "grain"]
+["barley", "grain"]
+["acq"]
+["crude"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["acq"]
+["lead", "strategic-metal", "zinc"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["lead", "strategic-metal", "zinc"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["crude"]
+["crude"]
+["acq"]
+["hog"]
+["acq"]
+["acq", "hog"]
+["iron-steel"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["alum"]
+["dlr", "money-fx", "trade"]
+["acq"]
+["acq"]
+["alum"]
+["crude"]
+["acq"]
+["money-fx"]
+["gas"]
+["naphtha"]
+["interest"]
+["gnp", "interest"]
+["acq", "crude"]
+["earn"]
+["crude", "ship"]
+["crude"]
+["rubber"]
+["gnp"]
+["ipi"]
+["interest"]
+["earn"]
+["earn"]
+["gnp"]
+["acq"]
+["acq"]
+["acq", "crude", "nat-gas"]
+["money-fx"]
+["bop"]
+["earn"]
+["sugar"]
+["bop", "trade"]
+["ship"]
+["bop", "trade"]
+["propane"]
+["crude"]
+["money-fx"]
+["reserves"]
+["reserves"]
+["interest"]
+["interest"]
+["trade"]
+["acq"]
+["money-fx"]
+["grain", "ship", "wheat"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["grain", "rice", "wheat"]
+["crude"]
+["earn"]
+["earn"]
+["interest", "reserves"]
+["earn"]
+["acq"]
+["cpi", "gnp"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["ship"]
+["money-fx"]
+["acq"]
+["acq", "cocoa"]
+["acq"]
+["earn"]
+["acq"]
+["cpi"]
+["gnp"]
+["dlr", "money-fx"]
+["interest"]
+["dlr", "money-fx"]
+["gold", "platinum", "silver"]
+["cocoa"]
+["acq"]
+["barley", "grain"]
+["earn"]
+["acq"]
+["carcass"]
+["corn", "grain"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["money-fx"]
+["interest", "money-fx"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["interest", "money-fx"]
+["alum"]
+["gnp"]
+["earn"]
+["carcass"]
+["acq"]
+["trade"]
+["interest"]
+["crude"]
+["reserves"]
+["acq"]
+["earn"]
+["ship", "sugar"]
+["acq"]
+["dmk", "money-fx"]
+["acq"]
+["dlr", "interest", "money-fx"]
+["acq"]
+["crude", "gas"]
+["trade"]
+["acq"]
+["veg-oil"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["earn"]
+["gold"]
+["meal-feed", "oilseed", "soy-meal", "soybean"]
+["earn"]
+["acq"]
+["interest", "money-fx"]
+["crude"]
+["acq"]
+["acq"]
+["pet-chem"]
+["acq"]
+["acq"]
+["crude", "ship"]
+["pet-chem"]
+["cocoa"]
+["cocoa"]
+["acq"]
+["copper"]
+["fuel"]
+["acq"]
+["ship"]
+["acq"]
+["crude"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["nat-gas"]
+["iron-steel"]
+["trade"]
+["earn"]
+["barley", "grain"]
+["ship"]
+["grain", "wheat"]
+["carcass"]
+["carcass"]
+["copper"]
+["lumber"]
+["earn"]
+["earn"]
+["instal-debt"]
+["grain", "wheat"]
+["acq"]
+["trade"]
+["earn"]
+["grain", "oilseed"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "gas"]
+["acq"]
+["acq", "copper"]
+["reserves"]
+["coffee"]
+["acq", "crude", "nat-gas"]
+["earn"]
+["ship"]
+["crude", "ship"]
+["crude"]
+["acq"]
+["acq"]
+["lead", "zinc"]
+["copper"]
+["crude", "ship"]
+["acq"]
+["grain", "oilseed", "rapeseed", "wheat"]
+["bop", "trade"]
+["strategic-metal"]
+["acq"]
+["carcass"]
+["earn"]
+["earn"]
+["alum"]
+["ship"]
+["money-fx"]
+["interest"]
+["dlr", "money-fx", "yen"]
+["wpi"]
+["gas"]
+["dlr", "money-fx", "yen"]
+["interest"]
+["strategic-metal"]
+["acq"]
+["ship"]
+["trade"]
+["acq"]
+["acq"]
+["fuel", "gas", "naphtha"]
+["earn"]
+["carcass", "corn", "grain", "livestock", "meal-feed", "oilseed", "rapeseed", "sorghum", "soy-meal"]
+["earn"]
+["money-supply"]
+["interest"]
+["platinum", "silver"]
+["gnp"]
+["crude"]
+["earn"]
+["bop", "trade"]
+["earn"]
+["acq"]
+["wpi"]
+["earn"]
+["trade"]
+["interest"]
+["crude", "ship"]
+["crude"]
+["reserves"]
+["reserves"]
+["acq"]
+["sugar"]
+["jobs"]
+["income"]
+["ipi"]
+["money-supply"]
+["interest"]
+["jobs"]
+["income"]
+["oilseed", "soybean"]
+["interest"]
+["trade"]
+["sugar"]
+["earn"]
+["interest"]
+["veg-oil"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["lead", "ship"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["interest"]
+["veg-oil"]
+["acq"]
+["earn"]
+["coffee"]
+["acq"]
+["earn"]
+["grain", "rice", "sugar"]
+["earn"]
+["corn", "grain"]
+["jobs"]
+["crude"]
+["money-fx", "nzdlr"]
+["earn"]
+["acq"]
+["grain", "rice", "sugar"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["crude", "nat-gas"]
+["acq"]
+["crude"]
+["acq"]
+["acq"]
+["acq"]
+["income"]
+["income"]
+["acq"]
+["money-fx"]
+["interest"]
+["income", "interest", "jobs", "reserves"]
+["money-fx"]
+["livestock"]
+["crude"]
+["crude"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["crude"]
+["crude"]
+["earn"]
+["veg-oil"]
+["crude"]
+["earn"]
+["crude"]
+["crude"]
+["crude"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["crude"]
+["acq"]
+["earn"]
+["crude"]
+["crude"]
+["nat-gas"]
+["crude"]
+["veg-oil"]
+["crude"]
+["crude"]
+["bop", "trade"]
+["reserves"]
+["interest", "money-fx"]
+["acq"]
+["iron-steel"]
+["bop", "trade"]
+["crude"]
+["interest", "money-fx"]
+["crude"]
+["iron-steel"]
+["earn"]
+["crude"]
+["crude"]
+["acq"]
+["earn"]
+["coconut-oil", "cotton-oil", "palm-oil", "rape-oil", "soy-oil", "sun-oil", "veg-oil"]
+["nat-gas"]
+["acq"]
+["crude"]
+["crude"]
+["reserves", "trade"]
+["pet-chem"]
+["crude"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["crude"]
+["acq"]
+["copper"]
+["ship"]
+["pet-chem"]
+["acq"]
+["acq", "crude", "nat-gas"]
+["fuel"]
+["acq"]
+["coffee"]
+["acq"]
+["acq"]
+["ship"]
+["trade"]
+["earn"]
+["strategic-metal"]
+["cotton"]
+["earn"]
+["acq"]
+["platinum"]
+["acq"]
+["crude", "nat-gas"]
+["acq"]
+["grain", "wheat"]
+["fuel"]
+["interest"]
+["acq"]
+["barley", "grain", "wheat"]
+["acq"]
+["gnp", "housing", "income"]
+["nat-gas"]
+["alum"]
+["acq"]
+["acq"]
+["tin"]
+["alum"]
+["nat-gas"]
+["acq"]
+["zinc"]
+["strategic-metal"]
+["zinc"]
+["money-supply"]
+["iron-steel"]
+["copper"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["corn", "grain"]
+["acq"]
+["bop", "gnp"]
+["acq"]
+["cpi", "gnp", "jobs"]
+["acq"]
+["gnp", "jobs"]
+["bop", "gnp", "trade"]
+["trade"]
+["cpi", "gnp", "jobs"]
+["gnp"]
+["gnp"]
+["bop", "gnp", "jobs"]
+["earn"]
+["cpi", "gnp", "jobs"]
+["gnp"]
+["bop", "cpi", "gnp"]
+["acq"]
+["earn"]
+["gnp"]
+["interest"]
+["dlr", "money-fx"]
+["interest"]
+["dlr", "money-fx"]
+["dlr", "money-fx", "money-supply"]
+["earn"]
+["trade"]
+["alum"]
+["money-fx", "reserves"]
+["alum"]
+["acq"]
+["trade"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["grain", "ship"]
+["oilseed", "soybean"]
+["grain", "rice"]
+["bop", "dlr", "gnp", "money-fx", "yen"]
+["trade"]
+["tin"]
+["crude"]
+["ship"]
+["bop", "gnp"]
+["ipi"]
+["cpi"]
+["cpi"]
+["wpi"]
+["gas"]
+["acq"]
+["palm-oil", "veg-oil"]
+["ship"]
+["ship"]
+["groundnut"]
+["crude", "nat-gas"]
+["acq"]
+["acq"]
+["interest"]
+["ship"]
+["acq"]
+["crude"]
+["acq"]
+["acq"]
+["earn"]
+["acq", "gold"]
+["acq"]
+["acq"]
+["trade"]
+["corn", "grain", "rice"]
+["interest"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["crude"]
+["interest"]
+["crude"]
+["reserves"]
+["ship"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["grain", "wheat"]
+["heat"]
+["interest", "money-fx"]
+["interest", "money-fx"]
+["ship"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["sugar"]
+["acq"]
+["earn"]
+["carcass", "livestock"]
+["acq"]
+["acq", "nat-gas"]
+["acq"]
+["trade"]
+["barley", "grain", "oat", "wheat"]
+["oilseed", "rapeseed"]
+["acq"]
+["acq"]
+["acq"]
+["money-supply"]
+["crude"]
+["acq"]
+["acq"]
+["crude"]
+["trade"]
+["money-supply"]
+["platinum"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["coffee"]
+["grain", "wheat"]
+["acq"]
+["acq"]
+["alum"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["cocoa"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["alum", "palm-oil", "tin", "veg-oil"]
+["acq"]
+["acq"]
+["lumber"]
+["sugar"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["coffee"]
+["grain", "meal-feed", "rice"]
+["crude", "pet-chem", "propane"]
+["crude", "ship"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["money-supply"]
+["money-fx"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["lead", "zinc"]
+["acq"]
+["trade"]
+["acq"]
+["earn"]
+["acq"]
+["bop", "trade"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["coffee"]
+["earn"]
+["acq"]
+["acq"]
+["nat-gas"]
+["acq"]
+["earn"]
+["acq"]
+["nat-gas"]
+["acq"]
+["earn"]
+["earn"]
+["lead", "zinc"]
+["gnp"]
+["coffee"]
+["acq"]
+["interest"]
+["interest"]
+["money-fx"]
+["ship"]
+["crude"]
+["crude", "fuel", "naphtha"]
+["crude"]
+["cocoa"]
+["acq"]
+["crude"]
+["crude"]
+["acq"]
+["crude"]
+["acq"]
+["interest"]
+["interest"]
+["cpi"]
+["earn"]
+["interest"]
+["veg-oil"]
+["money-fx", "nkr"]
+["trade"]
+["alum"]
+["money-fx", "nkr"]
+["interest"]
+["trade"]
+["interest"]
+["grain", "oilseed", "rapeseed", "wheat"]
+["veg-oil"]
+["hog", "livestock", "trade"]
+["crude"]
+["interest"]
+["crude"]
+["crude"]
+["earn"]
+["earn"]
+["bop"]
+["trade"]
+["cocoa", "coffee", "cotton"]
+["earn"]
+["acq"]
+["cpi"]
+["acq", "oilseed", "soybean", "sunseed"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["cpi"]
+["acq"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["gas"]
+["acq"]
+["earn"]
+["barley", "grain", "oat", "oilseed", "rapeseed", "rye", "sugar", "wheat"]
+["castor-oil", "coffee", "cotton", "tea", "trade"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["crude", "ship"]
+["interest", "money-fx"]
+["acq"]
+["zinc"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["corn", "grain", "oilseed", "soybean"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["crude", "ship"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["gold", "lead", "silver", "zinc"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["interest"]
+["acq"]
+["copper"]
+["earn"]
+["copper"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["gold"]
+["earn"]
+["coffee"]
+["gold"]
+["acq"]
+["earn"]
+["earn"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["acq"]
+["cotton", "grain", "rice"]
+["acq"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["veg-oil"]
+["crude", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["housing", "interest"]
+["acq"]
+["ship"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["crude", "naphtha", "pet-chem"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["trade"]
+["acq"]
+["crude"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["cotton", "grain", "rice", "trade"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["grain"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["tea"]
+["acq"]
+["acq"]
+["jobs"]
+["jobs"]
+["money-fx"]
+["money-fx"]
+["money-fx"]
+["crude", "ship"]
+["crude"]
+["money-fx"]
+["cocoa"]
+["crude"]
+["money-fx"]
+["money-fx"]
+["money-fx"]
+["money-supply"]
+["corn", "grain"]
+["cotton"]
+["interest"]
+["money-supply"]
+["crude", "ship"]
+["jet"]
+["interest"]
+["ship"]
+["acq"]
+["acq"]
+["interest"]
+["acq"]
+["coconut"]
+["interest"]
+["grain", "rice"]
+["alum"]
+["alum"]
+["money-supply"]
+["money-supply"]
+["money-fx"]
+["money-fx"]
+["rubber"]
+["money-fx"]
+["money-fx"]
+["money-fx"]
+["money-fx"]
+["money-fx"]
+["money-fx"]
+["crude"]
+["crude", "ship"]
+["crude", "nat-gas"]
+["crude"]
+["copper", "gold"]
+["crude", "ship"]
+["crude", "ship"]
+["earn"]
+["housing"]
+["earn"]
+["acq"]
+["housing"]
+["earn"]
+["earn"]
+["earn"]
+["reserves"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["interest"]
+["earn"]
+["interest"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["meal-feed", "oilseed", "rapeseed", "soy-meal", "soybean", "sunseed"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["rubber"]
+["grain", "wheat"]
+["veg-oil"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["cpi"]
+["jobs", "trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["money-fx"]
+["ship"]
+["interest"]
+["interest", "money-fx"]
+["reserves"]
+["interest"]
+["earn"]
+["rubber"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["iron-steel"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["crude", "ship"]
+["earn"]
+["soybean", "trade", "veg-oil"]
+["earn"]
+["earn"]
+["earn"]
+["iron-steel"]
+["interest", "money-fx"]
+["earn"]
+["money-fx"]
+["money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["veg-oil"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["fuel"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["carcass", "trade"]
+["earn"]
+["earn"]
+["ship"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["tin"]
+["crude"]
+["oilseed", "soybean", "trade", "veg-oil"]
+["carcass", "livestock", "sugar", "trade"]
+["earn"]
+["crude", "ship"]
+["coffee"]
+["acq"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["carcass", "grain", "livestock", "trade", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "oilseed", "sunseed", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["l-cattle", "livestock"]
+["ship"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["crude"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["earn"]
+["earn"]
+["corn", "grain", "trade"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["nat-gas"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["trade"]
+["earn"]
+["crude"]
+["acq"]
+["earn"]
+["acq"]
+["gold"]
+["earn"]
+["earn"]
+["crude"]
+["pet-chem"]
+["earn"]
+["earn"]
+["earn"]
+["ship"]
+["crude"]
+["corn", "grain", "meal-feed", "soy-meal"]
+["acq"]
+["earn"]
+["crude", "gas"]
+["acq"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["crude", "ship"]
+["trade"]
+["interest"]
+["corn", "grain"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["trade"]
+["lumber"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["trade"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx"]
+["dlr", "money-fx", "yen"]
+["trade"]
+["dlr", "money-fx"]
+["crude"]
+["crude"]
+["earn"]
+["crude", "ship"]
+["crude", "ship"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude", "ship"]
+["money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["ship"]
+["earn"]
+["acq"]
+["money-fx"]
+["crude"]
+["earn"]
+["coconut-oil", "oilseed", "palm-oil", "palmkernel", "soybean", "veg-oil"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["money-fx"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["crude"]
+["acq"]
+["acq"]
+["earn"]
+["money-fx"]
+["earn"]
+["earn"]
+["money-fx"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["crude", "ship"]
+["acq"]
+["acq"]
+["crude", "ship"]
+["acq"]
+["crude", "ship"]
+["acq"]
+["earn"]
+["crude", "ship"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["acq"]
+["earn"]
+["money-fx"]
+["earn"]
+["acq"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["acq"]
+["acq"]
+["crude"]
+["earn"]
+["acq"]
+["oilseed", "soybean"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["acq"]
+["earn"]
+["bop"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["grain"]
+["interest"]
+["money-fx"]
+["acq"]
+["cpi"]
+["crude"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["money-fx"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["money-fx"]
+["grain", "veg-oil"]
+["dlr", "money-fx"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["grain"]
+["dlr", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["ipi"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain", "wheat"]
+["earn"]
+["cpu"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["money-fx"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["interest"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["gold"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["money-fx"]
+["acq"]
+["earn"]
+["gold", "silver"]
+["earn"]
+["acq"]
+["acq"]
+["sugar"]
+["earn"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["money-fx"]
+["interest"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["carcass", "hog", "livestock"]
+["gnp", "grain", "ipi"]
+["crude"]
+["ship"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["crude"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["trade"]
+["bop", "trade"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq", "crude", "nat-gas"]
+["acq"]
+["acq"]
+["ipi"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude", "ship"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude", "ship"]
+["earn"]
+["acq"]
+["crude"]
+["acq"]
+["interest", "money-fx"]
+["acq"]
+["bop"]
+["earn"]
+["crude", "ship"]
+["money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["crude"]
+["crude", "ship"]
+["propane", "ship"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["corn", "grain", "rubber", "sugar"]
+["dlr", "dmk", "money-fx"]
+["oilseed", "veg-oil"]
+["ship"]
+["crude"]
+["acq"]
+["crude", "ship"]
+["interest", "money-fx"]
+["interest", "money-fx"]
+["interest", "money-fx"]
+["money-fx"]
+["ship"]
+["bop"]
+["money-fx"]
+["ship"]
+["bop", "gnp", "jobs"]
+["alum", "ship"]
+["cotton", "grain"]
+["cpi"]
+["money-fx", "rand"]
+["sugar"]
+["acq"]
+["money-fx"]
+["crude"]
+["dlr", "dmk", "money-fx", "yen"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx"]
+["rubber"]
+["money-fx", "nzdlr"]
+["trade"]
+["sugar"]
+["coffee"]
+["crude"]
+["grain", "rice"]
+["acq"]
+["dlr", "money-fx", "yen"]
+["ship"]
+["ipi"]
+["gold"]
+["cocoa"]
+["acq"]
+["money-supply"]
+["acq"]
+["earn"]
+["earn"]
+["acq", "trade"]
+["earn"]
+["crude", "nat-gas"]
+["cocoa", "coffee", "sugar"]
+["veg-oil"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["gas"]
+["earn"]
+["earn"]
+["acq"]
+["iron-steel", "ship"]
+["earn"]
+["money-fx"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["cotton"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq", "earn"]
+["earn"]
+["dlr", "money-fx"]
+["earn"]
+["acq", "crude"]
+["money-supply"]
+["interest", "money-fx"]
+["crude"]
+["dlr", "money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["money-supply"]
+["earn"]
+["coffee"]
+["acq"]
+["earn"]
+["acq", "crude"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain", "wheat"]
+["cocoa"]
+["carcass", "grain", "livestock", "sugar"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["gnp", "jobs"]
+["money-fx"]
+["acq", "corn", "grain"]
+["earn"]
+["acq"]
+["earn"]
+["strategic-metal"]
+["money-supply"]
+["money-supply"]
+["money-supply"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq", "crude"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["earn"]
+["earn"]
+["barley", "corn", "grain", "meal-feed", "oilseed", "sorghum", "soy-oil", "soybean", "veg-oil", "wheat"]
+["money-supply"]
+["money-supply"]
+["money-supply"]
+["earn"]
+["earn"]
+["money-supply"]
+["earn"]
+["earn"]
+["earn"]
+["acq", "crude", "nat-gas"]
+["money-fx"]
+["crude"]
+["earn"]
+["earn"]
+["money-supply"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["acq"]
+["gold"]
+["earn"]
+["gold"]
+["acq", "earn"]
+["acq"]
+["trade"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["crude", "nat-gas"]
+["lei"]
+["ipi"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-supply"]
+["earn"]
+["earn"]
+["trade"]
+["alum"]
+["coffee", "crude"]
+["cpi"]
+["cpi"]
+["reserves"]
+["dlr", "money-fx"]
+["trade"]
+["trade"]
+["coffee", "crude", "grain", "iron-steel", "tea", "trade", "wheat"]
+["earn"]
+["iron-steel", "trade"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["ipi"]
+["earn"]
+["ipi"]
+["gnp"]
+["acq"]
+["earn"]
+["earn"]
+["bop"]
+["bop"]
+["bop", "trade"]
+["sugar"]
+["money-supply"]
+["coffee"]
+["castor-oil", "oilseed", "veg-oil"]
+["ship"]
+["grain", "wheat"]
+["sugar"]
+["dlr", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["ipi"]
+["iron-steel"]
+["earn"]
+["corn", "grain"]
+["acq"]
+["money-fx"]
+["alum"]
+["dlr", "money-fx"]
+["alum"]
+["earn"]
+["earn"]
+["rape-oil", "veg-oil"]
+["tin"]
+["carcass"]
+["acq"]
+["dlr", "money-fx"]
+["earn"]
+["corn", "grain"]
+["gnp", "money-fx"]
+["bop", "trade"]
+["earn"]
+["dfl", "money-fx"]
+["trade"]
+["acq"]
+["earn"]
+["housing"]
+["trade"]
+["money-fx"]
+["trade"]
+["money-fx"]
+["dlr", "money-fx"]
+["money-fx"]
+["money-fx"]
+["housing"]
+["acq"]
+["bop", "trade"]
+["dlr", "money-fx", "yen"]
+["sugar"]
+["money-fx"]
+["dlr", "money-fx"]
+["acq"]
+["bop", "trade"]
+["carcass", "sugar"]
+["trade"]
+["bop", "trade"]
+["cpi"]
+["earn"]
+["dlr", "money-fx"]
+["cpi"]
+["cpi"]
+["earn"]
+["ship"]
+["acq"]
+["earn"]
+["ship"]
+["earn"]
+["ship"]
+["crude", "ship"]
+["interest"]
+["earn"]
+["acq"]
+["cotton"]
+["jobs"]
+["earn"]
+["earn"]
+["cocoa"]
+["acq"]
+["coffee", "crude", "grain", "iron-steel", "tea", "trade", "wheat"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx"]
+["money-fx"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["cocoa"]
+["crude", "ship"]
+["acq"]
+["acq"]
+["trade"]
+["acq"]
+["earn"]
+["acq"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["cocoa"]
+["earn"]
+["acq"]
+["dlr", "money-fx"]
+["earn"]
+["earn"]
+["gold", "lead", "silver", "zinc"]
+["corn", "grain"]
+["corn", "grain"]
+["gnp"]
+["cocoa"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["sugar"]
+["bop"]
+["earn"]
+["interest", "money-fx"]
+["cocoa"]
+["cocoa"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["corn", "grain", "rice", "wheat"]
+["ship"]
+["ipi", "trade"]
+["nat-gas"]
+["earn"]
+["acq"]
+["earn"]
+["trade"]
+["gnp", "reserves"]
+["earn"]
+["earn"]
+["earn"]
+["cotton"]
+["earn"]
+["crude", "ship"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["gold", "money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["cpi"]
+["acq"]
+["earn"]
+["ship"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["cpi", "crude", "heat", "nat-gas", "propane"]
+["grain", "wheat"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["gnp"]
+["pet-chem"]
+["acq", "ship"]
+["cocoa"]
+["acq"]
+["cocoa"]
+["acq"]
+["crude", "ship"]
+["earn"]
+["oilseed"]
+["money-supply"]
+["alum"]
+["money-supply"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "ship"]
+["earn"]
+["earn"]
+["income"]
+["income"]
+["money-fx"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["cocoa"]
+["rubber"]
+["carcass", "livestock"]
+["dlr", "money-fx"]
+["money-fx"]
+["cocoa"]
+["crude", "ship"]
+["crude", "ship"]
+["money-fx"]
+["trade"]
+["trade"]
+["crude", "ship"]
+["earn"]
+["crude"]
+["money-fx"]
+["reserves"]
+["money-fx"]
+["money-fx"]
+["coffee"]
+["crude", "ship"]
+["trade"]
+["grain", "trade"]
+["earn"]
+["earn"]
+["earn"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["earn"]
+["dlr", "money-fx"]
+["money-fx"]
+["gold"]
+["trade"]
+["crude"]
+["barley", "grain", "wheat"]
+["acq"]
+["acq"]
+["nickel"]
+["dlr", "money-fx", "yen"]
+["gnp"]
+["dlr", "money-fx", "yen"]
+["coffee"]
+["dlr", "money-fx", "yen"]
+["earn"]
+["sugar"]
+["earn"]
+["dlr", "money-fx", "yen"]
+["grain", "wheat"]
+["acq"]
+["crude"]
+["acq"]
+["trade"]
+["dlr", "money-fx", "yen"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["money-fx"]
+["oilseed", "soybean"]
+["money-supply"]
+["alum"]
+["earn"]
+["money-fx"]
+["coconut", "oilseed"]
+["acq"]
+["earn"]
+["ship"]
+["dmk", "money-fx", "yen"]
+["gold"]
+["coconut", "oilseed"]
+["acq"]
+["cpi"]
+["rubber"]
+["dlr", "money-fx"]
+["money-fx"]
+["dlr", "money-fx"]
+["money-supply"]
+["earn"]
+["acq"]
+["cocoa"]
+["earn"]
+["acq"]
+["money-supply"]
+["ship"]
+["money-fx"]
+["crude"]
+["dlr", "dmk", "money-fx"]
+["coffee"]
+["money-supply"]
+["money-fx"]
+["money-fx"]
+["money-supply"]
+["oilseed", "rape-oil", "rapeseed", "sun-oil", "sunseed", "veg-oil"]
+["acq"]
+["cocoa"]
+["dlr", "money-fx", "yen"]
+["dlr", "money-fx", "yen"]
+["trade"]
+["acq"]
+["dlr", "money-fx", "yen"]
+["zinc"]
+["dlr", "money-fx", "yen"]
+["money-fx", "trade"]
+["money-fx"]
+["money-fx"]
+["trade"]
+["interest"]
+["money-fx", "trade"]
+["trade"]
+["dlr", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["ipi"]
+["earn"]
+["acq"]
+["money-fx"]
+["crude", "ship"]
+["earn"]
+["earn"]
+["ship", "sugar"]
+["money-fx", "yen"]
+["earn"]
+["money-fx", "trade"]
+["money-fx"]
+["money-fx"]
+["gold"]
+["acq"]
+["acq"]
+["earn"]
+["gold"]
+["earn"]
+["trade"]
+["earn"]
+["gnp"]
+["grain", "rice", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["crude"]
+["earn"]
+["acq"]
+["acq"]
+["coffee"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["hog", "livestock"]
+["money-fx"]
+["fuel"]
+["money-fx"]
+["acq"]
+["gold"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["crude"]
+["acq"]
+["coffee"]
+["earn"]
+["earn"]
+["money-fx"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["pet-chem", "rubber"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["money-supply"]
+["earn"]
+["acq"]
+["coffee"]
+["veg-oil"]
+["earn"]
+["trade"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["money-fx"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["nzdlr"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["acq"]
+["corn", "grain", "wheat"]
+["coffee"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq", "gold"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq", "gold"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["bop"]
+["money-fx"]
+["acq"]
+["crude"]
+["earn"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["gnp"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["iron-steel"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["iron-steel"]
+["acq"]
+["grain", "wheat"]
+["acq"]
+["sugar"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["oilseed", "rapeseed"]
+["acq"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["acq"]
+["cotton"]
+["grain"]
+["acq"]
+["fuel"]
+["orange"]
+["acq"]
+["trade"]
+["acq"]
+["earn"]
+["gnp", "interest"]
+["corn", "grain", "wheat"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["corn", "cotton", "grain", "sorghum", "wheat"]
+["nat-gas"]
+["acq"]
+["earn"]
+["money-supply"]
+["carcass", "livestock", "veg-oil"]
+["crude"]
+["acq"]
+["acq"]
+["money-fx"]
+["iron-steel"]
+["earn"]
+["earn"]
+["iron-steel"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["grain", "wheat"]
+["interest", "money-fx"]
+["dlr", "money-fx"]
+["iron-steel"]
+["earn"]
+["alum", "earn", "iron-steel"]
+["acq"]
+["bop"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["dlr", "money-fx"]
+["acq"]
+["bop"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["jobs"]
+["jobs"]
+["acq"]
+["dlr"]
+["dlr"]
+["dlr"]
+["sugar"]
+["earn"]
+["earn"]
+["housing"]
+["earn"]
+["sugar"]
+["trade"]
+["trade"]
+["acq"]
+["iron-steel"]
+["acq"]
+["earn"]
+["coffee"]
+["bop"]
+["zinc"]
+["gnp"]
+["acq"]
+["money-fx"]
+["earn"]
+["cpi"]
+["trade"]
+["interest"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["money-fx", "yen"]
+["earn"]
+["barley", "grain", "wheat"]
+["money-fx", "trade"]
+["acq"]
+["earn"]
+["dlr", "dmk", "money-fx"]
+["acq", "crude", "sugar"]
+["grain", "rice"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["cocoa", "coffee", "grain", "rubber", "sugar", "tin", "wheat"]
+["trade"]
+["earn"]
+["money-fx"]
+["trade"]
+["acq"]
+["sugar"]
+["crude", "nat-gas", "sugar"]
+["earn"]
+["oilseed"]
+["money-fx"]
+["acq"]
+["acq"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["interest"]
+["ship"]
+["acq"]
+["acq"]
+["dlr", "trade", "yen"]
+["acq"]
+["money-fx"]
+["acq"]
+["lei"]
+["trade"]
+["lei"]
+["interest", "money-fx"]
+["coffee"]
+["acq"]
+["corn", "grain"]
+["earn"]
+["ship"]
+["earn"]
+["alum"]
+["acq"]
+["jobs"]
+["earn"]
+["carcass"]
+["acq"]
+["earn"]
+["money-fx", "trade"]
+["earn"]
+["earn"]
+["money-fx"]
+["acq"]
+["trade"]
+["acq"]
+["gnp"]
+["acq"]
+["acq"]
+["money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain", "sorghum"]
+["interest"]
+["trade"]
+["barley", "grain", "wheat"]
+["earn"]
+["earn"]
+["money-fx"]
+["acq"]
+["gnp"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["cocoa", "coffee", "sugar"]
+["grain", "wheat"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["crude", "nat-gas"]
+["trade"]
+["earn"]
+["gnp", "lei"]
+["trade"]
+["earn"]
+["earn"]
+["acq"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["alum"]
+["coffee"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["ipi"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["trade"]
+["ship"]
+["acq"]
+["sugar"]
+["crude", "earn"]
+["trade"]
+["corn", "grain", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["trade"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["crude"]
+["acq"]
+["gas"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["money-fx"]
+["earn"]
+["trade"]
+["crude"]
+["interest"]
+["earn"]
+["interest"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["veg-oil"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["grain", "wheat"]
+["trade"]
+["money-fx"]
+["acq"]
+["money-fx"]
+["earn"]
+["earn"]
+["crude"]
+["cocoa"]
+["trade"]
+["trade"]
+["cocoa", "coffee", "sugar"]
+["acq"]
+["acq"]
+["nat-gas"]
+["acq"]
+["acq"]
+["cpi"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["copper"]
+["earn"]
+["acq"]
+["trade"]
+["acq"]
+["earn"]
+["crude", "gas", "heat"]
+["acq"]
+["earn"]
+["trade"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["cotton"]
+["acq"]
+["oilseed", "rapeseed"]
+["earn"]
+["acq"]
+["acq"]
+["lumber"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["grain", "rice"]
+["acq"]
+["interest", "money-fx"]
+["earn"]
+["oilseed"]
+["earn"]
+["carcass"]
+["trade"]
+["lei"]
+["earn"]
+["acq"]
+["money-fx"]
+["acq"]
+["trade"]
+["trade"]
+["trade"]
+["crude"]
+["iron-steel"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["acq"]
+["ipi"]
+["trade"]
+["acq"]
+["ship"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "soybean"]
+["grain", "wheat"]
+["cotton", "sorghum"]
+["grain", "wheat"]
+["sugar"]
+["corn", "grain", "oilseed", "soybean"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["pet-chem"]
+["gold"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "nat-gas"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["gold"]
+["crude"]
+["acq"]
+["cotton", "grain", "rice"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["grain", "rice", "wheat"]
+["acq"]
+["trade"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["housing"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["cotton", "grain", "veg-oil", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "ship", "wheat"]
+["earn"]
+["earn"]
+["crude", "gas"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["iron-steel"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["money-fx"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "soybean"]
+["reserves"]
+["acq"]
+["acq"]
+["interest"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["money-fx"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["dlr", "money-fx", "yen"]
+["money-supply"]
+["alum"]
+["grain"]
+["corn", "cotton", "grain"]
+["earn"]
+["trade"]
+["dlr", "money-fx", "yen"]
+["earn"]
+["dlr", "money-fx"]
+["rubber"]
+["gnp", "interest", "money-fx"]
+["oilseed", "palm-oil", "palmkernel", "veg-oil"]
+["earn"]
+["dlr", "money-fx"]
+["earn"]
+["gnp"]
+["acq"]
+["acq"]
+["acq"]
+["money-fx"]
+["gnp"]
+["money-fx"]
+["tin"]
+["earn"]
+["acq"]
+["earn"]
+["cocoa"]
+["acq"]
+["iron-steel", "ship"]
+["grain", "wheat"]
+["acq", "coffee"]
+["interest"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["sugar"]
+["acq"]
+["gold"]
+["interest"]
+["money-fx"]
+["acq"]
+["grain", "wheat"]
+["coconut", "oilseed"]
+["acq"]
+["gold", "silver"]
+["copper"]
+["grain", "meal-feed", "oilseed", "ship", "veg-oil"]
+["acq"]
+["cocoa"]
+["dlr", "money-fx"]
+["acq"]
+["interest"]
+["grain", "wheat"]
+["earn"]
+["gold", "silver"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["acq"]
+["interest"]
+["grain"]
+["acq"]
+["money-fx"]
+["coffee"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["gas", "heat"]
+["bop", "coffee", "gnp"]
+["earn"]
+["earn"]
+["barley", "corn", "grain", "oilseed", "rapeseed", "ship", "wheat"]
+["grain", "veg-oil", "wheat"]
+["acq"]
+["acq"]
+["acq"]
+["sugar"]
+["cpi"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["interest"]
+["earn"]
+["acq"]
+["interest"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["grain", "oilseed", "ship"]
+["interest"]
+["hog", "livestock"]
+["acq"]
+["acq"]
+["earn", "iron-steel"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["veg-oil"]
+["earn"]
+["interest"]
+["lead"]
+["corn", "grain", "oilseed", "soybean"]
+["money-fx"]
+["corn", "grain", "oilseed", "soybean"]
+["interest"]
+["interest"]
+["dlr", "dmk", "money-fx"]
+["copper"]
+["money-fx"]
+["earn"]
+["coffee", "gnp"]
+["veg-oil"]
+["acq"]
+["livestock"]
+["lead"]
+["interest"]
+["livestock"]
+["acq"]
+["corn", "grain", "oilseed", "soybean", "sunseed"]
+["earn"]
+["earn"]
+["acq"]
+["trade"]
+["cotton"]
+["dlr", "dmk", "money-fx", "nkr"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["oilseed", "soybean"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq", "strategic-metal"]
+["acq", "earn"]
+["earn"]
+["earn"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["sugar"]
+["earn"]
+["acq", "strategic-metal"]
+["coffee"]
+["grain", "wheat"]
+["trade"]
+["interest"]
+["coffee"]
+["earn"]
+["interest"]
+["earn"]
+["acq"]
+["interest"]
+["earn"]
+["copper"]
+["interest"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["iron-steel"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["corn", "grain", "sorghum"]
+["acq"]
+["acq"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["coffee"]
+["interest"]
+["oilseed", "rapeseed"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["cpi"]
+["grain", "ship"]
+["acq"]
+["interest"]
+["earn"]
+["acq"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["earn"]
+["carcass", "livestock"]
+["trade"]
+["interest"]
+["interest"]
+["acq"]
+["veg-oil"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["sugar"]
+["earn"]
+["coffee"]
+["money-fx"]
+["interest"]
+["interest"]
+["acq"]
+["earn"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["sugar"]
+["dlr", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["dlr", "money-fx", "yen"]
+["acq"]
+["interest"]
+["earn"]
+["corn", "grain", "meal-feed", "soy-meal"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["sugar"]
+["corn", "grain", "oilseed", "sorghum", "soybean", "sunseed"]
+["grain", "ship"]
+["ship"]
+["earn"]
+["ship"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["ship", "sugar"]
+["earn"]
+["money-fx"]
+["acq"]
+["ship"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["grain", "oilseed", "soybean", "wheat"]
+["acq"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["coffee"]
+["gas"]
+["earn"]
+["acq"]
+["copper"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["copper"]
+["veg-oil"]
+["acq"]
+["acq"]
+["earn"]
+["interest"]
+["earn"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["silver"]
+["earn"]
+["interest"]
+["ship"]
+["earn"]
+["acq"]
+["interest"]
+["cotton", "grain", "groundnut", "oilseed", "rapeseed", "soybean", "sunseed", "wheat"]
+["earn"]
+["carcass", "livestock"]
+["earn"]
+["interest"]
+["trade"]
+["interest"]
+["grain", "wheat"]
+["earn"]
+["crude"]
+["grain", "wheat"]
+["ship"]
+["earn"]
+["interest"]
+["groundnut", "oilseed"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["corn", "grain"]
+["nat-gas"]
+["nat-gas"]
+["fuel"]
+["interest"]
+["earn"]
+["earn"]
+["acq"]
+["corn", "grain"]
+["grain", "wheat"]
+["grain", "ship"]
+["acq"]
+["livestock"]
+["interest"]
+["earn"]
+["interest"]
+["dlr", "interest"]
+["grain"]
+["acq"]
+["earn"]
+["coffee"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["oilseed", "soybean"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["coffee"]
+["acq"]
+["meal-feed", "soy-meal", "sun-meal"]
+["earn"]
+["earn"]
+["grain", "ship"]
+["acq"]
+["crude", "ship"]
+["carcass", "corn", "cotton", "grain", "groundnut", "livestock", "oilseed", "sugar", "veg-oil", "wheat"]
+["acq"]
+["meal-feed"]
+["carcass", "livestock"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["dlr", "interest", "money-fx"]
+["earn"]
+["interest"]
+["coffee"]
+["grain"]
+["earn"]
+["cocoa", "trade"]
+["ipi"]
+["pet-chem"]
+["interest", "money-fx"]
+["ipi"]
+["earn"]
+["acq"]
+["interest", "money-fx"]
+["sugar"]
+["money-fx"]
+["sugar"]
+["money-fx", "reserves"]
+["corn", "grain", "sorghum"]
+["interest", "money-fx"]
+["grain", "wheat"]
+["earn"]
+["dlr", "money-fx"]
+["sugar"]
+["coffee"]
+["oilseed", "soy-meal", "soy-oil", "soybean", "veg-oil"]
+["coffee"]
+["barley", "grain", "wheat"]
+["money-supply", "wpi"]
+["acq"]
+["earn"]
+["reserves"]
+["reserves"]
+["corn", "grain"]
+["dlr", "money-fx"]
+["oilseed", "pet-chem"]
+["earn"]
+["acq"]
+["gold"]
+["acq"]
+["interest", "money-fx"]
+["earn"]
+["acq"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["interest"]
+["interest", "money-fx"]
+["trade"]
+["grain", "wheat"]
+["coffee"]
+["acq"]
+["gnp"]
+["sugar"]
+["earn"]
+["cpi"]
+["coffee"]
+["ipi"]
+["acq"]
+["interest"]
+["dlr", "interest", "money-fx", "yen"]
+["interest", "money-fx"]
+["trade"]
+["trade"]
+["reserves"]
+["interest"]
+["alum", "copper", "lead", "nickel", "silver", "zinc"]
+["acq"]
+["earn"]
+["earn"]
+["copper"]
+["coffee"]
+["acq"]
+["interest", "money-fx"]
+["interest"]
+["acq"]
+["corn", "grain", "wheat"]
+["interest", "money-fx"]
+["crude"]
+["acq"]
+["earn"]
+["earn"]
+["jobs"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["acq"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["dlr", "dmk", "money-fx"]
+["money-fx"]
+["earn"]
+["dmk"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["crude", "iron-steel"]
+["jobs"]
+["acq"]
+["acq"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["jobs"]
+["acq"]
+["trade"]
+["earn"]
+["earn"]
+["trade"]
+["trade"]
+["earn"]
+["grain", "ship", "wheat"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["gnp", "money-supply"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["palm-oil", "veg-oil"]
+["corn", "grain"]
+["money-fx"]
+["interest"]
+["money-fx"]
+["earn"]
+["earn"]
+["alum"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["crude"]
+["earn"]
+["gnp"]
+["nat-gas"]
+["corn", "grain"]
+["interest"]
+["interest"]
+["carcass", "livestock", "orange"]
+["interest", "money-fx"]
+["jobs"]
+["interest", "money-fx"]
+["palm-oil", "veg-oil"]
+["money-supply"]
+["acq"]
+["jobs"]
+["meal-feed", "soy-meal"]
+["tea"]
+["trade"]
+["oilseed", "soybean"]
+["money-supply"]
+["acq"]
+["acq"]
+["sugar"]
+["ship"]
+["grain", "wheat"]
+["cocoa"]
+["acq"]
+["grain", "ship"]
+["earn"]
+["pet-chem", "ship"]
+["cpi", "gnp", "ipi"]
+["sugar"]
+["interest"]
+["crude"]
+["sugar"]
+["dlr", "money-fx"]
+["earn"]
+["money-fx"]
+["soy-oil", "veg-oil"]
+["meal-feed", "soy-meal"]
+["gnp"]
+["interest", "money-fx"]
+["sugar"]
+["money-fx"]
+["dlr", "money-fx"]
+["gold", "silver"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["money-fx", "reserves"]
+["grain", "wheat"]
+["crude"]
+["interest"]
+["money-fx"]
+["interest"]
+["interest", "money-fx"]
+["cocoa"]
+["coffee"]
+["money-fx"]
+["reserves"]
+["jobs"]
+["interest", "money-fx"]
+["acq"]
+["ship"]
+["earn"]
+["acq"]
+["reserves"]
+["earn"]
+["grain"]
+["earn"]
+["acq"]
+["alum"]
+["acq"]
+["earn"]
+["interest", "money-fx"]
+["money-supply"]
+["money-fx"]
+["coffee"]
+["interest"]
+["trade"]
+["grain", "ship"]
+["earn"]
+["nat-gas"]
+["acq"]
+["acq"]
+["copper"]
+["acq"]
+["earn"]
+["copper"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["reserves"]
+["dlr", "dmk", "money-fx"]
+["earn"]
+["earn"]
+["interest"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["acq"]
+["acq"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["tea"]
+["interest"]
+["acq"]
+["copper"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["acq"]
+["interest", "money-fx"]
+["ship"]
+["earn"]
+["earn"]
+["acq"]
+["heat"]
+["acq"]
+["crude"]
+["lumber"]
+["lumber"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["rubber"]
+["earn"]
+["gold"]
+["acq"]
+["cotton"]
+["grain", "wheat"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["copper"]
+["acq"]
+["oilseed", "rapeseed"]
+["bop", "gnp"]
+["gold"]
+["acq"]
+["grain"]
+["copper"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["alum"]
+["copper"]
+["acq"]
+["earn"]
+["cpi"]
+["interest"]
+["earn"]
+["money-supply"]
+["acq"]
+["earn"]
+["money-supply"]
+["acq"]
+["acq"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["trade"]
+["acq"]
+["acq"]
+["trade"]
+["trade"]
+["strategic-metal"]
+["money-fx"]
+["acq"]
+["earn"]
+["crude"]
+["acq"]
+["earn"]
+["earn"]
+["grain"]
+["grain"]
+["acq"]
+["acq"]
+["earn"]
+["money-supply"]
+["coconut-oil", "palm-oil", "veg-oil"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["crude"]
+["grain", "wheat"]
+["barley", "grain"]
+["crude", "nat-gas"]
+["acq"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["gold"]
+["earn"]
+["silver"]
+["coffee"]
+["grain", "ship"]
+["earn"]
+["grain", "rice"]
+["acq"]
+["earn"]
+["grain", "rice"]
+["earn"]
+["nat-gas", "propane"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["money-supply"]
+["interest"]
+["earn"]
+["carcass", "livestock"]
+["earn"]
+["acq"]
+["money-supply"]
+["money-supply"]
+["money-supply"]
+["acq"]
+["grain", "ship"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["coffee"]
+["cpi"]
+["corn", "grain", "oilseed", "soy-oil"]
+["earn"]
+["acq"]
+["corn", "grain", "oilseed", "palm-oil", "rapeseed", "ship", "soy-oil", "wheat"]
+["earn"]
+["acq"]
+["crude"]
+["tin"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["coffee"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["money-supply"]
+["earn"]
+["crude"]
+["coffee"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["interest"]
+["wpi"]
+["ipi"]
+["crude"]
+["coffee"]
+["money-fx"]
+["money-fx"]
+["money-fx"]
+["ship"]
+["strategic-metal"]
+["reserves"]
+["crude"]
+["gnp"]
+["earn"]
+["money-fx"]
+["interest"]
+["earn"]
+["acq"]
+["crude"]
+["coffee"]
+["earn"]
+["money-fx"]
+["cocoa"]
+["grain", "wheat"]
+["gnp"]
+["earn"]
+["grain", "rice"]
+["money-supply"]
+["crude"]
+["grain", "oilseed", "rapeseed", "wheat"]
+["dlr", "money-fx"]
+["interest"]
+["alum"]
+["ship"]
+["interest"]
+["cpi"]
+["earn"]
+["crude"]
+["carcass", "livestock"]
+["carcass", "livestock"]
+["earn"]
+["acq"]
+["money-fx"]
+["acq"]
+["acq"]
+["money-fx"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["grain"]
+["cocoa"]
+["money-supply"]
+["trade"]
+["money-supply"]
+["trade"]
+["acq"]
+["orange"]
+["alum"]
+["earn"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["money-fx"]
+["dlr", "money-fx"]
+["acq"]
+["meal-feed"]
+["acq"]
+["crude", "ship"]
+["interest"]
+["dlr", "money-fx", "yen"]
+["earn"]
+["money-fx"]
+["ipi"]
+["trade"]
+["earn"]
+["grain"]
+["earn"]
+["orange"]
+["crude"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["dlr", "money-fx"]
+["earn"]
+["ship"]
+["corn", "grain", "sorghum"]
+["gold", "reserves"]
+["copper"]
+["earn"]
+["nat-gas"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["carcass", "livestock"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["palm-oil", "veg-oil"]
+["money-fx"]
+["barley", "wheat"]
+["earn"]
+["acq"]
+["gold"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["gold", "reserves"]
+["barley", "grain"]
+["earn"]
+["earn"]
+["earn"]
+["dlr", "money-fx"]
+["coffee"]
+["trade"]
+["earn"]
+["trade"]
+["trade"]
+["corn", "wheat"]
+["barley", "corn", "grain", "oat", "sorghum", "wheat"]
+["earn"]
+["barley", "corn", "grain", "sorghum", "wheat"]
+["dlr", "money-fx", "trade"]
+["crude"]
+["acq"]
+["acq"]
+["copper", "zinc"]
+["grain", "wheat"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["dlr", "money-fx", "trade"]
+["earn"]
+["trade"]
+["earn"]
+["oilseed", "soy-oil", "soybean"]
+["dlr", "dmk", "money-fx"]
+["carcass", "livestock"]
+["oilseed", "soybean"]
+["trade"]
+["money-fx", "money-supply"]
+["corn", "grain"]
+["money-fx"]
+["money-fx"]
+["grain", "wheat"]
+["crude", "ship"]
+["earn"]
+["carcass", "livestock"]
+["dlr", "money-fx"]
+["corn", "grain"]
+["money-fx", "money-supply"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["money-fx"]
+["earn"]
+["cotton", "grain", "oat", "oilseed", "soybean", "wheat"]
+["money-fx"]
+["grain"]
+["earn"]
+["carcass"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["bop", "trade"]
+["acq"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["sugar"]
+["money-fx"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx", "reserves"]
+["interest", "money-fx"]
+["crude", "ship"]
+["grain"]
+["interest"]
+["trade"]
+["acq"]
+["acq"]
+["interest"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["interest"]
+["copper", "nickel"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["grain"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain"]
+["earn"]
+["cotton"]
+["sugar"]
+["grain", "ship"]
+["acq"]
+["earn"]
+["earn"]
+["grain"]
+["earn"]
+["acq"]
+["crude"]
+["crude"]
+["sugar"]
+["earn"]
+["earn"]
+["coffee"]
+["acq"]
+["earn"]
+["livestock", "sugar"]
+["rubber"]
+["sugar"]
+["earn"]
+["earn"]
+["acq"]
+["copper"]
+["corn", "grain", "livestock", "oilseed"]
+["acq"]
+["earn"]
+["grain", "ship", "wheat"]
+["copper"]
+["earn"]
+["acq"]
+["acq"]
+["grain", "veg-oil", "wheat"]
+["oilseed"]
+["grain", "rice"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["ship"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["heat"]
+["earn"]
+["acq"]
+["instal-debt"]
+["earn"]
+["money-fx"]
+["copper", "gold", "lead", "silver", "zinc"]
+["money-supply"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["oilseed", "rapeseed"]
+["acq"]
+["earn"]
+["instal-debt"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["ship", "sugar"]
+["money-fx"]
+["grain", "ship"]
+["pet-chem"]
+["earn"]
+["earn"]
+["crude", "gas", "heat"]
+["earn"]
+["grain", "ship"]
+["crude", "gas"]
+["grain", "oilseed", "soybean"]
+["crude", "ship"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["strategic-metal"]
+["grain", "wheat"]
+["grain", "wheat"]
+["earn"]
+["crude", "fuel", "gas"]
+["acq"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["dlr", "money-fx", "yen"]
+["acq"]
+["cpi", "dlr", "money-fx", "money-supply", "trade"]
+["jobs"]
+["dlr", "money-fx"]
+["dlr", "money-fx"]
+["trade"]
+["rubber"]
+["money-fx"]
+["acq"]
+["copper"]
+["ship"]
+["earn"]
+["earn"]
+["earn"]
+["pet-chem"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["trade"]
+["acq"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["dlr", "money-fx"]
+["sugar"]
+["earn"]
+["gas"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["dlr", "money-fx"]
+["rubber"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["cpi"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["carcass", "grain", "livestock"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["coffee"]
+["acq"]
+["corn", "grain", "oilseed", "sorghum", "soybean", "sunseed"]
+["acq"]
+["earn"]
+["earn"]
+["trade"]
+["cotton", "grain", "rice", "wheat"]
+["sugar"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["copper", "gold"]
+["earn"]
+["earn"]
+["bop", "gnp", "trade"]
+["crude"]
+["nat-gas"]
+["acq"]
+["earn"]
+["acq"]
+["grain"]
+["acq"]
+["acq"]
+["earn"]
+["grain"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["barley", "corn", "grain"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["fuel", "gas"]
+["crude", "nat-gas"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["trade"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["trade"]
+["cpi"]
+["earn"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "nat-gas"]
+["crude"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["interest", "money-fx"]
+["earn"]
+["acq"]
+["grain"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["nat-gas"]
+["acq"]
+["orange"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["carcass", "livestock", "trade"]
+["reserves"]
+["corn", "grain", "wheat"]
+["earn"]
+["sugar"]
+["acq"]
+["acq"]
+["cpi", "gnp"]
+["acq"]
+["grain", "oilseed", "soybean", "wheat"]
+["earn"]
+["earn"]
+["acq"]
+["crude"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["acq"]
+["trade"]
+["money-fx", "trade"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["alum"]
+["acq"]
+["acq"]
+["earn"]
+["trade"]
+["coffee"]
+["corn", "grain", "sorghum"]
+["grain"]
+["earn"]
+["acq"]
+["veg-oil"]
+["earn"]
+["acq"]
+["crude", "gas"]
+["earn"]
+["acq"]
+["crude", "fuel", "gas"]
+["gnp"]
+["acq"]
+["acq", "earn"]
+["earn"]
+["acq"]
+["trade"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["crude", "gas"]
+["coffee"]
+["cotton", "grain", "oilseed", "rice", "soybean"]
+["reserves"]
+["acq"]
+["coffee"]
+["crude"]
+["bop", "trade"]
+["gold"]
+["money-supply"]
+["grain", "wheat"]
+["grain", "ship", "wheat"]
+["ship"]
+["crude", "ship"]
+["grain", "wheat"]
+["crude"]
+["crude"]
+["coffee"]
+["money-supply"]
+["reserves"]
+["grain", "rice"]
+["earn"]
+["gold"]
+["earn"]
+["acq"]
+["earn"]
+["dlr", "money-fx", "yen"]
+["tin"]
+["corn", "grain"]
+["interest", "money-fx"]
+["trade"]
+["money-supply"]
+["iron-steel"]
+["crude"]
+["reserves", "trade"]
+["gold", "silver"]
+["interest", "money-fx"]
+["sugar"]
+["crude"]
+["money-fx"]
+["trade"]
+["corn", "grain"]
+["gnp"]
+["earn"]
+["coffee"]
+["bop", "trade"]
+["trade"]
+["bop", "trade"]
+["wpi"]
+["oilseed"]
+["interest", "money-fx"]
+["corn", "grain", "oat"]
+["barley", "carcass", "grain", "hog", "livestock", "meal-feed", "potato", "soy-meal", "wheat"]
+["interest"]
+["sugar"]
+["interest", "money-fx"]
+["money-supply"]
+["crude", "ship"]
+["interest", "money-fx"]
+["money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["acq"]
+["interest"]
+["acq"]
+["meal-feed", "oilseed", "soy-meal", "soy-oil", "soybean", "veg-oil"]
+["jobs"]
+["earn"]
+["grain", "wheat"]
+["crude"]
+["earn"]
+["copper"]
+["crude", "nat-gas"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["ship"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["money-fx"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["money-supply"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["barley", "corn", "grain", "wheat"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["crude", "earn"]
+["interest"]
+["earn"]
+["acq"]
+["gold"]
+["copper", "grain", "wheat"]
+["earn"]
+["acq"]
+["oilseed", "soybean"]
+["earn"]
+["cpi", "gnp"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["reserves"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["reserves"]
+["earn"]
+["acq"]
+["coffee"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["acq"]
+["cpi"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["earn"]
+["acq"]
+["money-supply"]
+["earn"]
+["earn"]
+["earn"]
+["livestock"]
+["grain", "wheat"]
+["barley", "grain"]
+["barley", "corn", "grain", "oilseed", "rapeseed", "wheat"]
+["earn"]
+["crude"]
+["crude"]
+["earn"]
+["money-fx", "yen"]
+["dlr", "money-fx"]
+["earn"]
+["corn", "grain"]
+["copper", "lead", "strategic-metal", "zinc"]
+["crude", "ship"]
+["earn"]
+["dlr", "money-fx", "yen"]
+["barley", "grain", "wheat"]
+["acq", "earn"]
+["earn"]
+["acq", "sugar"]
+["earn"]
+["gnp", "jobs"]
+["earn"]
+["copper"]
+["money-supply"]
+["acq"]
+["earn"]
+["earn"]
+["sugar"]
+["acq"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["barley", "corn", "grain", "wheat"]
+["acq"]
+["acq"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["acq"]
+["carcass", "hog", "livestock"]
+["earn"]
+["interest"]
+["earn"]
+["crude"]
+["barley", "grain"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["sugar"]
+["acq"]
+["acq"]
+["sugar"]
+["acq"]
+["earn"]
+["interest"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["acq"]
+["retail"]
+["bop", "gnp"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["gnp", "trade"]
+["earn"]
+["grain", "rice"]
+["acq"]
+["money-fx", "yen"]
+["oilseed", "soybean"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["ship"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["ship"]
+["dlr", "money-fx"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["coffee", "copra-cake", "corn", "cotton", "grain", "palm-oil", "palmkernel", "rice", "rubber", "soy-meal", "soybean", "sugar", "tea", "veg-oil", "wheat"]
+["earn"]
+["money-fx", "trade"]
+["earn"]
+["dlr", "money-fx", "yen"]
+["earn"]
+["interest"]
+["cotton", "groundnut", "oilseed", "sugar", "trade"]
+["crude"]
+["acq"]
+["earn"]
+["grain", "wheat"]
+["crude"]
+["earn"]
+["pet-chem"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["crude"]
+["earn"]
+["earn"]
+["carcass", "l-cattle", "livestock", "sugar"]
+["orange"]
+["earn"]
+["earn"]
+["nat-gas"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["money-supply"]
+["earn"]
+["money-fx"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["gold"]
+["trade"]
+["acq"]
+["crude"]
+["groundnut", "veg-oil"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["money-supply"]
+["money-supply"]
+["acq"]
+["carcass", "livestock"]
+["crude"]
+["dlr", "money-fx"]
+["corn", "cotton", "grain", "meal-feed", "oilseed", "soy-meal", "soy-oil", "soybean", "veg-oil"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["money-supply"]
+["money-supply"]
+["coffee"]
+["money-supply"]
+["money-fx"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["nat-gas"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["carcass", "livestock"]
+["earn"]
+["acq"]
+["trade"]
+["acq"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["crude", "nat-gas", "trade"]
+["acq"]
+["earn"]
+["crude", "nat-gas"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["cocoa", "coffee", "oilseed", "soybean", "sugar", "trade"]
+["crude"]
+["grain", "wheat"]
+["acq"]
+["acq"]
+["cpi"]
+["grain", "wheat"]
+["crude"]
+["retail"]
+["acq"]
+["acq"]
+["grain", "trade", "wheat"]
+["acq"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["ship"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["coffee"]
+["acq"]
+["acq"]
+["coffee"]
+["money-supply"]
+["cpi"]
+["meal-feed"]
+["earn"]
+["gold"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["hog", "livestock"]
+["acq"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["livestock"]
+["corn", "grain"]
+["acq"]
+["corn", "grain"]
+["acq"]
+["interest", "money-fx"]
+["earn"]
+["acq"]
+["coffee"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["gnp", "income", "ipi", "jobs", "retail", "trade"]
+["earn"]
+["trade"]
+["trade"]
+["dlr", "money-fx"]
+["interest", "money-fx"]
+["earn"]
+["dlr", "money-fx"]
+["acq"]
+["ship"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["trade"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["copra-cake", "meal-feed"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["ship"]
+["interest", "money-fx"]
+["money-supply", "reserves"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["heat"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["gnp", "interest"]
+["trade"]
+["earn"]
+["acq"]
+["earn"]
+["alum"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["corn", "grain"]
+["acq"]
+["earn"]
+["crude"]
+["acq"]
+["palm-oil", "veg-oil"]
+["corn", "grain", "wheat"]
+["earn"]
+["money-supply"]
+["money-supply"]
+["jobs"]
+["grain", "wheat"]
+["earn"]
+["corn", "grain"]
+["cocoa", "coffee", "tea"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["sugar"]
+["earn"]
+["gold"]
+["acq"]
+["copper"]
+["money-fx"]
+["crude"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["corn", "grain", "sugar"]
+["earn"]
+["earn"]
+["copper", "gold", "nickel", "palladium", "platinum"]
+["acq"]
+["acq"]
+["gold"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["lumber"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["ship"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["ship"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["gas", "ship"]
+["reserves"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["reserves"]
+["gnp"]
+["acq"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["livestock"]
+["ship"]
+["earn"]
+["grain", "wheat"]
+["money-supply"]
+["trade"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["money-supply"]
+["money-supply"]
+["earn"]
+["earn"]
+["copper", "gold", "nickel", "palladium", "platinum"]
+["livestock"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["housing"]
+["coffee"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain", "meal-feed"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["nat-gas"]
+["acq"]
+["crude", "interest"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["sugar"]
+["earn"]
+["acq"]
+["strategic-metal"]
+["earn"]
+["acq"]
+["acq"]
+["strategic-metal"]
+["ship"]
+["acq"]
+["acq"]
+["corn", "grain"]
+["acq"]
+["acq"]
+["acq"]
+["interest"]
+["acq"]
+["coffee"]
+["ship"]
+["acq"]
+["crude", "fuel", "jet"]
+["ship"]
+["ship"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["sugar"]
+["gnp"]
+["interest", "money-fx"]
+["ship"]
+["oilseed", "soybean"]
+["crude"]
+["ship"]
+["crude"]
+["meal-feed"]
+["cotton", "grain", "sugar", "veg-oil"]
+["sugar"]
+["rubber"]
+["carcass", "livestock"]
+["interest"]
+["acq"]
+["iron-steel"]
+["gold"]
+["trade"]
+["earn"]
+["ipi"]
+["money-fx"]
+["money-supply"]
+["ipi"]
+["interest", "money-fx"]
+["crude"]
+["acq"]
+["money-supply"]
+["money-fx"]
+["interest", "money-fx"]
+["crude"]
+["interest"]
+["interest"]
+["earn"]
+["acq"]
+["strategic-metal"]
+["acq"]
+["crude", "nat-gas"]
+["instal-debt"]
+["crude", "ship"]
+["bop", "dlr", "gnp", "trade"]
+["acq"]
+["dlr", "interest", "money-fx"]
+["acq"]
+["bop", "cpi", "dfl", "gnp", "jobs"]
+["acq"]
+["earn"]
+["ship"]
+["meal-feed", "oilseed", "soy-meal", "soybean"]
+["gnp", "money-fx"]
+["coffee"]
+["acq"]
+["meal-feed"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["coffee"]
+["acq"]
+["acq"]
+["interest"]
+["interest", "money-fx"]
+["ship"]
+["ship"]
+["crude"]
+["money-supply"]
+["rubber"]
+["acq"]
+["acq"]
+["hog", "livestock"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["acq"]
+["bop", "crude", "dlr", "gnp", "money-fx", "trade"]
+["money-fx"]
+["interest", "money-fx"]
+["acq"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["money-supply"]
+["acq"]
+["dlr", "dmk", "money-fx"]
+["earn"]
+["trade"]
+["earn"]
+["grain", "oilseed"]
+["acq"]
+["carcass", "grain", "livestock", "meal-feed", "soy-meal"]
+["acq"]
+["acq"]
+["interest"]
+["interest"]
+["acq"]
+["gold", "platinum", "strategic-metal"]
+["earn"]
+["interest"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["orange"]
+["meal-feed"]
+["acq"]
+["interest"]
+["zinc"]
+["housing"]
+["acq"]
+["orange"]
+["tin"]
+["ship"]
+["interest"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["bop", "trade"]
+["acq", "pet-chem"]
+["interest", "money-fx"]
+["interest"]
+["acq"]
+["interest"]
+["acq"]
+["groundnut-oil", "oilseed", "palm-oil", "rapeseed", "soy-oil", "soybean", "sunseed", "veg-oil"]
+["interest"]
+["barley", "grain", "wheat"]
+["interest"]
+["interest"]
+["meal-feed"]
+["interest", "money-fx"]
+["corn", "grain", "wheat"]
+["acq"]
+["gold"]
+["acq"]
+["crude", "nat-gas"]
+["crude"]
+["orange"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["rubber"]
+["acq"]
+["money-fx"]
+["earn"]
+["crude"]
+["zinc"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["crude", "nat-gas"]
+["earn"]
+["acq", "crude", "nat-gas"]
+["acq"]
+["acq"]
+["heat"]
+["zinc"]
+["acq"]
+["acq"]
+["coffee"]
+["crude"]
+["cocoa"]
+["corn", "grain", "sugar"]
+["interest"]
+["earn"]
+["acq"]
+["trade"]
+["palm-oil", "rape-oil", "veg-oil"]
+["crude"]
+["acq"]
+["oilseed", "rapeseed"]
+["zinc"]
+["nat-gas"]
+["lead"]
+["acq"]
+["ship"]
+["interest"]
+["interest"]
+["money-fx"]
+["acq"]
+["cocoa"]
+["sugar"]
+["acq"]
+["reserves"]
+["acq"]
+["acq"]
+["acq"]
+["acq", "earn"]
+["earn"]
+["gnp", "money-supply"]
+["earn"]
+["bop"]
+["acq"]
+["acq"]
+["interest"]
+["earn"]
+["ship"]
+["earn"]
+["ship"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq", "dlr", "money-fx", "trade"]
+["earn"]
+["corn", "grain", "meal-feed", "oilseed", "rapeseed", "soy-meal"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["hog", "l-cattle", "livestock"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["interest"]
+["ship"]
+["acq"]
+["acq"]
+["interest", "money-fx"]
+["acq"]
+["acq"]
+["corn", "grain", "oilseed", "wheat"]
+["money-supply"]
+["acq"]
+["crude"]
+["acq"]
+["corn", "grain"]
+["acq"]
+["acq"]
+["cocoa", "coffee", "heat", "sugar"]
+["grain"]
+["grain"]
+["acq"]
+["grain", "wheat"]
+["orange"]
+["potato"]
+["carcass", "hog", "livestock"]
+["palm-oil", "veg-oil"]
+["acq"]
+["gold"]
+["grain", "wheat"]
+["barley", "grain"]
+["gold"]
+["ship"]
+["corn", "grain", "wheat"]
+["crude"]
+["acq"]
+["grain", "wheat"]
+["grain", "wheat"]
+["acq"]
+["corn", "grain"]
+["bop", "dlr", "money-fx", "trade"]
+["livestock"]
+["acq"]
+["livestock"]
+["instal-debt"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["ship"]
+["money-supply"]
+["ship"]
+["gnp"]
+["gnp"]
+["instal-debt"]
+["crude"]
+["acq"]
+["corn", "grain", "rice", "wheat"]
+["earn"]
+["interest", "money-fx"]
+["interest"]
+["acq"]
+["crude"]
+["interest"]
+["acq"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["acq"]
+["trade"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["grain", "ship"]
+["acq"]
+["crude"]
+["grain"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["corn", "grain", "wheat"]
+["earn"]
+["acq"]
+["acq"]
+["interest", "money-fx"]
+["cpi", "gnp", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["dlr", "money-fx", "yen"]
+["trade"]
+["earn"]
+["dlr", "money-fx", "yen"]
+["acq"]
+["acq"]
+["corn", "grain", "wheat"]
+["sugar"]
+["crude"]
+["money-fx"]
+["money-fx"]
+["rubber"]
+["ship"]
+["trade"]
+["money-fx"]
+["grain", "rice", "wheat"]
+["trade"]
+["interest"]
+["interest"]
+["earn"]
+["crude"]
+["oilseed", "soybean"]
+["copper", "lead", "zinc"]
+["crude"]
+["earn"]
+["oilseed", "soybean"]
+["acq"]
+["strategic-metal"]
+["strategic-metal"]
+["money-fx"]
+["earn"]
+["earn"]
+["oilseed", "soybean"]
+["earn"]
+["iron-steel"]
+["jobs"]
+["ship"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["money-fx"]
+["money-fx"]
+["earn"]
+["bop"]
+["crude"]
+["earn"]
+["acq"]
+["sugar"]
+["interest", "money-fx"]
+["earn", "strategic-metal"]
+["palm-oil", "veg-oil"]
+["interest"]
+["earn"]
+["crude"]
+["crude"]
+["sugar"]
+["bop", "trade"]
+["money-fx"]
+["earn"]
+["crude"]
+["jobs"]
+["interest", "money-supply"]
+["money-fx"]
+["interest"]
+["crude"]
+["lei"]
+["money-fx", "trade", "yen"]
+["money-fx"]
+["interest"]
+["money-fx"]
+["earn"]
+["interest"]
+["trade"]
+["coconut-oil", "oilseed", "palm-oil", "soybean", "veg-oil"]
+["bop"]
+["interest"]
+["earn"]
+["earn"]
+["acq"]
+["trade"]
+["money-fx"]
+["crude"]
+["earn"]
+["coffee"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["crude"]
+["ship"]
+["acq"]
+["gold", "silver"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["acq"]
+["acq"]
+["sugar"]
+["acq"]
+["crude"]
+["cpi", "money-fx", "reserves", "trade"]
+["crude"]
+["hog", "livestock"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["crude"]
+["acq"]
+["bop", "trade"]
+["sugar"]
+["money-fx"]
+["copper", "earn"]
+["bop", "trade"]
+["sugar"]
+["earn"]
+["acq"]
+["earn"]
+["lei"]
+["acq"]
+["earn"]
+["earn"]
+["gold"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["sugar"]
+["lei"]
+["earn"]
+["acq"]
+["gold", "silver"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["reserves"]
+["money-supply"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["sugar", "trade"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["sugar"]
+["interest"]
+["gold"]
+["acq"]
+["housing"]
+["acq"]
+["acq"]
+["earn"]
+["jobs"]
+["acq"]
+["housing"]
+["earn"]
+["housing"]
+["money-fx"]
+["earn"]
+["earn"]
+["money-fx"]
+["grain", "wheat"]
+["earn"]
+["cotton"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["rubber"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["nat-gas"]
+["acq"]
+["acq"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["alum"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["sugar"]
+["gold"]
+["acq"]
+["ship"]
+["acq"]
+["crude", "nat-gas"]
+["earn"]
+["gnp"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["ship"]
+["earn"]
+["acq"]
+["gnp"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "gas", "grain"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["copper", "silver", "zinc"]
+["acq"]
+["earn"]
+["earn"]
+["acq", "silver"]
+["crude", "ship"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["oilseed"]
+["acq"]
+["earn"]
+["orange"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["housing"]
+["earn"]
+["earn"]
+["earn"]
+["carcass", "livestock"]
+["trade"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["acq", "crude"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["sugar"]
+["acq"]
+["money-supply"]
+["trade"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["lumber"]
+["earn"]
+["earn"]
+["acq"]
+["corn", "grain"]
+["barley", "corn", "grain", "wheat"]
+["rape-oil", "sun-oil", "veg-oil"]
+["earn"]
+["earn"]
+["earn"]
+["coffee", "ship"]
+["alum"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["crude"]
+["earn"]
+["corn", "grain", "oilseed", "soybean"]
+["acq"]
+["crude"]
+["corn", "grain", "oilseed", "sorghum", "sunseed"]
+["interest"]
+["acq"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["crude", "fuel", "gas"]
+["earn"]
+["gold"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["interest", "ipi", "retail"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "iron-steel", "nat-gas"]
+["earn"]
+["coffee"]
+["earn"]
+["carcass", "livestock"]
+["earn"]
+["earn"]
+["trade"]
+["trade"]
+["crude"]
+["earn"]
+["trade"]
+["acq"]
+["acq"]
+["veg-oil"]
+["jobs"]
+["money-fx"]
+["crude"]
+["earn"]
+["oilseed", "rapeseed"]
+["crude"]
+["acq"]
+["bop"]
+["corn", "grain"]
+["trade"]
+["iron-steel", "ship"]
+["earn"]
+["ship"]
+["acq"]
+["pet-chem"]
+["acq"]
+["cotton"]
+["grain", "wheat"]
+["acq", "gold"]
+["earn"]
+["ship"]
+["reserves"]
+["coffee"]
+["acq"]
+["earn"]
+["gold"]
+["earn"]
+["acq"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["oilseed", "soybean"]
+["grain", "sugar", "wheat"]
+["bop", "trade"]
+["acq"]
+["gnp"]
+["earn"]
+["oilseed", "rapeseed", "soybean", "sunseed"]
+["trade"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["jobs"]
+["earn"]
+["money-fx", "reserves"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["sugar"]
+["earn"]
+["earn"]
+["earn"]
+["carcass", "livestock"]
+["cotton"]
+["earn"]
+["earn"]
+["acq"]
+["interest", "money-fx"]
+["earn"]
+["reserves"]
+["trade"]
+["trade"]
+["sugar"]
+["earn"]
+["tin"]
+["earn"]
+["crude"]
+["acq"]
+["crude"]
+["interest", "money-fx"]
+["earn"]
+["corn", "grain", "oilseed", "orange", "rice", "soybean"]
+["acq"]
+["palm-oil", "veg-oil"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["cocoa", "coffee"]
+["acq"]
+["earn"]
+["retail"]
+["retail"]
+["acq"]
+["earn"]
+["trade"]
+["earn"]
+["acq", "trade"]
+["acq"]
+["reserves"]
+["earn"]
+["acq"]
+["crude", "nat-gas"]
+["acq"]
+["gnp"]
+["acq"]
+["earn"]
+["grain", "oat"]
+["money-fx"]
+["crude", "ship"]
+["trade"]
+["retail"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["veg-oil"]
+["coffee"]
+["earn"]
+["acq"]
+["grain", "ship", "wheat"]
+["acq"]
+["earn"]
+["hog", "livestock"]
+["acq", "ship"]
+["earn"]
+["acq"]
+["iron-steel"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["cotton"]
+["crude", "earn", "nat-gas"]
+["acq"]
+["acq"]
+["acq"]
+["trade"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["acq"]
+["dlr", "grain", "wheat"]
+["earn"]
+["retail"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["earn"]
+["barley", "grain"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["retail"]
+["copper", "earn"]
+["earn"]
+["money-fx"]
+["barley", "corn", "grain", "wheat"]
+["gnp"]
+["interest", "money-fx"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["palm-oil", "veg-oil"]
+["jobs"]
+["earn"]
+["acq"]
+["earn"]
+["grain", "rice"]
+["acq", "crude"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["crude"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["earn"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["bop"]
+["acq", "crude"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain", "wheat"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["oilseed", "soybean"]
+["earn"]
+["earn"]
+["earn"]
+["acq", "ship"]
+["acq"]
+["acq"]
+["earn"]
+["rubber"]
+["gold"]
+["acq"]
+["interest"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["crude"]
+["l-cattle", "livestock"]
+["copper"]
+["earn"]
+["acq"]
+["veg-oil"]
+["earn"]
+["earn"]
+["earn"]
+["retail"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["interest"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["interest"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["crude"]
+["acq"]
+["crude"]
+["crude", "nat-gas"]
+["earn"]
+["acq"]
+["cocoa"]
+["earn"]
+["grain", "wheat"]
+["crude"]
+["earn"]
+["earn"]
+["acq"]
+["grain", "wheat"]
+["acq", "gold", "platinum"]
+["trade"]
+["crude"]
+["interest"]
+["interest"]
+["cpi"]
+["money-supply"]
+["acq"]
+["earn"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["acq"]
+["ipi"]
+["carcass", "livestock"]
+["earn"]
+["earn"]
+["gas"]
+["trade"]
+["acq"]
+["oilseed", "rapeseed"]
+["trade"]
+["carcass", "livestock"]
+["money-supply"]
+["money-supply"]
+["earn"]
+["acq"]
+["money-supply"]
+["earn"]
+["earn"]
+["grain"]
+["crude"]
+["money-supply"]
+["money-supply"]
+["money-supply"]
+["acq"]
+["acq"]
+["orange"]
+["money-supply"]
+["cpi", "gnp", "reserves"]
+["cotton", "grain", "oilseed", "rice", "soybean", "wheat"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["cpi"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["l-cattle", "livestock"]
+["crude", "nat-gas"]
+["cpi", "gnp"]
+["earn"]
+["crude"]
+["carcass", "livestock"]
+["crude"]
+["acq"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["acq"]
+["crude"]
+["crude", "nat-gas"]
+["acq"]
+["acq"]
+["crude"]
+["trade"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["sugar"]
+["crude"]
+["interest", "money-supply"]
+["coffee"]
+["crude"]
+["acq"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["dlr", "money-fx"]
+["ship"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["gnp"]
+["bop", "trade"]
+["sugar"]
+["carcass", "livestock"]
+["trade"]
+["money-fx", "yen"]
+["wpi"]
+["trade"]
+["carcass", "livestock"]
+["grain"]
+["trade"]
+["earn"]
+["ship"]
+["wpi"]
+["earn"]
+["gold"]
+["earn"]
+["palm-oil", "veg-oil"]
+["earn"]
+["trade"]
+["interest"]
+["earn"]
+["crude"]
+["acq"]
+["earn"]
+["wpi"]
+["crude"]
+["crude"]
+["acq"]
+["money-fx"]
+["acq"]
+["grain", "wheat"]
+["dlr", "money-fx", "yen"]
+["grain", "rice"]
+["cotton"]
+["money-fx", "yen"]
+["palm-oil", "veg-oil"]
+["interest", "money-fx"]
+["money-supply"]
+["earn"]
+["crude"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["alum"]
+["jobs"]
+["trade"]
+["earn"]
+["jobs"]
+["money-fx", "yen"]
+["gold"]
+["money-fx", "yen"]
+["ship"]
+["money-fx"]
+["crude"]
+["crude"]
+["trade"]
+["grain", "rice"]
+["interest", "money-fx"]
+["earn"]
+["acq", "earn"]
+["earn"]
+["acq"]
+["ship"]
+["ship"]
+["acq"]
+["ship"]
+["cpi"]
+["crude"]
+["wpi"]
+["wpi"]
+["earn"]
+["earn"]
+["acq"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["interest"]
+["earn"]
+["money-fx"]
+["nickel"]
+["ipi"]
+["ipi"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "ship"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["earn"]
+["interest", "money-fx"]
+["coffee"]
+["wpi"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["reserves"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["money-fx"]
+["earn"]
+["acq"]
+["earn"]
+["gold"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["rubber"]
+["corn", "grain"]
+["earn"]
+["money-fx"]
+["earn"]
+["crude"]
+["ship"]
+["hog", "livestock"]
+["trade"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["crude"]
+["acq"]
+["oilseed"]
+["crude"]
+["gold", "silver"]
+["interest"]
+["dlr", "money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["sugar"]
+["ship"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["corn", "grain"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["interest"]
+["money-supply"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["money-supply"]
+["corn", "grain"]
+["earn"]
+["rubber"]
+["gnp", "interest", "ipi", "wpi"]
+["crude", "nat-gas"]
+["acq"]
+["crude", "ship"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["crude", "nat-gas"]
+["acq"]
+["acq"]
+["sugar"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["crude"]
+["trade"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["ipi"]
+["earn"]
+["earn"]
+["barley", "corn", "grain", "oat", "sorghum", "wheat"]
+["earn"]
+["acq"]
+["coffee"]
+["corn", "grain"]
+["carcass", "livestock"]
+["barley", "corn", "grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["crude"]
+["acq"]
+["earn"]
+["earn"]
+["carcass", "livestock"]
+["corn", "grain"]
+["earn"]
+["crude", "gas", "nat-gas", "wpi"]
+["acq"]
+["cotton"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["ipi"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["trade"]
+["earn"]
+["money-supply"]
+["earn"]
+["money-supply"]
+["crude", "gas", "heat", "nat-gas", "wpi"]
+["earn"]
+["earn"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain"]
+["crude"]
+["acq"]
+["acq"]
+["earn"]
+["lumber"]
+["acq", "crude"]
+["acq"]
+["crude"]
+["crude"]
+["earn"]
+["acq"]
+["crude"]
+["crude"]
+["earn"]
+["interest"]
+["earn"]
+["earn"]
+["lumber"]
+["coffee"]
+["rubber"]
+["rubber"]
+["earn"]
+["acq"]
+["soy-oil", "veg-oil"]
+["cpi", "gas"]
+["trade"]
+["iron-steel"]
+["alum"]
+["crude", "pet-chem"]
+["palm-oil", "veg-oil"]
+["iron-steel", "lead", "zinc"]
+["ship"]
+["crude", "ship"]
+["corn", "grain"]
+["trade"]
+["acq"]
+["crude"]
+["crude"]
+["cocoa"]
+["trade", "veg-oil"]
+["earn"]
+["crude"]
+["earn"]
+["sugar"]
+["money-fx"]
+["acq"]
+["ipi"]
+["ship"]
+["money-fx", "reserves"]
+["money-fx"]
+["corn", "grain"]
+["earn"]
+["bop", "trade"]
+["interest", "money-fx"]
+["money-fx"]
+["ship"]
+["cocoa"]
+["money-fx", "reserves"]
+["cpi"]
+["rubber"]
+["ipi"]
+["money-fx"]
+["acq"]
+["money-fx", "yen"]
+["retail"]
+["gnp", "money-fx", "yen"]
+["money-supply"]
+["gold"]
+["earn"]
+["earn"]
+["acq"]
+["sugar"]
+["jobs"]
+["reserves"]
+["palm-oil", "veg-oil"]
+["earn"]
+["interest", "money-fx"]
+["trade"]
+["earn"]
+["money-fx"]
+["acq"]
+["earn"]
+["cpi"]
+["interest", "money-fx"]
+["acq"]
+["interest"]
+["trade"]
+["interest"]
+["cpi"]
+["earn"]
+["ipi"]
+["interest", "money-fx"]
+["alum"]
+["crude"]
+["cpi"]
+["iron-steel"]
+["earn"]
+["money-supply"]
+["money-supply"]
+["retail"]
+["gold"]
+["retail"]
+["earn"]
+["cocoa"]
+["cpi"]
+["earn"]
+["grain", "rice"]
+["crude"]
+["money-fx"]
+["crude"]
+["gnp", "money-fx", "yen"]
+["acq"]
+["crude"]
+["trade"]
+["earn"]
+["interest", "money-fx"]
+["trade"]
+["money-fx", "reserves"]
+["earn"]
+["money-fx", "trade"]
+["crude"]
+["earn"]
+["acq"]
+["trade", "veg-oil"]
+["acq"]
+["acq"]
+["trade"]
+["earn"]
+["dlr", "interest", "money-fx"]
+["acq"]
+["palm-oil", "ship", "veg-oil"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["palm-oil", "veg-oil"]
+["earn"]
+["earn"]
+["cpi"]
+["acq"]
+["acq"]
+["earn"]
+["gold"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["ship"]
+["acq"]
+["acq"]
+["hog", "livestock"]
+["coffee"]
+["acq"]
+["interest", "money-fx"]
+["corn", "grain", "money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["acq"]
+["grain"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["cpi"]
+["trade"]
+["earn"]
+["cpi"]
+["acq"]
+["earn"]
+["cocoa"]
+["grain", "wheat"]
+["earn"]
+["cpu"]
+["cpi"]
+["earn"]
+["earn"]
+["oilseed", "soybean", "veg-oil"]
+["jobs"]
+["money-fx"]
+["acq"]
+["acq"]
+["livestock"]
+["earn"]
+["interest", "money-fx"]
+["earn"]
+["grain"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["pet-chem"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["money-fx"]
+["acq", "copper"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["nat-gas"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["carcass", "livestock"]
+["gnp"]
+["acq"]
+["earn"]
+["earn"]
+["gnp"]
+["earn"]
+["acq"]
+["earn"]
+["gnp", "trade"]
+["earn"]
+["cpu"]
+["earn"]
+["earn"]
+["acq"]
+["barley", "corn", "cotton", "grain", "sorghum", "wheat"]
+["acq"]
+["acq"]
+["earn"]
+["coffee"]
+["gnp"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["earn"]
+["gold"]
+["earn"]
+["cpu"]
+["carcass", "livestock"]
+["cpi"]
+["cocoa"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["trade"]
+["ship"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["veg-oil"]
+["trade"]
+["trade"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["corn", "grain"]
+["earn"]
+["acq"]
+["earn"]
+["cpi"]
+["earn"]
+["gold"]
+["earn"]
+["acq"]
+["earn"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["gold"]
+["crude", "ship", "trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "ship"]
+["bop"]
+["earn"]
+["earn"]
+["gold"]
+["acq"]
+["trade"]
+["earn"]
+["gold"]
+["earn"]
+["earn"]
+["gold"]
+["earn"]
+["earn"]
+["coffee", "trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["cocoa"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain", "oilseed", "soybean", "wheat"]
+["acq"]
+["acq"]
+["barley", "corn", "cotton", "grain", "oilseed", "rice", "sorghum", "soybean", "wheat"]
+["grain"]
+["acq"]
+["earn"]
+["coffee"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "fuel", "ship"]
+["earn"]
+["acq"]
+["meal-feed", "veg-oil"]
+["corn", "grain", "sorghum", "wheat"]
+["corn", "grain"]
+["grain", "wheat"]
+["barley", "grain"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["veg-oil"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude", "fuel"]
+["trade"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["trade"]
+["acq", "nickel", "strategic-metal"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["oilseed", "soybean"]
+["heat"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["ship"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["trade"]
+["acq"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["oilseed", "veg-oil"]
+["acq"]
+["bop"]
+["bop"]
+["reserves"]
+["wpi"]
+["wpi"]
+["dlr", "money-fx"]
+["bop", "interest", "money-fx", "trade"]
+["acq"]
+["money-supply"]
+["gnp"]
+["bop", "trade"]
+["bop", "trade"]
+["earn"]
+["copper"]
+["acq"]
+["soy-oil", "veg-oil"]
+["rubber"]
+["nat-gas"]
+["crude"]
+["money-supply"]
+["money-supply"]
+["money-supply"]
+["grain"]
+["gnp"]
+["gnp"]
+["gnp"]
+["gnp"]
+["acq"]
+["trade"]
+["money-fx"]
+["carcass", "livestock"]
+["interest", "money-fx"]
+["earn"]
+["ship"]
+["money-fx"]
+["earn"]
+["grain"]
+["copper"]
+["cpi"]
+["oilseed"]
+["sugar"]
+["interest", "money-supply"]
+["bop"]
+["wpi"]
+["money-fx", "reserves"]
+["bop"]
+["ipi"]
+["corn", "grain"]
+["ipi"]
+["gnp"]
+["trade"]
+["crude", "ship", "trade"]
+["acq"]
+["money-fx"]
+["interest", "money-fx"]
+["crude", "ship"]
+["alum"]
+["ship"]
+["acq"]
+["acq"]
+["acq"]
+["gnp"]
+["cocoa"]
+["housing"]
+["housing"]
+["meal-feed"]
+["copper"]
+["acq"]
+["earn"]
+["trade"]
+["carcass", "l-cattle", "livestock"]
+["earn"]
+["acq"]
+["ship"]
+["acq"]
+["earn"]
+["acq"]
+["money-fx"]
+["earn"]
+["trade"]
+["money-fx"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["gold"]
+["corn", "grain"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["bop", "trade"]
+["bop", "trade"]
+["money-fx"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["trade"]
+["acq"]
+["rubber"]
+["gold"]
+["earn"]
+["trade"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["grain"]
+["trade"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["gnp"]
+["bop", "trade"]
+["earn"]
+["earn"]
+["gnp"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["money-fx"]
+["corn", "grain", "lin-oil", "oilseed", "sorghum", "soy-oil", "soybean", "sun-oil", "sunseed", "veg-oil", "wheat"]
+["housing"]
+["acq"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["crude"]
+["copper"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["bop", "gnp"]
+["earn"]
+["earn"]
+["earn"]
+["interest", "money-fx"]
+["interest", "money-fx"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["veg-oil"]
+["acq"]
+["crude"]
+["soybean", "veg-oil"]
+["cotton"]
+["acq"]
+["housing"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["grain", "wheat"]
+["acq"]
+["money-fx"]
+["earn"]
+["acq"]
+["crude"]
+["earn"]
+["acq"]
+["interest"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["dlr", "money-fx"]
+["crude"]
+["earn"]
+["grain", "rice", "wheat"]
+["earn"]
+["oilseed", "soybean"]
+["crude"]
+["acq"]
+["acq"]
+["earn"]
+["acq"]
+["crude"]
+["grain", "wheat"]
+["cocoa"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx"]
+["earn"]
+["corn", "grain"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "rice", "wheat"]
+["earn"]
+["earn"]
+["bop", "interest", "money-supply"]
+["acq"]
+["ipi", "jobs"]
+["crude"]
+["crude"]
+["earn"]
+["crude"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["interest"]
+["crude"]
+["interest"]
+["earn"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["alum"]
+["gnp", "housing", "interest"]
+["earn"]
+["acq"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["grain", "wheat"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["gold"]
+["earn"]
+["corn", "grain", "wheat"]
+["earn"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["corn", "grain"]
+["corn", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["grain", "trade"]
+["earn"]
+["earn"]
+["corn", "grain", "wheat"]
+["crude"]
+["grain", "oilseed", "soybean"]
+["grain"]
+["carcass", "corn", "cotton", "grain", "oilseed", "rice", "soybean"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["acq"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["grain", "wheat"]
+["earn"]
+["earn"]
+["earn"]
+["crude"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["earn"]
+["acq"]
+["carcass"]
+["earn"]
+["earn"]
+["earn"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["earn"]
+["acq"]
+["money-fx", "yen"]
+["grain", "wheat"]
+["acq"]
+["earn"]
+["palm-oil", "veg-oil"]
+["palm-oil", "veg-oil"]
+["acq"]
+["earn"]
+["crude"]
+["earn"]
+["interest"]
+["interest"]
+["earn"]
+["palm-oil", "veg-oil"]
+["earn"]
+["earn"]
+["money-fx", "yen"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["interest"]
+["interest"]
+["interest"]
+["interest"]
+["acq"]
+["interest"]
+["wpi"]
+["earn"]
+["acq"]
+["ipi"]
+["earn"]
+["acq"]
+["gnp"]
+["cpi"]
+["corn", "grain"]
+["money-fx"]
+["interest"]
+["interest", "money-fx"]
+["earn"]
+["interest", "money-fx"]
+["acq"]
+["crude", "ship"]

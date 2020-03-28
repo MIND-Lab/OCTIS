@@ -1,1 +1,1 @@
-{"total_documents": 58520, "words_document_mean": 5, "labels": ["0", "1", "2", "3"], "total_labels": 4, "vocabulary_length": 1125}
+{"total_documents": 58520, "words_document_mean": 5, "vocabulary_length": 1125, "labels": ["0", "1", "2", "3"], "total_labels": 4}
