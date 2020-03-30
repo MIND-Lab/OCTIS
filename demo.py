@@ -1,30 +1,31 @@
-import preprocessing.preprocesstools as ppt
+import preprocessing.file_handler as io
 import preprocessing.sources.newsgroup as source
+from preprocessing.pipeline_handler import Pipeline_handler
 import multiprocessing as mp
 
 
 dataset = source.retrieve()
 
-min_words_in_doc = 1  # Minimum number of words in a document
+# All parameters defaults are True
+pipeline_handler = Pipeline_handler(dataset)
+
+pipeline_handler.multiprocess = True
+
+pipeline_handler.num_proc = mp.cpu_count()
+
+pipeline_handler.display_progress = True
+
+pipeline_handler.min_words_for_doc = 10 # Minimum number of words in a document
 
 # Minimum % of documents in wich each word of the corpus must appear
-min_word_occurences = 0.01
+pipeline_handler.words_min_freq = 0.01
 
 # Maximum % of documents in wich each word of the corpus must appear
-max_word_occurences = 0.90
+pipeline_handler.words_max_freq = 0.9
 
-cores = mp.cpu_count()
+pipeline_handler.stop_words_extension = ['from', 'subject', 're', 'edu', 'use']
 
-stopwords_extension = ['from', 'subject', 're', 'edu', 'use']
 
-# All parameters defaults are True
-preprocessed = ppt.preprocess_multiprocess(
-    cores, dataset, min_words_for_doc = min_words_in_doc,
-    lemmatize = True,
-    remove_stopwords = True,
-    remove_punctuation = True,
-    remove_words = True,
-    words_min_freq = min_word_occurences,
-    words_max_freq =  max_word_occurences)
+preprocessed = pipeline_handler.preprocess()
 
-ppt.save(preprocessed, "dataset")
+io.save(preprocessed, "dataset")
