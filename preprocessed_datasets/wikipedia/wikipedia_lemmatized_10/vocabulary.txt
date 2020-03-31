@@ -1,3294 +1,3549 @@
-technology
-device
-people
-population
-disability
-often
-difficulty
-perform
-activity
-daily
-live
-independently
-even
-assistance
-self
-care
-include
-eat
-dress
-personal
-effect
-limit
-ability
-promote
-great
-independence
-enable
-task
-formerly
-unable
-accomplish
-provide
-enhancement
-change
-method
-interact
-need
-example
-independent
-can
-walk
-feed
-due
-opportunity
-positive
-increase
-social
-participation
-security
-control
-chance
-reduce
-cost
-significantly
-household
-expense
-different
-use
-help
-individual
-cover
-item
-specifically
-design
-would
-non
-disabled
-person
-word
-object
-system
-consequently
-refer
-electronic
-information
-access
-profession
-specialize
-maintain
-improve
-quality
-life
-experience
-challenge
-occupation
-accord
-practice
-framework
-domain
-process
-area
-relate
-basic
-instrumental
-rest
-sleep
-education
-work
-play
-leisure
-skill
-employ
-improvement
-maintenance
-optimal
-functional
-application
-adapt
-aspect
-environment
-may
-otherwise
-user
-order
-result
-educate
-recommend
-client
-substitute
-normal
-allow
-come
-number
-variation
-hand
-motor
-manage
-seat
-head
-switch
-input
-handle
-else
-push
-difficult
-impossible
-illness
-injury
-sit
-new
-prototype
-patient
-transfer
-generally
-move
-chair
-pool
-support
-examine
-table
-common
-lift
-vertical
-stand
-position
-bear
-operating
-room
-slide
-board
-usually
-bed
-highly
-dependent
-assist
-require
-floor
-suspend
-invent
-early
-still
-consider
-state
-art
-frame
-tool
-additional
-balance
-stability
-consist
-high
-approximately
-inch
-deep
-slightly
-wide
-also
-available
-size
-child
-heavy
-modern
-height
-front
-leg
-wheel
-attach
-depend
-strength
-see
-replace
-miss
-body
-part
-field
-science
-mechanical
-human
-enhance
-lose
-disease
-typically
-birth
-supplement
-artificial
-heart
-less
-active
-development
-hear
-eye
-band
-give
-certain
-circumstance
-end
-benefit
-technically
-complete
-instance
-alone
-component
-hardware
-way
-terminal
-keep
-mind
-term
-describe
-respective
-health
-power
-mobile
-machine
-combination
-movement
-aim
-back
-sense
-motion
-send
-signal
-gear
-shoulder
-hold
-lower
-stress
-function
-specialized
-equipment
-frequently
-specific
-setting
-classroom
-home
-important
-arrangement
-ensure
-pressure
-distribute
-equally
-inhibit
-desire
-develop
-aid
-weight
-risk
-fall
-group
-category
-base
-make
-good
-actively
-try
-carry
-case
-recover
-many
-serious
-visual
-range
-technique
-visually
-screen
-reader
-video
-voice
-easily
-software
-program
-run
-computer
-display
-text
-speech
-low
-vision
-variety
-platform
-differ
-feature
-set
-apple
-free
-charge
-option
-keyboard
-description
-happen
-language
-select
-capacity
-read
-file
-content
-web
-page
-mail
-message
-processing
-mention
-rely
-document
-must
-form
-digital
-format
-however
-hard
-copy
-recognize
-solve
-issue
-always
-character
-recognition
-accompany
-raise
-unit
-call
-cell
-full
-parallel
-row
-quantity
-represent
-letter
-mark
-finger
-simply
-put
-instead
-standard
-add
-combine
-sight
-touch
-mean
-round
-tip
-hole
-flat
-surface
-monitor
-version
-camera
-print
-material
-connect
-real
-time
-image
-contrast
-highlight
-preference
-style
-small
-portable
-other
-much
-large
-mount
-fix
-interface
-graphical
-output
-present
-graphic
-view
-similar
-load
-memory
-serve
-kind
-glass
-key
-show
-button
-top
-background
-color
-mouse
-instal
-organization
-find
-right
-explode
-database
-engineering
-article
-write
-year
-problem
-blind
-well
-reality
-appear
-literature
-publish
-past
-location
-s
-immediate
-get
-wear
-explore
-receive
-emergency
-response
-particular
-sort
-vulnerable
-stay
-long
-place
-senior
-flood
-gas
-mild
-notably
-customize
-trigger
-interaction
-know
-accessible
-regardless
-guideline
-approach
-card
-adjust
-speed
-useful
-want
-public
-concept
-encompass
-identification
-man
-successfully
-incorporate
-limited
-success
-lack
-interest
-hearing
-community
-compare
-medium
-communicate
-various
-solution
-communication
-sound
-feedback
-utilize
-numerous
-alternate
-general
-correct
-measure
-type
-loss
-participate
-fully
-clearly
-wave
-speaker
-behind
-ear
-focus
-subject
-extra
-noise
-meeting
-easy
-capture
-audio
-source
-origin
-broadcast
-transmission
-listen
-prefer
-volume
-phone
-frequency
-tone
-suit
-additionally
-telephone
-choose
-degree
-sufficient
-better
-severe
-alternative
-restriction
-production
-speak
-extremely
-diverse
-capability
-picture
-request
-food
-drink
-advanced
-capable
-store
-hundred
-phrase
-tech
-cognitive
-attention
-regulation
-emotion
-management
-plan
-systematic
-review
-grow
-rapidly
-emerge
-evidence
-lot
-scope
-exist
-prompt
-take
-medicine
-wrong
-learn
-remember
-record
-note
-create
-recording
-tap
-save
-download
-moment
-fast
-recall
-later
-educational
-talk
-commonly
-plate
-become
-modify
-accommodate
-disable
-condition
-modification
-guard
-edge
-stop
-sophisticated
-manual
-little
-arm
-sport
-array
-player
-completely
-athlete
-exclusively
-lead
-simple
-tube
-terrain
-accordingly
-local
-recreation
-elite
-complex
-clinical
-increasingly
-competition
-orient
-major
-piece
-legislation
-govern
-school
-first
-section
-act
-second
-idea
-enact
-name
-period
-national
-publisher
-student
-qualify
-start
-define
-follow
-product
-acquire
-commercially
-exception
-medical
-replacement
-break
-mid
-paper
-mask
-involve
-instruction
-mostly
-young
-affect
-experiment
-exercise
-datum
-engineer
-attempt
-layout
-offer
-build
-bring
-previously
-release
-introduce
-navigate
-could
-activate
-external
-single
-left
-turn
-pre
-physical
-varying
-shape
-amount
-consistent
-reliable
-site
-foot
-multiple
-possible
-viable
-rather
-energy
-conservation
-resident
-door
-lock
-overall
-potential
-employment
-study
-learning
-family
-professional
-member
-friend
-decrease
-nonetheless
-several
-identify
-appropriate
-suggest
-contain
-specie
-flower
-plant
-widely
-cultivate
-purpose
-harvest
-wild
-assign
-broadly
-sometimes
-belong
-native
-tropical
-region
-thick
-leave
-yellow
-pink
-red
-borne
-cluster
-branch
-stem
-directly
-ground
-level
-vary
-bright
-green
-tree
-merge
-particularly
-divide
-produce
-accept
-subspecie
-hybrid
-addition
-genus
-ornamental
-garden
-pot
-value
-collector
-folk
-special
-skin
-natural
-cultivar
-mix
-gain
-royal
-horticultural
-merit
-historical
-effectiveness
-relatively
-traditionally
-herbal
-ancient
-treat
-wound
-middle
-age
-liquid
-inside
-favor
-significant
-inner
-cancer
-research
-potentially
-deadly
-cure
-say
-currently
-prevent
-final
-rule
-ban
-ingredient
-counter
-drug
-today
-class
-yield
-acid
-obtain
-cold
-ordinary
-warm
-scale
-trace
-oil
-list
-substance
-government
-occur
-western
-rocky
-confusion
-generic
-mainly
-sell
-winter
-month
-bloom
-indoor
-growth
-habit
-true
-broad
-arrange
-tall
-diameter
-outer
-sepal
-petal
-appearance
-usual
-vein
-purple
-naturally
-african
-south
-american
-subsequently
-separate
-question
-latter
-discuss
-briefly
-summarize
-debate
-side
-priority
-ultimately
-related
-greek
-meaning
-decision
-settle
-scientific
-continue
-differently
-ready
-holiday
-ally
-pattern
-lady
-flowering
-foliage
-die
-tend
-fire
-dense
-open
-annually
-localize
-concentration
-seed
-strong
-wind
-loose
-immediately
-rain
-autumn
-spring
-climate
-eventually
-late
-dormant
-summer
-frost
-tolerant
-dry
-leaf
-spike
-bee
-visit
-night
-relative
-importance
-animal
-yet
-establish
-think
-main
-cultivation
-begin
-century
-reproduce
-slowly
-division
-gradually
-naturalize
-planting
-urban
-elevation
-coastal
-zone
-breed
-one
-exact
-cross
-nearly
-original
-intensity
-pure
-white
-quite
-distinct
-shade
-center
-light
-apart
-circle
-face
-old
-able
-water
-tolerate
-commercial
-crop
-economic
-extract
-traditional
-indigenous
-loosely
-average
-originally
-rope
-tea
-bag
-filter
-classify
-runner
-shoot
-root
-segment
-cut
-primary
-substantially
-false
-trunk
-expand
-together
-dark
-pale
-underside
-brown
-patch
-succession
-least
-length
-mature
-stalk
-valuable
-compose
-primarily
-rarely
-fruit
-black
-resemble
-closely
-former
-soft
-fine
-ancestor
-originate
-forest
-away
-competitive
-institution
-island
-international
-market
-land
-already
-export
-almost
-big
-cash
-sugar
-fact
-predominantly
-do
-exclude
-dutch
-sponsor
-british
-supply
-eliminate
-japanese
-train
-transport
-track
-destroy
-agriculture
-world
-decline
-virus
-seek
-industry
-clothing
-flexible
-resistant
-salt
-damage
-ship
-line
-fishing
-net
-minor
-significance
-hat
-museum
-collection
-tribe
-normally
-drain
-soil
-rhizome
-season
-initial
-remove
-slope
-operation
-bundle
-earn
-demand
-remainder
-report
-share
-producer
-third
-total
-percent
-go
-import
-sale
-pathogen
-law
-son
-legal
-establishment
-understand
-statute
-pass
-chief
-summon
-session
-prove
-contribute
-justice
-father
-pay
-sum
-exceed
-week
-date
-proceeding
-cease
-valid
-reach
-gold
-writer
-direct
-payment
-appeal
-quarter
-defendant
-king
-afterwards
-officer
-mother
-guardian
-proceed
-contribution
-woman
-marry
-husband
-made
-statement
-agreement
-bar
-twin
-provision
-enforcement
-soldier
-enforce
-regular
-force
-portion
-regard
-procedure
-country
-cast
-responsibility
-apply
-adoption
-adopt
-succeed
-heir
-inherit
-property
-decide
-thing
-refuse
-proof
-monthly
-french
-respect
-title
-office
-determination
-owner
-future
-estate
-possibly
-grant
-lifetime
-death
-similarly
-next
-possession
-lawsuit
-court
-temporarily
-english
-male
-daughter
-sister
-living
-marriage
-claim
-matter
-terminate
-petition
-crown
-doubt
-committee
-privilege
-award
-doctrine
-innovation
-eighth
-survive
-ever
-restoration
-subsequent
-dozen
-holder
-entirely
-remain
-th
-longer
-last
-lay
-principle
-submit
-prior
-recommendation
-scottish
-equal
-co
-party
-interested
-litigation
-relief
-necessary
-desirable
-outcome
-membership
-political
-perspective
-officially
-bind
-action
-maker
-dispute
-settlement
-canadian
-campus
-deny
-funding
-agree
-return
-resource
-club
-pro
-avoid
-expensive
-battle
-pursue
-thus
-preserve
-society
-vote
-resolve
-event
-effort
-protection
-attorney
-waste
-dance
-partner
-enjoy
-socially
-performance
-entertainment
-stage
-film
-television
-definition
-emergence
-principal
-considerably
-permit
-figure
-exhibition
-situation
-dancing
-step
-swing
-regional
-favorite
-sequence
-pair
-formation
-derive
-ball
-latin
-specially
-boundary
-era
-popular
-day
-knowledge
-pace
-dominate
-close
-half
-found
-execution
-ballet
-dancer
-absolute
-music
-initially
-meet
-opposition
-tendency
-couple
-transition
-jazz
-extent
-tie
-newly
-transform
-generation
-essential
-teacher
-influential
-finally
-war
-conflict
-dissolve
-custom
-considerable
-influence
-elsewhere
-actor
-career
-castle
-status
-portray
-championship
-regulate
-amateur
-sole
-representative
-game
-seem
-especially
-compete
-regularly
-competitor
-internationally
-smooth
-rhythm
-perceive
-attend
-team
-judge
-criterion
-expression
-timing
-presentation
-nature
-controversy
-complaint
-placement
-accumulate
-split
-bronze
-silver
-restrict
-illegal
-routine
-medal
-evaluation
-conventional
-genre
-test
-rock
-roll
-north
-examination
-dedicate
-college
-chapter
-lesson
-goal
-fun
-compatible
-invite
-outline
-organize
-classic
-teach
-fluid
-current
-historically
-revive
-coast
-costume
-affair
-tail
-coat
-abandon
-short
-creative
-contemporary
-travel
-spot
-outfit
-tight
-emphasize
-upper
-extend
-rotation
-rise
-peak
-slow
-slight
-forward
-opposite
-direction
-reverse
-corner
-closed
-embrace
-harmony
-connection
-far
-believe
-therefore
-rotate
-beat
-quick
-tempo
-hop
-jump
-dramatic
-role
-attribute
-classical
-adaptation
-unrelated
-spanish
-singer
-tradition
-soon
-love
-culture
-slave
-strongly
-prohibition
-element
-strengthen
-hip
-characteristic
-powerful
-achieve
-conceive
-faster
-freely
-express
-structure
-shift
-triple
-shortly
-spin
-encourage
-ask
-minute
-european
-occasionally
-philosophy
-existence
-objective
-though
-usage
-entity
-notion
-controversial
-history
-deploy
-recent
-german
-draw
-topic
-psychology
-mainstream
-confine
-investigation
-fundamental
-imagine
-bridge
-encounter
-evolve
-classification
-being
-perhaps
-comprise
-accident
-clarify
-difference
-identical
-fail
-arrive
-reason
-explain
-reaction
-varied
-thought
-flow
-conclusion
-indeed
-assert
-unlimited
-expect
-none
-launch
-theory
-concern
-point
-actual
-basis
-generate
-unite
-actually
-doctor
-church
-sentence
-partly
-theme
-earth
-air
-carbon
-agent
-precede
-universal
-cause
-whole
-species
-sun
-efficient
-nevertheless
-altogether
-comparison
-distinction
-really
-planet
-proportion
-lend
-previous
-explanation
-purely
-scheme
-argue
-climb
-academic
-notice
-evaluate
-exploit
-address
-argument
-differentiate
-manifest
-sky
-translate
-manner
-official
-blue
-link
-sign
-overcome
-coin
-prevail
-hence
-medieval
-warn
-confuse
-analyze
-indicate
-chain
-relation
-negative
-analysis
-firm
-follower
-constant
-core
-cloud
-relationship
-clear
-furthermore
-assume
-space
-contact
-master
-maneuver
-radical
-route
-mode
-penetrate
-predict
-substantial
-never
-observe
-answer
-roughly
-landscape
-emphasis
-advocate
-gather
-suffer
-revolution
-religion
-faith
-reasonable
-professor
-hall
-emotional
-scientist
-civil
-extended
-ratio
-faculty
-consequence
-drawing
-error
-suppose
-carefully
-attack
-consideration
-distribution
-possibility
-whereby
-essentially
-mere
-dimension
-namely
-depth
-likewise
-universe
-predecessor
-undertake
-extensively
-hope
-strip
-pose
-wonder
-understanding
-respond
-famous
-freedom
-distinguish
-context
-shall
-denote
-foundation
-northern
-pop
-artist
-brother
-hit
-agency
-label
-song
-asian
-instrument
-alter
-host
-quickly
-heavily
-nee
-repetitive
-youth
-centre
-tension
-minority
-ethnic
-foster
-identity
-chart
-ranking
-service
-charity
-golden
-melody
-guitar
-star
-decade
-village
-singe
-enter
-contest
-album
-tour
-fusion
-notable
-drum
-positively
-progression
-post
-brand
-best
-indian
-lyric
-distinctive
-artwork
-musician
-mixed
-sample
-trend
-vocal
-pioneer
-hire
-remix
-respectively
-cheap
-debut
-successful
-largely
-earlier
-copyright
-investigate
-infringement
-moreover
-associate
-buy
-purchase
-online
-studio
-sing
-repeat
-flavor
-popularity
-reside
-series
-exhibit
-house
-bit
-bass
-magazine
-recently
-boy
-solo
-deliberately
-creator
-tell
-tale
-devote
-cultural
-beautiful
-celebration
-string
-fuse
-clean
-playing
-join
-acclaim
-fourth
-parent
-struggle
-adult
-fan
-anti
-university
-business
-statistic
-discipline
-marketing
-publication
-collect
-interpret
-typical
-course
-intend
-probability
-confidence
-interval
-linear
-convey
-symbol
-inherent
-channel
-unique
-extensive
-abstract
-civilization
-progress
-representation
-intent
-voluntary
-trust
-demonstrate
-awareness
-creature
-observation
-behaviour
-attitude
-feeling
-truth
-vital
-distance
-environmental
-engage
-colour
-cry
-effective
-barrier
-manipulate
-childhood
-construct
-programming
-mathematical
-necessarily
-characterize
-model
-account
-dynamic
-contrary
-belief
-advance
-vast
-collaboration
-strategic
-planning
-customer
-internal
-employee
-company
-possess
-excellent
-writing
-critically
-relevant
-strategy
-precise
-campaign
-leader
-perception
-candidate
-manager
-military
-aggregate
-continuously
-behavior
-atmosphere
-look
-factor
-researcher
-dig
-feel
-intention
-failure
-gender
-recipient
-religious
-organisation
-expectation
-norm
-variable
-effectively
-global
-thank
-border
-impact
-continuous
-spread
-exchange
-organism
-chemical
-bacteria
-fungal
-kingdom
-sexual
-conduct
-insect
-expose
-attract
-coordinate
-fungus
-react
-imply
-interpretation
-density
-gene
-radio
-interfere
-conversation
-scholar
-target
-advice
-command
-corporation
-ignore
-secondary
-phenomenon
-acquisition
-weakness
-propose
-simultaneously
-determine
-passage
-encode
-code
-book
-empire
-wage
-distant
-construction
-sustain
-authority
-interference
-inform
-presence
-coach
-automatic
-treatment
-deal
-mass
-variant
-anywhere
-irish
-tune
-piano
-weekend
-camp
-dedicated
-city
-town
-alternatively
-contract
-initiate
-morning
-detail
-celebrate
-anniversary
-double
-popularize
-renew
-internet
-explicitly
-friendly
-alcohol
-consumption
-evening
-hour
-square
-throw
-ago
-composition
-electric
-drive
-fit
-participant
-demonstration
-entire
-ahead
-venue
-discourage
-pretty
-clothe
-welcome
-mistake
-willing
-abuse
-policy
-bottom
-female
-adjacent
-sub
-choreographer
-wait
-proper
-cycle
-span
-enough
-personality
-specify
-fellow
-taste
-drop
-count
-assemble
-musical
-match
-twice
-solely
-narrow
-duration
-dominant
-signature
-underlie
-prevalent
-annual
-arise
-expert
-involvement
-intelligence
-psychologist
-theoretical
-practical
-automatically
-foreign
-russian
-journal
-accurately
-borrow
-biological
-translation
-accurate
-data
-department
-laboratory
-structural
-constraint
-insufficient
-angle
-realm
-evolution
-network
-project
-robot
-simplify
-interesting
-price
-evolutionary
-afford
-testing
-crucial
-availability
-raw
-cite
-tag
-discovery
-implementation
-plot
-similarity
-unknown
-uncover
-exciting
-suitable
-properly
-com
-huge
-conclude
-hide
-training
-like
-operate
-search
-engine
-illustrate
-likely
-author
-majority
-somewhat
-toy
-colored
-block
-box
-impressive
-mission
-website
-operator
-deem
-mining
-retrieve
-vehicle
-truck
-car
-realize
-recur
-mental
-logic
-intelligent
-intellectual
-central
-brain
-attain
-delay
-accuracy
-map
-transformation
-collectively
-surround
-simulation
-unify
-formal
-entry
-discussion
-presumably
-situate
-psychological
-ai
-implement
-individually
-simulate
-selection
-million
-discover
-fashion
-novel
-humanity
-apparently
-resort
-mechanism
-genetic
-guide
-colleague
-architecture
-ride
-dub
-hint
-fill
-constitute
-innovative
-choice
-reading
-meter
-watch
-punishment
-resolution
-experimental
-integrate
-finance
-mathematic
-wing
-greatly
-inspire
-visible
-enterprise
-formally
-apparent
-association
-critic
-advantage
-realistic
-strictly
-familiar
-chinese
-alliance
-rename
-literally
-southern
-confirm
-story
-win
-rough
-rank
-odd
-dual
-default
-trick
-score
-gun
-beam
-reference
-circuit
-facilitate
-flight
-intact
-dangerous
-violent
-safety
-consumer
-panel
-shadow
-wall
-straight
-hot
-transmit
-trademark
-manufacture
-manufacturer
-brief
-shot
-rate
-permanently
-plastic
-storage
-solid
-limitation
-metal
-layer
-locate
-constantly
-strike
-restore
-retain
-pack
-absorb
-tiny
-reflect
-random
-wire
-dimensional
-economically
-acceptable
-compensation
-render
-slot
-poor
-vice
-ghost
-registration
-sharp
-weak
-permanent
-factory
-compensate
-ring
-plane
-vector
-oppose
-reinforce
-cancel
-trade
-collective
-tv
-repair
-shop
-curve
-path
-impose
-decay
-fade
-unusual
-heat
-resistance
-minimal
-cool
-temperature
-click
-pitch
-maximum
-horizontal
-pronounce
-magic
-tape
-correspond
-industrial
-complexity
-spray
-basically
-embed
-sheet
-deposit
-thin
-functionality
-virtually
-dead
-rapid
-spell
-around
-disappear
-retailer
-announce
-domestic
-surpass
-owe
-disadvantage
-technological
-escape
-harmful
-toxic
-grind
-toxin
-facility
-regulatory
-requirement
-recovery
-residential
-sector
-fly
-collapse
-bond
-suddenly
-fee
-labor
-aside
-weather
-road
-money
-bank
-street
-informal
-obscure
-wealthy
-shooter
-derivative
-reject
-companion
-invention
-remedy
-incentive
-fair
-dealer
-chip
-check
-reserve
-supervise
-stick
-job
-police
-phase
-warning
-exactly
-multi
-lie
-wish
-cap
-minimum
-scenario
-whenever
-convert
-currency
-equivalent
-footage
-insist
-permission
-optional
-rare
-calculate
-insurance
-working
-bad
-commission
-dollar
-thereby
-profit
-nickname
-let
-fifth
-sixth
-garner
-credit
-bonus
-occasional
-promotional
-jurisdiction
-dramatically
-near
-omit
-conversely
-pick
-trip
-physically
-cheat
-ritual
-prohibit
-enormous
-crew
-declare
-consistently
-trial
-randomly
-texture
-stretch
-private
-eastern
-deck
-devise
-protect
-separately
-comparable
-quote
-baby
-italian
-underground
-float
-hotel
-revolve
-joke
-tough
-absent
-vessel
-expansion
-forget
-creation
-stable
-tissue
-compound
-wood
-bark
-resist
-strain
-protein
-estimate
-beta
-rich
-infection
-sufficiently
-partially
-concentrate
-grass
-crystal
-readily
-germination
-pit
-inclusion
-organic
-budget
-molecular
-spore
-sensitive
-outside
-survival
-kill
-truly
-thrive
-conjunction
-mineral
-abundant
-perfect
-chamber
-ensemble
-sized
-favour
-designation
-composer
-outstanding
-comprehensive
-organ
-painting
-few
-performer
-audience
-entrance
-critical
-register
-duty
-be
-introduction
-forever
-scholarship
-prominent
-inspiration
-collaborate
-epic
-commit
-massive
-smash
-nuclear
-crack
-attractive
-paint
-outdoor
-humidity
-own
-scroll
-shallow
-reveal
-steel
-pull
-pad
-probably
-insert
-wooden
-removal
-ideal
-hair
-propagation
-press
-prime
-sudden
-nearby
-staff
-specialist
-mixture
-teaching
-promise
-ill
-prepare
-income
-festival
-fame
-building
-ongoing
-merely
-dream
-organise
-dog
-extension
-concrete
-stone
-technical
-blend
-realism
-deeply
-remark
-puzzle
-founder
-mysterious
-adequate
-persist
-vegetable
-admit
-artifact
-container
-mandate
-fish
-criticize
-responsible
-mystery
-drought
-deciduous
-frequent
-desert
-woody
-shrub
-evergreen
-herbaceous
-diversity
-threat
-woodland
-ecosystem
-mountain
-habitat
-bird
-county
-overlap
-burn
-smoke
-sunlight
-seedling
-perennial
-exposure
-spark
-fuel
-moderate
-assumption
-regime
-worth
-germinate
-invasive
-consume
-moisture
-beneficial
-induce
-partial
-grade
-driver
-transaction
-liability
-obligation
-index
-script
-reform
-fear
-evil
-harm
-column
-library
-geographical
-accuse
-judicial
-criminal
-penalty
-crime
-victim
-assault
-financial
-counterpart
-servant
-spine
-defend
-absence
-persistent
-sink
-superior
-specimen
-erect
-hang
-hairy
-oval
-bud
-hook
-stamen
-trap
-moist
-reportedly
-efficiency
-unlikely
-undergo
-trail
-chaos
-suggestion
-beginning
-detailed
-continent
-coincide
-plain
-agricultural
-fence
-weed
-pollinate
-pollination
-trait
-reward
-butterfly
-opening
-egg
-lip
-dull
-colorful
-sweet
-eaten
-giant
-disperse
-cave
-hunter
-capital
-edible
-boil
-mood
-unsuccessful
-christian
-spiritual
-promotion
-district
-endanger
-threaten
-propagate
-destruction
-vine
-park
-concerned
-sand
-careful
-hardy
-cutting
-wet
-rot
-reproduction
-joint
-used
-stock
-pest
-combat
-symptom
-adventure
-cartoon
-disk
-formula
-inventory
-protagonist
-instantly
-stream
-flag
-developer
-monster
-lab
-assistant
-resume
-recruit
-forth
-reunite
-pod
-exit
-meanwhile
-defeat
-humor
-commence
-designer
-craft
-entertain
-complicate
-gameplay
-animation
-sure
-asset
-artistic
-spend
-comment
-legendary
-license
-animate
-icon
-cd
-rom
-director
-opt
-praise
-talent
-fate
-parody
-gaming
-kit
-package
-finish
-enjoyable
-impression
-secret
-appreciate
-certainly
-pc
-gamer
-editor
-blow
-ign
-villain
-subtitle
-sequel
-entitle
-edition
-approve
-closure
-playstation
-port
-secure
-news
-executive
-mini
-documentary
-update
-menu
-soundtrack
-commentary
-playable
-metacritic
-reviewer
-obvious
-absolutely
-ease
-worthy
-preparation
-medicinal
-hunt
-disturb
-approval
-administration
-reduction
-disorder
-fatal
-livestock
-shock
-detect
-roman
-determined
-mechanic
-depression
-polish
-designate
-finding
-trading
-uniform
-percentage
-sex
-fantasy
-dungeon
-dragon
-god
-repeatedly
-instruct
-hack
-slash
-horror
-storyline
-quest
-descend
-portal
-resurrect
-weapon
-armor
-magical
-rating
-shield
-equip
-upgrade
-enlist
-hero
-storm
-multiplayer
-server
-advertise
-virtual
-fresh
-warrior
-demon
-spirit
-corrupt
-imprison
-scene
-prison
-visitor
-worldwide
-departure
-impress
-movie
-exclusive
-gift
-chest
-retail
-window
-downloadable
-announcement
-unofficial
-revenue
-gross
-interactive
-platinum
-reception
-gameranking
-gamespot
-achievement
-rpg
-spawn
-rumor
-seemingly
-farmer
-dialogue
-fight
-advise
-widespread
-legend
-tower
-ultimate
-depict
-station
-correctly
-confront
-horse
-ad
-weigh
-nintendo
-laser
-cartridge
-nes
-console
-shut
-controller
-concert
-super
-journalist
-seventh
-arcade
-bill
-twist
-kick
-explosive
-opponent
-unlockable
-alien
-volunteer
-photograph
-narrative
-remote
-nation
-crowd
-territory
-tournament
-arrow
-scrolling
-freeze
-gauge
-fold
-boss
-flash
-edit
-veteran
-culminate
-regain
-extreme
-unlocked
-unlock
-lighting
-franchise
-demo
-invasion
-clone
-somewhere
-criticism
-stunt
-grand
-eligible
-historic
-pound
-healthy
-showcase
-excess
-semi
-theater
-patent
-thousand
-crash
-punch
-guest
-transportation
-utility
-rocket
-occasion
-closing
-skilled
-ocean
-aircraft
-profile
-clip
-ceremony
-isolate
-gate
-disc
-susceptible
-carrier
-alpha
-conversion
-intermediate
-steam
-stimulate
-leak
-dna
-unclear
-fault
-conservative
-curriculum
-citizen
-assignment
-leadership
-moral
-retire
-strict
-assessment
-river
-parliament
-pollution
-legislative
-compliance
-ownership
-wildlife
-traffic
-catch
-fund
-compromise
-integration
-assess
-fulfil
-opinion
-burden
-administrative
-necessity
-economy
-fighting
-conference
-race
-legally
-convention
-australian
-ecological
-heritage
-federal
-provincial
-province
-behalf
-violation
-election
-wealth
-constitutional
-draft
-infrastructure
-making
-statutory
-dismiss
-arena
-oversee
-instructor
-ending
-aware
-enemy
-steal
-trilogy
-revenge
-recognise
-negotiate
-occurrence
-blade
-forum
-ruin
-nominate
-defense
-clause
-archive
-authorize
-plaintiff
-justify
-advertisement
-fictional
-amend
-favorable
-photo
-president
-allegedly
-expire
-allege
-invest
-sue
-lawyer
-licensing
-judgment
-activist
-violate
-diminish
-revise
-comply
-complain
-urge
-coverage
-advertising
-reuse
-mine
-royalty
-compilation
-revision
-newspaper
-workshop
-illustration
-involved
-sword
-physics
-compact
-cooperative
-prisoner
-applicable
-winner
-graduate
-commitment
-theft
-pursuit
-loop
-investment
-conquer
-empty
-union
-personnel
-politician
-missile
-crisis
-personally
-motivation
-blood
-worker
-peer
-fairly
-cable
-ice
-gang
-violence
-murder
-contend
-politic
-protest
-racial
-legitimate
-rival
-billboard
-aggressive
-have
-killer
-interview
-bomb
-seller
-explicit
-speculate
-ensue
-herb
-delivery
-soul
-casual
-blame
-blast
-withdraw
-reasonably
-sexually
-offensive
-leaflet
-certify
-invade
-convict
-arrest
-guilty
-rural
-criticise
-unconscious
-obstacle
-acknowledge
-pain
-jury
-innocent
-honour
-sacrifice
-bury
-defence
-occupy
-prize
-thereafter
-episode
-wake
-viewer
-survivor
-affiliate
-champion
-chase
-pocket
-seriously
-explosion
-premise
-clock
-wife
-grain
-strand
-cook
-iron
-safe
-acre
-premiere
-corporate
-dislike
-poorly
-depart
-compile
-alike
-strange
-comic_strip
-fighter
-replay
-poison
-wherein
-sprite
-intense
-up
-programmer
-warrant
-bug
-activision
-defensive
-proprietary
-wizard
-snow
-anticipate
-excessive
-grab
-forbid
-girl
-will
-suicide
-seize
-incident
-jail
-tear
-elaborate
-kid
-practitioner
-captain
-aesthetic
-gap
-successor
-intensive
-rush
-trouble
-devil
-reputation
-elect
-darkness
-deliver
-troop
-shelter
-overseas
-exam
-cattle
-schedule
-drag
-danger
-hostile
-helicopter
-pilot
-completion
-commander
-naval
-injure
-ticket
-partnership
-armed
-programme
-administer
-boat
-army
-appointment
-football
-league
-unfortunately
-operational
-rebuild
-appoint
-mile
-welfare
-residence
-relocate
-children
-boost
-initiative
-jet
-abroad
-unveil
-accordance
-publicly
-mythology
-sacred
-treasure
-rescue
-remake
-flame
-happy
-surprise
-flaw
-installment
-redesign
-seal
-locally
-tooth
-severely
-heal
-poisonous
-pollen
-epithet
-crush
-oral
-scatter
-inflorescence
-capsule
-execute
-honor
-dictate
-consecutive
-deplete
-peace
-comic
-pirate
-drama
-kidnap
-minigame
-detection
-guarantee
-cutscene
-inhabitant
-suspect
-problematic
-cinematic
-weekly
-venture
-trailer
-literary
-chronicle
-sea
-exploration
-nutrient
-inhabit
-shore
-temperate
-affirm
-farm
-awaken
-victory
-arrival
-civilian
-negotiation
-proposal
-neutral
-merchant
-abolish
-satisfy
-amendment
-provider
-fiction
-hospital
-rent
-convince
-mouth
-knock
-baseball
-donate
-intervention
-flee
-terrorist
-colony
-survey
-sega
-selling
-witness
-lord
-passenger
-uphold
-faction
-implication
-racing
-mega
-temporary
-satellite
-certificate
-collectible
-margin
-offering
-circular
-allocate
-lease
-supporter
-consent
-legislature
-employer
-weaken
-publishing
-gray
-alive
-berry
-aerial
-ammunition
-tax
-reporter
-installation
-fleet
-scrap
-tank
-journey
-subtropical
-reddish
-thinking
-clue
-lobe
-scent
-accidentally
-tactic
-companys
-log
-analog
-infect
-architect
-discontinue
-tactical
-altitude
-guidance
-housing
-tenant
-echo
-spy
-nursery
-there
-headquarters
-council
-drainage
-disaster
-lob
-tolerance
-ninth
-centimeter
-antagonist
-pathogenic
-gamepro
-alkaloid
-aggregator
-aggregation
+technology 0.096
+device 0.0686
+people 0.2317
+disability 0.0142
+population 0.0713
+often 0.283
+difficulty 0.085
+perform 0.1689
+activity 0.114
+daily 0.0326
+living 0.0194
+independently 0.0218
+even 0.2416
+assistance 0.0308
+self 0.0851
+care 0.0567
+include 0.584
+eat 0.0566
+dress 0.0219
+personal 0.0738
+can 0.5374
+effect 0.1701
+limit 0.137
+ability 0.1538
+promote 0.0883
+great 0.2054
+independence 0.0192
+enable 0.0672
+task 0.0792
+formerly 0.0456
+unable 0.0528
+accomplish 0.0294
+provide 0.2842
+enhancement 0.0136
+change 0.2455
+method 0.1023
+interact 0.0404
+need 0.201
+such 0.4796
+example 0.2309
+independent 0.0611
+walk 0.0494
+feed 0.0454
+so 0.2305
+due 0.1015
+opportunity 0.0641
+more 0.4835
+positive 0.0971
+increase 0.1811
+social 0.1013
+participation 0.0226
+security 0.0454
+control 0.254
+chance 0.0475
+reduce 0.1161
+cost 0.0892
+significantly 0.0483
+household 0.0176
+expense 0.0203
+different 0.3046
+use 0.6199
+help 0.1957
+individual 0.1558
+cover 0.1574
+item 0.1065
+specifically 0.075
+design 0.2063
+would 0.3363
+non 0.1695
+disabled 0.0127
+person 0.1701
+other 0.6079
+word 0.1172
+object 0.0926
+system 0.2872
+consequently 0.0234
+refer 0.1769
+electronic 0.0759
+information 0.1232
+access 0.104
+therapy 0.0111
+profession 0.0143
+specialize 0.0191
+maintain 0.1023
+improve 0.1046
+quality 0.1032
+life 0.2012
+experience 0.1314
+challenge 0.1126
+when 0.4691
+occupation 0.0129
+accord 0.2066
+practice 0.114
+framework 0.0237
+domain 0.026
+process 0.1498
+area 0.2831
+relate 0.1343
+basic 0.0872
+instrumental 0.0209
+rest 0.0748
+sleep 0.0191
+education 0.0721
+work 0.3275
+play 0.2953
+leisure 0.0144
+specialized 0.0181
+skill 0.0734
+employ 0.066
+improvement 0.0528
+maintenance 0.0253
+optimal 0.0139
+functional 0.0161
+application 0.074
+adapt 0.0473
+aspect 0.0916
+environment 0.1172
+may 0.407
+otherwise 0.0659
+user 0.0745
+order 0.261
+result 0.2453
+educate 0.0167
+recommend 0.0511
+client 0.0177
+seat 0.0258
+substitute 0.0192
+normal 0.0651
+most 0.4419
+allow 0.2958
+come 0.2522
+number 0.3189
+variation 0.0543
+where 0.4161
+hand 0.137
+motor 0.0143
+electrical 0.0111
+manage 0.0903
+head 0.1311
+switch 0.0567
+input 0.0259
+handle 0.0496
+else 0.0366
+difficult 0.1007
+impossible 0.0347
+illness 0.0161
+injury 0.0357
+sit 0.0334
+new 0.3755
+advancement 0.0131
+prototype 0.017
+climb 0.0257
+patient 0.0284
+transfer 0.0733
+generally 0.1735
+move 0.2236
+chair 0.0228
+pool 0.018
+support 0.2031
+examine 0.0372
+table 0.0381
+common 0.2417
+lift 0.0199
+vertical 0.0197
+stand 0.1017
+position 0.1069
+bear 0.1482
+operating 0.0158
+room 0.0727
+slide 0.015
+board 0.0719
+usually 0.1994
+bed 0.0169
+highly 0.096
+dependent 0.0311
+assist 0.0548
+require 0.2414
+floor 0.0396
+suspend 0.0164
+invent 0.0178
+early 0.2737
+still 0.2244
+consider 0.2339
+state 0.3255
+art 0.135
+frame 0.0436
+tool 0.0576
+additional 0.1252
+balance 0.0434
+stability 0.0121
+consist 0.1423
+about 0.0544
+high 0.3234
+approximately 0.0655
+inch 0.0231
+deep 0.0663
+slightly 0.0648
+wide 0.1393
+also 0.694
+available 0.2007
+size 0.0919
+child 0.1288
+heavy 0.0644
+modern 0.1178
+height 0.067
+front 0.0535
+leg 0.019
+wheel 0.0142
+attach 0.039
+depend 0.1231
+strength 0.05
+see 0.2757
+back 0.2032
+replace 0.1122
+miss 0.0503
+body 0.1233
+part 0.3688
+field 0.1347
+science 0.0812
+mechanical 0.0236
+human 0.1402
+enhance 0.051
+lose 0.1532
+disease 0.0576
+typically 0.1172
+birth 0.0256
+supplement 0.0181
+artificial 0.0317
+heart 0.0532
+less 0.1727
+active 0.0748
+development 0.2074
+medical 0.0479
+aid 0.0603
+hear 0.0604
+eye 0.0527
+band 0.0555
+give 0.3807
+certain 0.1974
+circumstance 0.0354
+end 0.2798
+same 0.307
+benefit 0.0702
+technically 0.0151
+complete 0.1966
+instance 0.0706
+alone 0.0635
+only 0.4437
+component 0.0553
+hardware 0.0319
+way 0.2534
+terminal 0.0182
+keep 0.1433
+mind 0.049
+term 0.1914
+describe 0.2057
+respective 0.0325
+health 0.0941
+power 0.1737
+mobile 0.0404
+machine 0.0658
+electric 0.018
+combination 0.0655
+movement 0.1027
+aim 0.0779
+sense 0.0779
+motion 0.0498
+send 0.1123
+signal 0.0345
+gear 0.0224
+shoulder 0.014
+hold 0.2557
+lower 0.0242
+stress 0.0279
+function 0.0891
+equipment 0.0585
+frequently 0.0619
+specific 0.1526
+setting 0.0582
+classroom 0.0128
+home 0.1428
+important 0.1499
+arrangement 0.0375
+ensure 0.0657
+pressure 0.0381
+distribute 0.0645
+equally 0.0186
+inhibit 0.0128
+desire 0.0494
+develop 0.3255
+weight 0.0389
+risk 0.0534
+fall 0.1573
+group 0.2321
+category 0.0615
+base 0.3817
+make 0.4933
+good 0.276
+actively 0.0194
+try 0.1256
+carry 0.1169
+case 0.2075
+limited 0.086
+recover 0.0428
+many 0.4279
+serious 0.0501
+visual 0.0688
+live 0.1831
+range 0.1945
+technique 0.0672
+visually 0.0114
+screen 0.1053
+reader 0.022
+video 0.2253
+voice 0.0836
+easily 0.067
+software 0.0796
+program 0.139
+run 0.184
+computer 0.1445
+convey 0.0183
+display 0.0907
+text 0.0613
+speech 0.0306
+low 0.1873
+vision 0.0353
+variety 0.1631
+platform 0.0886
+differ 0.0628
+feature 0.2806
+set 0.2792
+free 0.1526
+charge 0.0779
+apple 0.0181
+option 0.087
+keyboard 0.0166
+description 0.0397
+happen 0.0613
+language 0.0754
+select 0.1101
+capacity 0.0426
+read 0.0502
+file 0.0671
+content 0.0988
+as 0.4182
+well 0.4244
+web 0.0284
+page 0.0398
+mail 0.0196
+message 0.0353
+processing 0.0209
+mention 0.0719
+rely 0.0486
+document 0.0592
+must 0.2451
+form 0.3264
+digital 0.0497
+format 0.0548
+however 0.3717
+will 0.3387
+hard 0.0843
+copy 0.1027
+recognize 0.0799
+solve 0.056
+issue 0.1732
+always 0.0915
+character 0.1977
+recognition 0.032
+accompany 0.0475
+raise 0.0888
+unit 0.1093
+call 0.3745
+cell 0.0498
+full 0.1794
+parallel 0.0264
+row 0.0233
+quantity 0.0273
+represent 0.1208
+letter 0.0453
+mark 0.0813
+then 0.34
+finger 0.0121
+code 0.0763
+simply 0.0998
+put 0.12
+instead 0.1651
+standard 0.1293
+add 0.1853
+combine 0.096
+sight 0.0199
+touch 0.0469
+mean 0.2003
+round 0.0647
+tip 0.0372
+hole 0.0213
+flat 0.037
+surface 0.072
+monitor 0.0309
+version 0.2362
+camera 0.0394
+print 0.035
+material 0.0986
+connect 0.0573
+real 0.1236
+time 0.4792
+image 0.0606
+focus 0.134
+contrast 0.0651
+preference 0.0188
+style 0.1463
+small 0.2575
+portable 0.0312
+much 0.2376
+large 0.3033
+mount 0.0195
+fix 0.0579
+interface 0.0437
+graphical 0.0311
+output 0.0172
+present 0.1934
+graphic 0.1308
+easy 0.0826
+view 0.1255
+similar 0.2547
+load 0.0329
+memory 0.0511
+serve 0.1541
+kind 0.0817
+glass 0.0197
+key 0.0981
+show 0.2558
+button 0.0469
+top 0.1682
+background 0.0691
+color 0.1046
+mouse 0.0237
+instal 0.0204
+organization 0.0937
+find 0.3829
+right 0.192
+explode 0.0182
+database 0.0172
+engineering 0.0209
+article 0.0736
+write 0.2189
+past 0.0737
+year 0.4229
+problem 0.1311
+navigation 0.0112
+blind 0.0136
+reality 0.0357
+appear 0.229
+literature 0.0284
+publish 0.2525
+exact 0.0262
+location 0.13
+s 0.0551
+immediate 0.026
+get 0.1348
+destination 0.0121
+wear 0.0491
+explore 0.0704
+how 0.1721
+receive 0.2846
+emergency 0.0205
+response 0.0889
+particular 0.1255
+sort 0.0347
+vulnerable 0.0197
+stay 0.0538
+longer 0.0798
+place 0.3222
+senior 0.032
+gas 0.0263
+mild 0.0134
+notably 0.0443
+alert 0.011
+customize 0.0152
+trigger 0.0333
+contact 0.0668
+center 0.1003
+respond 0.0424
+interaction 0.0416
+know 0.4516
+accessible 0.03
+regardless 0.0341
+guideline 0.0168
+approach 0.0937
+card 0.0573
+configuration 0.0112
+adjust 0.0229
+speed 0.0625
+useful 0.0435
+want 0.1103
+public 0.1605
+concept 0.1158
+encompass 0.0201
+identification 0.0176
+man 0.1426
+successfully 0.0558
+incorporate 0.0668
+success 0.094
+lack 0.1259
+interest 0.111
+community 0.1112
+compare 0.1035
+medium 0.1063
+communicate 0.0206
+various 0.2422
+solution 0.0426
+communication 0.0441
+sound 0.1094
+feedback 0.0192
+improved 0.018
+utilize 0.0492
+numerous 0.1063
+alternate 0.0567
+general 0.1416
+hearing 0.0161
+correct 0.0362
+measure 0.0705
+type 0.1957
+loss 0.0657
+participate 0.0663
+fully 0.0709
+clearly 0.029
+wave 0.029
+speaker 0.015
+ear 0.0134
+subject 0.1083
+extra 0.0583
+noise 0.0144
+meeting 0.0381
+capture 0.0737
+audio 0.0427
+source 0.1313
+near 0.0231
+origin 0.0682
+broadcast 0.0355
+transmission 0.0195
+listen 0.0208
+tune 0.0269
+volume 0.0352
+phone 0.0287
+frequency 0.0199
+tone 0.028
+suit 0.05
+additionally 0.0643
+telephone 0.0134
+choose 0.1497
+degree 0.0853
+sufficient 0.0373
+severe 0.0307
+alternative 0.057
+restriction 0.0317
+production 0.1366
+extremely 0.0546
+diverse 0.0302
+capability 0.0383
+picture 0.0431
+request 0.0534
+food 0.0853
+drink 0.0269
+advanced 0.0499
+capable 0.0468
+store 0.0766
+hundred 0.029
+phrase 0.0292
+tech 0.0139
+cognitive 0.0173
+attention 0.059
+regulation 0.0475
+emotion 0.0168
+management 0.0678
+planning 0.0244
+systematic 0.0114
+review 0.1964
+grow 0.2389
+rapidly 0.0316
+emerge 0.0595
+evidence 0.076
+lot 0.0531
+scope 0.0254
+exist 0.1441
+prompt 0.024
+take 0.42
+medicine 0.0478
+wrong 0.0238
+learn 0.111
+remember 0.0247
+writing 0.0314
+record 0.1487
+note 0.1724
+create 0.2977
+recording 0.039
+tap 0.0176
+save 0.0974
+there 0.1082
+download 0.0385
+moment 0.038
+fast 0.0713
+recall 0.0218
+later 0.3147
+educational 0.0382
+talk 0.0508
+commonly 0.128
+plate 0.0113
+become 0.3767
+modify 0.0564
+accommodate 0.0192
+disable 0.0123
+condition 0.1231
+modification 0.0234
+guard 0.0357
+edge 0.0584
+stop 0.1037
+push 0.0445
+sophisticated 0.0138
+manual 0.031
+little 0.1285
+arm 0.0523
+sport 0.0614
+array 0.0158
+player 0.2819
+completely 0.0725
+athlete 0.016
+exclusively 0.0416
+lead 0.2684
+simple 0.0975
+tube 0.0185
+terrain 0.0165
+accordingly 0.0175
+local 0.1208
+recreation 0.0123
+elite 0.017
+game 0.3468
+complex 0.0861
+clinical 0.0172
+increasingly 0.0329
+competition 0.0692
+orient 0.0268
+major 0.1678
+piece 0.0868
+legislation 0.0388
+govern 0.0348
+school 0.1216
+first 0.5153
+section 0.106
+act 0.1898
+second 0.2383
+idea 0.1073
+enact 0.0248
+name 0.4049
+period 0.1418
+national 0.1035
+publisher 0.0433
+student 0.0887
+qualify 0.0241
+start 0.2304
+define 0.0945
+follow 0.3501
+product 0.0957
+acquire 0.0776
+commercially 0.0299
+exception 0.0604
+replacement 0.0204
+break 0.1166
+mid 0.0603
+paper 0.055
+mask 0.0141
+involve 0.1862
+instruction 0.0336
+mostly 0.0902
+grid 0.0119
+young 0.1414
+affect 0.1034
+experiment 0.0427
+exercise 0.0366
+datum 0.0688
+engineer 0.0306
+attempt 0.1542
+layout 0.0155
+offer 0.157
+build 0.1423
+bring 0.1584
+previously 0.0998
+release 0.3162
+introduce 0.176
+navigate 0.0203
+could 0.245
+activate 0.0387
+external 0.0262
+single 0.1992
+left 0.0322
+turn 0.1825
+multi 0.0449
+pre 0.0766
+physical 0.075
+varying 0.0134
+shape 0.1075
+amount 0.1324
+consistent 0.024
+reliable 0.012
+site 0.0988
+foot 0.0631
+multiple 0.115
+highlight 0.0338
+possible 0.1575
+viable 0.0122
+prefer 0.0523
+own 0.2555
+rather 0.1681
+facility 0.0603
+entertainment 0.0904
+energy 0.0618
+conservation 0.019
+resident 0.0372
+door 0.0378
+lock 0.0289
+overall 0.0863
+potential 0.0746
+employment 0.0207
+study 0.1465
+all 0.076
+family 0.231
+professional 0.0745
+member 0.2243
+friend 0.0735
+decrease 0.0451
+nonetheless 0.0135
+have 0.2181
+several 0.3371
+identify 0.0852
+appropriate 0.0511
+suggest 0.103
+genus 0.0682
+contain 0.2255
+specie 0.1885
+flower 0.1499
+plant 0.2333
+widely 0.1024
+species 0.042
+true 0.0858
+cultivate 0.0624
+purpose 0.1128
+harvest 0.0226
+wild 0.0574
+assign 0.0519
+now 0.2374
+broadly 0.0165
+sometimes 0.1701
+belong 0.0492
+native 0.1535
+tropical 0.0314
+southern 0.0582
+island 0.0589
+few 0.2
+region 0.13
+thick 0.0304
+leave 0.3294
+yellow 0.0801
+orange 0.021
+pink 0.0401
+red 0.1115
+cluster 0.0309
+branch 0.0735
+stem 0.0954
+directly 0.0825
+ground 0.1297
+level 0.2528
+spring 0.0756
+vary 0.093
+grey 0.0137
+bright 0.0392
+green 0.1074
+tree 0.0922
+merge 0.028
+genera 0.0124
+molecular 0.0136
+particularly 0.1151
+should 0.1559
+divide 0.0863
+produce 0.2506
+accept 0.0802
+subspecie 0.0193
+hybrid 0.0368
+addition 0.1805
+cultivation 0.0322
+ornamental 0.0592
+garden 0.0701
+pot 0.0128
+value 0.1103
+collector 0.0185
+internally 0.0111
+folk 0.0292
+special 0.1528
+skin 0.0345
+natural 0.0948
+cultivar 0.0448
+mixed 0.0657
+uncertain 0.0121
+lip 0.0115
+gain 0.1459
+royal 0.0641
+award 0.167
+merit 0.041
+historical 0.0426
+effectiveness 0.0166
+relatively 0.0624
+traditionally 0.0363
+herbal 0.0134
+again 0.1387
+ancient 0.0592
+treat 0.0776
+wound 0.0274
+middle 0.0627
+age 0.1312
+liquid 0.0135
+favor 0.0454
+significant 0.1035
+inner 0.0263
+cancer 0.0167
+research 0.124
+potentially 0.0307
+deadly 0.0135
+cure 0.0157
+say 0.229
+currently 0.0972
+prevent 0.1086
+final 0.1511
+rule 0.1312
+ban 0.0322
+ingredient 0.0166
+counter 0.0318
+drug 0.0379
+today 0.0832
+class 0.1
+yield 0.036
+acid 0.029
+obtain 0.0949
+cold 0.0411
+ordinary 0.0213
+warm 0.031
+scale 0.0771
+trace 0.0279
+oil 0.0348
+list 0.1655
+substance 0.0298
+government 0.1257
+occur 0.1568
+better 0.0531
+western 0.0862
+cape 0.0114
+rocky 0.0146
+confusion 0.0199
+botanist 0.0118
+generic 0.0179
+mainly 0.0676
+sell 0.1623
+winter 0.0557
+month 0.1371
+bloom 0.0315
+indoor 0.0137
+growth 0.0803
+habit 0.02
+related 0.0623
+diameter 0.046
+long 0.2964
+broad 0.0715
+arrange 0.0507
+cm 0.0175
+tall 0.0768
+outer 0.0252
+sepal 0.0123
+petal 0.0325
+appearance 0.088
+usual 0.0255
+white 0.1282
+vein 0.0205
+purple 0.0462
+naturally 0.0263
+controversial 0.0281
+south 0.0499
+african 0.0344
+american 0.1744
+subsequently 0.0606
+separate 0.1261
+question 0.0849
+latter 0.0717
+discuss 0.0461
+here 0.0587
+briefly 0.0186
+summarize 0.0189
+debate 0.0339
+involved 0.0135
+side 0.1478
+outcome 0.0347
+decision 0.0976
+priority 0.0179
+ultimately 0.0688
+greek 0.0344
+meaning 0.0573
+settle 0.031
+scientific 0.0485
+continue 0.1996
+differently 0.0188
+ready 0.0272
+holiday 0.0154
+lady 0.0182
+pattern 0.0554
+foliage 0.0318
+die 0.1263
+habitat 0.0471
+flowering 0.0245
+tend 0.0647
+suppress 0.0123
+fire 0.0988
+dense 0.0295
+vegetation 0.0119
+open 0.1988
+sandy 0.0114
+annually 0.0251
+very 0.261
+concentration 0.0266
+seed 0.0991
+strong 0.1147
+wind 0.0469
+loose 0.0171
+immediately 0.0588
+rain 0.0218
+autumn 0.0238
+climate 0.042
+eventually 0.1268
+late 0.1744
+dormant 0.0128
+summer 0.0964
+frost 0.0172
+tolerant 0.0213
+dry 0.0698
+leaf 0.0627
+spike 0.0217
+arise 0.0498
+relationship 0.0708
+bee 0.0166
+visit 0.0667
+night 0.0689
+relative 0.0489
+importance 0.0383
+animal 0.0746
+yet 0.0743
+establish 0.1741
+think 0.1175
+main 0.1984
+beginning 0.0714
+century 0.1226
+reproduce 0.0222
+slowly 0.0275
+division 0.0619
+gradually 0.0297
+naturalize 0.0179
+planting 0.0132
+urban 0.0338
+elevation 0.0169
+coastal 0.0266
+zone 0.0507
+breed 0.0196
+one 0.1636
+cross 0.0616
+nearly 0.0779
+original 0.2334
+intensity 0.0119
+pure 0.0243
+quite 0.0576
+distinct 0.0536
+shade 0.0378
+light 0.1294
+apart 0.0366
+circle 0.0338
+face 0.1099
+old 0.1898
+able 0.1506
+tolerate 0.0205
+horticultural 0.0307
+world 0.2867
+commercial 0.0962
+crop 0.036
+economic 0.0623
+extract 0.0298
+traditional 0.1243
+indigenous 0.0207
+colonial 0.0118
+era 0.0509
+loosely 0.0161
+average 0.0815
+originally 0.1509
+rope 0.0133
+tea 0.0166
+bag 0.0117
+filter 0.0115
+classify 0.0367
+runner 0.0207
+shoot 0.0941
+root 0.0951
+segment 0.03
+cut 0.0939
+primary 0.0906
+substantially 0.0128
+slow 0.0686
+false 0.0211
+trunk 0.0206
+stalk 0.0212
+expand 0.093
+together 0.1379
+dark 0.0922
+pale 0.0254
+underside 0.0124
+brown 0.0455
+patch 0.0294
+succession 0.0122
+petiole 0.0131
+least 0.1248
+length 0.0694
+mature 0.0425
+male 0.0592
+valuable 0.0235
+compose 0.0821
+primarily 0.0883
+fruit 0.0758
+rarely 0.0463
+black 0.1133
+resemble 0.0537
+closely 0.0609
+former 0.1247
+soft 0.0329
+fine 0.0511
+ancestor 0.0135
+originate 0.048
+eastern 0.0347
+interior 0.0148
+forest 0.0497
+away 0.1012
+competitive 0.0305
+institution 0.0416
+international 0.1062
+market 0.0981
+land 0.1308
+already 0.0908
+export 0.0134
+almost 0.1176
+ton 0.0112
+big 0.0943
+cash 0.0208
+tobacco 0.011
+sugar 0.0159
+fact 0.1077
+trade 0.0619
+predominantly 0.0146
+making 0.0173
+do 0.1579
+exclude 0.0313
+observe 0.0512
+nineteenth 0.011
+sponsor 0.0329
+begin 0.2672
+supply 0.0598
+eliminate 0.046
+train 0.071
+transport 0.0499
+city 0.1269
+track 0.0942
+destroy 0.1077
+road 0.0385
+war 0.1085
+decline 0.0463
+virus 0.0223
+seek 0.1009
+industry 0.0835
+clothing 0.0208
+flexible 0.0129
+resistant 0.0244
+salt 0.0159
+water 0.1298
+damage 0.1087
+ship 0.0769
+line 0.149
+fishing 0.0146
+net 0.0251
+once 0.1321
+minor 0.0535
+significance 0.0162
+hat 0.0128
+museum 0.0166
+collection 0.0752
+tribe 0.0254
+normally 0.0472
+drain 0.0282
+soil 0.0837
+rhizome 0.0146
+season 0.0702
+initial 0.077
+remove 0.114
+slope 0.0157
+operation 0.078
+bundle 0.0212
+earn 0.0775
+demand 0.0627
+remainder 0.0146
+report 0.1533
+share 0.0976
+producer 0.0588
+third 0.1714
+total 0.1239
+percent 0.0299
+go 0.2562
+import 0.0274
+sale 0.1015
+bract 0.0112
+law 0.1492
+adopt 0.0654
+son 0.0498
+legal 0.0876
+establishment 0.032
+th 0.1076
+understand 0.0587
+statute 0.0283
+pass 0.1242
+chief 0.0493
+parliament 0.0211
+amendment 0.0268
+mother 0.0495
+summon 0.0198
+father 0.0519
+session 0.0306
+prove 0.072
+contribute 0.0659
+justice 0.034
+pay 0.0951
+sum 0.0207
+exceed 0.0286
+week 0.098
+date 0.1119
+proceeding 0.0149
+cease 0.025
+valid 0.0204
+reach 0.1864
+gold 0.0588
+writer 0.05
+direct 0.1344
+payment 0.0241
+appeal 0.0632
+quarter 0.0304
+defendant 0.0189
+further 0.1646
+king 0.0541
+afterwards 0.0231
+officer 0.054
+proceed 0.0439
+contribution 0.0378
+woman 0.088
+married 0.0125
+husband 0.0218
+statement 0.04
+agreement 0.0493
+discharge 0.0113
+liability 0.0164
+bar 0.0572
+twin 0.0165
+jurisdiction 0.0389
+provision 0.0423
+enforcement 0.0262
+soldier 0.0453
+enforce 0.0286
+army 0.0506
+regular 0.0605
+force 0.1724
+portion 0.0533
+retain 0.0694
+regard 0.1244
+british 0.076
+colony 0.0253
+procedure 0.0339
+diminish 0.012
+continent 0.0195
+country 0.173
+inquiry 0.011
+majority 0.0679
+cast 0.0524
+responsibility 0.0269
+apply 0.1199
+adoption 0.0179
+succeed 0.0386
+heir 0.0122
+inherit 0.0136
+property 0.1114
+decide 0.1248
+criminal 0.0394
+thing 0.0899
+refuse 0.0444
+proof 0.018
+monthly 0.0353
+french 0.0635
+respect 0.0501
+title 0.2192
+office 0.0709
+determination 0.0126
+owner 0.0723
+future 0.1008
+estate 0.0258
+possibly 0.0421
+grant 0.089
+lifetime 0.0188
+death 0.1231
+similarly 0.0578
+next 0.1562
+possession 0.0305
+lawsuit 0.0201
+court 0.0944
+temporarily 0.0226
+daughter 0.0391
+sister 0.0339
+marriage 0.0196
+claim 0.1327
+matter 0.073
+terminate 0.0135
+petition 0.0147
+crown 0.0374
+doubt 0.0177
+committee 0.031
+doctrine 0.0199
+innovation 0.0259
+eighth 0.0187
+survive 0.0797
+re 0.1035
+ever 0.0959
+restoration 0.0133
+subsequent 0.0574
+dozen 0.0206
+favour 0.0204
+holder 0.0224
+entirely 0.0554
+remain 0.2103
+unite 0.0132
+english 0.0701
+last 0.1831
+lay 0.039
+principle 0.0547
+submit 0.0291
+prior 0.1007
+recommendation 0.0179
+scottish 0.014
+equal 0.0421
+co 0.0824
+speak 0.0627
+party 0.0967
+interested 0.0289
+litigation 0.013
+relief 0.0203
+necessary 0.0773
+desirable 0.0114
+membership 0.0184
+political 0.0536
+perspective 0.0577
+officially 0.0556
+bind 0.0299
+action 0.2022
+maker 0.0183
+pursue 0.0388
+dispute 0.0321
+settlement 0.0205
+canadian 0.0346
+campus 0.0161
+pro 0.0209
+club 0.0541
+deny 0.0343
+fund 0.0529
+agree 0.0821
+return 0.176
+resource 0.0699
+avoid 0.09
+expensive 0.0245
+battle 0.1114
+thus 0.1448
+preserve 0.0334
+society 0.0878
+vote 0.0398
+resolve 0.0296
+event 0.178
+effort 0.093
+protection 0.0651
+attorney 0.0213
+waste 0.0263
+dance 0.0903
+partner 0.0552
+enjoy 0.0503
+socially 0.0116
+performance 0.1046
+stage 0.1302
+film 0.0989
+television 0.0704
+definition 0.0513
+emergence 0.0117
+principal 0.0279
+considerably 0.0189
+permit 0.0525
+figure 0.0636
+exhibition 0.0137
+situation 0.0777
+dancing 0.0192
+step 0.0734
+swing 0.0141
+regional 0.0349
+favorite 0.02
+sequence 0.0677
+pair 0.0568
+formation 0.0408
+derive 0.0744
+ball 0.0372
+latin 0.0338
+specially 0.0127
+boundary 0.0239
+popular 0.1454
+day 0.2067
+knowledge 0.062
+pace 0.0263
+music 0.1739
+dominate 0.0235
+close 0.1475
+half 0.0871
+found 0.0891
+execution 0.0123
+ballet 0.0145
+dancer 0.0403
+absolute 0.0159
+initially 0.09
+meet 0.1385
+opposition 0.0222
+associate 0.0994
+tendency 0.0165
+drop 0.0774
+couple 0.0414
+transition 0.0285
+jazz 0.0177
+extent 0.0348
+tie 0.0499
+newly 0.0407
+transform 0.0399
+teach 0.0574
+generation 0.0849
+essential 0.0434
+huge 0.0356
+imperial 0.0114
+teacher 0.0425
+influential 0.0246
+finally 0.076
+conflict 0.051
+dissolve 0.0134
+custom 0.0348
+considerable 0.0295
+on 0.0311
+influence 0.0987
+elsewhere 0.0322
+actor 0.0421
+career 0.0539
+castle 0.0247
+status 0.0714
+portray 0.023
+championship 0.0263
+regulate 0.0352
+amateur 0.0137
+though 0.0218
+sole 0.0234
+representative 0.0322
+seem 0.0699
+especially 0.1351
+compete 0.0649
+regularly 0.0276
+programme 0.022
+australian 0.0383
+competitor 0.0226
+internationally 0.0236
+smooth 0.0361
+rhythm 0.0244
+perceive 0.0282
+host 0.0986
+attend 0.054
+team 0.1501
+judge 0.0456
+criterion 0.0266
+expression 0.0324
+timing 0.0148
+craft 0.0241
+presentation 0.0347
+nature 0.0893
+controversy 0.0289
+complaint 0.0265
+placement 0.014
+uncommon 0.012
+accumulate 0.02
+split 0.0522
+bronze 0.0169
+silver 0.0335
+restrict 0.0485
+illegal 0.0308
+no 0.0798
+routine 0.0181
+medal 0.0289
+evaluation 0.0187
+conventional 0.0236
+genre 0.0644
+test 0.0944
+rock 0.0513
+roll 0.0375
+north 0.0745
+examination 0.0185
+dedicate 0.033
+college 0.0403
+chapter 0.0383
+lesson 0.0142
+goal 0.0894
+fun 0.051
+compatible 0.0214
+bond 0.0188
+invite 0.031
+outline 0.0203
+above 0.0382
+organize 0.0451
+classic 0.0528
+closed 0.0134
+fluid 0.016
+current 0.1088
+historically 0.0334
+revive 0.026
+coast 0.0291
+twentieth 0.0111
+costume 0.0225
+affair 0.0217
+bow 0.011
+tail 0.0181
+coat 0.018
+abandon 0.0449
+short 0.1569
+creative 0.0393
+contemporary 0.0438
+travel 0.0994
+spot 0.0565
+outfit 0.0134
+tight 0.0131
+emphasize 0.0291
+upper 0.0423
+extend 0.084
+rotation 0.0123
+rise 0.0924
+count 0.0436
+peak 0.0332
+german 0.0634
+slight 0.0142
+inside 0.0236
+forward 0.0375
+up 0.0755
+opposite 0.0372
+direction 0.0683
+reverse 0.0323
+embrace 0.0135
+harmony 0.0138
+connection 0.05
+far 0.1079
+believe 0.112
+therefore 0.0878
+rotate 0.0159
+beat 0.0599
+quick 0.0309
+tempo 0.0126
+hop 0.0187
+jump 0.0538
+dramatic 0.0175
+role 0.1762
+spanish 0.0284
+attribute 0.0443
+classical 0.0376
+adaptation 0.0317
+unrelated 0.0157
+singer 0.0346
+tradition 0.0469
+soon 0.0829
+love 0.064
+personality 0.0315
+culture 0.0756
+west 0.0256
+slave 0.0127
+strongly 0.0311
+bounce 0.0114
+prohibition 0.0122
+element 0.1357
+hip 0.0152
+characteristic 0.0572
+powerful 0.0684
+achieve 0.0914
+brother 0.0483
+conceive 0.0205
+faster 0.0218
+freely 0.0246
+express 0.0639
+structure 0.1049
+street 0.0466
+shift 0.0426
+triple 0.0149
+shortly 0.0512
+spin 0.0366
+encourage 0.0563
+ask 0.0923
+minute 0.0603
+occasionally 0.054
+philosophy 0.0246
+being 0.0306
+existence 0.0375
+objective 0.0644
+usage 0.0313
+entity 0.0265
+notion 0.0189
+history 0.1163
+deploy 0.0202
+recent 0.0855
+philosopher 0.0117
+draw 0.1004
+topic 0.0342
+european 0.0801
+understanding 0.0332
+psychology 0.0236
+mainstream 0.0195
+confine 0.0153
+abstract 0.014
+investigation 0.0382
+fundamental 0.0308
+at 0.0695
+imagine 0.0139
+bridge 0.0262
+encounter 0.0601
+evolve 0.0451
+classification 0.0227
+perhaps 0.0378
+comprise 0.0338
+accident 0.021
+clarify 0.0128
+difference 0.0852
+identical 0.035
+fail 0.0862
+arrive 0.0647
+reason 0.1104
+explain 0.0866
+reaction 0.0404
+varied 0.0189
+reasoning 0.0112
+flow 0.0327
+conclusion 0.0318
+indeed 0.0264
+just 0.1749
+assert 0.0234
+unlimited 0.0153
+essence 0.0121
+expect 0.0613
+none 0.0349
+launch 0.0854
+theory 0.0654
+concern 0.0967
+point 0.2409
+actual 0.062
+basis 0.0899
+generate 0.0564
+actually 0.0871
+doctor 0.0294
+church 0.0286
+sentence 0.0229
+partly 0.022
+theme 0.0856
+earth 0.0515
+air 0.0974
+carbon 0.0137
+agent 0.0534
+precede 0.0214
+universal 0.029
+cause 0.2141
+whole 0.0761
+sun 0.0361
+efficient 0.0195
+nevertheless 0.0264
+altogether 0.0127
+comparison 0.0321
+distinction 0.0294
+really 0.0447
+planet 0.0364
+proportion 0.015
+lend 0.0146
+previous 0.1468
+explanation 0.0182
+purely 0.0165
+scheme 0.0385
+argue 0.0713
+unique 0.0937
+academic 0.0373
+notice 0.0385
+evaluate 0.0209
+reference 0.0824
+exploit 0.0199
+address 0.0631
+argument 0.0302
+differentiate 0.0173
+manifest 0.0116
+book 0.1351
+everyday 0.012
+resort 0.0128
+sky 0.0204
+blue 0.0724
+translate 0.0317
+manner 0.0528
+official 0.112
+sign 0.0753
+overcome 0.0218
+coin 0.0327
+prevail 0.0123
+hence 0.0382
+medieval 0.0207
+warn 0.0258
+confuse 0.0274
+analyze 0.0208
+indicate 0.084
+chain 0.0367
+relation 0.0473
+space 0.1072
+negative 0.0525
+analysis 0.0525
+interpretation 0.0261
+firm 0.0263
+follower 0.0115
+constant 0.0247
+core 0.0527
+cloud 0.0142
+clear 0.0816
+link 0.0666
+shell 0.0123
+furthermore 0.0335
+assume 0.0623
+master 0.0703
+tower 0.0276
+maneuver 0.014
+radical 0.0119
+route 0.0323
+mode 0.1095
+penetrate 0.0116
+predict 0.0197
+remark 0.0248
+substantial 0.0278
+never 0.1246
+answer 0.0371
+roughly 0.0362
+landscape 0.0301
+emphasis 0.0353
+advocate 0.0283
+gather 0.0416
+suffer 0.0599
+revolution 0.028
+religion 0.0188
+faith 0.0169
+reasonable 0.0238
+professor 0.0355
+lecture 0.0115
+hall 0.0215
+emotional 0.0186
+concerned 0.0145
+cultural 0.0459
+scientist 0.0436
+account 0.0618
+ratio 0.0152
+faculty 0.014
+consequence 0.0342
+thought 0.0235
+error 0.0273
+suppose 0.0304
+carefully 0.0135
+attack 0.1356
+consideration 0.028
+distribution 0.0644
+possibility 0.0407
+whereby 0.0169
+essentially 0.0322
+mere 0.0132
+universe 0.0273
+dimension 0.0235
+namely 0.022
+depth 0.0349
+likewise 0.0193
+oppose 0.0683
+predecessor 0.0687
+undertake 0.0221
+extensively 0.0239
+hope 0.0515
+strip 0.0208
+quest 0.0381
+pose 0.0243
+wonder 0.0121
+distinguish 0.0501
+famous 0.0541
+freedom 0.0401
+context 0.0475
+shall 0.0228
+denote 0.0138
+perception 0.0206
+foundation 0.0379
+northern 0.0527
+pop 0.0357
+artist 0.0774
+hit 0.1
+agency 0.0447
+label 0.0451
+song 0.0898
+asian 0.0243
+instrument 0.0397
+alter 0.0432
+quickly 0.0756
+heavily 0.0512
+repetitive 0.0182
+youth 0.0273
+centre 0.0266
+tension 0.0178
+minority 0.0128
+ethnic 0.0116
+foster 0.0132
+identity 0.0336
+chart 0.0397
+company 0.1579
+ranking 0.0185
+hail 0.011
+queen 0.0183
+service 0.143
+charity 0.0169
+golden 0.0271
+melody 0.0166
+guitar 0.0158
+star 0.1077
+decade 0.0568
+village 0.0396
+bachelor 0.0126
+enter 0.1296
+win 0.145
+contest 0.0372
+album 0.0394
+tour 0.0376
+boy 0.073
+fusion 0.0132
+notable 0.0625
+mix 0.0623
+drum 0.0172
+affirm 0.0127
+positively 0.0177
+progression 0.0175
+post 0.0721
+southeast 0.0113
+brand 0.0409
+best 0.0674
+indian 0.0368
+lyric 0.0231
+detail 0.0787
+distinctive 0.026
+artwork 0.0232
+logo 0.0148
+musician 0.0293
+sample 0.0345
+singe 0.0163
+around 0.0561
+trend 0.0261
+vocal 0.0289
+pioneer 0.0252
+hire 0.039
+remix 0.0138
+respectively 0.0669
+cheap 0.0154
+debut 0.0459
+successful 0.0971
+largely 0.0665
+earlier 0.0389
+copyright 0.0248
+investigate 0.0495
+infringement 0.0119
+moreover 0.0174
+buy 0.0657
+purchase 0.0815
+online 0.0827
+studio 0.0774
+sing 0.0264
+repeat 0.0437
+flavor 0.0114
+popularity 0.0461
+reside 0.0189
+series 0.2044
+exhibit 0.0322
+house 0.0952
+bit 0.0432
+bass 0.0142
+magazine 0.1121
+recently 0.0643
+solo 0.0208
+deliberately 0.0117
+creator 0.0344
+tell 0.0947
+tale 0.0179
+devote 0.0159
+beautiful 0.0219
+celebration 0.0182
+string 0.02
+before 0.0217
+fuse 0.017
+bomb 0.0336
+clean 0.0285
+playing 0.0526
+join 0.1033
+acclaim 0.0306
+fourth 0.0653
+parent 0.0605
+struggle 0.0296
+adult 0.0551
+why 0.0454
+fan 0.0758
+anti 0.0451
+university 0.0382
+business 0.0741
+statistic 0.0223
+discipline 0.0235
+marketing 0.0253
+publication 0.0559
+collect 0.1052
+interpret 0.0267
+typical 0.0534
+course 0.0954
+intend 0.0926
+probability 0.0116
+confidence 0.011
+interval 0.0155
+linear 0.0351
+symbol 0.0295
+inherent 0.0122
+channel 0.0317
+extensive 0.0464
+civilization 0.0147
+progress 0.0829
+representation 0.0258
+intent 0.0209
+voluntary 0.0129
+trust 0.0278
+demonstrate 0.051
+proximity 0.0111
+awareness 0.0188
+creature 0.0372
+illustrate 0.0296
+reinforce 0.015
+observation 0.0193
+behaviour 0.0171
+attitude 0.0232
+feeling 0.0309
+truth 0.0205
+vital 0.0177
+distance 0.0485
+environmental 0.0486
+engage 0.0612
+colour 0.0443
+cry 0.0126
+effective 0.0652
+barrier 0.0199
+manipulate 0.0189
+learning 0.0224
+childhood 0.0173
+construct 0.0477
+programming 0.0261
+mathematical 0.0151
+necessarily 0.0249
+characterize 0.0309
+model 0.1117
+dynamic 0.0328
+contrary 0.0148
+belief 0.0309
+advance 0.0846
+vast 0.0284
+collaboration 0.0258
+cooperation 0.0137
+strategic 0.025
+reputation 0.0187
+customer 0.0233
+internal 0.0381
+employee 0.039
+spectrum 0.017
+possess 0.0477
+excellent 0.0318
+critically 0.0179
+relevant 0.0321
+strategy 0.074
+mass 0.0345
+precise 0.0157
+campaign 0.0666
+leader 0.078
+candidate 0.022
+manager 0.0331
+military 0.0734
+aggregate 0.0191
+continuously 0.0119
+behavior 0.0393
+atmosphere 0.0313
+look 0.1355
+factor 0.0769
+researcher 0.0384
+dig 0.0141
+feel 0.1096
+intention 0.0275
+failure 0.046
+gender 0.0202
+recipient 0.0174
+religious 0.0327
+organisation 0.0281
+expectation 0.0185
+norm 0.0124
+variable 0.0284
+effectively 0.0468
+global 0.0468
+thank 0.0256
+border 0.0306
+impact 0.0637
+below 0.0271
+continuous 0.0206
+spread 0.0889
+exchange 0.0406
+organism 0.018
+chemical 0.0381
+bacteria 0.0115
+fungal 0.0123
+kingdom 0.018
+sexual 0.0309
+conduct 0.0837
+fungus 0.0231
+insect 0.038
+expose 0.0359
+attract 0.048
+coordinate 0.0186
+react 0.0149
+imply 0.033
+density 0.0145
+gene 0.0201
+marine 0.0145
+laboratory 0.0224
+mirror 0.0132
+radio 0.044
+interfere 0.0167
+conversation 0.0246
+deem 0.0355
+scholar 0.0234
+target 0.0699
+confer 0.0116
+advice 0.02
+command 0.0605
+corporation 0.0238
+ignore 0.0238
+secondary 0.0425
+phenomenon 0.0264
+acquisition 0.0208
+weakness 0.0153
+propose 0.0646
+premise 0.0229
+simultaneously 0.0361
+determine 0.1146
+passage 0.0261
+presence 0.0576
+reception 0.0336
+encode 0.0115
+stone 0.0355
+empire 0.0245
+distant 0.0128
+administration 0.0301
+construction 0.0537
+temple 0.0138
+sustain 0.0189
+authority 0.0626
+interference 0.0116
+inform 0.0345
+coach 0.0132
+automatic 0.0147
+treatment 0.0593
+deal 0.0971
+variant 0.0292
+anywhere 0.0212
+irish 0.0149
+piano 0.0152
+weekend 0.0126
+camp 0.0233
+dedicated 0.0184
+town 0.069
+alternatively 0.0171
+founder 0.0391
+contract 0.0542
+initiate 0.0333
+morning 0.0208
+province 0.0281
+retreat 0.012
+celebrate 0.0277
+anniversary 0.0257
+double 0.0614
+popularize 0.0115
+in 0.1044
+renew 0.0129
+internet 0.0428
+availability 0.0203
+explicitly 0.0168
+friendly 0.0259
+alcohol 0.0146
+consumption 0.02
+evening 0.0184
+hour 0.0852
+square 0.0341
+throw 0.0507
+ago 0.0308
+composition 0.0338
+drive 0.0941
+fit 0.0458
+participant 0.0375
+demonstration 0.018
+experienced 0.0138
+entire 0.0972
+ahead 0.0202
+venue 0.026
+discourage 0.0117
+pretty 0.017
+clothe 0.0163
+welcome 0.0174
+mistake 0.0253
+willing 0.0135
+abuse 0.0229
+policy 0.0574
+bottom 0.0366
+female 0.0745
+adjacent 0.0209
+sub 0.0344
+choreographer 0.0122
+neighbor 0.0113
+wait 0.0322
+proper 0.0352
+span 0.0252
+interrupt 0.0121
+cycle 0.0389
+closer 0.0124
+complicated 0.0136
+enough 0.1048
+choreography 0.0113
+specify 0.0312
+fellow 0.0313
+taste 0.0227
+assemble 0.0159
+musical 0.0597
+match 0.0663
+twice 0.0264
+solely 0.0227
+narrow 0.0376
+duration 0.0198
+dominant 0.0231
+signature 0.0217
+sharp 0.0255
+underlie 0.0133
+prevalent 0.0126
+east 0.0225
+annual 0.0789
+of 0.0216
+pet 0.0113
+expert 0.0354
+involvement 0.0255
+intelligence 0.0347
+psychologist 0.0131
+theoretical 0.0143
+practical 0.0248
+automatically 0.033
+foreign 0.029
+russian 0.0224
+journal 0.0226
+accurately 0.0132
+borrow 0.0154
+biological 0.028
+translation 0.0227
+accurate 0.0182
+department 0.043
+too 0.1281
+structural 0.0144
+constraint 0.0142
+insufficient 0.0122
+testing 0.0259
+angle 0.0211
+realm 0.0207
+evolution 0.0234
+network 0.073
+project 0.134
+robot 0.0203
+simplify 0.0124
+interesting 0.0317
+price 0.0474
+insight 0.0114
+evolutionary 0.0115
+crucial 0.016
+raw 0.0204
+cite 0.0747
+discovery 0.0226
+implementation 0.0245
+similarity 0.0266
+plot 0.0791
+japanese 0.0784
+unknown 0.0482
+uncover 0.0164
+exciting 0.0116
+suitable 0.035
+properly 0.0245
+com 0.0456
+hide 0.064
+conclude 0.0801
+training 0.0752
+reply 0.0114
+interactive 0.0531
+operate 0.0817
+search 0.0646
+engine 0.0738
+likely 0.0724
+author 0.0727
+somewhat 0.0501
+toy 0.0175
+colored 0.0159
+block 0.0514
+box 0.0522
+impressive 0.019
+mission 0.0839
+website 0.0779
+operator 0.0197
+mine 0.0211
+retrieve 0.0265
+vehicle 0.052
+truck 0.0134
+car 0.0495
+realize 0.0383
+recur 0.0139
+mental 0.0305
+logic 0.0151
+plan 0.1398
+brain 0.0223
+thinking 0.0146
+intelligent 0.013
+intellectual 0.0306
+central 0.0811
+attain 0.0176
+delay 0.0403
+accuracy 0.016
+map 0.0658
+transformation 0.0135
+biology 0.0114
+collectively 0.0126
+surround 0.0679
+simulation 0.0267
+formal 0.0362
+entry 0.0626
+discussion 0.032
+presumably 0.0115
+consciousness 0.0127
+situate 0.0116
+psychological 0.0207
+implement 0.0599
+individually 0.0132
+simulate 0.0195
+selection 0.0453
+million 0.0134
+discover 0.0965
+fashion 0.0287
+novel 0.0414
+humanity 0.0166
+apparently 0.0258
+mechanism 0.0399
+genetic 0.0259
+guide 0.0592
+colleague 0.014
+architecture 0.0177
+president 0.045
+ride 0.0277
+dub 0.0222
+hint 0.0218
+fill 0.0588
+constitute 0.0334
+innovative 0.0214
+measurement 0.011
+choice 0.0792
+reading 0.0143
+meter 0.0423
+watch 0.0423
+punishment 0.0158
+resolution 0.0376
+experimental 0.0234
+integrate 0.0389
+finance 0.019
+mathematic 0.0164
+wing 0.0373
+greatly 0.0376
+inspire 0.063
+precursor 0.0112
+commentary 0.0161
+visible 0.0278
+enterprise 0.0138
+formally 0.0276
+ai 0.0169
+apparent 0.0225
+association 0.0461
+layer 0.0266
+critic 0.0853
+advantage 0.0527
+realistic 0.0285
+strictly 0.0192
+familiar 0.026
+chinese 0.036
+prominent 0.0395
+like 0.0491
+alliance 0.0192
+detailed 0.0393
+rename 0.0381
+literally 0.0191
+bone 0.0121
+legend 0.0279
+confirm 0.0508
+capital 0.0294
+reign 0.0116
+story 0.1448
+civil 0.0472
+rough 0.0176
+rank 0.0824
+odd 0.0186
+dual 0.0176
+default 0.0193
+trick 0.0176
+gun 0.0449
+beam 0.013
+circuit 0.0201
+facilitate 0.0297
+flight 0.0286
+intact 0.0118
+dangerous 0.0318
+violent 0.0191
+safety 0.0383
+ray 0.0133
+consumer 0.0337
+panel 0.0256
+shadow 0.0272
+wall 0.063
+straight 0.0277
+hot 0.0495
+transmit 0.0243
+trademark 0.0255
+manufacture 0.0323
+manufacturer 0.0226
+brief 0.0322
+shot 0.0245
+rate 0.1093
+permanently 0.0176
+plastic 0.0135
+analog 0.0145
+storage 0.0265
+solid 0.0337
+limitation 0.0348
+equip 0.0315
+metal 0.0381
+locate 0.1014
+constantly 0.0192
+flood 0.0144
+strike 0.0582
+restore 0.0445
+pack 0.0458
+absorb 0.026
+tiny 0.0189
+reflect 0.0546
+random 0.0298
+dimensional 0.0188
+economically 0.0112
+acceptable 0.017
+compensation 0.018
+render 0.0508
+slot 0.0136
+poor 0.0679
+vice 0.025
+ghost 0.0191
+registration 0.0152
+weak 0.0344
+permanent 0.034
+factory 0.018
+compensate 0.0142
+ring 0.0349
+plane 0.0241
+vector 0.0121
+cancel 0.0469
+collective 0.0191
+tv 0.0474
+repair 0.0237
+shop 0.0291
+corner 0.0251
+curve 0.0157
+path 0.047
+impose 0.0316
+localize 0.0116
+decay 0.0115
+fade 0.0132
+out 0.0349
+unusual 0.0331
+heat 0.0258
+resistance 0.0309
+minimal 0.0183
+cool 0.0311
+temperature 0.0419
+off 0.0208
+click 0.0275
+arcade 0.0398
+pitch 0.0242
+maximum 0.0527
+horizontal 0.0173
+pronounce 0.011
+magic 0.0373
+width 0.0126
+minimize 0.0121
+tape 0.018
+correspond 0.0304
+industrial 0.0293
+complexity 0.0195
+spray 0.014
+basically 0.0124
+embed 0.0117
+sheet 0.0143
+deposit 0.0147
+thin 0.0275
+functionality 0.0126
+virtually 0.0215
+dead 0.057
+rapid 0.026
+spell 0.033
+disappear 0.0321
+retailer 0.0127
+announce 0.1217
+domestic 0.0237
+surpass 0.0183
+owe 0.0159
+cabinet 0.0115
+disadvantage 0.0118
+technological 0.0184
+escape 0.0744
+harmful 0.0129
+toxic 0.0305
+hazard 0.0123
+toxin 0.0115
+regulatory 0.013
+disposal 0.011
+requirement 0.0678
+recovery 0.0181
+residential 0.0138
+sector 0.0233
+pal 0.015
+fly 0.0645
+collapse 0.0249
+suddenly 0.0209
+fee 0.032
+labor 0.0158
+aside 0.0253
+weather 0.0294
+money 0.0743
+bank 0.0249
+informal 0.0124
+shooting 0.013
+obscure 0.012
+wealthy 0.0126
+shooter 0.0338
+derivative 0.0153
+reject 0.0421
+companion 0.0197
+epithet 0.0177
+invention 0.0144
+remedy 0.0194
+incentive 0.0129
+fair 0.0283
+dealer 0.0117
+chip 0.0148
+check 0.0273
+standing 0.0135
+reserve 0.0275
+supervise 0.0132
+wooden 0.0139
+stick 0.0332
+job 0.0534
+mini 0.024
+police 0.0559
+phase 0.0376
+warning 0.0144
+exactly 0.0231
+wish 0.0534
+cap 0.0151
+minimum 0.0327
+scenario 0.0343
+whenever 0.0178
+convert 0.0387
+currency 0.0134
+equivalent 0.0348
+footage 0.0159
+insist 0.0143
+permission 0.0186
+optional 0.0221
+rare 0.0513
+calculate 0.0166
+be 0.0427
+lie 0.0466
+commission 0.0399
+behind 0.0172
+along 0.0182
+insurance 0.0147
+working 0.0135
+bad 0.0702
+outside 0.0453
+bite 0.0133
+dollar 0.0218
+thereby 0.0205
+profit 0.0409
+nickname 0.0134
+breach 0.0138
+let 0.0515
+fifth 0.0471
+sixth 0.0275
+garner 0.0125
+credit 0.0718
+bonus 0.0477
+occasional 0.0164
+promotional 0.0158
+maximize 0.0112
+dramatically 0.0115
+omit 0.013
+conversely 0.0128
+pick 0.0675
+trip 0.022
+physically 0.0202
+cheat 0.0139
+rail 0.0118
+ritual 0.0136
+prohibit 0.0314
+enormous 0.0141
+crew 0.0269
+declare 0.0565
+consistently 0.0156
+trial 0.0469
+randomly 0.0183
+texture 0.0285
+stretch 0.0134
+private 0.0745
+deck 0.0119
+devise 0.014
+protect 0.099
+separately 0.0225
+comparable 0.0154
+quote 0.0194
+baby 0.0193
+italian 0.0269
+underground 0.0311
+float 0.021
+hotel 0.0143
+guy 0.0124
+revolve 0.0241
+sand 0.0177
+joke 0.0126
+tough 0.0194
+absent 0.019
+vessel 0.0203
+expansion 0.0429
+forget 0.017
+creation 0.0666
+stable 0.0173
+tissue 0.0271
+flexibility 0.011
+compound 0.0361
+wood 0.045
+bark 0.0247
+resist 0.013
+strain 0.0162
+protein 0.0184
+estimate 0.0447
+pathway 0.012
+beta 0.0162
+rich 0.0452
+infection 0.026
+sufficiently 0.0139
+grass 0.0266
+partially 0.0282
+concentrate 0.0192
+crystal 0.0179
+strengthen 0.0156
+readily 0.0205
+germination 0.0116
+pit 0.0223
+inclusion 0.0276
+organic 0.021
+budget 0.0316
+constituent 0.0115
+pathogen 0.0222
+spore 0.0152
+sensitive 0.0208
+survival 0.0285
+kill 0.1244
+weaken 0.0128
+truly 0.02
+thrive 0.0192
+conjunction 0.0194
+mineral 0.0138
+abundant 0.0142
+perfect 0.0405
+chamber 0.0189
+orchestra 0.0127
+ensemble 0.0119
+ending 0.032
+sized 0.0171
+designation 0.0129
+composer 0.0315
+outstanding 0.0234
+fantasy 0.0336
+comprehensive 0.0198
+painting 0.0168
+performer 0.0243
+audience 0.0489
+entrance 0.0178
+critical 0.073
+register 0.0455
+duty 0.0472
+premiere 0.0152
+introduction 0.0503
+scene 0.0795
+forever 0.0129
+beach 0.0151
+scholarship 0.0135
+inspiration 0.0263
+collaborate 0.0179
+epic 0.0125
+genesis 0.0136
+commit 0.0352
+massive 0.0334
+smash 0.0135
+nuclear 0.0209
+crack 0.0134
+attractive 0.0248
+paint 0.0263
+outdoor 0.013
+humidity 0.0111
+scroll 0.0224
+shallow 0.0151
+reveal 0.1079
+steel 0.0124
+pull 0.0343
+pad 0.0163
+probably 0.046
+insert 0.0172
+removal 0.0219
+steam 0.0254
+ideal 0.0248
+twist 0.021
+hair 0.0348
+propagation 0.0129
+press 0.0674
+prime 0.0161
+sudden 0.0142
+nearby 0.0351
+staff 0.0677
+specialist 0.018
+mixture 0.0201
+teaching 0.0241
+ill 0.0189
+prepare 0.0507
+income 0.0281
+festival 0.0195
+fame 0.017
+investment 0.0185
+loan 0.0115
+building 0.0853
+ongoing 0.0242
+merely 0.0305
+separation 0.0114
+dream 0.0272
+organise 0.0223
+dog 0.0285
+extension 0.0223
+concrete 0.0144
+moon 0.0151
+technical 0.054
+blend 0.0157
+realism 0.0112
+deeply 0.0196
+puzzle 0.0605
+integral 0.012
+mysterious 0.0319
+adequate 0.0158
+partial 0.0224
+persist 0.0144
+resemblance 0.0117
+vegetable 0.0138
+admit 0.0283
+lobe 0.0149
+artifact 0.0181
+container 0.0155
+mandate 0.0169
+fish 0.0249
+criticize 0.0729
+responsible 0.0749
+mystery 0.0229
+wet 0.0211
+drought 0.0252
+evergreen 0.0254
+deciduous 0.0222
+frequent 0.0261
+conversion 0.0223
+desert 0.0316
+woody 0.0167
+shrub 0.0445
+herbaceous 0.0257
+diversity 0.0188
+threat 0.0463
+woodland 0.0132
+ecosystem 0.0134
+mountain 0.0454
+bird 0.0384
+county 0.0239
+overlap 0.0186
+burn 0.0418
+regime 0.0127
+smoke 0.0137
+sunlight 0.0143
+seedling 0.0155
+perennial 0.059
+exposure 0.0222
+spark 0.0112
+fuel 0.0286
+moderate 0.02
+assumption 0.0165
+deer 0.0112
+worth 0.0364
+germinate 0.015
+invasive 0.0261
+consume 0.0403
+moisture 0.0146
+beneficial 0.0174
+induce 0.0237
+tooth 0.0132
+grade 0.0286
+wage 0.0129
+driver 0.0225
+transaction 0.012
+obligation 0.0165
+index 0.0143
+script 0.0249
+library 0.0304
+reform 0.0265
+prince 0.0117
+fear 0.0361
+evil 0.0491
+harm 0.0304
+column 0.0177
+geographical 0.0114
+accuse 0.0226
+judicial 0.0136
+constitution 0.0141
+penalty 0.0228
+crime 0.0401
+victim 0.0276
+assault 0.0251
+financial 0.0484
+counterpart 0.025
+servant 0.0123
+punish 0.0112
+gap 0.0199
+spine 0.012
+defend 0.041
+absence 0.0323
+maturity 0.0112
+persistent 0.0118
+organ 0.0164
+sink 0.0151
+superior 0.0302
+specimen 0.014
+down 0.0464
+erect 0.031
+hang 0.0214
+hairy 0.0183
+circular 0.0138
+oval 0.0162
+bud 0.0182
+hook 0.0152
+stamen 0.0195
+trap 0.0395
+moist 0.0254
+reportedly 0.0148
+efficiency 0.0162
+unlikely 0.0156
+undergo 0.0277
+trail 0.0154
+chaos 0.014
+suggestion 0.0141
+descendant 0.0116
+opening 0.0476
+coincide 0.0156
+plain 0.0209
+agricultural 0.022
+fence 0.0136
+weed 0.0249
+pollinate 0.0181
+pollination 0.0138
+trait 0.0173
+reward 0.0394
+butterfly 0.0181
+egg 0.0295
+dull 0.012
+colorful 0.0132
+sweet 0.022
+giant 0.0349
+disperse 0.0168
+cave 0.0146
+hunter 0.0158
+edible 0.0201
+boil 0.0123
+mood 0.0131
+unsuccessful 0.0116
+christian 0.0147
+spiritual 0.0174
+promotion 0.0256
+district 0.0412
+convention 0.0352
+endanger 0.0169
+threaten 0.0447
+propagate 0.0202
+destruction 0.0375
+agriculture 0.0137
+vine 0.0119
+park 0.04
+careful 0.0117
+hardy 0.0202
+cutting 0.0158
+rot 0.0151
+reproduction 0.0163
+joint 0.0326
+stock 0.0276
+pest 0.0167
+larvae 0.0138
+combat 0.0872
+symptom 0.0303
+adventure 0.0931
+sequel 0.1049
+cartoon 0.0126
+disk 0.0237
+cd 0.0393
+rom 0.0179
+formula 0.0292
+inventory 0.0249
+protagonist 0.0478
+instantly 0.0148
+stream 0.0273
+flag 0.0232
+developer 0.0759
+monster 0.0393
+lab 0.0172
+assistant 0.0257
+mad 0.0114
+river 0.0264
+resume 0.0175
+pod 0.015
+recruit 0.023
+forth 0.0138
+royalty 0.0117
+reunite 0.0147
+exit 0.0218
+meanwhile 0.0286
+defeat 0.0984
+secret 0.0579
+humor 0.0173
+commence 0.0132
+designer 0.0535
+gameplay 0.1425
+animation 0.047
+sure 0.0219
+asset 0.0268
+artistic 0.0268
+spend 0.0704
+comment 0.0652
+legendary 0.0137
+license 0.0583
+animate 0.0279
+icon 0.0178
+director 0.0913
+opt 0.0156
+praise 0.0991
+talent 0.0174
+parody 0.0138
+afford 0.0154
+gaming 0.0753
+kit 0.0141
+package 0.0352
+reviewer 0.0532
+finish 0.0729
+enjoyable 0.0176
+blade 0.0213
+impression 0.0131
+appreciate 0.0138
+retrospective 0.0118
+certainly 0.0159
+pc 0.0825
+gamer 0.0528
+editor 0.0532
+blow 0.0256
+ign 0.0453
+villain 0.0163
+subtitle 0.0125
+entitle 0.0457
+edition 0.066
+approve 0.0402
+closure 0.0159
+playstation 0.0869
+port 0.0863
+secure 0.0377
+news 0.0354
+executive 0.0368
+documentary 0.0178
+archive 0.0146
+update 0.0571
+recreate 0.0127
+menu 0.0273
+soundtrack 0.0579
+playable 0.0595
+score 0.1421
+metacritic 0.0506
+obvious 0.0191
+absolutely 0.0115
+ease 0.0154
+worthy 0.0128
+preparation 0.0237
+medicinal 0.0196
+hunt 0.0254
+margin 0.0322
+disturb 0.0172
+approval 0.0205
+reduction 0.0257
+disorder 0.0199
+pain 0.0257
+fatal 0.0143
+livestock 0.0146
+dose 0.0116
+shock 0.0145
+detect 0.0211
+dna 0.0125
+roman 0.0208
+race 0.0703
+mechanic 0.0468
+depression 0.0133
+polish 0.014
+designate 0.0367
+finding 0.0243
+trading 0.0141
+uniform 0.0212
+percentage 0.0197
+sex 0.0282
+dungeon 0.0198
+dragon 0.0348
+ally 0.0358
+god 0.0125
+password 0.0121
+repeatedly 0.0161
+instruct 0.0167
+hack 0.0136
+slash 0.0115
+horror 0.0138
+installment 0.0448
+storyline 0.0446
+descend 0.0156
+portal 0.0131
+reminiscent 0.0131
+resurrect 0.0122
+weapon 0.0945
+armor 0.0205
+magical 0.02
+rating 0.0487
+shield 0.0232
+upgrade 0.042
+enlist 0.0114
+captain 0.0206
+hero 0.0419
+storm 0.0225
+multiplayer 0.0523
+server 0.0165
+advertise 0.015
+virtual 0.0358
+fresh 0.0291
+warrior 0.0263
+corrupt 0.0139
+demon 0.0176
+spirit 0.0298
+imprison 0.0146
+journey 0.0268
+prison 0.0285
+visitor 0.0163
+fortress 0.0116
+worldwide 0.0659
+reuse 0.0125
+departure 0.0188
+impress 0.0113
+movie 0.0572
+exclusive 0.0467
+gift 0.0217
+chest 0.0131
+retail 0.0244
+downloadable 0.0206
+announcement 0.0205
+unofficial 0.0114
+window 0.0577
+revenue 0.0264
+gross 0.0113
+countrys 0.0117
+platinum 0.0169
+certification 0.0118
+gameranking 0.0272
+gamespot 0.0328
+achievement 0.0345
+rpg 0.0173
+spawn 0.0198
+rumor 0.0133
+seemingly 0.0178
+farmer 0.0159
+dialogue 0.0337
+fight 0.117
+station 0.0656
+innocent 0.0125
+lost 0.011
+tear 0.0166
+advise 0.022
+verse 0.0114
+commemorate 0.0113
+widespread 0.0425
+ultimate 0.032
+depict 0.036
+correctly 0.0158
+confront 0.0317
+drama 0.016
+horse 0.025
+ad 0.0201
+weigh 0.0135
+laser 0.0152
+nationwide 0.0115
+cartridge 0.0142
+nes 0.0159
+console 0.0764
+shut 0.0208
+controller 0.0215
+nintendo 0.0361
+concert 0.0255
+remote 0.0243
+trophy 0.0134
+super 0.0473
+journalist 0.0198
+seventh 0.0226
+tenth 0.0127
+bill 0.0345
+fighting 0.0341
+kick 0.0182
+explosive 0.0169
+opponent 0.0472
+unlockable 0.0169
+trailer 0.0191
+alien 0.0278
+volunteer 0.0189
+photograph 0.0179
+narrative 0.0222
+nation 0.0603
+crowd 0.0217
+territory 0.0436
+licensed 0.012
+tournament 0.0307
+arrow 0.0179
+scrolling 0.0172
+freeze 0.0164
+gauge 0.0116
+fold 0.0134
+boss 0.0537
+extreme 0.0355
+edit 0.0276
+veteran 0.0175
+culminate 0.0112
+regain 0.0156
+unlock 0.0454
+flash 0.0165
+lighting 0.0157
+android 0.0129
+franchise 0.0489
+preview 0.0116
+simulator 0.0111
+invasion 0.0249
+sega 0.0207
+clone 0.017
+somewhere 0.0131
+criticism 0.0509
+episode 0.0363
+grand 0.0243
+eligible 0.0153
+historic 0.018
+pound 0.0126
+healthy 0.0195
+showcase 0.0199
+fulfill 0.012
+excess 0.0149
+venture 0.0205
+semi 0.0258
+progressive 0.0114
+theater 0.0187
+patent 0.0233
+silent 0.011
+thousand 0.032
+chorus 0.0124
+crash 0.0373
+punch 0.0137
+extended 0.0191
+guest 0.0267
+transportation 0.0155
+utility 0.0162
+rocket 0.0138
+occasion 0.0261
+skilled 0.0127
+ocean 0.0178
+aircraft 0.0244
+landing 0.0118
+junior 0.0127
+profile 0.0251
+endorse 0.0112
+clip 0.016
+ceremony 0.0294
+isolate 0.0257
+gate 0.0232
+lengthy 0.0111
+disc 0.0358
+susceptible 0.0202
+carrier 0.0143
+alpha 0.0129
+intermediate 0.0147
+packaging 0.011
+stimulate 0.0126
+leak 0.0116
+evident 0.0115
+unclear 0.0148
+fault 0.0122
+dutch 0.0146
+conservative 0.0145
+curriculum 0.0135
+happy 0.0195
+citizen 0.0348
+assignment 0.0133
+leadership 0.0246
+educator 0.0115
+moral 0.0191
+graduate 0.0382
+chairman 0.0167
+retire 0.0254
+strict 0.0242
+excellence 0.0138
+assessment 0.0226
+pollution 0.0116
+legislative 0.0133
+compliance 0.0122
+advent 0.0118
+ownership 0.0293
+wildlife 0.019
+traffic 0.019
+catch 0.0509
+compromise 0.014
+integration 0.0133
+assess 0.0262
+conference 0.0425
+fulfil 0.013
+opinion 0.0424
+burden 0.0132
+administrative 0.0198
+necessity 0.013
+economy 0.0221
+subsidiary 0.0111
+legally 0.0238
+treaty 0.014
+sea 0.0455
+poverty 0.0113
+prevention 0.0134
+assure 0.0112
+ecological 0.0125
+heritage 0.0146
+minister 0.0114
+federal 0.0514
+provincial 0.0121
+behalf 0.0207
+violation 0.0225
+election 0.0207
+wealth 0.0123
+constitutional 0.0167
+draft 0.0203
+infrastructure 0.0138
+statutory 0.0146
+dismiss 0.02
+arena 0.0207
+oversee 0.02
+instructor 0.0122
+aware 0.0225
+enemy 0.1146
+steal 0.0485
+priest 0.0112
+trilogy 0.0175
+warfare 0.012
+revenge 0.0224
+recognise 0.0266
+negotiate 0.0138
+beauty 0.0126
+occurrence 0.0141
+forum 0.0164
+soul 0.0264
+ruin 0.0205
+nominate 0.033
+defense 0.0475
+clause 0.0177
+liberty 0.0137
+coalition 0.0116
+initiative 0.0229
+authorize 0.0173
+plaintiff 0.0147
+justify 0.0163
+advertisement 0.0125
+fictional 0.0347
+uphold 0.0154
+amend 0.0184
+favorable 0.0311
+photo 0.0155
+allegedly 0.0113
+expire 0.0118
+allege 0.0208
+invest 0.0137
+sue 0.022
+lawyer 0.0234
+licensing 0.016
+judgment 0.0198
+activist 0.0137
+violate 0.0268
+comply 0.0138
+urge 0.0112
+coverage 0.0187
+upright 0.0117
+advertising 0.0175
+ninth 0.0124
+ruling 0.0167
+gallery 0.0112
+compilation 0.0322
+precedent 0.011
+revision 0.0128
+newspaper 0.0244
+workshop 0.0152
+illustration 0.0154
+sword 0.0291
+revival 0.0119
+known 0.0219
+physics 0.0191
+assembly 0.0125
+compact 0.013
+cooperative 0.017
+prize 0.0328
+prisoner 0.0169
+applicable 0.0153
+winner 0.0393
+commitment 0.0161
+theft 0.0138
+pursuit 0.0145
+loop 0.0126
+either 0.015
+conquer 0.0163
+empty 0.0198
+union 0.0186
+charter 0.0129
+personnel 0.0287
+politician 0.0144
+missile 0.0196
+crisis 0.0169
+personally 0.0125
+peace 0.03
+promise 0.0322
+motivation 0.0127
+blood 0.0388
+worker 0.0412
+peer 0.0193
+fairly 0.0279
+cable 0.0179
+ice 0.0235
+gang 0.0137
+violence 0.0262
+murder 0.037
+contend 0.0111
+complain 0.0189
+politic 0.0165
+protest 0.0172
+racial 0.0115
+interview 0.0551
+legitimate 0.0132
+rival 0.0268
+billboard 0.019
+thief 0.0118
+aggressive 0.0162
+killer 0.0138
+squad 0.0114
+seller 0.0131
+explicit 0.0147
+speculate 0.0116
+ensue 0.012
+by 0.0112
+herb 0.0265
+delivery 0.0178
+armed 0.0224
+selling 0.0229
+casual 0.0126
+blame 0.0113
+blast 0.016
+withdraw 0.0183
+reasonably 0.0111
+sexually 0.0117
+offensive 0.0176
+leaflet 0.0121
+certify 0.0175
+invade 0.0209
+convict 0.0145
+arrest 0.0304
+guilty 0.0153
+rural 0.022
+over 0.0365
+criticise 0.0196
+unconscious 0.0126
+obstacle 0.0274
+acknowledge 0.0268
+hurt 0.0111
+inability 0.0113
+jury 0.0149
+acceptance 0.0126
+honour 0.0205
+debt 0.011
+cat 0.0134
+sacrifice 0.0208
+bury 0.0152
+defence 0.0163
+occupy 0.0317
+athletic 0.0112
+after 0.0112
+thereafter 0.0173
+celebrity 0.0111
+wake 0.0209
+viewer 0.0133
+survivor 0.0157
+affiliate 0.0175
+champion 0.0244
+chase 0.024
+pocket 0.0148
+seriously 0.0141
+explosion 0.0177
+clock 0.0159
+wife 0.0383
+grain 0.0147
+strand 0.0135
+cook 0.0156
+wash 0.0115
+iron 0.0225
+physician 0.0117
+safe 0.0349
+acre 0.0121
+architect 0.0129
+corporate 0.0186
+dislike 0.0136
+poorly 0.0198
+depart 0.0145
+compile 0.0136
+marry 0.0312
+legacy 0.0127
+alike 0.0119
+comic 0.0259
+surprise 0.0186
+comic_strip 0.0118
+fighter 0.0336
+replay 0.0203
+poison 0.0195
+wherein 0.0117
+sprite 0.0183
+revise 0.0211
+intense 0.0185
+programmer 0.0183
+warrant 0.0131
+bug 0.025
+activision 0.0118
+defensive 0.0141
+enhanced 0.0198
+proprietary 0.0132
+wizard 0.0147
+snow 0.0128
+anticipate 0.015
+excessive 0.0171
+grab 0.0139
+forbid 0.0173
+girl 0.0506
+suicide 0.0155
+seize 0.0164
+incident 0.0283
+jail 0.0119
+devil 0.0123
+elaborate 0.023
+kid 0.0186
+practitioner 0.0117
+aesthetic 0.0172
+following 0.0369
+successor 0.0243
+demo 0.0253
+fate 0.0188
+intensive 0.0117
+rush 0.0174
+trouble 0.0192
+guardian 0.0201
+elect 0.0249
+darkness 0.0139
+deliver 0.0472
+hill 0.0163
+troop 0.0222
+shelter 0.0162
+overseas 0.0129
+exam 0.0113
+cattle 0.012
+schedule 0.0411
+drag 0.0117
+patrol 0.0132
+danger 0.0256
+hostile 0.018
+helicopter 0.0162
+operational 0.0169
+pilot 0.0308
+completion 0.0323
+commander 0.0214
+naval 0.0158
+kidnap 0.0207
+injure 0.0249
+ticket 0.0115
+partnership 0.0243
+administer 0.022
+boat 0.0202
+appointment 0.0125
+supporter 0.0142
+football 0.0217
+bid 0.0112
+league 0.02
+poll 0.0111
+unfortunately 0.015
+rebuild 0.0133
+appoint 0.0388
+mile 0.0238
+welfare 0.0162
+residence 0.0151
+relocate 0.0142
+children 0.02
+boost 0.0188
+jet 0.0142
+abroad 0.0122
+unveil 0.0128
+knight 0.0146
+accordance 0.0154
+publicly 0.0185
+closing 0.0135
+mythology 0.0112
+sacred 0.0125
+treasure 0.0205
+rescue 0.0527
+ruler 0.0112
+cult 0.0128
+remake 0.0307
+flame 0.0137
+statue 0.0125
+strange 0.0209
+flaw 0.0132
+challenging 0.0137
+redesign 0.0121
+pollen 0.0177
+seal 0.0224
+labour 0.0114
+locally 0.0148
+landmark 0.0111
+infiltrate 0.0121
+severely 0.0157
+heal 0.0131
+poisonous 0.02
+retirement 0.0143
+pipe 0.0117
+crush 0.0148
+oral 0.0125
+scatter 0.0245
+inflorescence 0.0283
+scent 0.0126
+capsule 0.0169
+swim 0.0115
+inferior 0.0112
+execute 0.0305
+honor 0.0396
+dictate 0.0119
+consecutive 0.0162
+noble 0.011
+deplete 0.0152
+pirate 0.0149
+curse 0.0116
+cutscene 0.0259
+governor 0.0152
+minigame 0.0174
+cannon 0.0129
+detection 0.0118
+guarantee 0.0194
+satisfy 0.0215
+inhabitant 0.0145
+suspect 0.0229
+problematic 0.0114
+cinematic 0.0162
+weekly 0.0232
+literary 0.0125
+chronicle 0.0133
+exploration 0.0262
+nutrient 0.0222
+inhabit 0.0141
+shore 0.0147
+satellite 0.0182
+tag 0.0154
+data 0.0118
+temperate 0.0309
+deed 0.0122
+farm 0.0221
+awaken 0.0161
+victory 0.0298
+arrival 0.0213
+mouth 0.0199
+rounded 0.0121
+civilian 0.028
+negotiation 0.0124
+proposal 0.0243
+fleet 0.0149
+neutral 0.0198
+merchant 0.0148
+abolish 0.0158
+mm 0.013
+provider 0.0155
+fiction 0.0297
+isle 0.0138
+hospital 0.0294
+rent 0.0135
+convince 0.0202
+knock 0.0262
+persuade 0.0115
+upcoming 0.0139
+baseball 0.0134
+donate 0.0156
+headquarter 0.0157
+headquarters 0.019
+secretary 0.0147
+intervention 0.0151
+sanction 0.011
+flee 0.0228
+council 0.0212
+terrorist 0.0126
+survey 0.0312
+witness 0.027
+gamecube 0.0157
+mega 0.0151
+passenger 0.0125
+faction 0.0155
+implication 0.0139
+racing 0.016
+stadium 0.0119
+funding 0.0227
+housing 0.0187
+temporary 0.0274
+gathering 0.0126
+acting 0.011
+institute 0.0171
+offence 0.0111
+discrimination 0.0115
+certificate 0.0141
+collectible 0.0134
+drawing 0.0118
+offering 0.0113
+allocate 0.0126
+lease 0.0144
+hinder 0.0112
+consent 0.0146
+roof 0.0122
+legislature 0.0131
+employer 0.0127
+publishing 0.0159
+endemic 0.0185
+gray 0.0168
+lake 0.0144
+alive 0.0233
+outbreak 0.011
+berry 0.0164
+aerial 0.0147
+ammunition 0.0153
+tax 0.0229
+reporter 0.0116
+installation 0.0201
+scrap 0.012
+tank 0.0219
+gog 0.011
+subtropical 0.0123
+reddish 0.0151
+clue 0.017
+nursery 0.0172
+accidentally 0.0142
+tactic 0.0208
+bus 0.011
+companys 0.0191
+altitude 0.0174
+mandatory 0.0113
+log 0.0126
+infect 0.026
+anime 0.0123
+expertise 0.011
+lord 0.0148
+repeal 0.011
+theatre 0.0123
+discontinue 0.0152
+tactical 0.0201
+bullet 0.0112
+raid 0.0116
+op 0.0126
+infected 0.0126
+tenant 0.0145
+guidance 0.0145
+echo 0.0148
+battlefield 0.0113
+spy 0.0139
+auto 0.0118
+drainage 0.0115
+disaster 0.0148
+prequel 0.0156
+tolerance 0.0125
+ovate 0.0114
+lanceolate 0.0112
+detective 0.0111
+centimeter 0.0128
+antagonist 0.0196
+lob 0.0152
+pathogenic 0.0106
+foe 0.0111
+aggregator 0.0205
+gamepro 0.0182
+alkaloid 0.0122
+expo 0.0113
+sne 0.0112
+aggregation 0.017

@@ -7,12 +7,37 @@ import multiprocessing as mp
 
 
 def create_pool(n_cpu):
+    """
+    Create a pool
+
+    Parameters
+    ----------
+    n_cpu : number of processes in the pool
+
+    Returns
+    -------
+    pool : a pool of n_cpu processes
+    """
     pool = mp.Pool(processes=n_cpu)
     return pool
 
 
-# Execute a function on a corpus in multicore
 def _multiprocess(pool, n_cpu, function, corpus, arguments=[]):
+    """
+    Execute a function on a corpus in multicore
+
+    Parameters
+    ----------
+    pool : pool of n_cpu processes
+    n_cpu : number of processesto use
+    function : function to execute
+    corpus : corpus (usually first argument of function)
+    arguments : others arguments of the function
+
+    Returns
+    -------
+    corpus : the result of the function evaluated on corpus
+    """
     corpus_length = len(corpus)
     documents_for_cpu = round(corpus_length/n_cpu) + 1
     tmp_tot = corpus_length
@@ -34,24 +59,69 @@ def _multiprocess(pool, n_cpu, function, corpus, arguments=[]):
 
 
 def remove_punctuation(corpus, *_):
+    """
+    Removes the punctuation in the corpus
+
+    Parameters
+    ----------
+    corpus : the corpus
+
+    Returns
+    -------
+    corpus : corpus without punctuation
+    """
     corpus = [re.sub(r'\S*@\S*\s?', '', doc) for doc in corpus]
     corpus = [re.sub(r'\s+', ' ', doc) for doc in corpus]
     corpus = [re.sub(r"\'", "", doc) for doc in corpus]
     return corpus
 
 
-# convert each document in the corpus from string
-#  into a list of words
 def create_bags_of_words(corpus):
+    """
+    Convert each document in the corpus from string
+    into a list of words
+    Parameters
+    ----------
+    corpus : corpus in list of strings format
+
+    Returns
+    -------
+    corpus in list of lists format.
+    corpus[document][word]
+    """
     for doc in corpus:
         yield(gensim.utils.simple_preprocess(str(doc), deacc=True))
 
 
 def remove_stopwords(corpus, stop_words):
+    """
+    Removes the stopwords from the corpus
+
+    Parameters
+    ----------
+    corpus: the corpus
+    stop_words : list of stopwords
+
+    Returns
+    -------
+    corpus without stopwords
+    """
     return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in corpus]
 
 
 def lemmatization(corpus, arguments):
+    """
+    Lemmatize the words in the corpus
+
+    Parameters
+    ----------
+    corpus: the corpus
+    arguments: list of 2 elements
+               [nlp, pos]
+    Returns
+    -------
+    result : corpus lemmatized
+    """
     result = []
     for document in corpus:
         doc = arguments[0](" ".join(document))
@@ -60,8 +130,23 @@ def lemmatization(corpus, arguments):
     return result
 
 
-# Creates a dictionary of words to remove from the documents
 def words_to_remove(corpus, min_word_freq, max_word_freq):
+    """
+    Find words which
+    document/word frequency is less than min_word_freq or
+    greather than max_word_freq
+
+    Parameters
+    ----------
+    corpus : the corpus
+    min_word_freq : minimum word/doc frequency in the corpus
+    max_word_freq : maximum word/doc frequency in the corpus
+
+    Returns
+    -------
+    to_remove : list of words with doc/word frequency outside
+                the boundaries
+    """
     corpus_length = len(corpus)
     minimum = round(min_word_freq*corpus_length)
     maximum = round(max_word_freq*corpus_length)
@@ -83,18 +168,42 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
     return to_remove
 
 
-# Remove from the documents each occurence of the words in input
-def remove_words(corpus, words):
+def filter_words(corpus, words):
+    """
+    Remove from the documents each occurence of the words in input
+
+    Parameters
+    ----------
+    corpus : the corpus
+    words : list of words to remove from corpus
+
+    Returns
+    -------
+    result : corpus without the words to remove
+    """
     result = []
     for document in corpus:
         result.append([word for word in document if not word in words])
     return result
 
 
-# Remove documents with less then min_doc words
-# from the corpus and create a dictionary with
-# extra data about the corpus
 def remove_docs(corpus, min_doc = 0, labels = []):
+    """
+    Remove documents with less than min_doc words
+    from the corpus and create a dictioonary with
+    extra data about the corpus
+
+    Parameters
+    ----------
+    corpus : the corpus
+    min_doc : optional, default 0
+              minimum number of words per document
+    labels : optional, list of labels of the documents
+
+    Returns
+    -------
+    result : dictionary with corpus and relatve infos
+    """
     n = 0
     new_corpus = []
     new_labels = []
@@ -130,8 +239,20 @@ def remove_docs(corpus, min_doc = 0, labels = []):
     return result
 
 
-# Retrieve the vocabulary from the corpus
 def get_vocabulary(corpus):
+    """
+    Retrieve the vocabulary from the corpus
+
+    Parameters
+    ----------
+    corpus : the corpus
+
+    Returns
+    -------
+    vocabulary : ditionary of words
+                 key = word
+                 value = word/doc frequency, rounded to 4 decimals
+    """
     corpus_length = len(corpus)
     vocabulary = {}
     for document in corpus:
@@ -149,3 +270,4 @@ def get_vocabulary(corpus):
         vocabulary[word] = round(vocabulary[word]/corpus_length,4)
 
     return vocabulary
+

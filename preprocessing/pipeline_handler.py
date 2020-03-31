@@ -2,8 +2,13 @@ import preprocessing.tools as tools
 import spacy
 from nltk.corpus import stopwords
 
-class Pipeline_handler:
 
+class Pipeline_handler:
+    """
+    Pipeline_handler is a class used to describe a
+    preprocessing pipeline and execute it with the
+    'process' method
+    """
     nlp = spacy.load("en")
     stop_words = stopwords.words('english')
 
@@ -15,10 +20,10 @@ class Pipeline_handler:
     stop_words_extension = []
     pos = ['NOUN', 'ADJ', 'VERB', 'ADV']
 
-    rm_punctuation = True
-    rm_stopwords = True
+    remove_punctuation = True
+    remove_stopwords = True
     lemmatize = True
-    rm_words = True
+    filter_words = True
     multiprocess = False
     display_progress= False
     
@@ -34,12 +39,12 @@ class Pipeline_handler:
         if self.display_progress:
                 print("Initializing preprocessing")
 
-        if self.rm_stopwords:
+        if self.remove_stopwords:
             pipeline.append(tools.remove_stopwords)
         if self.lemmatize:
             pipeline.append(tools.lemmatization)
-        if self.rm_words:
-            pipeline.append(tools.remove_words)
+        if self.filter_words:
+            pipeline.append(tools.filter_words)
         
         corpus = self.dataset["corpus"]
         categories = []
@@ -49,15 +54,16 @@ class Pipeline_handler:
         if self.multiprocess:
             pool = tools.create_pool(self.num_proc)
 
-        if self.rm_punctuation:
+        if self.remove_punctuation:
             if self.display_progress:
                 print("  step: remove_punctuation")
 
             if self.multiprocess:
-                corpus = tools._multiprocess(pool,
-                self.num_proc,
-                tools.remove_punctuation,
-                corpus)
+                corpus = tools._multiprocess(
+                    pool,
+                    self.num_proc,
+                    tools.remove_punctuation,
+                    corpus)
             else:
                 corpus = tools.remove_punctuation(corpus)
 
@@ -72,10 +78,11 @@ class Pipeline_handler:
                 print("  step: "+step.__name__)
                 
             arguments= []
-            if step.__name__ == "remove_words":
-                arguments = tools.words_to_remove(corpus,
-                self.words_min_freq,
-                self.words_max_freq)
+            if step.__name__ == "filter_words":
+                arguments = tools.words_to_remove(
+                    corpus,
+                    self.words_min_freq,
+                    self.words_max_freq)
             elif step.__name__ == "lemmatization":
                 arguments = [self.nlp, self.pos]
             elif step.__name__ == "remove_stopwords":
@@ -84,15 +91,22 @@ class Pipeline_handler:
                 arguments = []
 
             if self.multiprocess:
-                corpus = tools._multiprocess(pool, self.num_proc,
-                step, corpus, arguments)
+                corpus = tools._multiprocess(
+                    pool,
+                    self.num_proc,
+                    step,
+                    corpus,
+                    arguments)
             else:
                 corpus = step(corpus,arguments)
 
             if self.display_progress:
                 print("  step: "+step.__name__+" executed")
 
-        result = tools.remove_docs(corpus, self.min_words_for_doc, categories)
+        result = tools.remove_docs(
+            corpus,
+            self.min_words_for_doc,
+            categories)
 
         if self.multiprocess:
             pool.close()

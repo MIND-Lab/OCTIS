@@ -1,1135 +1,1242 @@
-exporter
-fear
-raise
-many
-export
-could
-far
-reach
-economic
-damage
-official
-say
-tell
-capital
-move
-may
-boost
-protectionist
-sentiment
-lead
-curb
-american
-import
-product
-would
-hurt
-long
-run
-short
-term
-loss
-gain
-impose
-mln
-dlrs
-tariff
-japanese
-electronic
-good
-retaliation
-allege
-sell
-semiconductor
-world
-market
-cost
-estimate
-put
-impact
-major
-firm
-halt
-hit
-new
-taxis
-able
-business
-spokesman
-remain
-place
-time
-month
-mean
-complete
-office
-broker
-co
-also
-worry
-threat
-serve
-warn
-senior
-trade
-ask
-name
-surplus
-last
-year
-help
-reserve
-large
-must
-quickly
-open
-remove
-barrier
-cut
-allow
-want
-problem
-possible
-textile
-chief
-similar
-officer
-tough
-hard
-producer
-third
-country
-expand
-sale
-newspaper
-manufacturer
-share
-view
-commercial
-advantage
-pressure
-block
-industry
-whole
-purpose
-prevent
-day
-extend
-source
-much
-serious
-action
-big
-accounting
-produce
-australian
-government
-talk
-interest
-concern
-relation
-trading
-partner
-matter
-significant
-stand
-continue
-rule
-yesterday
-package
-measure
-economy
-propose
-include
-budget
-record
-public
-work
-spend
-first
-financial
-call
-step
-stimulate
-fiscal
-reform
-program
-end
-dispute
-grain
-stock
-survey
-show
-output
-leave
-tonne
-paper
-storage
-bad
-method
-launch
-national
-reduce
-improve
-technology
-great
-production
-give
-detail
-energy
-demand
-revise
-supply
-expect
-low
-primary
-decision
-follow
-change
-rise
-value
-yen
-decline
-domestic
-power
-committee
-meeting
-natural
-resource
-review
-oil
-provide
-hour
-basis
-gas
-pct
-note
-deficit
-widen
-quarter
-ago
-result
-increase
-raw
-material
-bill
-however
-fall
-due
-price
-department
-growth
-small
-earning
-key
-commodity
-rice
-can
-register
-high
-see
-sharply
-crude
-well
-european
-crop
-reporter
-delivery
-trader
-maintain
-make
-recent
-purchase
-possibly
-international
-second
-force
-fast
-cover
-temporary
-shortage
-lose
-accord
-central
-bank
-figure
-ship
-port
-lift
-foreign
-carry
-still
-separate
-shipping
-week
-pay
-claim
-movement
-nearly
-vessel
-go
-today
-begin
-cargo
-industrial
-protest
-state
-worker
-law
-various
-union
-appear
-take
-turn
-start
-shift
-affect
-stop
-effect
-exchange
-likely
-least
-consider
-question
-ahead
-currently
-coffee
-rubber
-system
-several
-factor
-confidence
-add
-contract
-forward
-grade
-prompt
-introduction
-future
-late
-study
-need
-marketing
-effort
-hope
-development
-try
-overseas
-building
-already
-encourage
-direct
-visit
-participation
-transaction
-total
-worth
-deliver
-report
-amount
-lot
-get
-usda
-approval
-wheat
-agriculture
-approve
-soft
-western
-gold
-establish
-joint
-venture
-northern
-mine
-know
-project
-own
-local
-unit
-locate
-statement
-plant
-ounce
-mid
-annual
-capacity
-aim
-certain
-merger
-analyst
-base
-merge
-loan
-confident
-position
-area
-relatively
-weak
-debt
-other
-argue
-effective
-create
-agree
-enter
-security
-competition
-largely
-hand
-limit
-look
-feed
-regulation
-thing
-wait
-willing
-investment
-banking
-opportunity
-find
-chance
-case
-relate
-kind
-occur
-profitable
-bond
-deal
-strengthen
-hold
-optimistic
-subsidiary
-soon
-parent
-less
-push
-lending
-individual
-medium
-replace
-strategy
-next
-right
-support
-confirm
-agreement
-necessary
-pact
-believe
-expire
-majority
-member
-vote
-mark
-accept
-bid
-repurchase
-fix
-rate
-liquidity
-credit
-fund
-buy
-back
-pledge
-early
-withdraw
-net
-reflect
-tighten
-policy
-average
-clear
-minimum
-feel
-dealer
-main
-money
-range
-mining
-copper
-compare
-company
-scale
-operation
-half
-negotiation
-acquisition
-exist
-restructure
-sign
-side
-acquire
-discuss
-equity
-life
-period
-people
-daily
-target
-rather
-grow
-normal
-quality
-improvement
-farm
-later
-drop
-active
-drive
-customer
-protect
-volume
-farmer
-competitive
-prior
-corn
-soybean
-depend
-almost
-mainly
-indication
-come
-agricultural
-represent
-control
-prepare
-group
-urge
-restriction
-issue
-become
-sector
-buyer
-bonus
-shareholder
-general
-dividend
-declare
-cent
-pretax
-profit
-turnover
-tax
-minority
-extraordinary
-item
-forecast
-addition
-banker
-balance
-partly
-offset
-stg
-slow
-press
-conference
-plan
-adjust
-currency
-level
-prospect
-south
-current
-account
-seem
-dlr
-enable
-huge
-point
-ratio
-cause
-inflation
-particularly
-size
-canadian
-available
-pipeline
-important
-operating
-gasoline
-lower
-health
-schedule
-disclose
-combine
-german
-number
-employ
-west
-overall
-benefit
-negative
-refer
-order
-manufacture
-mostly
-datum
-trend
-exceed
-expectation
-night
-ease
-underlie
-intend
-develop
-seek
-manage
-executive
-previously
-pension
-percentage
-crown
-operate
-restructuring
-away
-access
-requirement
-performance
-steady
-decide
-heavy
-focus
-instead
-fee
-condition
-sharp
-dollar
-depreciation
-margin
-service
-income
-unchanged
-activity
-pursue
-franc
-provision
-nil
-charge
-ordinary
-full
-community
-meet
-representative
-ready
-common
-favour
-little
-avoid
-top
-threaten
-political
-reply
-probably
-situation
-permit
-describe
-settle
-outstanding
-cooperation
-imbalance
-legislation
-attribute
-sugar
-predict
-difficult
-substantial
-award
-intervention
-operator
-determine
-join
-food
-maker
-interested
-offer
-buying
-quote
-entire
-list
-break
-manager
-traditional
-stable
-fresh
-investor
-cash
-receive
-strong
-economist
-cheap
-direction
-offshore
-promise
-invest
-yield
-reverse
-flow
-enough
-doubt
-think
-authority
-role
-keep
-recovery
-weight
-set
-response
-index
-double
-property
-real
-estate
-field
-ability
-barrel
-summer
-gross
-consumer
-old
-series
-crisis
-settlement
-introduce
-post
-date
-use
-spending
-thus
-generate
-water
-regular
-guarantee
-quota
-strategic
-home
-abroad
-form
-process
-reason
-external
-earn
-equivalent
-revenue
-exclude
-recommendation
-drought
-reaction
-harvest
-previous
-reduction
-chairman
-discussion
-progress
-recommend
-close
-recently
-earlier
-proposal
-stabilise
-excess
-inventory
-part
-tomorrow
-unlikely
-delay
-standard
-comment
-intention
-steel
-deny
-suspend
-announce
-mill
-request
-announcement
-expansion
-dilute
-certainly
-welcome
-principle
-shortly
-intervene
-house
-session
-assistance
-comprise
-file
-former
-owner
-duty
-suit
-stockholder
-retain
-director
-board
-assume
-ownership
-attempt
-fact
-payment
-express
-court
-portion
-split
-associate
-live
-resolve
-rain
-stress
-region
-dry
-failure
-season
-outlook
-initial
-french
-weekly
-tender
-maximum
-around
-italian
-significantly
-premium
-single
-stake
-quarterly
-recover
-slightly
-soviet
-shipment
-return
-non
-metal
-sterling
-dutch
-chemical
-fully
-division
-correct
-face
-bring
-even
-monetary
-especially
-receipt
-research
-manufacturing
-expenditure
-takeover
-indicate
-asset
-send
-immediately
-information
-wholly
-limited
-party
-computer
-equipment
-special
-independent
-practice
-strike
-ground
-final
-therefore
-legal
-write
-ct
-contribute
-personal
-insurance
-preliminary
-definitive
-involve
-require
-corporate
-speak
-finance
-pre
-private
-generally
-together
-approach
-equal
-act
-pass
-oper
-approximately
-potential
-rest
-trust
-resume
-way
-stabilize
-fundamental
-minister
-subsidy
-cumulative
-combination
-employee
-expense
-yet
-substantially
-grant
-formal
-payout
-link
-facility
-contain
-deposit
-mth
-class
-authorize
-payable
-distribution
-qtly
-retail
-maize
-immediate
-bag
-completion
-decrease
-weather
-weekend
-land
-advance
-unemployment
-seasonally
-explain
-statistic
-nation
-attend
-participate
-afternoon
-federal
-preferred
-holder
-monthly
-float
-prefer
-circumstance
-management
-undisclose
-privately
-tight
-head
-design
-repeat
-past
-stay
-basic
-build
-modest
-revs
-line
-carryforward
-publish
-negotiate
-morning
-defense
-discontinue
-cocoa
-aid
-present
-delegate
-african
-overnight
-arrange
-better
-fourth
-suffer
-restrict
-positive
-distribute
-concentrate
-poor
-store
-transport
-television
-mortgage
-particular
-free
-test
-calculate
-ensure
-intent
-newly
-financing
-regard
-transfer
-undisclosed
-shr
-agency
-restate
-book
-speculation
-jointly
-do
-sheet
-realize
-wide
-commit
-fair
-terminate
-technical
-option
-closing
-discount
-apply
-foot
-stability
-warrant
-achieve
-possibility
-structure
-lack
-consumption
-risk
-bilateral
-exploration
-leader
-round
-global
-administration
-staff
-convert
-suggest
-promote
-collapse
-prime
-worldwide
-cite
-construction
-convertible
-cotton
-news
-remark
-contribution
-anticipate
-brazilian
-iranian
-attack
-div
-emerge
-prove
-release
-respond
-institution
-goal
-renew
-conduct
-exercise
-compete
-cubic
-really
-letter
-additional
-course
-implement
-conclude
-ton
-light
-affiliate
-obtain
-identify
-originally
-liability
-importer
-proceed
-regulatory
-commitment
-offering
-partnership
-elaborate
-fire
-fuel
-connection
-respectively
-strongly
-alternative
-vegetable
-petroleum
-refinery
-obligation
-debenture
-downward
-consideration
-happen
-fail
-closely
-different
-oppose
-appropriate
-signal
-body
-strength
-influence
-saving
-arrangement
-resist
-let
-swiss
-certificate
-holding
-spot
-borrowing
-telephone
-surge
-specific
-car
-adopt
-upward
-narrow
-trigger
-adjustment
-moderate
-winter
-principal
-application
-pound
-uncertainty
-interview
-successful
-difference
-wage
-draw
-actual
-gap
-family
-higher
-reject
-stage
-british
-example
-rev
-submit
-refuse
-acre
-drilling
-switch
-pende
-repayment
-indicator
-broad
-slide
-corporation
-writedown
-war
-original
-military
-opposition
-adviser
-evaluate
-difficulty
-job
-highly
-incentive
-processing
-tanker
-lease
-primarily
-drill
-longer
+exporter 0.0205
+fear 0.0144
+damage 0.0188
+trade 0.1351
+raise 0.0742
+many 0.0332
+export 0.1128
+nation 0.0425
+row 0.006
+could 0.1081
+far 0.0308
+reach 0.0491
+economic 0.0573
+official 0.1168
+say 0.7743
+tell 0.1379
+capital 0.0515
+move 0.0642
+may 0.1356
+boost 0.0314
+protectionist 0.0092
+sentiment 0.0063
+lead 0.0694
+curb 0.0106
+american 0.0309
+import 0.0762
+product 0.0847
+would 0.241
+hurt 0.01
+long 0.0557
+run 0.0244
+short 0.0368
+term 0.1101
+loss 0.1588
+gain 0.0883
+will 0.3208
+impose 0.0163
+mln 0.4508
+dlrs 0.4341
+tariff 0.0151
+japanese 0.0407
+electronic 0.0111
+good 0.0671
+retaliation 0.0099
+failure 0.0106
+pact 0.0219
+sell 0.1157
+semiconductor 0.0099
+world 0.0609
+market 0.193
+cost 0.07
+estimate 0.0803
+put 0.0381
+impact 0.0252
+spokesman 0.0728
+major 0.0849
+firm 0.0733
+halt 0.0102
+hit 0.0226
+new 0.1253
+taxis 0.0115
+able 0.0167
+business 0.077
+remain 0.0766
+place 0.0285
+time 0.0831
+few 0.024
+month 0.1603
+mean 0.0271
+complete 0.0578
+subject 0.0395
+analyst 0.0495
+co 0.0545
+also 0.2032
+threat 0.0086
+serve 0.0108
+warn 0.0126
+senior 0.0229
+ask 0.0499
+name 0.0404
+surplus 0.0389
+last 0.2226
+year 0.369
+pct 0.1987
+help 0.0541
+exchange 0.0716
+reserve 0.049
+large 0.0727
+must 0.0309
+quickly 0.0098
+open 0.0514
+remove 0.0083
+barrier 0.0072
+cut 0.0762
+allow 0.0409
+want 0.0415
+problem 0.036
+possible 0.0389
+chairman 0.0283
+textile 0.0064
+dispute 0.0168
+pressure 0.0318
+chief 0.0229
+similar 0.0177
+up 0.0319
+officer 0.0169
+tough 0.0065
+hard 0.0147
+producer 0.0462
+third 0.0439
+country 0.0984
+expand 0.0235
+sale 0.1821
+where 0.0254
+newspaper 0.0144
+manufacturer 0.0113
+share 0.254
+view 0.0207
+other 0.1453
+such 0.0595
+commercial 0.0221
+advantage 0.0067
+further 0.0744
+block 0.0123
+very 0.0385
+director 0.0355
+general 0.0352
+industry 0.075
+whole 0.0107
+purpose 0.0132
+prevent 0.0165
+day 0.0822
+extend 0.0221
+source 0.062
+much 0.045
+more 0.1441
+serious 0.0117
+action 0.0462
+big 0.0207
+account 0.052
+produce 0.0526
+australian 0.0134
+government 0.1096
+talk 0.0579
+interest 0.1093
+concern 0.0357
+kind 0.0076
+relation 0.0089
+trading 0.044
+partner 0.0226
+matter 0.0113
+coal 0.0068
+significant 0.0191
+stand 0.0223
+continue 0.0943
+rule 0.0302
+yesterday 0.0623
+package 0.0135
+measure 0.0374
+economy 0.0421
+propose 0.0543
+include 0.1809
+budget 0.026
+record 0.0823
+public 0.0373
+work 0.047
+spend 0.0134
+first 0.1164
+half 0.0377
+financial 0.057
+call 0.0615
+step 0.0215
+stimulate 0.0101
+fiscal 0.0377
+reform 0.0096
+program 0.0404
+due 0.0515
+meet 0.0532
+week 0.1256
+effort 0.0288
+end 0.171
+grain 0.0297
+stock 0.1593
+survey 0.007
+city 0.0078
+show 0.0639
+tonne 0.0862
+output 0.0371
+leave 0.028
+vegetable 0.0098
+paper 0.014
+storage 0.007
+bad 0.0124
+method 0.0072
+launch 0.0141
+national 0.0291
+reduce 0.0672
+technology 0.0132
+great 0.0246
+production 0.077
+give 0.0943
+detail 0.0323
+revise 0.0266
+energy 0.0171
+demand 0.0533
+supply 0.0579
+outlook 0.0139
+forecast 0.0449
+expect 0.1699
+lower 0.0272
+primary 0.009
+decision 0.0372
+follow 0.0696
+change 0.0713
+rise 0.1494
+value 0.065
+yen 0.0325
+decline 0.0785
+domestic 0.0528
+power 0.0169
+plan 0.114
+committee 0.0142
+meeting 0.0779
+agency 0.0184
+natural 0.0197
+resource 0.0128
+review 0.0269
+oil 0.1137
+gas 0.0363
+provide 0.0521
+bulk 0.0068
+hour 0.0118
+basis 0.0354
+note 0.1962
+deficit 0.044
+widen 0.0064
+quarter 0.0976
+ago 0.0536
+improve 0.0332
+result 0.1077
+increase 0.1535
+raw 0.0086
+material 0.0166
+bill 0.0319
+however 0.0613
+fall 0.1155
+low 0.0922
+price 0.186
+department 0.0268
+growth 0.059
+small 0.0318
+earning 0.0672
+key 0.0206
+commodity 0.021
+rice 0.0081
+can 0.0612
+register 0.0117
+high 0.1179
+rubber 0.0077
+see 0.1064
+sharply 0.0244
+crude 0.0377
+well 0.0688
+european 0.031
+crop 0.0287
+reporter 0.0267
+now 0.086
+delivery 0.0213
+trader 0.0365
+maintain 0.0251
+make 0.1723
+recent 0.0559
+purchase 0.0844
+possibly 0.0078
+international 0.0513
+second 0.0448
+force 0.0329
+ensure 0.007
+fast 0.0082
+cover 0.0266
+temporary 0.0135
+shortage 0.0171
+lose 0.0221
+calendar 0.0098
+accord 0.0587
+central 0.0393
+bank 0.1069
+figure 0.0709
+ship 0.0262
+port 0.0153
+lift 0.0128
+foreign 0.0772
+carry 0.0185
+still 0.0562
+separate 0.009
+shipping 0.0138
+pay 0.0812
+claim 0.0141
+movement 0.0114
+nearly 0.0177
+vessel 0.01
+go 0.0547
+today 0.1221
+begin 0.0523
+cargo 0.0115
+industrial 0.039
+part 0.0636
+protest 0.0074
+state 0.0587
+worker 0.0155
+law 0.0196
+various 0.0119
+union 0.0134
+appear 0.0193
+take 0.1176
+turn 0.0152
+start 0.0539
+shift 0.0096
+then 0.0259
+most 0.0565
+stop 0.0172
+how 0.0254
+effect 0.0384
+likely 0.0488
+at 0.0116
+least 0.0302
+telephone 0.0102
+interview 0.0158
+consider 0.045
+introduce 0.0116
+question 0.0196
+when 0.0825
+ahead 0.0168
+currently 0.0335
+coffee 0.0166
+system 0.0612
+several 0.0403
+factor 0.0254
+confidence 0.0072
+add 0.1308
+contract 0.0362
+forward 0.0094
+grade 0.0144
+prompt 0.0072
+introduction 0.0067
+future 0.0529
+later 0.0346
+study 0.0208
+need 0.057
+should 0.0677
+marketing 0.0185
+hope 0.0288
+development 0.0375
+try 0.0274
+overseas 0.0116
+build 0.0169
+already 0.0455
+encourage 0.0147
+direct 0.0117
+use 0.0689
+visit 0.0111
+participation 0.007
+transaction 0.0454
+total 0.1264
+worth 0.0238
+deliver 0.0074
+late 0.0601
+report 0.1348
+amount 0.0547
+only 0.0735
+lot 0.011
+broker 0.0101
+get 0.0217
+usda 0.0098
+approval 0.0439
+wheat 0.0348
+approve 0.0432
+soft 0.0078
+shipment 0.0289
+western 0.0164
+mining 0.0108
+gold 0.0232
+mine 0.0151
+establish 0.0142
+joint 0.023
+venture 0.0171
+northern 0.0093
+know 0.021
+project 0.0284
+own 0.0965
+local 0.0193
+unit 0.0985
+locate 0.0069
+statement 0.0723
+plant 0.0321
+ounce 0.0108
+mid 0.0099
+annual 0.0616
+ore 0.0083
+capacity 0.0189
+aim 0.0256
+recovery 0.0117
+certain 0.0326
+profitable 0.0088
+merger 0.0403
+base 0.0913
+merge 0.013
+loan 0.0489
+link 0.0121
+confident 0.0083
+position 0.0352
+back 0.0323
+branch 0.0072
+network 0.0064
+area 0.0422
+relatively 0.01
+weak 0.0139
+too 0.0241
+debt 0.0523
+argue 0.0068
+effective 0.0364
+create 0.0158
+agree 0.0935
+enter 0.0227
+security 0.0459
+competition 0.0125
+largely 0.0136
+hand 0.014
+limit 0.029
+tie 0.0063
+look 0.0279
+regulation 0.0075
+near 0.0136
+so 0.0447
+thing 0.0103
+wait 0.0101
+willing 0.0082
+home 0.0144
+investment 0.077
+banking 0.0204
+opportunity 0.0124
+find 0.0257
+chance 0.0134
+case 0.0184
+relate 0.0169
+occur 0.011
+focus 0.0099
+bond 0.0182
+deal 0.0375
+strengthen 0.0097
+hold 0.1037
+optimistic 0.0081
+here 0.0365
+swiss 0.0074
+subsidiary 0.0626
+finance 0.0428
+grant 0.0132
+soon 0.0223
+parent 0.0106
+less 0.0413
+push 0.0157
+lending 0.0135
+individual 0.0073
+medium 0.0124
+replace 0.0102
+strategy 0.0109
+next 0.0648
+right 0.0338
+support 0.0421
+confirm 0.0141
+agreement 0.1239
+necessary 0.0156
+ready 0.0078
+believe 0.0392
+expire 0.0189
+majority 0.0123
+member 0.0448
+vote 0.0208
+mark 0.0304
+tender 0.0481
+accept 0.0256
+bid 0.0471
+repurchase 0.0172
+fix 0.0193
+rate 0.1225
+liquidity 0.0152
+credit 0.0572
+fund 0.0432
+buy 0.1328
+pledge 0.0074
+early 0.0739
+withdraw 0.011
+net 0.2113
+reflect 0.0456
+policy 0.0528
+average 0.0557
+clear 0.0172
+minimum 0.0122
+requirement 0.0181
+feel 0.0139
+dealer 0.0331
+main 0.0284
+money 0.0556
+fluctuation 0.0063
+range 0.0397
+copper 0.0088
+compare 0.0813
+company 0.3081
+scale 0.0085
+operation 0.0853
+negotiation 0.0251
+acquisition 0.0764
+exist 0.0192
+restructuring 0.0155
+sign 0.0462
+side 0.0133
+acquire 0.0962
+repay 0.0068
+discuss 0.0246
+equity 0.0222
+exploration 0.0132
+property 0.0221
+manager 0.0158
+life 0.0105
+same 0.0562
+period 0.0827
+people 0.0189
+daily 0.0155
+target 0.036
+rather 0.0177
+grow 0.0418
+normal 0.0122
+quality 0.0111
+improvement 0.0177
+farm 0.0208
+drop 0.0472
+active 0.0085
+drive 0.009
+customer 0.0225
+protect 0.0119
+volume 0.019
+farmer 0.0186
+competitive 0.0134
+offer 0.1059
+quota 0.0231
+beef 0.0065
+prior 0.0432
+corn 0.0213
+soybean 0.0167
+depend 0.0164
+almost 0.0171
+mainly 0.0189
+indication 0.0078
+come 0.0518
+potential 0.0179
+agricultural 0.0167
+represent 0.025
+control 0.0517
+prepare 0.013
+urge 0.0179
+restriction 0.0089
+reaction 0.0074
+ministry 0.0156
+issue 0.0765
+become 0.0331
+sector 0.0299
+buyer 0.0166
+bonus 0.0102
+shareholder 0.0785
+dividend 0.0609
+declare 0.0238
+cent 0.0309
+pretax 0.0185
+profit 0.127
+turnover 0.0171
+tax 0.0924
+service 0.0472
+minority 0.0093
+extraordinary 0.0307
+item 0.0163
+stg 0.0243
+affect 0.0314
+addition 0.0258
+banker 0.0172
+balance 0.0376
+partly 0.0139
+offset 0.0186
+slow 0.0221
+press 0.0208
+conference 0.0274
+opening 0.0067
+adjust 0.0352
+currency 0.0561
+level 0.0836
+minister 0.0215
+prospect 0.0199
+south 0.0134
+current 0.1036
+seem 0.0133
+dlr 0.0495
+enable 0.0102
+huge 0.0089
+point 0.0425
+ratio 0.0067
+cause 0.0356
+inflation 0.0264
+particularly 0.0146
+size 0.0074
+canadian 0.0283
+available 0.0335
+pipeline 0.0105
+important 0.0142
+operating 0.0227
+gasoline 0.0082
+health 0.0081
+as 0.0663
+schedule 0.0269
+disclose 0.0294
+combine 0.0144
+german 0.0305
+number 0.0354
+employ 0.0068
+west 0.025
+overall 0.0171
+benefit 0.026
+have 0.0204
+negative 0.0093
+refer 0.0074
+order 0.0313
+manufacture 0.0134
+mostly 0.0063
+datum 0.0221
+trend 0.0163
+exceed 0.0155
+expectation 0.0134
+around 0.0165
+night 0.0123
+ease 0.0168
+intend 0.0235
+develop 0.024
+seek 0.0541
+manage 0.013
+executive 0.0238
+previously 0.053
+pension 0.0096
+percentage 0.0125
+jump 0.0066
+crown 0.006
+just 0.0306
+operate 0.05
+restructure 0.0141
+away 0.0091
+access 0.0086
+spring 0.007
+performance 0.0164
+steady 0.0105
+barrel 0.0377
+earlier 0.0763
+decide 0.0323
+heavy 0.0205
+instead 0.0118
+fee 0.0074
+condition 0.0389
+sharp 0.0221
+dollar 0.0717
+depreciation 0.007
+margin 0.0106
+income 0.0458
+unchanged 0.0251
+activity 0.0235
+pursue 0.0078
+franc 0.0166
+provision 0.0284
+nil 0.0114
+charge 0.0408
+ordinary 0.0092
+full 0.0529
+community 0.0177
+prepared 0.0083
+representative 0.0161
+why 0.0065
+common 0.0787
+favour 0.0069
+little 0.0249
+avoid 0.0115
+sanction 0.0064
+top 0.0156
+political 0.0148
+reply 0.0077
+probably 0.023
+situation 0.0221
+permit 0.0102
+describe 0.0094
+settle 0.0078
+outstanding 0.055
+moment 0.0064
+cooperation 0.0101
+imbalance 0.0088
+legislation 0.0118
+attribute 0.0081
+sugar 0.0202
+predict 0.0185
+difficult 0.0155
+substantial 0.0172
+award 0.0086
+intervention 0.0215
+operator 0.0115
+determine 0.0163
+white 0.0064
+join 0.0114
+food 0.0192
+maker 0.0127
+head 0.0221
+interested 0.0092
+quote 0.0232
+entire 0.0088
+list 0.0113
+break 0.0158
+traditional 0.0069
+stable 0.0121
+fresh 0.0064
+investor 0.0364
+cash 0.0796
+past 0.0315
+receive 0.055
+there 0.0147
+strong 0.0429
+re 0.0186
+economist 0.0232
+cheap 0.0082
+direction 0.0075
+offshore 0.0074
+promise 0.0063
+invest 0.0113
+yield 0.0184
+reverse 0.0084
+flow 0.0192
+enough 0.0175
+doubt 0.0074
+think 0.0318
+like 0.0069
+authority 0.0173
+role 0.0089
+keep 0.0279
+weight 0.0075
+buying 0.0098
+set 0.0897
+response 0.0238
+index 0.0155
+double 0.0093
+real 0.0288
+estate 0.0127
+field 0.0168
+ability 0.0089
+summer 0.0093
+gross 0.02
+consumer 0.0356
+old 0.0126
+threaten 0.0117
+series 0.0098
+crisis 0.0094
+settlement 0.0115
+post 0.0248
+date 0.0275
+spending 0.0138
+thus 0.007
+generate 0.0075
+water 0.0118
+down 0.0276
+about 0.0415
+regular 0.0101
+guarantee 0.0121
+better 0.0072
+bpd 0.0111
+strategic 0.0083
+abroad 0.0085
+form 0.0347
+process 0.0175
+reason 0.019
+external 0.0074
+earn 0.0221
+equivalent 0.0128
+revenue 0.0429
+exclude 0.0468
+accounting 0.0077
+shortfall 0.0066
+recommendation 0.0078
+unlikely 0.0155
+grower 0.0066
+drought 0.0063
+harvest 0.011
+previous 0.0482
+peak 0.0069
+hectare 0.0067
+in 0.0141
+reduction 0.0268
+building 0.0085
+advise 0.0073
+discussion 0.0173
+progress 0.0121
+recommend 0.0124
+close 0.0617
+recently 0.0243
+proposal 0.0422
+stabilise 0.0111
+excess 0.0102
+inventory 0.0127
+lack 0.0085
+fail 0.0207
+tomorrow 0.0213
+delay 0.0171
+standard 0.0117
+stake 0.0484
+comment 0.0466
+intention 0.0096
+holding 0.0168
+steel 0.0132
+deny 0.011
+suspend 0.0132
+announce 0.0781
+mill 0.0088
+request 0.016
+announcement 0.0174
+stage 0.0105
+expansion 0.0159
+dilute 0.0076
+certainly 0.0066
+welcome 0.008
+principle 0.0174
+intervene 0.0133
+shortly 0.0074
+house 0.0157
+session 0.0141
+assistance 0.0134
+morning 0.0198
+comprise 0.0113
+band 0.0063
+file 0.0205
+former 0.0146
+owner 0.0086
+trust 0.0127
+duty 0.0094
+suit 0.0078
+stockholder 0.0088
+board 0.0582
+retain 0.013
+creditor 0.0064
+complaint 0.0063
+assume 0.0097
+payment 0.0472
+again 0.0209
+resolve 0.0133
+ownership 0.0103
+submit 0.0075
+attempt 0.0215
+fact 0.0113
+express 0.0118
+court 0.013
+portion 0.0069
+split 0.0319
+associate 0.0123
+live 0.0101
+rain 0.007
+stress 0.0086
+region 0.0114
+severe 0.0064
+dry 0.0077
+season 0.0155
+restore 0.0063
+north 0.0063
+southern 0.0083
+initial 0.019
+french 0.0205
+weekly 0.0113
+maximum 0.0094
+italian 0.0063
+consolidated 0.0065
+group 0.0948
+significantly 0.011
+premium 0.0094
+single 0.0103
+quarterly 0.0176
+recover 0.0096
+slightly 0.0217
+soviet 0.0122
+return 0.03
+non 0.0385
+higher 0.008
+metal 0.0125
+sterling 0.01
+dutch 0.009
+chemical 0.0113
+fully 0.0143
+division 0.0247
+speech 0.0085
+correct 0.0088
+face 0.0242
+bring 0.0397
+beginning 0.008
+parliament 0.0064
+even 0.0275
+monetary 0.0207
+stabilize 0.0107
+especially 0.0107
+receipt 0.0067
+research 0.0121
+manufacturing 0.0133
+expenditure 0.0084
+takeover 0.0274
+indicate 0.0205
+asset 0.063
+send 0.0135
+immediately 0.0181
+information 0.0139
+wholly 0.0133
+party 0.0143
+computer 0.0167
+equipment 0.0207
+special 0.0257
+independent 0.0108
+act 0.0185
+draw 0.0115
+practice 0.0097
+strike 0.018
+ground 0.0096
+final 0.0293
+therefore 0.0064
+legal 0.01
+write 0.013
+ct 0.1998
+afternoon 0.01
+unemployment 0.0084
+president 0.0256
+contribute 0.0135
+personal 0.0074
+insurance 0.0172
+preliminary 0.0115
+definitive 0.0142
+involve 0.0236
+require 0.0315
+corporate 0.0138
+speak 0.0125
+pre 0.0199
+private 0.0349
+financing 0.0192
+generally 0.0108
+together 0.0109
+favor 0.0064
+approach 0.0113
+equal 0.0125
+pass 0.011
+oper 0.0179
+approximately 0.0086
+rest 0.0135
+resume 0.0098
+way 0.0363
+fundamental 0.0102
+yet 0.0221
+subsidy 0.0131
+cumulative 0.0097
+combination 0.0088
+employee 0.0135
+div 0.0097
+expense 0.0185
+office 0.0175
+off 0.0065
+substantially 0.0124
+formal 0.0073
+payout 0.0102
+management 0.0395
+surprise 0.0065
+facility 0.0193
+contain 0.0133
+deposit 0.0266
+mth 0.0531
+class 0.0121
+payable 0.0274
+distribution 0.0182
+qtly 0.0113
+retail 0.0122
+maize 0.0083
+immediate 0.0103
+bag 0.0066
+completion 0.0127
+decrease 0.0109
+downward 0.0069
+weather 0.0133
+weekend 0.0102
+land 0.0101
+advance 0.0124
+seasonally 0.0143
+explain 0.0076
+statistic 0.0102
+reuter 0.0133
+british 0.0169
+attend 0.0082
+participate 0.0067
+federal 0.0289
+preferred 0.0135
+holder 0.0249
+monthly 0.0152
+float 0.0075
+circumstance 0.0067
+undisclosed 0.0217
+privately 0.0138
+one 0.0097
+tight 0.0074
+eliminate 0.0063
+design 0.0144
+repeat 0.0068
+stay 0.009
+basic 0.0107
+modest 0.0074
+revs 0.0061
+line 0.0384
+carryforward 0.0109
+publish 0.0107
+negotiate 0.0193
+concentrate 0.0084
+defense 0.0076
+qtr 0.0096
+discontinue 0.0223
+cocoa 0.0077
+aid 0.0134
+present 0.0314
+delegate 0.0094
+african 0.0088
+authorize 0.0078
+overnight 0.0076
+arrange 0.0093
+winter 0.0103
+fourth 0.0281
+suffer 0.0102
+positive 0.0103
+commission 0.0122
+distribute 0.0096
+poor 0.0092
+store 0.0143
+transport 0.0081
+television 0.0115
+mortgage 0.0068
+particular 0.008
+free 0.0252
+association 0.0086
+test 0.0103
+calculate 0.008
+letter 0.0242
+intent 0.013
+newly 0.0106
+regard 0.0092
+transfer 0.0119
+shr 0.033
+restate 0.0119
+book 0.0126
+speculation 0.0117
+jointly 0.0064
+do 0.0173
+sheet 0.0074
+realize 0.0065
+succeed 0.0063
+win 0.0132
+wide 0.0084
+commit 0.0075
+fair 0.0074
+terminate 0.0074
+technical 0.0086
+option 0.0254
+closing 0.0117
+discount 0.0211
+apply 0.0138
+foot 0.0118
+terminal 0.0064
+stability 0.0164
+warrant 0.0107
+achieve 0.0142
+possibility 0.0119
+structure 0.0086
+consumption 0.0157
+risk 0.0139
+bilateral 0.0064
+leader 0.0146
+round 0.0123
+global 0.0078
+administration 0.0211
+agriculture 0.0124
+staff 0.0075
+defend 0.0078
+convert 0.0105
+suggest 0.014
+promote 0.0066
+collapse 0.007
+prime 0.0097
+worldwide 0.0106
+cite 0.0126
+vice 0.0105
+construction 0.0124
+engineering 0.0065
+convertible 0.0121
+council 0.0091
+cotton 0.0081
+news 0.0234
+remark 0.011
+center 0.0074
+contribution 0.0074
+brazilian 0.0115
+iranian 0.0096
+mile 0.007
+attack 0.0119
+emerge 0.0081
+prove 0.0106
+release 0.0242
+related 0.0074
+respond 0.0116
+car 0.0085
+institution 0.0089
+goal 0.008
+feed 0.013
+renew 0.0094
+conduct 0.0077
+exercise 0.0086
+compete 0.0094
+limited 0.008
+partnership 0.0118
+cubic 0.0076
+really 0.0072
+additional 0.0329
+course 0.0096
+implement 0.0094
+conclude 0.0081
+ton 0.0149
+silver 0.0063
+light 0.0146
+enhancement 0.0074
+affiliate 0.0113
+obtain 0.0119
+filing 0.0184
+identify 0.0127
+originally 0.0097
+anticipate 0.0108
+air 0.0063
+liability 0.0103
+importer 0.0076
+proceed 0.021
+regulatory 0.0144
+commitment 0.0147
+application 0.0113
+elaborate 0.0073
+fire 0.007
+fuel 0.0135
+connection 0.0076
+respectively 0.0226
+strongly 0.0077
+alternative 0.0135
+petroleum 0.0163
+refinery 0.0096
+obligation 0.007
+debenture 0.0082
+prefer 0.0165
+consideration 0.0107
+no 0.0107
+ceiling 0.0074
+extent 0.0063
+debate 0.0067
+happen 0.0093
+cooperate 0.0064
+closely 0.0074
+different 0.0098
+oppose 0.0123
+appropriate 0.0082
+signal 0.0081
+idea 0.0069
+body 0.0072
+strength 0.0092
+influence 0.0078
+saving 0.0143
+arrangement 0.0093
+resist 0.0068
+let 0.0069
+mineral 0.0065
+certificate 0.0119
+organization 0.0069
+borrowing 0.0118
+spot 0.011
+surge 0.0069
+specific 0.0133
+adopt 0.0114
+upward 0.0081
+narrow 0.013
+trigger 0.0064
+adjustment 0.0151
+anti 0.0065
+provisional 0.0067
+offering 0.0097
+maturity 0.0063
+principal 0.009
+pound 0.0108
+uncertainty 0.0082
+successful 0.0089
+difference 0.0068
+wage 0.0089
+actual 0.0072
+gap 0.007
+voting 0.0075
+family 0.0097
+reject 0.0198
+barley 0.0063
+example 0.0065
+protection 0.0072
+rev 0.0107
+refuse 0.0086
+original 0.0077
+bushel 0.0056
+acre 0.006
+discontinued 0.0068
+cable 0.0072
+drilling 0.0082
+pende 0.011
+repayment 0.0066
+indicator 0.0058
+broad 0.0094
+slide 0.0064
+corporation 0.0091
+writedown 0.0089
+war 0.0105
+military 0.0088
+opposition 0.0078
+hear 0.0064
+component 0.0069
+adviser 0.0069
+evaluate 0.0064
+reopen 0.0063
+difficulty 0.0096
+job 0.0103
+highly 0.0069
+incentive 0.0082
+processing 0.0075
+disposal 0.0061
+tanker 0.0072
+lease 0.0066
+primarily 0.0073
+drill 0.0074
+longer 0.0106

@@ -1,1475 +1,1570 @@
-knowledge
-base
-extraction
-name
-entity
-identification
-use
-email
-communication
-challenge
-information
-management
-mine
-side
-effect
-combine
-web
-search
-machine
-learning
-secure
-distribution
-system
-incremental
-test
-collection
-lock
-object
-class
-orient
-database
-extensible
-main
-memory
-storage
-personal
-ontology
-navigation
-association
-rule
-experiment
-multi
-strategy
-learn
-algorithm
-integration
-cache
-index
-query
-image
-monitor
-recent
-change
-frequent
-itemset
-online
-datum
-stream
-analysis
-precision
-digital
-library
-extend
-apply
-science
-technology
-representation
-extended
-vector
-product
-development
-site
-selection
-distribute
-parallel
-general
-reason
-spatial
-maintain
-consistency
-materialize
-view
-process
-enterprise
-evaluation
-mining
-multiple
-concept
-level
-real
-time
-user
-context
-modeling
-retrieval
-agent
-hierarchical
-graph
-indexing
-processing
-first
-answer
-manage
-trust
-peer
-category
-drive
-taxonomy
-automatic
-build
-xml
-statistic
-hide
-iterative
-approach
-allocation
-deductive
-match
-efficient
-space
-warehousing
-environment
-model
-interaction
-text
-bootstrappe
-document
-classification
-redundant
-effectiveness
-family
-access
-method
-similarity
-network
-internet
-scale
-string
-attribute
-publish
-approximate
-neighbor
-aggregation
-adaptive
-sampling
-video
-find
-enhanced
-nest
-disk
-proxy
-server
-reduce
-load
-service
-protein
-structure
-alignment
-feature
-availability
-mechanism
-predict
-accuracy
-extract
-unstructured
-new
-acquisition
-grid
-maximal
-word
-sequence
-set
-sentence
-application
-behavior
-step
-define
-correct
-complex
-concurrent
-engineering
-operator
-combination
-entropy
-clustering
-incorporate
-support
-small
-training
-categorization
-classifier
-expansion
-semantic
-relational
-uncertain
-specification
-dissemination
-theoretical
-foundation
-schema
-heterogeneous
-multidatabase
-implicit
-framework
-cost
-quality
-facilitate
-design
-optimization
-closure
-evolution
-dictionary
-translation
-improve
-light
-high
-performance
-cluster
-join
-flexible
-intrinsic
-structured
-case
-integrate
-story
-detection
-hard
-encode
-inheritance
-hierarchy
-historical
-relationship
-description
-logic
-predicate
-implementation
-part
-relevance
-guide
-generate
-well
-reuse
-infer
-functional
-dependency
-transformation
-logical
-physical
-static
-score
-content
-advance
-schedule
-large
-execution
-self
-genetic
-term
-occurrence
-different
-length
-automatically
-way
-probabilistic
-latent
-role
-domain
-data
-benchmark
-tool
-dynamic
-problem
-deduction
-non
-statistical
-implement
-programming
-language
-key
-speech
-resource
-processor
-flow
-experimental
-workload
-hash
-proximity
-duplicate
-intelligent
-select
-represent
-compute
-filter
-linguistic
-formation
-declarative
-label
-archive
-interactive
-face
-structural
-semi
-study
-frequency
-normalization
-divergence
-resolution
-scientific
-simulation
-source
-decision
-rough
-direct
-experience
-overlap
-result
-automate
-forecasting
-fractal
-keyword
-consideration
-solution
-implication
-analytical
-version
-control
-quantitative
-transaction
-human
-project
-comparison
-regression
-neural
-net
-pattern
-recognition
-layered
-annotation
-print
-music
-recommendation
-group
-interest
-binary
-relation
-strategie
-biological
-value
-determination
-construction
-technique
-browsing
-local
-estimate
-regularize
-evaluate
-linear
-chain
-program
-labeling
-dataset
-visualization
-engine
-weight
-collaborative
-filtering
-subjective
-window
-mobile
-broadcast
-array
-develop
-history
-priority
-practical
-page
-scalable
-architecture
-locate
-optimized
-sharing
-revision
-belief
-theory
-auto
-generation
-topic
-perspective
-meta
-infrastructure
-transparent
-replication
-matching
-spatio
-temporal
-demonstration
-identity
-dimension
-parametric
-constraint
-segmentation
-inductive
-estimation
-handle
-rank
-summary
-medium
-right
-orientation
-shape
-dimensionality
-computation
-approximation
-integer
-electronic
-pre
-individual
-tv
-selectivity
-bayesian
-consistent
-conflict
-mapping
-table
-store
-tree
-alternative
-abstraction
-move
-sensor
-reliable
-requirement
-classify
-segment
-natural
-rich
-provide
-edge
-decomposition
-determine
-law
-gene
-expression
-density
-grammar
-novel
-preserve
-function
-sort
-summarization
-top
-question
-answering
-survey
-layer
-independent
-create
-interface
-random
-walk
-visual
-fuzzy
-noisy
-channel
-condition
-preference
-exploit
-redundancy
-energy
-spatiotemporal
-region
-inter
-template
-negative
-opinion
-signature
-reliability
-detect
-similar
-salient
-uniform
-dimensional
-common
-share
-forest
-depth
-branch
-bind
-future
-component
-software
-panel
-modular
-correlation
-disjunctive
-order
-sense
-selective
-property
-joint
-record
-type
-evolve
-minimal
-connect
-optimize
-make
-connection
-integrity
-hybrid
-active
-assistant
-delivery
-compression
-file
-continuous
-near
-series
-number
-motion
-browse
-collective
-display
-multilingual
-corpora
-work
-need
-svm
-ensemble
-example
-trend
-massive
-modification
-granularity
-primitive
-discover
-locality
-bound
-simple
-complexity
-computing
-variance
-creation
-event
-cover
-analogical
-discovery
-error
-propagation
-textual
-exact
-help
-list
-coordination
-open
-external
-mean
-scheduling
-sql
-supervise
-reduction
-prototype
-cooperative
-client
-push
-check
-sequential
-organize
-compact
-adapt
-update
-medical
-policy
-utility
-optimal
-report
-inference
-unknown
-cube
-various
-plan
-public
-biomedical
-usage
-explore
-effective
-path
-map
-permutation
-scheme
-differential
-categorical
-interpolation
-demand
-industrial
-highly
-accurate
-emerge
-close
-boost
-prior
-partial
-parse
-focus
-situation
-extension
-autonomous
-coherent
-relevant
-markov
-retrieve
-dynamically
-item
-fast
-qualitative
-reasoning
-phrase
-free
-japanese
-feedback
-field
-interval
-informative
-maintenance
-soft
-assist
-log
-task
-organization
-lexical
-vision
-interesting
-pairwise
-aware
-histogram
-leverage
-contextual
-point
-smart
-relate
-bias
-boolean
-describe
-good
-synchronization
-connectionist
-line
-capability
-merge
-financial
-news
-analyze
-contain
-research
-production
-profile
-algebra
-recovery
-aid
-concurrency
-hypothesis
-route
-slide
-unsupervised
-derive
-expert
-community
-constrain
-batch
-warehouse
-market
-multimedia
-computer
-facial
-equivalence
-efficiently
-cross
-global
-aggregate
-wireless
-geometric
-partitioning
-link
-personalized
-representative
-prediction
-construct
-prune
-long
-disambiguation
-encoding
-avoid
-efficiency
-style
-look
-remote
-measure
-orthogonal
-unit
-basis
-conjunctive
-stochastic
-subsequence
-transform
-partition
-range
-olap
-generalize
-discriminant
-risk
-business
-synthesis
-social
-graphical
-grain
-run
-rewrite
-datalog
-blind
-add
-descriptor
-speed
-sample
-competitive
-intelligence
-deterministic
-automata
-syntactic
-robust
-code
-preliminary
-platform
-home
-formal
-world
-wide
-tagging
-unified
-deal
-failure
-discourse
-mixture
-exponential
-enable
-track
-character
-comparative
-symbol
-compare
-perfect
-hashing
-curve
-location
-fusion
-parameterize
-next
-collaboration
-industry
-symbolic
-regular
-assessment
-capture
-co
-lattice
-validation
-distance
-paradigm
-modify
-recursive
-measurement
-movement
-relative
-frame
-sensitive
-fragment
-conceptual
-outlier
-robustness
-perform
-transfer
-security
-asynchronous
-candidate
-verification
-discretization
-size
-projection
-diverse
-advanced
-overview
-relaxation
-difference
-incomplete
-response
-goal
-parameter
-tuning
-coordinate
-augment
-perception
-reverse
-analytic
-element
-methodology
-commitment
-elicitation
-argumentation
-significant
-varying
-competition
-balance
-increase
-count
-uncertainty
-workflow
-power
-miss
-partially
-specify
-metric
-specific
-wavelet
-invariant
-person
-instance
-remove
-positive
-unlabeled
-topological
-couple
-conditional
-mutual
-presence
-background
-possible
-get
-useful
-weakly
-evidence
-patient
-strong
-skyline
-building
-revisit
-sentiment
-criterion
-know
-opportunity
-conversion
-activity
-progressive
-sum
-exploration
-meaning
-monitoring
-average
-explicit
-privacy
-supervised
-input
-mix
-mode
-loop
-virtual
-author
-vote
-margin
-correlate
-pair
-scalability
-interpretation
-enhancement
-dependence
-review
-dual
-mpeg
-probability
-private
-movie
-chinese
-graphs
-finding
-limit
-attack
-confidence
-short
-message
-commercial
-dense
-subspace
-heuristic
-containment
-weak
-block
-phase
-predictive
-preserving
-importance
-utilize
-geometry
-enhance
-friendly
-operation
-lazy
-associative
-removal
-personalization
-wise
-kernel
-estimator
-neighborhood
-spectral
-sensitivity
-generalization
-maximize
-personalize
-principle
-brain
-complete
-summarize
-explanation
-attention
-age
-grow
-dependent
-identify
-potential
-unify
-output
-reconstruct
-many
-quantify
-temporally
-understand
-deep
-expressive
-analogy
-imbalance
-randomized
-induction
-evolutionary
-unsupervise
-stage
-adaptation
-second
-drift
-center
-matrix
-session
-iteration
-post
-inverse
-people
-action
-boundary
-sparse
-factorization
-achieve
-guarantee
-variable
-scan
-low
-core
-conference
-understanding
-ranking
-maximum
-satisfaction
-sub
-intra
-state
-art
-regularization
-membership
-aspect
-assignment
-oracle
-advertising
-diffusion
-subset
-characterize
-contrast
-behaviour
-consider
-characteristic
-tag
-xquery
-improvement
-presentation
-road
-place
-empirical
-simultaneous
-note
-volume
-syntax
-tracking
-critical
-minimum
-minimize
-placement
-streaming
-customer
-reconstruction
-protocol
-issue
-directional
-node
-definition
-reversible
-formulation
-manipulation
-composition
-standard
-replicate
-persistent
-repository
-assess
-quantization
-mathematical
-trajectory
-discrimination
-generator
-abstract
-composite
-live
-independence
-clinical
-camera
-organizing
-compress
-transcode
-play
-team
-impact
-universal
-locally
-shift
-capacity
-end
-naive
-baye
-fault
-tolerant
-watermarke
-bit
-exploratory
-back
-intersection
-animation
-semistructure
-theoretic
-default
-embed
-internal
-authentication
-factor
-discriminative
-minimization
-compound
-game
-scenario
-cellular
-connectivity
-early
-separation
-refinement
-modal
-robotic
-break
-accelerate
-scene
-practice
-copy
-speak
-procedure
-restrict
-dbms
-direction
-stationary
-nonmonotonic
-prolog
-form
-manager
-protection
-bottom
-combinatorial
-delay
-discrete
-closed
-reference
-convergence
-smooth
-controller
-intensive
-single
-traffic
-position
-shot
-sketch
-coefficient
-rate
-diagnosis
-trace
-distortion
-induce
-bilingual
-arbitrary
-assumption
-recurrent
-limited
-train
-periodic
-write
-go
-exchange
-transmission
-fine
-degree
-diversity
-dominant
-projective
-planning
-arithmetic
-plane
-full
-generalized
-easy
-generic
-visualize
-modelling
-threshold
-satisfiability
-subsumption
-systematic
-read
-transitive
-configuration
-super
-pass
-trading
-sit
-switch
-introduction
-annotate
-voting
-inconsistent
-spatially
-cut
-inclusion
-calibration
-bridge
-paper
-negation
-computational
-planar
-globally
-gap
-meet
-target
-phone
-reality
-polynomial
-crowd
-influence
-symmetry
-take
-tractable
-cloud
-fix
-multimodal
-stable
-multiresolution
-bank
-split
-chip
-least
-hardware
-picture
-compilation
-objective
-interpret
-device
-vehicle
-ratio
-sensing
-procedural
-correction
-elimination
-resilient
-multicast
-optical
-fully
-area
-invariance
-bandwidth
-color
-transition
-testing
-audio
-formalism
-packet
-cell
-negotiation
-diagnostic
-eye
-coding
-inconsistency
-diagram
-truth
-solve
-explain
-compile
-rapid
-render
-resolve
-normal
-leave
-greedy
-shadow
-circuit
-artificial
-synthetic
-ai
-simplification
-finite
-theorem
-prove
-mixed
-spot
-constrained
-multiclass
-band
-fit
-cycle
-formula
-cascade
-snake
-constant
-numerical
-multivariate
-repair
-mesh
-pyramid
-forward
-proof
-signal
-bad
-expectation
-topology
-auction
-noise
-tissue
-graphic
-photo
-interact
-tomography
-equation
-forecast
-norm
-weighted
-subgraph
-expect
-almost
-voice
-variant
-markovian
-gaussian
-choice
-bag
-correspondence
-horn
-total
-completion
-calculus
-transport
-rotation
-canonical
-unification
-tutorial
-clause
-artifact
-nonlinear
-lossless
-sound
-propositional
-embedding
-invite
-argument
-simulate
-anneal
-rational
-dynamical
-observable
-particle
-physics
-loss
-observe
-gray
-integrated
-observation
-rare
-texture
-consumer
-analog
-musical
-constructive
-acoustic
-compensation
-ground
-tensor
-appearance
-satellite
-registration
-cancer
-planner
-reflection
-talk
-localize
-choose
-solver
-morphology
-imagery
-classical
-acquire
-lift
-gradient
-recover
-viewpoint
-mask
-ambiguity
-robot
-symmetric
-bidirectional
-abduction
-dialog
-fitting
-decode
-proceeding
-head
-hand
-possibilistic
-surface
-causal
-variation
-anytime
-synchronous
-logistic
-manifold
-transductive
-indoor
-cognitive
-cue
-vary
-radial
-intention
-dissimilarity
-detector
-monotonic
-maximization
-fingerprint
-body
-ordinal
-principal
-pursuit
-boosting
-stability
-meeting
-localization
-gender
-student
-outdoor
-player
-dialogue
-reinforcement
-rigid
-patch
-making
-parser
-learner
-stereo
-regret
-multiagent
-parsing
-contour
-soccer
-perceptual
-benefit
-variational
-swarm
-coalition
-shoot
-advice
-csp
-emotion
-articulate
-square
-landmark
-film
-figure
-aerial
-moment
-affine
-reward
-imaging
-population
-generative
-abductive
-gesture
-treatment
-coherence
-shade
-quadratic
-velocity
-deformable
-intensity
-urban
-backpropagation
-denoise
-recognize
-morphological
-sport
-spoken
-nonparametric
-inspire
-colour
-foreground
-restoration
-sparsity
-likelihood
-neuron
-perceptron
-spike
-motor
-sign
-surveillance
-occlusion
-biologically
-monocular
-chaotic
-compensate
-pedestrian
-dirichlet
-silhouette
-fourier
-resonance
-geodesic
-curvature
-deformation
-spiking
-reflectance
-illumination
-handwritten
-modulation
-speaker
-spline
-ultrasound
-pose
-biometric
-saliency
-cortical
-lip
-blur
-coder
-skin
-decoder
-jpeg
-subtraction
-covariance
-rendering
-deblurre
-uncalibrated
-panoramic
-concealment
-avc
+knowledge 0.0221
+base 0.1209
+extraction 0.0117
+name 0.0019
+entity 0.0026
+identification 0.0065
+use 0.1077
+email 0.0006
+communication 0.0032
+challenge 0.0026
+information 0.0272
+management 0.0128
+mine 0.0073
+side 0.001
+effect 0.0035
+combine 0.0077
+web 0.0179
+search 0.0267
+machine 0.0153
+learning 0.0337
+secure 0.0016
+datum 0.0649
+distribution 0.0066
+system 0.0677
+incremental 0.0056
+test 0.0026
+collection 0.0028
+detection 0.0297
+lock 0.0011
+object 0.0356
+class 0.0075
+orient 0.0091
+database 0.0533
+extensible 0.0011
+main 0.0008
+memory 0.0071
+storage 0.0034
+personal 0.0019
+ontology 0.0034
+navigation 0.0018
+association 0.0046
+rule 0.0168
+experiment 0.0025
+multi 0.0239
+strategy 0.0071
+learn 0.0481
+replacement 0.0005
+algorithm 0.0362
+integration 0.0065
+cache 0.0013
+spatial 0.0111
+match 0.0064
+representation 0.016
+scheme 0.0088
+indexing 0.0068
+query 0.0354
+image 0.0711
+monitor 0.0015
+recent 0.0005
+change 0.0056
+frequent 0.0049
+itemset 0.0022
+online 0.0077
+stream 0.0149
+geometric 0.0032
+analysis 0.0336
+precision 0.0008
+digital 0.0039
+library 0.001
+extend 0.0042
+apply 0.0036
+science 0.001
+technology 0.003
+extended 0.0025
+vector 0.0116
+product 0.002
+development 0.0028
+site 0.0018
+selection 0.0168
+optimizer 0.0006
+distributed 0.0015
+parallel 0.0081
+general 0.004
+method 0.0267
+reasoning 0.0096
+maintain 0.001
+consistency 0.0031
+materialize 0.0006
+view 0.0142
+processing 0.0165
+enterprise 0.0008
+unified 0.0018
+model 0.0767
+evaluation 0.0126
+mining 0.0215
+multiple 0.0179
+concept 0.0079
+level 0.0083
+real 0.0125
+time 0.0257
+user 0.0082
+context 0.0072
+modeling 0.0081
+retrieval 0.0115
+agent 0.009
+hierarchical 0.0102
+graph 0.0146
+first 0.0041
+few 0.0006
+answer 0.0044
+manage 0.0023
+trust 0.0008
+peer 0.0032
+category 0.002
+drive 0.0055
+taxonomy 0.0009
+automatic 0.0143
+build 0.0036
+statistic 0.0029
+hide 0.0046
+iterative 0.0028
+approach 0.0384
+allocation 0.0028
+distribute 0.0153
+deductive 0.0023
+efficient 0.0324
+space 0.013
+materialized 0.0007
+index 0.0078
+data 0.013
+warehousing 0.0005
+environment 0.011
+interaction 0.0049
+text 0.0139
+document 0.0109
+classification 0.0286
+redundant 0.0009
+effectiveness 0.0006
+family 0.0013
+access 0.0062
+similarity 0.0089
+network 0.05
+internet 0.0022
+scale 0.0117
+string 0.0016
+attribute 0.004
+publish 0.0007
+approximate 0.0069
+neighbor 0.0037
+aggregation 0.0028
+adaptive 0.018
+sampling 0.0035
+control 0.0156
+video 0.0433
+find 0.0056
+enhanced 0.0014
+nest 0.0006
+disk 0.0019
+caching 0.0009
+proxy 0.0005
+server 0.0032
+reduce 0.0024
+load 0.0017
+service 0.0059
+protein 0.0017
+structure 0.0213
+alignment 0.003
+feature 0.0272
+availability 0.0006
+mechanism 0.0033
+predict 0.003
+accuracy 0.0023
+extract 0.0037
+unstructured 0.0008
+new 0.0129
+acquisition 0.0041
+grid 0.0016
+maximal 0.0009
+word 0.0062
+sequence 0.0112
+set 0.0125
+sentence 0.0017
+application 0.0286
+behavior 0.0043
+step 0.0016
+define 0.0009
+correct 0.0012
+complex 0.0075
+concurrent 0.0015
+engineering 0.0021
+operator 0.0025
+combination 0.0026
+entropy 0.003
+categorical 0.001
+clustering 0.0092
+incorporate 0.0019
+support 0.0161
+small 0.0018
+training 0.0048
+categorization 0.003
+classifier 0.0095
+expansion 0.0015
+semantic 0.0193
+relational 0.0105
+uncertain 0.003
+specification 0.0018
+dissemination 0.0007
+theoretical 0.0016
+foundation 0.001
+schema 0.0035
+heterogeneous 0.004
+multidatabase 0.0006
+implicit 0.0014
+framework 0.0138
+cost 0.0054
+quality 0.0058
+trade 0.0005
+facilitate 0.0006
+design 0.0139
+optimization 0.0135
+closure 0.0009
+maintenance 0.003
+evolution 0.0025
+dictionary 0.0012
+translation 0.0043
+improve 0.0114
+light 0.0021
+high 0.0141
+performance 0.0127
+cluster 0.0193
+join 0.0063
+flexible 0.0032
+intrinsic 0.0008
+structured 0.0043
+handling 0.0006
+case 0.0072
+integrate 0.0072
+story 0.0011
+hard 0.001
+encoding 0.0013
+inheritance 0.0009
+hierarchy 0.0028
+historical 0.0008
+relationship 0.0031
+description 0.0071
+logic 0.016
+predicate 0.0017
+implementation 0.0063
+part 0.0024
+relevance 0.0025
+feedback 0.0035
+guide 0.0022
+discovery 0.0092
+intelligence 0.0036
+generate 0.0045
+well 0.0015
+conceptual 0.0022
+reuse 0.0009
+infer 0.0017
+functional 0.003
+dependency 0.0046
+transformation 0.0037
+logical 0.0026
+physical 0.0021
+static 0.0009
+score 0.0012
+xml 0.0054
+content 0.0096
+advance 0.0014
+scheduling 0.0028
+large 0.018
+execution 0.0027
+self 0.0069
+edge 0.004
+improved 0.002
+genetic 0.0036
+disambiguation 0.0018
+term 0.0034
+occurrence 0.0009
+matching 0.0077
+different 0.0019
+length 0.0018
+automatically 0.0016
+way 0.0013
+segmentation 0.0188
+probabilistic 0.0132
+latent 0.0029
+role 0.0027
+domain 0.0121
+benchmark 0.0008
+tool 0.0051
+dynamic 0.0198
+problem 0.0165
+deduction 0.0008
+non 0.0107
+statistical 0.0106
+buffer 0.0007
+implement 0.0017
+programming 0.0086
+language 0.0184
+process 0.0117
+key 0.0019
+speech 0.0065
+resource 0.0037
+processor 0.0021
+flow 0.0049
+experimental 0.0021
+workload 0.0006
+hash 0.0017
+proximity 0.0008
+duplicate 0.0015
+intelligent 0.0042
+select 0.0017
+represent 0.0025
+compute 0.0042
+generalized 0.0015
+most 0.0008
+filter 0.0103
+linguistic 0.0017
+organization 0.0011
+formation 0.0015
+declarative 0.001
+label 0.0034
+archive 0.0009
+interactive 0.0083
+face 0.0118
+structural 0.0037
+semi 0.0023
+study 0.009
+tune 0.0006
+frequency 0.0018
+normalization 0.0007
+block 0.0034
+divergence 0.0008
+link 0.0029
+resolution 0.0071
+scientific 0.0033
+simulation 0.0027
+source 0.0061
+decision 0.013
+rough 0.0013
+direct 0.0036
+experience 0.0025
+overlap 0.001
+result 0.0055
+automate 0.0054
+forecasting 0.0012
+fractal 0.001
+keyword 0.0019
+characteristic 0.0012
+consideration 0.0006
+solution 0.0042
+implication 0.0012
+analytical 0.0008
+version 0.0013
+quantitative 0.0015
+transaction 0.0044
+human 0.0104
+project 0.0017
+comparison 0.0055
+regression 0.0068
+neural 0.0236
+net 0.0023
+pattern 0.019
+recognition 0.0311
+layered 0.0014
+annotation 0.0043
+print 0.0005
+music 0.0035
+recommendation 0.0021
+grouping 0.0006
+interest 0.0018
+binary 0.0038
+spatiotemporal 0.001
+replication 0.0009
+biological 0.0015
+value 0.0067
+determination 0.0011
+construction 0.0036
+technique 0.0123
+browsing 0.0013
+local 0.0123
+estimate 0.0048
+regularize 0.0013
+optimal 0.0086
+evaluate 0.003
+linear 0.0081
+chain 0.0018
+program 0.0073
+labeling 0.0021
+dataset 0.0029
+visualization 0.0031
+engine 0.0041
+weight 0.0042
+collaborative 0.0037
+filtering 0.0026
+subjective 0.0008
+window 0.0017
+encode 0.0011
+mobile 0.0072
+generation 0.0083
+broadcast 0.0017
+array 0.0016
+develop 0.0008
+history 0.001
+priority 0.0006
+assignment 0.0009
+practical 0.0029
+page 0.0023
+scalable 0.0076
+architecture 0.0086
+locate 0.0006
+optimized 0.0008
+sharing 0.0017
+revision 0.0021
+belief 0.007
+theory 0.0107
+auto 0.0006
+topic 0.0037
+perspective 0.0029
+infrastructure 0.0006
+transparent 0.0006
+spatio 0.0029
+temporal 0.0154
+demonstration 0.001
+identity 0.0006
+dimension 0.0031
+parametric 0.0019
+cardinality 0.0006
+constraint 0.0159
+inductive 0.0028
+estimation 0.0203
+handle 0.0019
+rank 0.0062
+summary 0.0021
+medium 0.0043
+right 0.0007
+orientation 0.0018
+shape 0.0119
+dimensionality 0.0024
+reduction 0.0057
+computation 0.005
+approximation 0.0051
+integer 0.0006
+electronic 0.0013
+pre 0.0012
+individual 0.0008
+tv 0.0011
+selectivity 0.0012
+bayesian 0.0081
+consistent 0.0013
+conflict 0.0013
+mapping 0.0043
+other 0.0008
+table 0.0025
+store 0.0008
+tree 0.0198
+alternative 0.0014
+abstraction 0.0023
+move 0.0042
+sensor 0.0059
+reliable 0.0012
+requirement 0.0012
+classify 0.0016
+segment 0.0022
+natural 0.0074
+rich 0.0007
+provide 0.0011
+lossy 0.0006
+decomposition 0.005
+determine 0.0014
+future 0.0014
+direction 0.0018
+power 0.0037
+law 0.0009
+gene 0.002
+expression 0.0053
+density 0.0038
+grammar 0.0033
+client 0.0011
+novel 0.0048
+privacy 0.0038
+preserve 0.0032
+function 0.0121
+summarization 0.003
+group 0.0039
+top 0.0029
+question 0.002
+answering 0.0012
+survey 0.0007
+layer 0.0028
+re 0.0009
+independent 0.0037
+create 0.0012
+interface 0.0052
+random 0.0064
+walk 0.0013
+visual 0.0154
+interpretation 0.0028
+fuzzy 0.0052
+noisy 0.0024
+channel 0.0022
+condition 0.0018
+preference 0.0037
+exploit 0.0047
+redundancy 0.0011
+energy 0.002
+region 0.0069
+inter 0.0009
+template 0.002
+negative 0.0016
+opinion 0.0006
+signature 0.0022
+reliability 0.0006
+detect 0.0049
+similar 0.0009
+salient 0.0007
+uniform 0.0015
+dimensional 0.0082
+concurrency 0.0021
+common 0.0016
+share 0.0025
+forest 0.0007
+depth 0.0034
+branch 0.0007
+bind 0.0017
+ordering 0.0009
+component 0.0042
+software 0.0027
+panel 0.0022
+active 0.0093
+modular 0.0014
+correlation 0.0045
+disjunctive 0.0009
+sense 0.0031
+nested 0.0012
+selective 0.0017
+property 0.0033
+networked 0.0007
+joint 0.0036
+record 0.0016
+type 0.0038
+community 0.0023
+minimal 0.002
+connect 0.0009
+optimize 0.0048
+make 0.0035
+connection 0.0012
+integrity 0.0015
+vocabulary 0.0005
+hybrid 0.0053
+assistant 0.0006
+delivery 0.0011
+compression 0.0062
+file 0.0029
+continuous 0.0069
+near 0.0038
+series 0.0031
+number 0.0019
+motion 0.0201
+browse 0.0008
+collective 0.0007
+display 0.0016
+multilingual 0.0007
+corpora 0.001
+can 0.0026
+work 0.0011
+need 0.0011
+svm 0.0019
+ensemble 0.0046
+example 0.0036
+trend 0.001
+massive 0.0013
+modification 0.0007
+granularity 0.0006
+primitive 0.0007
+back 0.0008
+discover 0.0044
+locality 0.0008
+unification 0.0013
+bound 0.0051
+simple 0.0036
+complexity 0.0081
+variance 0.0009
+creation 0.0006
+event 0.0073
+cover 0.0008
+analogical 0.0006
+error 0.0076
+propagation 0.0049
+textual 0.0011
+exact 0.0013
+help 0.0009
+list 0.0011
+coordination 0.0012
+transactional 0.0005
+open 0.0021
+external 0.0011
+mean 0.0033
+sql 0.0016
+supervise 0.0053
+prototype 0.0015
+background 0.0028
+cooperative 0.0018
+push 0.0005
+order 0.0094
+check 0.0014
+sequential 0.0044
+organize 0.0016
+compact 0.0014
+medical 0.0028
+adapt 0.001
+update 0.0057
+how 0.0036
+bit 0.0023
+parse 0.0027
+policy 0.003
+utility 0.0022
+report 0.0014
+inference 0.0097
+unknown 0.0012
+dct 0.0005
+cube 0.0017
+finding 0.0006
+various 0.0005
+plan 0.0069
+wireless 0.0031
+public 0.0006
+biomedical 0.0007
+pruning 0.0006
+usage 0.0008
+explore 0.002
+effective 0.0053
+path 0.0047
+map 0.0067
+permutation 0.0005
+differential 0.0012
+interpolation 0.0019
+demand 0.0015
+computing 0.0014
+partial 0.0041
+industrial 0.0007
+highly 0.0015
+accurate 0.0025
+emerge 0.0006
+close 0.0012
+boost 0.0046
+low 0.0067
+prior 0.0033
+parsing 0.002
+focus 0.0019
+situation 0.0015
+extension 0.0025
+autonomous 0.0022
+induction 0.0037
+coherent 0.0006
+relevant 0.0012
+markov 0.0067
+retrieve 0.0006
+dynamically 0.0007
+item 0.0012
+fast 0.0153
+qualitative 0.0044
+phrase 0.0016
+free 0.0036
+operation 0.0023
+handwriting 0.0006
+japanese 0.0007
+field 0.0068
+interval 0.0017
+informative 0.0008
+soft 0.0015
+assist 0.0011
+log 0.0018
+task 0.0053
+lexical 0.0018
+vision 0.0053
+interesting 0.0008
+pairwise 0.0011
+aware 0.0034
+overlay 0.0006
+histogram 0.0017
+leverage 0.0006
+contextual 0.0015
+point 0.007
+smart 0.0009
+relate 0.0008
+bias 0.0017
+boolean 0.0012
+describe 0.0006
+good 0.0027
+synchronization 0.0014
+connectionist 0.0015
+line 0.007
+capability 0.0007
+merge 0.0016
+financial 0.0006
+news 0.0016
+analyze 0.0018
+contain 0.0006
+research 0.0027
+production 0.0021
+profile 0.0019
+algebra 0.0017
+global 0.0043
+recovery 0.0039
+aid 0.0016
+relation 0.0064
+hypothesis 0.0015
+refinement 0.0024
+route 0.0012
+slide 0.0009
+unsupervised 0.0055
+derive 0.0015
+validation 0.0019
+expert 0.0051
+constrain 0.0032
+batch 0.0008
+warehouse 0.0022
+assembly 0.0006
+market 0.0011
+multimedia 0.0068
+computer 0.0066
+facial 0.0036
+algebraic 0.0009
+equivalence 0.0017
+sort 0.001
+efficiently 0.0019
+cross 0.0026
+aggregate 0.0028
+partitioning 0.0015
+reinforcement 0.0066
+personalized 0.0012
+representative 0.0006
+prediction 0.0097
+construct 0.0022
+prune 0.0016
+long 0.0018
+avoid 0.0006
+efficiency 0.0016
+style 0.0008
+look 0.0008
+remote 0.0016
+measure 0.0068
+orthogonal 0.0009
+unit 0.0014
+node 0.0009
+basis 0.0061
+conjunctive 0.0009
+stochastic 0.0044
+subsequence 0.0007
+transform 0.0058
+size 0.0028
+partition 0.0029
+range 0.0041
+olap 0.0014
+generalize 0.0043
+discriminant 0.0027
+risk 0.0016
+business 0.0018
+synthesis 0.0031
+social 0.0043
+graphical 0.0026
+grain 0.0006
+run 0.0007
+rewrite 0.0011
+only 0.0011
+place 0.0007
+datalog 0.0011
+blind 0.0018
+add 0.0008
+descriptor 0.0026
+speed 0.0022
+sample 0.0039
+competitive 0.001
+deterministic 0.0014
+automata 0.0009
+syntactic 0.0016
+robust 0.0121
+code 0.0098
+preliminary 0.0012
+platform 0.0021
+home 0.0009
+formal 0.002
+world 0.0038
+wide 0.0017
+tagging 0.0012
+meta 0.0012
+fusion 0.0044
+maximization 0.0012
+deal 0.0009
+failure 0.0014
+discourse 0.0016
+modal 0.0015
+mixture 0.0055
+exponential 0.0007
+enable 0.0014
+track 0.0047
+character 0.002
+comparative 0.0013
+symbol 0.0006
+compare 0.0015
+center 0.0015
+conversation 0.0006
+perfect 0.0005
+hashing 0.0009
+curve 0.0032
+location 0.0018
+parameterize 0.0005
+next 0.0009
+collaboration 0.0009
+industry 0.0005
+symbolic 0.0018
+geographic 0.0005
+regular 0.0011
+assessment 0.002
+capture 0.0018
+lattice 0.001
+distance 0.0057
+divide 0.0006
+paradigm 0.0009
+querying 0.0005
+modify 0.0011
+recursive 0.0029
+measurement 0.0018
+movement 0.0015
+relative 0.0017
+frame 0.0045
+more 0.0018
+sensitive 0.003
+fragment 0.0007
+outlier 0.0022
+robustness 0.0009
+perform 0.0006
+transfer 0.0025
+security 0.0017
+asynchronous 0.0006
+candidate 0.0005
+verification 0.0025
+discretization 0.0008
+subspace 0.0034
+iterated 0.0006
+projection 0.0042
+diverse 0.0006
+advanced 0.0013
+overview 0.0012
+relaxation 0.0011
+difference 0.0022
+incomplete 0.0024
+response 0.0017
+goal 0.0021
+parameter 0.0034
+tuning 0.001
+augment 0.0014
+perception 0.0022
+reverse 0.0009
+analytic 0.0009
+element 0.0011
+methodology 0.0017
+commitment 0.0006
+editing 0.0007
+elicitation 0.0006
+reason 0.0056
+argumentation 0.001
+subgraph 0.0007
+significant 0.0007
+varying 0.0007
+competition 0.0006
+balance 0.001
+increase 0.0007
+counting 0.0006
+uncertainty 0.0043
+workflow 0.0019
+miss 0.0012
+partially 0.0024
+specify 0.0008
+metric 0.0049
+specific 0.0024
+wavelet 0.0073
+invariant 0.0057
+drawing 0.0005
+person 0.0013
+instance 0.0033
+remove 0.0005
+inconsistency 0.0006
+positive 0.0012
+unlabeled 0.0012
+topological 0.001
+couple 0.0015
+conditional 0.0038
+mutual 0.0015
+presence 0.002
+possible 0.0005
+get 0.0005
+useful 0.0007
+enhance 0.0026
+weakly 0.0005
+evidence 0.0016
+patient 0.0008
+strong 0.0008
+skyline 0.001
+revisit 0.0013
+sentiment 0.0006
+criterion 0.0022
+know 0.0009
+transcoding 0.0006
+opportunity 0.0006
+road 0.0012
+conversion 0.001
+activity 0.0039
+progressive 0.0015
+sum 0.0007
+exploration 0.0023
+meaning 0.0007
+monitoring 0.0021
+integrated 0.0014
+average 0.0015
+explicit 0.0008
+synopsis 0.0006
+supervised 0.0024
+input 0.0018
+mixed 0.0017
+mode 0.0024
+loop 0.0008
+microarray 0.0008
+virtual 0.0038
+author 0.001
+margin 0.0026
+correlate 0.0009
+pair 0.0013
+scan 0.0008
+scalability 0.0011
+weighted 0.0016
+schedule 0.0009
+noun 0.0006
+enhancement 0.003
+dependence 0.0007
+review 0.0007
+dual 0.0019
+mpeg 0.0028
+probability 0.005
+likelihood 0.0011
+private 0.0006
+movie 0.0009
+chinese 0.0015
+optimisation 0.0005
+limited 0.0012
+attack 0.001
+confidence 0.0012
+short 0.0017
+message 0.0014
+commercial 0.0006
+dense 0.0014
+heuristic 0.0044
+containment 0.0008
+weak 0.0012
+phase 0.0029
+predictive 0.0024
+co 0.0021
+introduction 0.0006
+importance 0.0009
+utilize 0.0008
+geometry 0.0024
+testing 0.0011
+friendly 0.0005
+very 0.0024
+lazy 0.0009
+associative 0.002
+removal 0.0014
+personalization 0.0007
+wise 0.0005
+kernel 0.0087
+estimator 0.0014
+neighborhood 0.0011
+spectral 0.0034
+sensitivity 0.0011
+generalization 0.0033
+maximize 0.0008
+travel 0.0005
+principle 0.0025
+brain 0.0024
+corpus 0.0006
+complete 0.0016
+summarize 0.0006
+explanation 0.0025
+attention 0.0023
+age 0.0007
+grow 0.001
+dependent 0.0027
+identify 0.0025
+potential 0.0007
+unify 0.0015
+output 0.0017
+reconstruct 0.0005
+many 0.0012
+quantify 0.0007
+temporally 0.0006
+evolve 0.0017
+understand 0.0017
+deep 0.0012
+advertising 0.0007
+expressive 0.0015
+analogy 0.0006
+impact 0.0016
+imbalanced 0.0008
+randomized 0.0011
+evolutionary 0.0019
+stage 0.0011
+adaptation 0.0034
+second 0.0012
+repository 0.0007
+matrix 0.0023
+session 0.001
+iteration 0.0011
+predictor 0.0005
+post 0.0007
+inverse 0.0011
+people 0.0016
+action 0.0077
+boundary 0.0024
+sparse 0.005
+factorization 0.0021
+empirical 0.003
+achieve 0.0007
+when 0.002
+guarantee 0.001
+variable 0.0056
+tag 0.0015
+column 0.0006
+core 0.001
+conference 0.0026
+understanding 0.0027
+ranking 0.0018
+maximum 0.0034
+satisfaction 0.0023
+sub 0.0009
+intra 0.0015
+state 0.0054
+art 0.0013
+regularization 0.0022
+membership 0.0005
+aspect 0.0018
+oracle 0.0012
+encryption 0.0006
+diffusion 0.0013
+subset 0.0009
+characterize 0.0008
+contrast 0.0011
+behaviour 0.0007
+manifold 0.002
+consider 0.0006
+count 0.0012
+xquery 0.0009
+improvement 0.0015
+presentation 0.0015
+simultaneous 0.0021
+note 0.0006
+volume 0.0009
+syntax 0.0008
+tracking 0.0112
+critical 0.0008
+minimum 0.002
+minimize 0.0012
+placement 0.0007
+streaming 0.0032
+customer 0.0011
+reconstruction 0.007
+protocol 0.0019
+issue 0.0023
+directional 0.0015
+preserving 0.001
+definition 0.0016
+reversible 0.0007
+semistructured 0.0006
+formulation 0.0011
+manipulation 0.0015
+composition 0.0015
+standard 0.0011
+connected 0.0006
+protection 0.0013
+persistent 0.0007
+cooperation 0.0005
+assess 0.0006
+completeness 0.0006
+quantization 0.002
+mathematical 0.0009
+trajectory 0.0015
+discrimination 0.0012
+surveillance 0.0026
+generator 0.0008
+parallelism 0.0007
+abstract 0.0033
+composite 0.0012
+live 0.0011
+independence 0.0015
+clinical 0.0006
+organizing 0.0017
+compress 0.003
+play 0.0009
+team 0.0007
+universal 0.0011
+locally 0.0012
+shift 0.0017
+capacity 0.0009
+authentication 0.0016
+end 0.0012
+naive 0.0011
+baye 0.0011
+fault 0.0017
+tolerant 0.0009
+watermarke 0.0036
+exploratory 0.0006
+intersection 0.0006
+animation 0.0007
+theoretic 0.0033
+modelling 0.0016
+default 0.0025
+embed 0.0031
+internal 0.0008
+factor 0.0016
+discriminative 0.0033
+minimization 0.0019
+compound 0.0007
+game 0.0053
+sport 0.0014
+scenario 0.0006
+optimality 0.0006
+cellular 0.0009
+trading 0.0005
+connectivity 0.0006
+early 0.001
+separation 0.0018
+robotic 0.0012
+break 0.0006
+accelerate 0.0006
+scene 0.0071
+practice 0.0011
+copy 0.0006
+procedure 0.0017
+dbms 0.0007
+stationary 0.0008
+nonmonotonic 0.0009
+prolog 0.0008
+degree 0.0006
+form 0.0025
+manager 0.0008
+why 0.0011
+bottom 0.0009
+trace 0.001
+combinatorial 0.0011
+delay 0.0016
+discrete 0.0034
+closed 0.0012
+reference 0.0024
+convergence 0.0015
+smooth 0.0016
+obstacle 0.0005
+controller 0.001
+intensive 0.0008
+single 0.0051
+traffic 0.002
+position 0.0011
+shot 0.0007
+sketch 0.001
+coefficient 0.0011
+rate 0.0068
+diagnosis 0.0041
+distortion 0.0034
+induce 0.0009
+bilingual 0.0006
+arbitrary 0.0014
+assumption 0.001
+recurrent 0.0023
+train 0.0019
+reactive 0.0006
+periodic 0.0009
+write 0.0008
+chip 0.0007
+go 0.0008
+exchange 0.0007
+transmission 0.0027
+fine 0.0011
+preservation 0.0006
+diversity 0.0009
+dominant 0.0005
+localize 0.0006
+projective 0.001
+planning 0.0075
+arithmetic 0.0007
+plane 0.0013
+derivation 0.0005
+full 0.0013
+easy 0.0007
+generic 0.0018
+visualize 0.0007
+threshold 0.0013
+satisfiability 0.0009
+subsumption 0.0006
+systematic 0.0007
+read 0.0009
+transitive 0.0007
+limit 0.001
+configuration 0.0011
+super 0.0018
+pass 0.0007
+sit 0.0006
+switch 0.0009
+voting 0.0011
+inconsistent 0.0006
+spatially 0.0009
+cut 0.0022
+progress 0.0006
+inclusion 0.0007
+calibration 0.003
+bridge 0.0008
+paper 0.001
+negation 0.0008
+computational 0.0048
+polynomial 0.0023
+fundamental 0.0006
+planar 0.0008
+globally 0.0007
+gap 0.0007
+meet 0.001
+target 0.0023
+phone 0.0007
+reality 0.0011
+geodesic 0.0006
+influence 0.0018
+symmetry 0.0012
+take 0.0007
+anytime 0.0007
+tractable 0.0012
+cloud 0.0008
+provenance 0.0005
+fix 0.001
+multimodal 0.0015
+tolerance 0.0005
+stable 0.0015
+explain 0.0007
+multiresolution 0.0009
+bank 0.0006
+split 0.0007
+least 0.0015
+international 0.0007
+hardware 0.0016
+picture 0.0013
+forward 0.0012
+compilation 0.0008
+objective 0.0015
+committee 0.0005
+interpret 0.0008
+device 0.0022
+constrained 0.0009
+vehicle 0.0017
+ratio 0.0008
+sensing 0.0012
+procedural 0.0006
+correction 0.0016
+elimination 0.0008
+where 0.0008
+head 0.0016
+soccer 0.0011
+s 0.0005
+resilient 0.0009
+multicast 0.0009
+instruction 0.0005
+gain 0.0005
+optical 0.0027
+fully 0.0008
+area 0.0016
+invariance 0.0006
+bandwidth 0.0009
+color 0.0082
+force 0.0006
+transition 0.0017
+audio 0.0045
+formalism 0.0007
+packet 0.0016
+total 0.0007
+cell 0.002
+negotiation 0.0011
+diagnostic 0.0011
+eye 0.0015
+coding 0.0074
+coordinate 0.0011
+diagram 0.0012
+truth 0.0007
+evidential 0.0005
+solve 0.0057
+compile 0.0006
+rapid 0.0009
+resolve 0.0009
+normal 0.0012
+down 0.0005
+greedy 0.0007
+shadow 0.0011
+circuit 0.0013
+artificial 0.0045
+voice 0.0009
+life 0.0005
+synthetic 0.0009
+loss 0.002
+terminological 0.0006
+intrusion 0.0005
+simplification 0.0005
+finite 0.002
+numeric 0.0005
+theorem 0.0015
+prove 0.0009
+spot 0.0006
+ai 0.0005
+topology 0.0009
+multiclass 0.0009
+band 0.0006
+fit 0.0007
+cycle 0.0006
+formula 0.0014
+cascade 0.0008
+snake 0.0007
+fingerprint 0.0015
+constant 0.0009
+numerical 0.0009
+multivariate 0.001
+repair 0.0009
+mesh 0.0013
+pyramid 0.0007
+building 0.001
+proof 0.0012
+norm 0.001
+signal 0.0034
+bad 0.0006
+compositional 0.0006
+expectation 0.0012
+auction 0.0013
+noise 0.0031
+tissue 0.0005
+graphic 0.0012
+photo 0.0019
+interact 0.0006
+environmental 0.0005
+tomography 0.0005
+equation 0.0011
+hidden 0.0008
+double 0.0005
+expect 0.0007
+almost 0.0005
+variant 0.0007
+markovian 0.0006
+choice 0.0008
+bag 0.0008
+correspondence 0.003
+horn 0.0007
+completion 0.0006
+calculus 0.002
+investigation 0.0008
+transport 0.0007
+rotation 0.0013
+canonical 0.0008
+tutorial 0.001
+clause 0.0009
+artifact 0.0008
+infinite 0.0005
+account 0.0006
+nonlinear 0.0036
+lossless 0.0012
+sound 0.0014
+propositional 0.0013
+embedding 0.0014
+invite 0.0007
+argument 0.0009
+circumscription 0.0006
+simulate 0.0009
+anneal 0.0006
+benefit 0.0006
+rational 0.0007
+dynamical 0.0012
+observable 0.0009
+particle 0.0031
+physics 0.0007
+symmetric 0.0008
+gray 0.0006
+observation 0.0019
+rare 0.0006
+texture 0.0061
+consumer 0.0007
+population 0.001
+analog 0.0009
+forensic 0.0005
+musical 0.0008
+constructive 0.0007
+dialogue 0.0019
+guidance 0.0005
+acoustic 0.0009
+compensation 0.0012
+contour 0.0034
+ground 0.0014
+tensor 0.0013
+appearance 0.0024
+satellite 0.0008
+registration 0.004
+cancer 0.0008
+planner 0.0011
+reflection 0.0006
+talk 0.0007
+nonparametric 0.0012
+choose 0.0006
+drift 0.0009
+solver 0.0008
+morphology 0.0006
+imagery 0.001
+classical 0.0006
+conversational 0.0006
+acquire 0.0006
+coherence 0.0008
+gradient 0.0033
+monotonic 0.0008
+recover 0.001
+viewpoint 0.0011
+normalized 0.0007
+ambiguity 0.0008
+robot 0.0058
+recording 0.0005
+bidirectional 0.0007
+abduction 0.0009
+dialog 0.0007
+fitting 0.0006
+compensate 0.001
+shoot 0.0007
+decode 0.0011
+proceeding 0.0035
+hand 0.0017
+possibilistic 0.0012
+surface 0.006
+causal 0.0029
+variation 0.0013
+colour 0.0006
+synchronous 0.0006
+logistic 0.0008
+transductive 0.0007
+indoor 0.0006
+cognitive 0.0018
+cue 0.0016
+vary 0.001
+radial 0.0011
+intention 0.0006
+dissimilarity 0.0006
+detector 0.0015
+unsupervise 0.0007
+forecast 0.0007
+body 0.0018
+ordinal 0.0006
+principal 0.0016
+pursuit 0.0008
+boosting 0.0012
+stability 0.0012
+meeting 0.0007
+localization 0.003
+spoken 0.0012
+gender 0.0006
+narrative 0.0005
+student 0.0007
+outdoor 0.0005
+player 0.0009
+rigid 0.0016
+patch 0.0008
+making 0.0006
+parser 0.0012
+learner 0.0009
+stereo 0.0028
+regret 0.0007
+multiagent 0.0012
+equilibrium 0.0006
+entailment 0.0005
+shade 0.0007
+perceptual 0.0024
+epistemic 0.0006
+variational 0.0019
+swarm 0.001
+coalition 0.0005
+triangulation 0.0005
+advice 0.0006
+csp 0.0008
+speaker 0.0011
+emotion 0.0012
+articulate 0.0009
+learnability 0.0007
+square 0.0012
+landmark 0.0007
+film 0.0007
+figure 0.0007
+aerial 0.0009
+camera 0.0076
+moment 0.0008
+affine 0.0009
+reward 0.0008
+imaging 0.0015
+urban 0.0007
+generative 0.0016
+abductive 0.0005
+gesture 0.0014
+treatment 0.0007
+recognize 0.0017
+auditory 0.0006
+quadratic 0.0006
+velocity 0.0006
+descent 0.0006
+deformable 0.0021
+intensity 0.0011
+gaussian 0.0041
+backpropagation 0.0006
+restoration 0.002
+denoise 0.0015
+rendering 0.0008
+pca 0.0006
+cortex 0.0006
+morphological 0.0014
+verb 0.0005
+inspire 0.0009
+decoder 0.0007
+sparsity 0.0006
+bandit 0.0005
+neuron 0.0023
+perceptron 0.0006
+spike 0.0014
+fourier 0.0008
+motor 0.0008
+sign 0.001
+occlusion 0.0011
+biologically 0.0005
+monocular 0.0008
+chaotic 0.0007
+nonnegative 0.0006
+pedestrian 0.0008
+dirichlet 0.001
+silhouette 0.0008
+disparity 0.0007
+multiscale 0.0006
+resonance 0.0006
+laplacian 0.0006
+curvature 0.0008
+deformation 0.001
+spiking 0.0007
+highlight 0.0005
+reflectance 0.0006
+handwritten 0.0017
+illumination 0.0026
+modulation 0.0008
+neuronal 0.0006
+saliency 0.001
+spline 0.0006
+ultrasound 0.0006
+pose 0.0034
+biometric 0.001
+cortical 0.0008
+lip 0.0006
+blur 0.0008
+coder 0.0008
+skin 0.0007
+jpeg 0.0007
+subtraction 0.0006
+covariance 0.0006
+hyperspectral 0.0006
+foreground 0.0007
+uncalibrated 0.0007
+panoramic 0.0007
+watermark 0.0005
+avc 0.0011
+concealment 0.001
+encoder 0.0007

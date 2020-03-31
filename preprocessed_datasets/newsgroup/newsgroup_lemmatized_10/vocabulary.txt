@@ -1,1268 +1,1393 @@
-write
-indicate
-may
-believe
-correct
-choose
-accept
-god
-difference
-can
-really
-course
-show
-church
-always
-teach
-say
-mean
-free
-man
-life
-also
-affect
-however
-hold
-otherwise
-end
-deny
-save
-must
-give
-enough
-receive
-final
-guarantee
-would
-need
-hell
-people
-effort
-become
-fire
-heart
-thus
-deserve
-reject
-sin
-work
-judge
-last
-well
-certainly
-good
-do
-even
-little
-next
-make
-murder
-still
-death
-child
-nee
-point
-idea
-quite
-bar
-ad
-stop
-woman
-perhaps
-be
-go
-anyway
-innocent
-support
-war
-involve
-think
-disagree
-case
-see
-excuse
-get
-action
-peace
-justify
-hear
-radio
-today
-student
-conference
-call
-sexual
-else
-claim
-fact
-activity
-warn
-speak
-right
-have
-guess
-line
-talk
-society
-attitude
-practice
-plain
-hope
-hand
-whole
-country
-much
-seek
-lot
-result
-pretty
-time
-observe
-self
-strong
-many
-folk
-know
-true
-bear
-responsibility
-way
-bad
-express
-positive
-relationship
-pass
-score
-real
-interesting
-question
-happen
-rise
-organization
-group
-article
-problem
-state
-operate
-system
-able
-sense
-word
-jewish
-account
-document
-wife
-interpretation
-refer
-abuse
-one
-usually
-therefore
-example
-specific
-block
-bit
-look
-regard
-trouble
-allow
-access
-especially
-cause
-observation
-important
-recent
-year
-imply
-absolutely
-assumption
-greatly
-obvious
-part
-equal
-mother
-close
-assume
-note
-body
-soul
-maybe
-already
-perfect
-obviously
-far
-mention
-rather
-matter
-explanation
-wish
-start
-alternative
-random
-plan
-unable
-complex
-nature
-world
-could
-exist
-leave
-control
-intelligence
-capable
-scheme
-prefer
-clean
-prove
-come
-somewhere
-feel
-live
-choice
-original
-response
-post
-thank
-respond
-least
-willing
-general
-return
-old
-suggest
-read
-cover
-culture
-quick
-opinion
-sound
-somehow
-cite
-several
-great
-thing
-scripture
-probably
-wrong
-notice
-future
-highly
-doctor
-view
-ca
-issue
-mistake
-never
-want
-less
-establish
-head
-expect
-ago
-imagine
-kind
-different
-age
-follow
-continue
-recognize
-find
-faith
-earth
-almost
-dead
-order
-create
-amount
-ever
-display
-authority
-gain
-simple
-record
-new
-book
-accurate
-actually
-source
-tear
-none
-soon
-suppose
-event
-seem
-personally
-likely
-steal
-bother
-appear
-exactly
-sort
-early
-charge
-answer
-statement
-set
-rule
-law
-use
-moral
-benefit
-side
-learn
-forget
-court
-atheist
-die
-fail
-definition
-physical
-include
-contain
-brain
-there
-s
-reason
-fear
-pain
-often
-process
-will
-worry
-flame
-hurt
-interest
-image
-seat
-hence
-tell
-blood
-shall
-represent
-apply
-spread
-nation
-name
-offer
-eat
-simply
-period
-repeat
-admit
-possibility
-previous
-love
-hate
-yet
-evil
-context
-special
-carry
-promise
-miss
-entire
-send
-interested
-high
-quote
-truth
-reveal
-discussion
-hit
-stuff
-delete
-personal
-research
-lead
-conclusion
-agree
-add
-lack
-respect
-other
-clearly
-christian
-belief
-argue
-objective
-rely
-area
-path
-room
-couple
-lie
-comment
-reasonable
-ask
-ability
-history
-form
-doubt
-false
-science
-dept
-guy
-discuss
-fall
-non
-religion
-religious
-national
-term
-immediately
-mind
-university
-standard
-disclaimer
-begin
-suspect
-natural
-condition
-human
-conflict
-proper
-grow
-reaction
-son
-hard
-seriously
-position
-thought
-feature
-first
-oppose
-play
-role
-spend
-later
-clear
-political
-maintain
-separate
-moment
-eye
-understand
-correctly
-remain
-western
-extra
-mile
-current
-century
-member
-conduct
-sign
-common
-party
-explain
-detail
-consider
-language
-intend
-treatment
-tradition
-modern
-base
-information
-present
-info
-third
-put
-useful
-basis
-like
-school
-day
-force
-fun
-military
-training
-extremely
-fly
-sport
-hardware
-computer
-game
-complete
-report
-attack
-technology
-strike
-enjoy
-weapon
-shoot
-ignore
-building
-target
-damage
-remove
-reality
-necessary
-public
-troop
-enter
-former
-particular
-sorry
-stand
-list
-bring
-let
-historical
-popular
-basically
-threat
-oil
-supply
-factor
-sure
-tv
-possible
-government
-power
-port
-confuse
-appreciate
-particularly
-help
-phone
-fax
-black
-box
-welcome
-place
-merely
-witness
-summary
-odd
-situation
-originally
-person
-decide
-topic
-recently
-community
-degree
-regular
-remember
-stay
-station
-half
-hour
-tend
-back
-sex
-act
-prepare
-raise
-parent
-existence
-specify
-effect
-demand
-scientist
-code
-disease
-entirely
-convert
-material
-though
-picture
-produce
-available
-animal
-require
-take
-evidence
-baby
-similar
-check
-certain
-type
-value
-logic
-scale
-discover
-purpose
-young
-memory
-straight
-library
-tap
-mountain
-low
-major
-family
-relate
-message
-network
-top
-funny
-better
-food
-theory
-change
-water
-ride
-drink
-dangerous
-stupid
-share
-forward
-total
-accord
-difficult
-ill
-build
-reply
-complain
-necessarily
-error
-understanding
-determine
-fully
-division
-turn
-away
-try
-encourage
-level
-service
-watch
-directly
-face
-valid
-light
-avoid
-suggestion
-impossible
-destroy
-together
-site
-mass
-connect
-replace
-commercial
-instead
-meaning
-deep
-analysis
-shift
-host
-past
-catch
-experience
-btw
-huge
-easy
-slightly
-search
-city
-style
-count
-pre
-anywhere
-specifically
-requirement
-method
-sample
-legal
-sufficient
-background
-business
-resource
-request
-ready
-deal
-lose
-net
-laugh
-join
-basic
-argument
-mark
-behavior
-newsgroup
-describe
-single
-surely
-achieve
-friend
-normally
-afraid
-fill
-approach
-door
-switch
-home
-provide
-street
-month
-meet
-visit
-policy
-fund
-program
-blame
-crime
-study
-realize
-proof
-relation
-decision
-medical
-prevent
-occur
-perfectly
-happy
-draw
-solid
-scientific
-secret
-knowledge
-paper
-direct
-application
-usenet
-appropriate
-private
-email
-figure
-large
-defense
-story
-small
-town
-walk
-cut
-here
-responsible
-poor
-concept
-bet
-edge
-due
-facility
-develop
-solution
-drive
-safety
-hide
-mine
-drug
-escape
-population
-element
-keep
-listen
-update
-week
-leader
-project
-israeli
-brother
-posting
-range
-indeed
-address
-propose
-description
-excellent
-model
-test
-fit
-datum
-weak
-letter
-best
-second
-ground
-open
-truly
-patient
-identify
-quality
-tool
-individual
-finally
-title
-publish
-late
-various
-reference
-sick
-money
-generation
-throw
-frequently
-fast
-wonder
-long
-fight
-cross
-main
-reader
-full
-transfer
-trial
-internal
-desire
-definitely
-art
-insist
-sometimes
-kill
-number
-manner
-criminal
-car
-accident
-house
-easily
-press
-kid
-freedom
-task
-development
-should
-object
-alone
-bottom
-function
-author
-thread
-run
-unfortunately
-treat
-safe
-nice
-step
-page
-eventually
-rest
-powerful
-short
-refuse
-wear
-advice
-mail
-terminal
-reading
-status
-american
-class
-aspect
-trust
-poster
-majority
-attempt
-fix
-limit
-burn
-night
-mostly
-concern
-convince
-wide
-damn
-aware
-suffer
-relevant
-dream
-grant
-commit
-reduce
-contact
-double
-guest
-command
-jump
-link
-demonstrate
-connection
-comparison
-news
-feed
-break
-depend
-software
-generally
-addition
-rate
-company
-engineering
-job
-yesterday
-lock
-office
-piece
-big
-engineer
-touch
-worth
-perform
-drop
-advance
-equipment
-finger
-recall
-pc
-associate
-fine
-left
-favor
-risk
-sit
-active
-additional
-regardless
-employer
-recommend
-land
-loss
-increase
-reflect
-principle
-essentially
-define
-pro
-official
-distribute
-sell
-serious
-move
-store
-proposal
-handle
-totally
-curious
-reach
-legitimate
-instance
-character
-mission
-belong
-measure
-section
-civil
-pay
-attention
-careful
-road
-fairly
-actual
-shape
-hole
-spot
-version
-shop
-relatively
-alive
-instruction
-text
-independent
-strange
-technical
-somewhat
-limited
-possibly
-fool
-local
-expert
-foot
-remind
-thousand
-slow
-window
-proceed
-advantage
-currently
-cold
-anymore
-card
-waste
-completely
-pick
-chance
-file
-medicine
-protect
-beat
-center
-price
-anti
-pressure
-environment
-surprise
-effective
-unit
-release
-stat
-announce
-wait
-extend
-key
-care
-compare
-weight
-normal
-longer
-apparently
-buy
-stick
-push
-direction
-review
-typical
-white
-race
-serve
-exact
-goal
-homosexual
-rom
-minute
-usual
-bill
-opportunity
-product
-date
-hardly
-property
-domain
-lab
-around
-voice
-cool
-significant
-internet
-surface
-content
-structure
-nearly
-cost
-quickly
-social
-disk
-magazine
-medium
-obtain
-education
-design
-prior
-space
-debate
-compute
-defend
-success
-fair
-copy
-board
-federal
-item
-schedule
-health
-manage
-faq
-manager
-implement
-location
-field
-volume
-external
-shot
-server
-speed
-wing
-finish
-properly
-insurance
-print
-ahead
-branch
-compound
-tank
-gas
-agent
-bunch
-frame
-fault
-modify
-compatible
-option
-distance
-length
-communication
-dollar
-trade
-economic
-decent
-heat
-hang
-secure
-noise
-minor
-distribution
-average
-front
-multiple
-tie
-data
-hot
-win
-own
-twice
-police
-package
-red
-documentation
-match
-launch
-operation
-originator
-mode
-co
-generate
-security
-market
-uunet
-nntp
-vote
-arm
-morning
-blow
-turkish
-fan
-table
-round
-improve
-boy
-ok
-tape
-summer
-expensive
-knock
-air
-manufacturer
-ball
-heavy
-color
-detect
-technique
-solve
-license
-motorcycle
-user
-middle
-please
-rich
-baseball
-purchase
-track
-citizen
-soldier
-season
-luck
-series
-illegal
-dealer
-ship
-pull
-blue
-agency
-screen
-chip
-apple
-wire
-performance
-star
-select
-warrant
-install
-sale
-driver
-load
-instal
-vehicle
-cop
-gun
-player
-video
-graphic
-machine
-resolution
-capability
-faster
-interface
-device
-monitor
-input
-wave
-keyword
-meg
-upgrade
-shipping
-algorithm
-output
-format
-cable
-clipper
-bus
-cd
-mhz
-tax
-ram
-electronic
-boot
-size
-map
-com
-serial
-cheap
-modem
-component
-owner
-gateway
-printer
-programming
-directory
-bug
-utility
-signal
-controller
-manual
-archive
-industry
-engine
-announcement
-mouse
-crash
-brand
-rid
-plug
-team
-register
-setup
-traffic
-potential
-scsi
-button
-screw
-auto
-international
-bike
-battery
-rocket
-officer
-pin
-protection
-enforcement
-president
-pitch
-victim
-playoff
-hockey
-encryption
-encrypt
-arab
-orbit
+subject 0.5116
+genocide 0.0108
+work 0.2036
+write 0.599
+indicate 0.0218
+may 0.247
+believe 0.1285
+correct 0.0427
+choose 0.0343
+will 0.369
+accept 0.0464
+god 0.0235
+again 0.0913
+difference 0.0491
+can 0.4777
+really 0.1471
+course 0.0904
+very 0.1791
+doctrine 0.0108
+show 0.0946
+other 0.2928
+church 0.0229
+always 0.0724
+teach 0.0186
+beginning 0.0131
+say 0.291
+mean 0.1315
+free 0.0636
+man 0.0792
+life 0.0759
+also 0.2346
+affect 0.0149
+however 0.0944
+hold 0.0612
+otherwise 0.0299
+end 0.0874
+deny 0.0167
+must 0.1014
+give 0.1852
+enough 0.0904
+save 0.0399
+only 0.2725
+receive 0.0397
+final 0.025
+guarantee 0.0142
+just 0.3185
+know 0.3475
+would 0.4688
+need 0.1932
+hell 0.033
+people 0.2293
+own 0.1163
+effort 0.024
+become 0.0637
+fire 0.0371
+heart 0.022
+thus 0.037
+deserve 0.0125
+reject 0.0133
+sin 0.0169
+judge 0.0193
+last 0.1217
+well 0.2232
+most 0.1609
+certainly 0.0473
+good 0.2524
+do 0.1525
+even 0.1924
+little 0.0986
+next 0.0689
+one 0.1341
+make 0.2935
+murder 0.0222
+still 0.1334
+death 0.0418
+child 0.0481
+point 0.1426
+idea 0.0852
+quite 0.07
+bar 0.0126
+land 0.0256
+ad 0.0171
+stop 0.051
+woman 0.0318
+perhaps 0.0575
+parallel 0.0113
+be 0.2982
+go 0.2845
+anyway 0.0384
+why 0.1746
+should 0.1997
+more 0.289
+innocent 0.0129
+support 0.0854
+war 0.0312
+involve 0.0398
+think 0.2914
+so 0.3075
+disagree 0.0164
+foreign 0.0114
+general 0.0479
+case 0.1175
+see 0.2514
+excuse 0.0147
+get 0.2474
+after 0.0171
+all 0.0887
+action 0.0405
+peace 0.0205
+justify 0.0139
+hear 0.1054
+radio 0.0217
+today 0.0604
+student 0.0285
+conference 0.0127
+where 0.162
+call 0.1517
+such 0.1447
+sexual 0.012
+how 0.2768
+else 0.0848
+when 0.2799
+claim 0.0706
+fact 0.1048
+activity 0.0252
+warn 0.0124
+speak 0.0521
+right 0.16
+have 0.24
+guess 0.0537
+out 0.0629
+line 0.8671
+talk 0.0826
+society 0.0249
+attitude 0.0145
+practice 0.0265
+plain 0.0142
+hope 0.0676
+hand 0.0668
+whole 0.0524
+country 0.0448
+few 0.1072
+much 0.1794
+seek 0.0165
+lot 0.1053
+result 0.0604
+pretty 0.058
+time 0.2503
+observe 0.0105
+self 0.0344
+strong 0.0335
+many 0.1617
+folk 0.027
+ring 0.0105
+true 0.0787
+bear 0.0291
+responsibility 0.0151
+way 0.1995
+bad 0.0935
+express 0.0294
+positive 0.0127
+relationship 0.0121
+pass 0.0427
+score 0.0197
+real 0.081
+interesting 0.0393
+question 0.1515
+happen 0.0906
+rise 0.0178
+reply 0.1844
+organization 0.14
+group 0.0844
+article 0.4475
+problem 0.1635
+state 0.0914
+operate 0.0149
+system 0.1442
+able 0.0749
+sense 0.0421
+word 0.0778
+jewish 0.0229
+account 0.0245
+new 0.1512
+document 0.0211
+day 0.1207
+re 0.3805
+block 0.0181
+wife 0.0199
+cause 0.0704
+interpretation 0.0119
+refer 0.0322
+abuse 0.0121
+usually 0.0382
+use 0.3416
+therefore 0.0335
+example 0.0705
+specific 0.0296
+bite 0.0129
+look 0.1954
+regard 0.0486
+trouble 0.025
+allow 0.0685
+access 0.0622
+especially 0.0456
+pray 0.0105
+observation 0.0108
+assumption 0.0122
+basis 0.0302
+important 0.0451
+recent 0.023
+year 0.1751
+imply 0.0188
+absolutely 0.0188
+greatly 0.0208
+obvious 0.0218
+part 0.1067
+equal 0.0125
+mother 0.0163
+close 0.0528
+assume 0.0566
+note 0.0712
+body 0.0368
+soul 0.0179
+maybe 0.0734
+already 0.0566
+perfect 0.0183
+obviously 0.0259
+far 0.0858
+mention 0.0558
+stick 0.0241
+rather 0.0782
+no 0.056
+matter 0.0574
+explanation 0.0123
+creation 0.0118
+wish 0.03
+start 0.1116
+alternative 0.0165
+then 0.2092
+random 0.0122
+accord 0.0353
+plan 0.0386
+unable 0.0105
+complex 0.0111
+nature 0.0227
+world 0.1213
+could 0.2283
+exist 0.0605
+leave 0.0822
+control 0.0616
+intelligence 0.0123
+capable 0.0123
+scheme 0.0126
+prefer 0.024
+clean 0.0192
+prove 0.0368
+come 0.1847
+somewhere 0.0221
+feel 0.0643
+live 0.074
+choice 0.0286
+original 0.05
+post 0.5025
+black 0.0315
+response 0.0405
+thank 0.1715
+respond 0.0283
+least 0.0924
+willing 0.0285
+return 0.0389
+same 0.1482
+old 0.0887
+suggest 0.0455
+read 0.1322
+cover 0.0346
+culture 0.0111
+quick 0.0198
+interpret 0.0113
+opinion 0.098
+sound 0.0616
+somehow 0.0145
+cite 0.0135
+several 0.0616
+great 0.0951
+thing 0.1902
+scripture 0.0113
+probably 0.0945
+newsgroup 0.0295
+wrong 0.0742
+notice 0.0355
+future 0.0299
+highly 0.0162
+doctor 0.0176
+view 0.0623
+ca 0.048
+issue 0.0655
+mistake 0.0181
+never 0.1138
+build 0.0591
+earth 0.0297
+want 0.2106
+less 0.0685
+establish 0.0166
+head 0.0459
+expect 0.0487
+ago 0.0582
+imagine 0.0212
+kind 0.0725
+different 0.0819
+age 0.0214
+follow 0.0963
+continue 0.0387
+now 0.1979
+wait 0.0398
+recognize 0.0199
+find 0.1832
+faith 0.0246
+almost 0.0503
+dead 0.0338
+order 0.075
+create 0.0487
+amount 0.0309
+ever 0.0738
+display 0.0332
+authority 0.0215
+gain 0.0157
+simple 0.0425
+record 0.0317
+book 0.0601
+accurate 0.0118
+actually 0.0897
+source 0.0611
+tear 0.0122
+none 0.0298
+event 0.0308
+seem 0.1562
+personally 0.0219
+likely 0.0378
+steal 0.015
+bother 0.0179
+appear 0.0451
+exactly 0.0412
+sort 0.0501
+early 0.0411
+charge 0.0268
+answer 0.0687
+statement 0.0424
+set 0.0859
+rule 0.0384
+law 0.0647
+moral 0.0204
+benefit 0.0166
+side 0.0502
+learn 0.0373
+forget 0.0337
+court 0.019
+atheist 0.0209
+die 0.044
+fail 0.0346
+definition 0.0205
+physical 0.0143
+include 0.1018
+contain 0.0336
+brain 0.0163
+s 0.1977
+reason 0.0927
+fear 0.0179
+pain 0.0139
+often 0.0464
+process 0.0333
+around 0.0382
+worry 0.0171
+flame 0.0313
+hurt 0.0145
+interest 0.0352
+th 0.0138
+image 0.0347
+left 0.015
+cross 0.0161
+seat 0.0108
+worth 0.0302
+father 0.0145
+hence 0.0104
+tell 0.1445
+power 0.0738
+blood 0.0165
+shall 0.0198
+represent 0.0215
+apply 0.0404
+spread 0.0129
+mass 0.0137
+nation 0.0161
+sun 0.0167
+name 0.0843
+offer 0.0487
+host 0.168
+as 0.1846
+eat 0.0188
+drink 0.0108
+simply 0.0481
+period 0.0261
+christianity 0.0104
+repeat 0.0169
+admit 0.0235
+possibility 0.018
+previous 0.0319
+love 0.0465
+hate 0.0217
+past 0.0319
+yet 0.0678
+evil 0.0172
+context 0.0164
+special 0.0312
+carry 0.039
+promise 0.0147
+meaning 0.0167
+miss 0.0321
+entire 0.0247
+send 0.0814
+interested 0.057
+high 0.1005
+quote 0.0312
+truth 0.0291
+reveal 0.0118
+discussion 0.0388
+hit 0.0381
+stuff 0.0565
+delete 0.0348
+personal 0.0347
+research 0.0345
+lead 0.0519
+conclusion 0.0171
+agree 0.0598
+here 0.1718
+like 0.1148
+add 0.0568
+lack 0.0258
+respect 0.0213
+clearly 0.0273
+christian 0.0356
+belief 0.0253
+tend 0.021
+argue 0.0238
+objective 0.0135
+rely 0.0106
+area 0.0542
+bind 0.0104
+path 0.012
+room 0.019
+couple 0.0459
+lie 0.0292
+comment 0.0469
+reasonable 0.0244
+ask 0.1072
+ability 0.0206
+history 0.0381
+form 0.0455
+doubt 0.0341
+false 0.0157
+religious 0.0267
+science 0.0482
+dept 0.0275
+guy 0.0478
+discuss 0.0281
+fall 0.0386
+non 0.0577
+following 0.0128
+of 0.0261
+religion 0.0357
+national 0.0237
+advance 0.0459
+term 0.0435
+immediately 0.015
+mind 0.0564
+standard 0.0572
+disclaimer 0.0364
+suspect 0.0243
+natural 0.0156
+condition 0.0332
+human 0.0476
+conflict 0.0129
+engineering 0.0194
+proper 0.0167
+grow 0.0167
+reaction 0.012
+hard 0.0771
+seriously 0.0213
+position 0.0388
+further 0.0294
+feature 0.0221
+first 0.1589
+net 0.0524
+oppose 0.019
+western 0.0131
+play 0.0682
+role 0.0133
+spend 0.0332
+later 0.0425
+clear 0.0424
+political 0.0281
+maintain 0.0203
+separate 0.0188
+moment 0.0176
+eye 0.0234
+century 0.0145
+understand 0.0628
+correctly 0.0132
+remain 0.0288
+extra 0.023
+mile 0.0218
+current 0.0448
+member 0.0385
+conduct 0.0115
+sign 0.0265
+common 0.0356
+center 0.0324
+above 0.0412
+party 0.0191
+explain 0.0415
+detail 0.0311
+consider 0.0841
+language 0.0193
+intend 0.0244
+posting 0.0282
+treatment 0.0147
+tradition 0.0107
+modern 0.0175
+base 0.0749
+information 0.0898
+present 0.0393
+challenge 0.0138
+info 0.0507
+put 0.1047
+principle 0.0128
+thought 0.031
+reality 0.0165
+useful 0.0221
+school 0.0265
+force 0.0496
+bit 0.0799
+fun 0.0154
+military 0.0211
+training 0.0109
+extremely 0.0124
+sport 0.0158
+hardware 0.0312
+computer 0.0794
+game 0.0698
+complete 0.0299
+listen 0.0215
+report 0.0505
+attack 0.0327
+technology 0.0337
+strike 0.0132
+begin 0.0374
+enjoy 0.0144
+weapon 0.0225
+shoot 0.0284
+ignore 0.0219
+building 0.016
+fly 0.0179
+target 0.0136
+damage 0.0167
+remove 0.0271
+necessary 0.0282
+public 0.0671
+troop 0.0118
+enter 0.021
+former 0.0191
+particular 0.0354
+sorry 0.033
+stand 0.0363
+list 0.0673
+bring 0.0501
+let 0.115
+historical 0.0113
+popular 0.0148
+basically 0.0205
+threat 0.0118
+oil 0.0119
+supply 0.0257
+factor 0.0175
+sure 0.1144
+tv 0.0207
+possible 0.0786
+feeling 0.0119
+government 0.0748
+arm 0.0256
+port 0.021
+appreciate 0.0558
+particularly 0.0184
+help 0.1411
+phone 0.047
+fax 0.0206
+mail 0.1086
+box 0.0334
+welcome 0.0173
+son 0.0159
+place 0.0927
+merely 0.0172
+witness 0.0137
+summary 0.0404
+odd 0.0115
+situation 0.037
+originally 0.0108
+person 0.0697
+decide 0.0448
+topic 0.017
+recently 0.038
+soon 0.0329
+community 0.0207
+degree 0.0174
+regular 0.0193
+remember 0.0673
+stay 0.0268
+at 0.0587
+back 0.1277
+station 0.0192
+half 0.0224
+hour 0.0303
+there 0.1403
+sex 0.014
+act 0.0387
+prepare 0.0103
+raise 0.0221
+parent 0.0144
+existence 0.0177
+specify 0.0109
+effect 0.0428
+demand 0.0153
+scientist 0.0131
+code 0.0394
+disease 0.0115
+though 0.0159
+entirely 0.0161
+convert 0.0238
+material 0.0192
+picture 0.0253
+produce 0.03
+available 0.0702
+animal 0.0117
+require 0.0583
+too 0.1473
+take 0.2075
+evidence 0.0416
+baby 0.0109
+similar 0.0432
+check 0.0564
+variety 0.0104
+certain 0.0382
+type 0.0611
+value 0.0367
+fit 0.0249
+logic 0.0166
+scale 0.0126
+discover 0.0159
+purpose 0.0348
+king 0.0126
+young 0.0251
+lose 0.0488
+leader 0.0196
+mission 0.0128
+memory 0.036
+straight 0.0197
+library 0.0193
+tap 0.0125
+major 0.0391
+mountain 0.0112
+low 0.0553
+family 0.0235
+relate 0.0259
+message 0.0767
+network 0.0333
+top 0.0399
+funny 0.0115
+food 0.0173
+theory 0.022
+change 0.0886
+water 0.0195
+ride 0.0246
+dangerous 0.0151
+stupid 0.0221
+share 0.0274
+forward 0.0186
+total 0.0271
+difficult 0.0248
+ill 0.0582
+complain 0.0114
+necessarily 0.0284
+error 0.0346
+understanding 0.0148
+determine 0.0227
+fully 0.0164
+division 0.0245
+turn 0.0653
+away 0.0577
+try 0.1783
+encourage 0.0127
+level 0.0417
+service 0.0514
+watch 0.0396
+directly 0.0272
+face 0.0365
+valid 0.0141
+light 0.0405
+avoid 0.0263
+suggestion 0.0294
+impossible 0.0167
+destroy 0.0171
+together 0.0296
+site 0.0303
+connect 0.0223
+replace 0.029
+commercial 0.0171
+co 0.0147
+instead 0.0481
+deep 0.0137
+analysis 0.0135
+shift 0.0112
+catch 0.0203
+fill 0.0179
+experience 0.0507
+btw 0.0217
+huge 0.0138
+easy 0.052
+slightly 0.0135
+search 0.021
+city 0.0227
+style 0.0151
+count 0.021
+pre 0.0129
+recommend 0.0206
+anywhere 0.0149
+paper 0.0295
+specifically 0.018
+requirement 0.0123
+protection 0.0148
+method 0.0278
+sample 0.0123
+legal 0.0246
+business 0.0286
+full 0.0534
+sufficient 0.0107
+background 0.0133
+resource 0.0179
+request 0.0284
+ready 0.0156
+deal 0.0507
+laugh 0.0118
+win 0.054
+join 0.0157
+basic 0.0229
+argument 0.0414
+mark 0.0237
+failure 0.0102
+behavior 0.0153
+describe 0.0318
+single 0.0433
+surely 0.0115
+achieve 0.0107
+friend 0.0494
+normally 0.0146
+afraid 0.0108
+danger 0.0104
+in 0.0235
+white 0.0199
+approach 0.0228
+door 0.02
+switch 0.0242
+home 0.0528
+provide 0.0617
+street 0.0149
+month 0.0511
+meet 0.025
+visit 0.013
+policy 0.0256
+fund 0.0142
+aid 0.0106
+program 0.0838
+blame 0.0151
+crime 0.0227
+study 0.0406
+minute 0.029
+realize 0.0272
+incident 0.0104
+once 0.0507
+proof 0.018
+latter 0.0107
+relation 0.0112
+decision 0.0205
+medical 0.0169
+prevent 0.0264
+occur 0.0284
+perfectly 0.0119
+sick 0.0114
+happy 0.0233
+draw 0.0302
+solid 0.0124
+approve 0.0104
+scientific 0.0154
+secret 0.0202
+knowledge 0.0262
+direct 0.0245
+application 0.0404
+usenet 0.0161
+appropriate 0.0187
+private 0.0309
+email 0.0568
+figure 0.0391
+large 0.0651
+rom 0.0114
+shut 0.0105
+defense 0.0199
+story 0.0357
+small 0.0623
+town 0.0138
+store 0.0233
+walk 0.0205
+cut 0.0357
+responsible 0.0207
+poor 0.0204
+concept 0.0201
+bet 0.0138
+edge 0.0127
+being 0.0133
+facility 0.0124
+develop 0.0288
+solution 0.0283
+ancient 0.0108
+drive 0.085
+due 0.0199
+safety 0.0158
+hide 0.0149
+mine 0.0219
+drug 0.0244
+escape 0.0187
+population 0.0199
+element 0.0112
+keep 0.1019
+update 0.0167
+week 0.0564
+project 0.0291
+israeli 0.0156
+brother 0.016
+range 0.0223
+indeed 0.0258
+address 0.0525
+propose 0.018
+description 0.0146
+excellent 0.0209
+model 0.0342
+test 0.0408
+big 0.0782
+datum 0.0458
+weak 0.0113
+letter 0.0242
+second 0.0741
+ground 0.0272
+open 0.0488
+truly 0.0132
+patient 0.0115
+identify 0.0129
+quality 0.0245
+tool 0.02
+individual 0.0329
+finally 0.0278
+title 0.0191
+publish 0.0214
+late 0.0368
+various 0.0294
+nice 0.0436
+reference 0.0369
+money 0.046
+generation 0.0118
+before 0.0164
+throw 0.0308
+frequently 0.0104
+fast 0.0411
+about 0.0346
+third 0.0289
+wonder 0.057
+long 0.1042
+fight 0.0233
+main 0.0249
+reader 0.0174
+art 0.0134
+transfer 0.0163
+trial 0.0119
+internal 0.0182
+desire 0.0145
+definitely 0.0144
+insist 0.0111
+sometimes 0.0308
+kill 0.0568
+number 0.1052
+suppose 0.0467
+manner 0.0111
+criminal 0.0166
+car 0.0586
+accident 0.011
+house 0.0236
+easily 0.0256
+press 0.0283
+kid 0.0198
+initial 0.0104
+freedom 0.0199
+task 0.011
+development 0.0203
+stage 0.0107
+joke 0.0106
+object 0.0233
+alone 0.0233
+bottom 0.0117
+function 0.0257
+author 0.0236
+relative 0.011
+guide 0.0116
+thread 0.0199
+run 0.1283
+unfortunately 0.0261
+double 0.0191
+treat 0.017
+safe 0.0196
+step 0.0234
+page 0.0261
+eventually 0.0148
+rest 0.0409
+powerful 0.0106
+short 0.0394
+refuse 0.0163
+wear 0.0166
+client 0.0107
+advice 0.0226
+terminal 0.0119
+status 0.0118
+american 0.0277
+class 0.0241
+aspect 0.0129
+wall 0.0127
+dog 0.0117
+trust 0.0184
+poster 0.0184
+majority 0.0166
+attempt 0.0396
+fix 0.027
+limit 0.0306
+devil 0.0106
+burn 0.025
+night 0.0388
+mostly 0.018
+concern 0.0344
+convince 0.0155
+wide 0.019
+aware 0.0174
+suffer 0.0179
+relevant 0.0114
+dream 0.0119
+grant 0.019
+space 0.0475
+commit 0.0193
+best 0.0161
+reduce 0.0195
+contact 0.0302
+communication 0.0297
+guest 0.0167
+command 0.0221
+jump 0.0118
+link 0.0149
+demonstrate 0.0135
+connection 0.0171
+comparison 0.012
+news 0.0583
+feed 0.0119
+break 0.0417
+depend 0.0297
+software 0.0814
+generally 0.0222
+addition 0.0209
+rate 0.0322
+company 0.0474
+job 0.0364
+yesterday 0.0121
+lock 0.0133
+office 0.0224
+piece 0.02
+down 0.0224
+engineer 0.0146
+touch 0.0128
+perform 0.0195
+drop 0.0256
+finger 0.0108
+better 0.0401
+recall 0.0204
+aside 0.0106
+pc 0.0424
+associate 0.0157
+newspaper 0.0104
+fine 0.0428
+favor 0.0123
+risk 0.0174
+participate 0.0106
+sit 0.0259
+lay 0.0107
+active 0.012
+additional 0.0143
+regardless 0.011
+on 0.0179
+session 0.0111
+employer 0.0148
+loss 0.0159
+increase 0.0296
+reflect 0.0133
+essentially 0.0114
+define 0.029
+pro 0.0184
+official 0.0237
+distribute 0.012
+sell 0.06
+serious 0.0285
+move 0.0538
+proposal 0.0114
+handle 0.0293
+totally 0.0181
+curious 0.0139
+reach 0.0253
+confuse 0.0105
+legitimate 0.0106
+instance 0.0172
+character 0.0156
+penalty 0.0108
+belong 0.0137
+measure 0.0196
+section 0.019
+automatic 0.0112
+civil 0.0159
+pay 0.0593
+attention 0.0149
+careful 0.0105
+road 0.0277
+fairly 0.0202
+actual 0.0177
+shape 0.0123
+spot 0.0114
+hole 0.0168
+translation 0.0102
+version 0.0628
+shop 0.0109
+relatively 0.0118
+alive 0.0126
+instruction 0.0114
+text 0.0324
+independent 0.0156
+strange 0.0129
+technical 0.0191
+somewhat 0.0139
+limited 0.0124
+possibly 0.0214
+fool 0.0129
+local 0.05
+expert 0.0137
+foot 0.0203
+remind 0.0112
+thousand 0.0142
+slow 0.0262
+college 0.0101
+window 0.0807
+proceed 0.0125
+advantage 0.0179
+currently 0.0282
+cold 0.0139
+anymore 0.0121
+card 0.0564
+waste 0.0201
+completely 0.0282
+pick 0.0316
+chance 0.034
+warning 0.0113
+file 0.0732
+medicine 0.011
+attach 0.0109
+protect 0.0294
+beat 0.022
+clock 0.0108
+university 0.013
+secure 0.0154
+price 0.055
+anti 0.0219
+pressure 0.0143
+gay 0.0106
+environment 0.0163
+surprise 0.0115
+effective 0.0188
+unit 0.0207
+release 0.0331
+stat 0.0121
+announce 0.0142
+key 0.0521
+care 0.0515
+compare 0.033
+weight 0.0136
+normal 0.024
+rock 0.0113
+longer 0.03
+up 0.0267
+apparently 0.0235
+buy 0.0825
+push 0.0182
+direction 0.0148
+ball 0.0157
+review 0.0149
+magazine 0.0185
+typical 0.0121
+dark 0.0105
+race 0.0161
+serve 0.0283
+that 0.0186
+exact 0.0141
+goal 0.0226
+homosexual 0.0114
+ok 0.0196
+usual 0.0142
+bill 0.0256
+gateway 0.0111
+opportunity 0.0127
+product 0.0334
+master 0.0107
+date 0.0315
+hardly 0.013
+property 0.0147
+near 0.0112
+domain 0.0117
+lab 0.0144
+voice 0.0197
+cool 0.0148
+over 0.0158
+significant 0.0162
+internet 0.0402
+surface 0.012
+planet 0.0117
+content 0.0174
+structure 0.0133
+nearly 0.0143
+cost 0.0497
+quickly 0.0149
+social 0.0132
+disk 0.0387
+processor 0.0103
+medium 0.0222
+obtain 0.0196
+education 0.0135
+energy 0.0112
+design 0.0447
+modify 0.0149
+morality 0.0134
+prior 0.0105
+debate 0.0139
+compute 0.0129
+defend 0.016
+success 0.0118
+fair 0.0159
+off 0.0143
+copy 0.0424
+reliable 0.0103
+administration 0.0107
+extend 0.011
+board 0.0273
+federal 0.0178
+item 0.0162
+schedule 0.012
+middle 0.0141
+health 0.0143
+manage 0.019
+faq 0.0189
+compile 0.0106
+manager 0.0223
+fan 0.0291
+implement 0.0155
+location 0.0123
+field 0.0276
+series 0.0178
+volume 0.0145
+external 0.0123
+air 0.02
+shot 0.0128
+server 0.0232
+speed 0.0436
+wing 0.0165
+finish 0.0141
+properly 0.0142
+insurance 0.012
+print 0.0233
+ahead 0.0139
+shell 0.0111
+branch 0.0118
+morning 0.0141
+compound 0.0147
+tank 0.0163
+gas 0.0211
+unknown 0.0106
+agent 0.0158
+bunch 0.0176
+frame 0.0108
+fault 0.0139
+cheer 0.0113
+compatible 0.0125
+damn 0.0136
+option 0.0247
+distance 0.0113
+length 0.0115
+blow 0.0197
+trade 0.021
+dollar 0.0143
+economic 0.0111
+decent 0.0115
+heat 0.0119
+hang 0.0137
+noise 0.0111
+minor 0.0137
+distribution 0.1873
+average 0.023
+front 0.0317
+multiple 0.0148
+tie 0.0129
+trick 0.0106
+hot 0.0178
+outside 0.0126
+police 0.0254
+package 0.0265
+red 0.0219
+armed 0.0106
+documentation 0.0118
+match 0.013
+launch 0.0138
+operation 0.0206
+originator 0.0221
+mode 0.0268
+generate 0.0191
+security 0.0234
+market 0.0238
+locate 0.0109
+uunet 0.0107
+nntp 0.236
+vote 0.0142
+international 0.015
+muslim 0.0119
+turkish 0.012
+table 0.0125
+improve 0.0155
+boy 0.0134
+tape 0.0213
+statistic 0.0107
+summer 0.0109
+expensive 0.0183
+knock 0.0125
+manufacturer 0.0123
+heavy 0.0135
+color 0.0333
+detect 0.0105
+technique 0.0143
+solve 0.0133
+license 0.0137
+motorcycle 0.0131
+user 0.0454
+rich 0.013
+star 0.0141
+baseball 0.0235
+purchase 0.024
+league 0.0129
+management 0.0103
+citizen 0.022
+track 0.0145
+soldier 0.0106
+electronic 0.0187
+corner 0.0108
+season 0.0251
+luck 0.0152
+illegal 0.0172
+dealer 0.018
+ship 0.0159
+cop 0.0109
+pull 0.0227
+blue 0.018
+agency 0.017
+resolution 0.0137
+screen 0.0279
+chip 0.0487
+apple 0.0215
+wire 0.0114
+performance 0.0254
+percentage 0.0124
+president 0.0156
+select 0.0164
+warrant 0.0116
+install 0.0129
+collect 0.0105
+sale 0.0446
+driver 0.0393
+wheel 0.0118
+load 0.0234
+instal 0.0231
+vehicle 0.0169
+gun 0.0384
+round 0.0165
+player 0.0373
+controller 0.0131
+paint 0.0104
+graphic 0.0332
+video 0.0318
+machine 0.0546
+capability 0.0125
+faster 0.0143
+interface 0.0155
+device 0.0279
+monitor 0.0295
+digital 0.0114
+input 0.0172
+wave 0.0119
+keyword 0.032
+meg 0.0126
+upgrade 0.0165
+shipping 0.0136
+algorithm 0.0199
+output 0.0194
+format 0.0239
+equipment 0.0173
+modem 0.0152
+cable 0.0154
+clipper 0.0288
+bus 0.0204
+mhz 0.0118
+tax 0.0136
+ram 0.0165
+boot 0.0112
+size 0.0312
+map 0.0118
+com 0.0449
+data 0.0141
+serial 0.0166
+cheap 0.0378
+budget 0.0106
+component 0.0119
+owner 0.0241
+remote 0.0105
+keyboard 0.011
+directory 0.0147
+font 0.0103
+printer 0.0143
+programming 0.011
+bug 0.0135
+bank 0.0127
+utility 0.0136
+signal 0.0167
+manual 0.0241
+archive 0.013
+industry 0.0124
+engine 0.0221
+cd 0.0131
+announcement 0.0111
+brand 0.0137
+mouse 0.0126
+crash 0.0119
+auto 0.0135
+hook 0.0104
+rid 0.0106
+plug 0.0144
+telephone 0.0108
+team 0.048
+register 0.0133
+setup 0.0129
+border 0.0107
+traffic 0.0128
+potential 0.0144
+motif 0.0112
+scsi 0.0132
+button 0.0111
+procedure 0.0103
+screw 0.0141
+orbit 0.0126
+bike 0.0266
+battery 0.0112
+rocket 0.0128
+officer 0.014
+pin 0.0141
+enforcement 0.012
+pitch 0.0122
+victim 0.0111
+batf 0.0103
+playoff 0.0159
+hockey 0.017
+firearm 0.0107
+encryption 0.021
+encrypt 0.0106
+arab 0.0119
