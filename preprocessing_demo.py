@@ -1,4 +1,4 @@
-import preprocessing.file_handler as io
+from dataset.dataset import Dataset
 import preprocessing.sources.newsgroup as source
 from preprocessing.pipeline_handler import Pipeline_handler
 import multiprocessing as mp
@@ -28,4 +28,4 @@ pipeline_handler.stop_words_extension = ['from', 'subject', 're', 'edu', 'use']
 
 preprocessed = pipeline_handler.preprocess()
 
-io.save(preprocessed, "dataset")
+preprocessed.save("dataset_folder")

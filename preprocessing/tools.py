@@ -3,6 +3,7 @@ import re
 import spacy
 from gensim.utils import simple_preprocess
 from nltk.corpus import stopwords
+from dataset.dataset import Dataset
 import multiprocessing as mp
 
 
@@ -224,19 +225,15 @@ def remove_docs(corpus, min_doc = 0, labels = []):
     words_document_mean = 0
     if n > 0:
         words_document_mean = round(words_mean/n)
-    result = {}
-    result["corpus"] = new_corpus
-    result["vocabulary"] = get_vocabulary(new_corpus)
-    result["labels"] = new_labels
+    vocabulary = get_vocabulary(new_corpus)
     extra_info = {}
     extra_info["total_documents"] = n
     extra_info["words_document_mean"] = words_document_mean
-    extra_info["vocabulary_length"] = len(result["vocabulary"])
+    extra_info["vocabulary_length"] = len(vocabulary)
     if compute_labels:   
         extra_info["labels"] = list(distinct_labels.keys())
         extra_info["total_labels"] = len(extra_info["labels"])
-    result["metadata"] = extra_info
-    return result
+    return Dataset(new_corpus, vocabulary, extra_info, new_labels)
 
 
 def get_vocabulary(corpus):
