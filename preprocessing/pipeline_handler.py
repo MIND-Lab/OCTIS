@@ -34,6 +34,7 @@ class Pipeline_handler:
         
     
     def preprocess(self):
+        self.stop_words.extend(self.stop_words_extension)
         pipeline = []
 
         if self.display_progress:
@@ -113,4 +114,4 @@ class Pipeline_handler:
         
         print("Preprocess Done!")
         return result
- 
+

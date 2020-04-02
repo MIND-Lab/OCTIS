@@ -1,5 +1,5 @@
 from dataset.dataset import Dataset
-import preprocessing.sources.newsgroup as source
+import preprocessing.sources.reuters as source
 from preprocessing.pipeline_handler import Pipeline_handler
 import multiprocessing as mp
 
