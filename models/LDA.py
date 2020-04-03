@@ -33,11 +33,13 @@ class LDA_Model(Abstract_Model):
             'per_word_topics': False,
             'callbacks': None}
 
+    def map_vocabulary(self):
+        self.id2word = corpora.Dictionary(self.dataset.get_corpus())
+
     def build_model(self):
         """
         Adapt the corpus to the model
         """
-        self.id2word = corpora.Dictionary(self.dataset.get_corpus())
         self.id_corpus = [self.id2word.doc2bow(
             document) for document in self.dataset.get_corpus()]
         self.builded = True
@@ -82,31 +84,7 @@ class LDA_Model(Abstract_Model):
         and return True otherwise
         """
         if self.trained:
-            num_topics = self.hyperparameters["num_topics"]
-            metadata = self.dataset.get_metadata()
-            vocabulary_length = metadata["vocabulary_length"]
-
-            topic_word_matrix = []
-
-            topic_word_tuples = self.trained_model.print_topics(
-                num_words=vocabulary_length)
-
-            # Gensim creates a list of tuples, in order to retrieve
-            # a matrix the method iterate each element (topic)
-            # of the list and retrieve the words and weights from
-            # the second element of the tuple (which is a string)
-            for topic in range(num_topics):
-                topic_word_matrix.append([0.0] * vocabulary_length)
-                topic_tuple = topic_word_tuples[topic]
-                words_weight_string = topic_tuple[1]
-                words_weight_list = words_weight_string.split("+")
-                for element in words_weight_list:
-                    weight_word = element.split("*")
-                    weight = float(weight_word[0])
-                    word = re.sub("[^a-zA-Z]+", "", weight_word[1])
-                    topic_word_matrix[topic][self.word_id[word]] = weight
-
-            self.topic_word_matrix = topic_word_matrix
+            self.topic_word_matrix = self.trained_model.get_topics()
             return True
         return False
 

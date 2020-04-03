@@ -13,15 +13,10 @@ class Abstract_Model(ABC):
     # False otherwise
     trained = False
 
-    # Dictionary
-    # key = word
-    # value = numeric id of the word
-    word_id = {}
-
     # Dicitonary
     # key = id of the word
     # value = word
-    id_word = {}
+    id2word = {}
 
     # Dictionary
     # key = hyperparameter name
@@ -110,6 +105,17 @@ class Abstract_Model(ABC):
         """
         pass
 
+    @abstractmethod
+    def map_vocabulary(self):
+        """
+        Create two dictionaries to allow fast retrieving
+        of Id from a word or a word from an Id.
+        Id's are used to represent the words of
+        the vocabulary
+        """
+        pass
+
+
     def set_hyperparameters(self, hyperparameters):
         """
         Set the hyperparameters
@@ -121,17 +127,3 @@ class Abstract_Model(ABC):
                           value = value of the hyperparameter
         """
         self.hyperparameters.update(hyperparameters)
-
-    def map_vocabulary(self):
-        """
-        Create two dictionaries to allow fast retrieving
-        of Id from a word or a word from an Id.
-        Id's are integers used to represent the words of
-        the vocabulary
-        """
-        vocabulary = self.dataset.get_vocabulary()
-        id = 0
-        for key in vocabulary.keys():
-            self.word_id[key] = id
-            self.id_word[id] = key
-            id += 1
