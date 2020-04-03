@@ -15,7 +15,8 @@ pipeline_handler.num_proc = mp.cpu_count()
 
 pipeline_handler.display_progress = True
 
-pipeline_handler.min_words_for_doc = 10 # Minimum number of words in a document
+# Minimum number of words in a document
+pipeline_handler.min_words_for_doc = 10
 
 # Minimum % of documents in wich each word of the corpus must appear
 pipeline_handler.words_min_freq = 0.01

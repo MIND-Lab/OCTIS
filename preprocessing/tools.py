@@ -188,7 +188,7 @@ def filter_words(corpus, words):
     return result
 
 
-def remove_docs(corpus, min_doc = 0, labels = []):
+def remove_docs(corpus, min_doc=0, labels=[]):
     """
     Remove documents with less than min_doc words
     from the corpus and create a dictioonary with
@@ -208,7 +208,7 @@ def remove_docs(corpus, min_doc = 0, labels = []):
     n = 0
     new_corpus = []
     new_labels = []
-    compute_labels = len(labels)>0
+    compute_labels = len(labels) > 0
     words_mean = 0
     distinct_labels = {}
     for document in corpus:
@@ -230,7 +230,7 @@ def remove_docs(corpus, min_doc = 0, labels = []):
     extra_info["total_documents"] = n
     extra_info["words_document_mean"] = words_document_mean
     extra_info["vocabulary_length"] = len(vocabulary)
-    if compute_labels:   
+    if compute_labels:
         extra_info["labels"] = list(distinct_labels.keys())
         extra_info["total_labels"] = len(extra_info["labels"])
     return Dataset(new_corpus, vocabulary, extra_info, new_labels)
@@ -257,14 +257,13 @@ def get_vocabulary(corpus):
         for word in document:
             if word in vocabulary:
                 if not word in word_in_document:
-                    word_in_document[word]= True
+                    word_in_document[word] = True
                     vocabulary[word] += 1
             else:
                 word_in_document[word] = True
                 vocabulary[word] = 1
-    
+
     for word in vocabulary:
-        vocabulary[word] = round(vocabulary[word]/corpus_length,4)
+        vocabulary[word] = round(vocabulary[word]/corpus_length, 4)
 
     return vocabulary
-

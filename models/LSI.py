@@ -5,7 +5,7 @@ import gensim
 import gensim.corpora as corpora
 
 
-class LDA_Model(Abstract_Model):
+class LSI_Model(Abstract_Model):
 
     def set_default_hyperparameters(self):
         """

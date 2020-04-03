@@ -2,8 +2,21 @@ from urllib.request import urlopen
 import re
 
 
-# Tools to extract data from M10 and dblp datasets
 def _retrieve(corpus_path, labels_path):
+    """
+    Retrieve M10 or dblp corpus and labels
+    given their path
+
+    Parameters
+    ----------
+    corpus_path : path of the corpus
+    labels_path : path of the labels document
+
+    Returns
+    -------
+    result : dictionary with corpus and 
+             labels of the corpus
+    """
     corpus = []
     url = urlopen(corpus_path)
     for line in url:

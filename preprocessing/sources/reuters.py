@@ -1,8 +1,15 @@
 from nltk.corpus import reuters
 
 
-# Retrieve the corpus and the labels
 def retrieve():
+    """
+    Retrieve the corpus and the labels
+
+    Returns
+    -------
+    result : dictionary with corpus and 
+             labels of the corpus
+    """
     documents = reuters.fileids()
     corpus = []
     labels = []
@@ -15,4 +22,3 @@ def retrieve():
     result["corpus"] = corpus
     result["doc_labels"] = labels
     return result
-

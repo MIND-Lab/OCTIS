@@ -9,6 +9,7 @@ class Pipeline_handler:
     preprocessing pipeline and execute it with the
     'process' method
     """
+
     nlp = spacy.load("en")
     stop_words = stopwords.words('english')
 
@@ -25,28 +26,50 @@ class Pipeline_handler:
     lemmatize = True
     filter_words = True
     multiprocess = False
-    display_progress= False
-    
-    
+    display_progress = False
+
     def __init__(self, dataset):
+        """
+        Initialize a Pipeline_handler
+
+        Parameters
+        ----------
+        dataset : dictionary with corpus, labels and other data
+                  about the dataset
+        """
         self.words_max_freq = len(dataset["corpus"])
         self.dataset = dataset
-        
-    
+
     def preprocess(self):
+        """
+        Preprocess the dataset
+
+        Parameters
+        ----------
+        preprocess has no parameters.
+        The steps are enabled/disabled by setting
+        the relative variables True/False
+        Parameters are customizable by setting
+        the relative variables
+
+        Returns
+        -------
+        Preprocessed dataset object
+        """
         self.stop_words.extend(self.stop_words_extension)
         pipeline = []
 
         if self.display_progress:
-                print("Initializing preprocessing")
+            print("Initializing preprocessing")
 
+        # Add each enabled step to the pipeline
         if self.remove_stopwords:
             pipeline.append(tools.remove_stopwords)
         if self.lemmatize:
             pipeline.append(tools.lemmatization)
         if self.filter_words:
             pipeline.append(tools.filter_words)
-        
+
         corpus = self.dataset["corpus"]
         categories = []
         if "doc_labels" in self.dataset:
@@ -73,12 +96,13 @@ class Pipeline_handler:
 
         corpus = list(tools.create_bags_of_words(corpus))
 
+        # Execute each step in the pipeline
         for step in pipeline:
 
             if self.display_progress:
                 print("  step: "+step.__name__)
-                
-            arguments= []
+
+            arguments = []
             if step.__name__ == "filter_words":
                 arguments = tools.words_to_remove(
                     corpus,
@@ -99,7 +123,7 @@ class Pipeline_handler:
                     corpus,
                     arguments)
             else:
-                corpus = step(corpus,arguments)
+                corpus = step(corpus, arguments)
 
             if self.display_progress:
                 print("  step: "+step.__name__+" executed")
@@ -111,7 +135,6 @@ class Pipeline_handler:
 
         if self.multiprocess:
             pool.close()
-        
+
         print("Preprocess Done!")
         return result
-

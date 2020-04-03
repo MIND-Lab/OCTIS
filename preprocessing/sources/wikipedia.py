@@ -1,7 +1,20 @@
 import json
 
-# Retrieve the dataset and the labels
+
 def retrieve(path):
+    """
+    Retrieve the corpus and the labels
+
+    Parameters
+    ----------
+    path : path of the wikipedia dataset
+           to retrieve
+
+    Returns
+    -------
+    result : dictionary with corpus and 
+             labels of the corpus
+    """
     corpus = []
     labels = []
     with open(path) as file_input:
