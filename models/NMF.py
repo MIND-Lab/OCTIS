@@ -1,11 +1,11 @@
 from models.interface import Abstract_Model
 from dataset.dataset import Dataset
 import re
-from gensim.models import ldamodel
+from gensim.models import nmf
 import gensim.corpora as corpora
 
 
-class LDA_Model(Abstract_Model):
+class NMF_Model(Abstract_Model):
 
     def set_default_hyperparameters(self):
         """
@@ -15,23 +15,17 @@ class LDA_Model(Abstract_Model):
             'corpus': None,
             'num_topics': 100,
             'id2word': None,
-            'distributed': False,
             'chunksize': 2000,
             'passes': 1,
-            'update_every': 1,
-            'alpha': 'symmetric',
-            'eta': None,
-            'decay': 0.5,
-            'offset': 1.0,
-            'eval_every': 10,
-            'iterations': 50,
-            'gamma_threshold': 0.001,
+            'kappa': 1.0,
             'minimum_probability': 0.01,
-            'random_state': None,
-            'ns_conf': None,
-            'minimum_phi_value': 0.01,
-            'per_word_topics': False,
-            'callbacks': None}
+            'w_max_iter': 200,
+            'w_stop_condition': 0.0001,
+            'h_max_iter': 50,
+            'h_stop_condition': 0.001,
+            'eval_every': 10,
+            'normalize': True,
+            'random_state': None}
 
     def map_vocabulary(self):
         """
@@ -60,27 +54,21 @@ class LDA_Model(Abstract_Model):
             self.build_model()
 
         hyperparameters = self.hyperparameters
-        self.trained_model = ldamodel.LdaModel(
+        self.trained_model = nmf.Nmf(
             corpus=self.id_corpus,
             id2word=self.id2word,
             num_topics=hyperparameters["num_topics"],
-            distributed=hyperparameters["distributed"],
             chunksize=hyperparameters["chunksize"],
             passes=hyperparameters["passes"],
-            update_every=hyperparameters["update_every"],
-            alpha=hyperparameters["alpha"],
-            eta=hyperparameters["eta"],
-            decay=hyperparameters["decay"],
-            offset=hyperparameters["offset"],
-            eval_every=hyperparameters["eval_every"],
-            iterations=hyperparameters["iterations"],
-            gamma_threshold=hyperparameters["gamma_threshold"],
+            kappa=hyperparameters["kappa"],
             minimum_probability=hyperparameters["minimum_probability"],
-            random_state=hyperparameters["random_state"],
-            ns_conf=hyperparameters["ns_conf"],
-            minimum_phi_value=hyperparameters["minimum_phi_value"],
-            per_word_topics=hyperparameters["per_word_topics"],
-            callbacks=hyperparameters["callbacks"])
+            w_max_iter=hyperparameters["w_max_iter"],
+            w_stop_condition=hyperparameters["w_stop_condition"],
+            h_max_iter=hyperparameters["h_max_iter"],
+            h_stop_condition=hyperparameters["h_stop_condition"],
+            eval_every=hyperparameters["eval_every"],
+            normalize=hyperparameters["normalize"],
+            random_state=hyperparameters["random_state"])
         self.trained = True
         return True
 
@@ -101,8 +89,4 @@ class LDA_Model(Abstract_Model):
         produce the topic word matrix and return
         True otherwise
         """
-        if self.trained:
-            self.doc_topic_representation = self.trained_model.get_document_topics(
-                self.id_corpus)
-            return True
         return False
