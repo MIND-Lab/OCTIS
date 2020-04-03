@@ -95,14 +95,21 @@ class LDA_Model(Abstract_Model):
             return True
         return False
 
-    def make_doc_topic_representation(self):
+    def get_doc_topic_representation(self, document):
         """
         Return False if the model is not trained,
-        produce the topic word matrix and return
-        True otherwise
+        return the topic word matrix otherwise
+
+        Parameters
+        ----------
+        document : a document in format
+                   list of strings (words)
+
+        Returns
+        -------
+        the topic representation of the document
         """
         if self.trained:
-            self.doc_topic_representation = self.trained_model.get_document_topics(
-                self.id_corpus)
-            return True
+            return self.trained_model.get_document_topics(
+                self.id2word.doc2bow(document))
         return False

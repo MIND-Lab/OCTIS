@@ -88,7 +88,7 @@ class Abstract_Model(ABC):
         pass
 
     @abstractmethod
-    def make_doc_topic_representation(self):
+    def get_doc_topic_representation(self):
         """
         Return False if the model is not trained,
         produce the document topic representation
@@ -100,8 +100,7 @@ class Abstract_Model(ABC):
     def make_topic_word_matrix(self):
         """
         Return False if the model is not trained,
-        produce the topic word matrix and return
-        True otherwise
+        return the topic word matrix otherwise
         """
         pass
 
