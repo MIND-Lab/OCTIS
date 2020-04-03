@@ -33,8 +33,16 @@ class LDA_Model(Abstract_Model):
             'per_word_topics': False,
             'callbacks': None}
 
+
     def map_vocabulary(self):
+        """
+        Create a dictionary to allow fast retrieving
+        of a word from an Id.
+        Id's are used to represent the words of
+        the vocabulary
+        """
         self.id2word = corpora.Dictionary(self.dataset.get_corpus())
+
 
     def build_model(self):
         """
@@ -45,37 +53,40 @@ class LDA_Model(Abstract_Model):
         self.builded = True
         self.trained = False
 
+
     def train_model(self):
         """
         Train the model and save all the data
         in trained_model
         """
-        if self.builded:
-            hyperparameters = self.hyperparameters
-            self.trained_model = gensim.models.ldamodel.LdaModel(
-                corpus=self.id_corpus,
-                id2word=self.id2word,
-                num_topics=hyperparameters["num_topics"],
-                distributed=hyperparameters["distributed"],
-                chunksize=hyperparameters["chunksize"],
-                passes=hyperparameters["passes"],
-                update_every=hyperparameters["update_every"],
-                alpha=hyperparameters["alpha"],
-                eta=hyperparameters["eta"],
-                decay=hyperparameters["decay"],
-                offset=hyperparameters["offset"],
-                eval_every=hyperparameters["eval_every"],
-                iterations=hyperparameters["iterations"],
-                gamma_threshold=hyperparameters["gamma_threshold"],
-                minimum_probability=hyperparameters["minimum_probability"],
-                random_state=hyperparameters["random_state"],
-                ns_conf=hyperparameters["ns_conf"],
-                minimum_phi_value=hyperparameters["minimum_phi_value"],
-                per_word_topics=hyperparameters["per_word_topics"],
-                callbacks=hyperparameters["callbacks"])
-            self.trained = True
-            return True
-        return False
+        if not self.builded:
+            self.build_model()
+
+        hyperparameters = self.hyperparameters
+        self.trained_model = gensim.models.ldamodel.LdaModel(
+            corpus=self.id_corpus,
+            id2word=self.id2word,
+            num_topics=hyperparameters["num_topics"],
+            distributed=hyperparameters["distributed"],
+            chunksize=hyperparameters["chunksize"],
+            passes=hyperparameters["passes"],
+            update_every=hyperparameters["update_every"],
+            alpha=hyperparameters["alpha"],
+            eta=hyperparameters["eta"],
+            decay=hyperparameters["decay"],
+            offset=hyperparameters["offset"],
+            eval_every=hyperparameters["eval_every"],
+            iterations=hyperparameters["iterations"],
+            gamma_threshold=hyperparameters["gamma_threshold"],
+            minimum_probability=hyperparameters["minimum_probability"],
+            random_state=hyperparameters["random_state"],
+            ns_conf=hyperparameters["ns_conf"],
+            minimum_phi_value=hyperparameters["minimum_phi_value"],
+            per_word_topics=hyperparameters["per_word_topics"],
+            callbacks=hyperparameters["callbacks"])
+        self.trained = True
+        return True
+
 
     def make_topic_word_matrix(self):
         """
@@ -87,6 +98,7 @@ class LDA_Model(Abstract_Model):
             self.topic_word_matrix = self.trained_model.get_topics()
             return True
         return False
+
 
     def make_doc_topic_representation(self):
         """

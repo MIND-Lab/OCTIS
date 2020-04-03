@@ -10,7 +10,7 @@ hyperparameters = {}
 hyperparameters["num_topics"] = 10
 
 model = LDA_Model(dataset, hyperparameters) # Create model
-model.build_model() # Adapt corpus to the model
+
 model.train_model() # Train the model
 
 model.make_topic_word_matrix() # compute topic word matrix

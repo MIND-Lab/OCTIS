@@ -108,8 +108,8 @@ class Abstract_Model(ABC):
     @abstractmethod
     def map_vocabulary(self):
         """
-        Create two dictionaries to allow fast retrieving
-        of Id from a word or a word from an Id.
+        Create a dictionary to allow fast retrieving
+        of a word from an Id.
         Id's are used to represent the words of
         the vocabulary
         """
