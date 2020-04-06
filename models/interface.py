@@ -88,15 +88,6 @@ class Abstract_Model(ABC):
         pass
 
     @abstractmethod
-    def get_doc_topic_representation(self):
-        """
-        Return False if the model is not trained,
-        produce the document topic representation
-        and return True otherwise
-        """
-        pass
-
-    @abstractmethod
     def make_topic_word_matrix(self):
         """
         Return False if the model is not trained,
@@ -113,7 +104,6 @@ class Abstract_Model(ABC):
         the vocabulary
         """
         pass
-
 
     def set_hyperparameters(self, hyperparameters):
         """

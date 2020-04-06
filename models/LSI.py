@@ -73,11 +73,11 @@ class LSI_Model(Abstract_Model):
             return True
         return False
 
-    def get_doc_topic_representation(self, document):
+    def get_doc_topic_weights(self, corpus):
         """
         Return False if the model is not trained,
-        return the topic representation of the
-        corpus otherwise
+        return the topic weigths for the document
+        of the corpus otherwise
 
         Parameters
         ----------
@@ -85,10 +85,49 @@ class LSI_Model(Abstract_Model):
 
         Returns
         -------
-        the topic representation of the documents
+        the topic weights of the documents
         of the corpus
         """
-        # TODO
-        #if self.trained:
-        #    return self.trained_model[self.id2word.doc2bow(document)]
+        if self.trained:
+            corpus = [self.id2word.doc2bow(document) for document in corpus]
+            return self.trained_model[corpus]
+        return False
+
+    def get_normalized_topic_weigths(self, corpus):
+        """
+        Return False if the model is not trained,
+        return the topic weigths for the document
+        of the corpus otherwise
+
+        Parameters
+        ----------
+        corpus : a corpus
+
+        Returns
+        -------
+        the topic weights of the documents
+        of the corpus
+        """
+        if self.trained:
+            topic_weights = self.get_doc_topic_weights(corpus)
+            result = []
+
+            for topics_w_document in topic_weights:
+
+                # Find min e max topic_weights values
+                min = topics_w_document[0][1]
+                max = topics_w_document[0][1]
+                for topic in topics_w_document:
+                    if topic[1] > max:
+                        max = topic[1]
+                    if topic[1] < min:
+                        min = topic[1]
+
+                # For each topic compute normalized weitght
+                # in the form (value-min)/(max-min)
+                topic_w = []
+                for topic in topics_w_document:
+                    topic_w.append((topic[0], (topic[1]-min)/(max-min)))
+                result.append(topic_w)
+            return result
         return False
