@@ -112,12 +112,12 @@ class LSI_Model(Abstract_Model):
             topic_weights = self.get_doc_topic_weights(corpus)
             result = []
 
-            for topics_w_document in topic_weights:
+            for document_topic_weights in topic_weights:
 
                 # Find min e max topic_weights values
-                min = topics_w_document[0][1]
-                max = topics_w_document[0][1]
-                for topic in topics_w_document:
+                min = document_topic_weights[0][1]
+                max = document_topic_weights[0][1]
+                for topic in document_topic_weights:
                     if topic[1] > max:
                         max = topic[1]
                     if topic[1] < min:
@@ -126,7 +126,7 @@ class LSI_Model(Abstract_Model):
                 # For each topic compute normalized weitght
                 # in the form (value-min)/(max-min)
                 topic_w = []
-                for topic in topics_w_document:
+                for topic in document_topic_weights:
                     topic_w.append((topic[0], (topic[1]-min)/(max-min)))
                 result.append(topic_w)
             return result
