@@ -1,4 +1,4 @@
-from models.interface import Abstract_Model
+from models.model import Abstract_Model
 from dataset.dataset import Dataset
 import re
 from gensim.models import lsimodel
