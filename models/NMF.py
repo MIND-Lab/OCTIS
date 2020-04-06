@@ -83,7 +83,7 @@ class NMF_Model(Abstract_Model):
             return True
         return False
 
-    def get_doc_topic_representation(self, document):
+    def get_document_topics(self, document):
         """
         Return False if the model is not trained,
         return the topic word matrix otherwise
@@ -100,4 +100,25 @@ class NMF_Model(Abstract_Model):
         if self.trained:
             return self.trained_model.get_document_topics(
                 self.id2word.doc2bow(document))
+        return False
+
+    def get_doc_topic_representation(self, corpus):
+        """
+        Return False if the model is not trained,
+        return the topic word matrix otherwise
+
+        Parameters
+        ----------
+        corpus : a corpus
+
+        Returns
+        -------
+        the topic representation of the documents
+        of the corpus
+        """
+        if self.trained:
+            result = []
+            for document in corpus:
+                result.append(self.get_document_topics(document))
+            return result
         return False
