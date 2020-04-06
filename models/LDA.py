@@ -87,7 +87,7 @@ class LDA_Model(Abstract_Model):
     def make_topic_word_matrix(self):
         """
         Return False if the model is not trained,
-        produce the document topic representation
+        produce the topic word matrix
         and return True otherwise
         """
         if self.trained:
@@ -98,7 +98,8 @@ class LDA_Model(Abstract_Model):
     def get_document_topics(self, document):
         """
         Return False if the model is not trained,
-        return the topic word matrix otherwise
+        return the topic representation of the
+        document otherwise
 
         Parameters
         ----------
@@ -117,7 +118,8 @@ class LDA_Model(Abstract_Model):
     def get_doc_topic_representation(self, corpus):
         """
         Return False if the model is not trained,
-        return the topic word matrix otherwise
+        return the topic representation of the
+        corpus otherwise
 
         Parameters
         ----------

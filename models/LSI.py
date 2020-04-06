@@ -65,7 +65,7 @@ class LSI_Model(Abstract_Model):
     def make_topic_word_matrix(self):
         """
         Return False if the model is not trained,
-        produce the document topic representation
+        produce the topic word matrix
         and return True otherwise
         """
         if self.trained:
@@ -76,17 +76,19 @@ class LSI_Model(Abstract_Model):
     def get_doc_topic_representation(self, document):
         """
         Return False if the model is not trained,
-        return the topic word matrix otherwise
+        return the topic representation of the
+        corpus otherwise
 
         Parameters
         ----------
-        document : a document in format
-                   list of strings (words)
+        corpus : a corpus
 
         Returns
         -------
-        the topic representation of the document
+        the topic representation of the documents
+        of the corpus
         """
-        if self.trained:
-            return self.trained_model[self.id2word.doc2bow(document)]
+        # TODO
+        #if self.trained:
+        #    return self.trained_model[self.id2word.doc2bow(document)]
         return False
