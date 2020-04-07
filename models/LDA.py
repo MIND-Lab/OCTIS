@@ -115,6 +115,29 @@ class LDA_Model(Abstract_Model):
                 self.id2word.doc2bow(document))
         return False
 
+    def get_topics_terms(self, topk=10):
+        """
+        Return False if the model is not trained,
+        return the topk words foreach topic otherwise
+
+        Parameters
+        ----------
+        topk: top k words to retrieve from each topic
+              (ordered by weight)
+
+        Returns
+        -------
+        result : list of lists, each list
+                 contains topk words for the topic
+        """
+        result = []
+        for i in range(self.hyperparameters["num_topics"]):
+            topic_words_list = []
+            for word_tuple in self.trained_model.get_topic_terms(i):
+                topic_words_list.append(self.id2word[word_tuple[0]])
+            result.append(topic_words_list)
+        return result
+
     def get_doc_topic_representation(self, corpus):
         """
         Return False if the model is not trained,

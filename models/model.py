@@ -74,6 +74,14 @@ class Abstract_Model(ABC):
         pass
 
     @abstractmethod
+    def get_topics_terms(self):
+        """
+        Return False if the model is not trained,
+        return the topk words foreach topic otherwise
+        """
+        pass
+
+    @abstractmethod
     def build_model(self):
         """
         Adapt the corpus to the model
