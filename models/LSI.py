@@ -62,7 +62,7 @@ class LSI_Model(Abstract_Model):
         self.trained = True
         return True
 
-    def make_topic_word_matrix(self):
+    def get_word_topic_weights(self):
         """
         Return False if the model is not trained,
         produce the topic word matrix
@@ -70,13 +70,13 @@ class LSI_Model(Abstract_Model):
         """
         if self.trained:
             self.topic_word_matrix = self.trained_model.get_topics()
-            return True
-        return False
+            return self.topic_word_matrix
+        return None
 
-    def get_doc_topic_weights(self, corpus):
+    def get_document_topic_weights(self, corpus):
         """
         Return False if the model is not trained,
-        return the topic weigths for the document
+        return the topic weights for the document
         of the corpus otherwise
 
         Parameters
@@ -93,10 +93,10 @@ class LSI_Model(Abstract_Model):
             return self.trained_model[corpus]
         return False
 
-    def get_normalized_topic_weigths(self, corpus):
+    def get_normalized_document_topic_weights(self, corpus):
         """
         Return False if the model is not trained,
-        return the topic weigths for the document
+        return the topic weights for the document
         of the corpus otherwise
 
         Parameters
@@ -109,7 +109,7 @@ class LSI_Model(Abstract_Model):
         of the corpus
         """
         if self.trained:
-            topic_weights = self.get_doc_topic_weights(corpus)
+            topic_weights = self.get_document_topic_weights(corpus)
             result = []
 
             for document_topic_weights in topic_weights:

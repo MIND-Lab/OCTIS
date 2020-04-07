@@ -84,7 +84,7 @@ class LDA_Model(Abstract_Model):
         self.trained = True
         return True
 
-    def make_topic_word_matrix(self):
+    def get_word_topic_weights(self):
         """
         Return False if the model is not trained,
         produce the topic word matrix
@@ -92,8 +92,8 @@ class LDA_Model(Abstract_Model):
         """
         if self.trained:
             self.topic_word_matrix = self.trained_model.get_topics()
-            return True
-        return False
+            return self.topic_word_matrix
+        return None
 
     def get_document_topics(self, document):
         """

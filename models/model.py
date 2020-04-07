@@ -88,9 +88,9 @@ class Abstract_Model(ABC):
         pass
 
     @abstractmethod
-    def make_topic_word_matrix(self):
+    def get_word_topic_weights(self):
         """
-        Return False if the model is not trained,
+        Return None if the model is not trained,
         return the topic word matrix otherwise
         """
         pass
