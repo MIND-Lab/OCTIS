@@ -22,24 +22,6 @@ class LSI_Model(Abstract_Model):
             'power_iters': 2,
             'extra_samples': 100}
 
-    def map_vocabulary(self):
-        """
-        Create a dictionary to allow fast retrieving
-        of a word from an Id.
-        Id's are used to represent the words of
-        the vocabulary
-        """
-        self.id2word = corpora.Dictionary(self.dataset.get_corpus())
-
-    def build_model(self):
-        """
-        Adapt the corpus to the model
-        """
-        self.id_corpus = [self.id2word.doc2bow(
-            document) for document in self.dataset.get_corpus()]
-        self.builded = True
-        self.trained = False
-
     def train_model(self):
         """
         Train the model and save all the data
@@ -154,3 +136,32 @@ class LSI_Model(Abstract_Model):
                 result.append(topic_w)
             return result
         return False
+
+    def save(self, model_path, dataset_path=None):
+        """
+        Save the model in a folder.
+        By default the dataset is not saved
+
+        Parameters
+        ----------
+        model_path : model directory path
+        dataset_path : dataset path (optional)
+        """
+        super().save(model_path, dataset_path)
+        if self.trained:
+            self.trained_model.save(model_path+"/trained_model")
+
+    def load(self, model_path, dataset_path=None):
+        """
+        Load the model from a folder.
+        By default the dataset is not loaded
+
+        Parameters
+        ----------
+        model_path : model directory path
+        dataset_path : dataset path (optional)
+        """
+        super().load(model_path, dataset_path)
+        if self.trained:
+            self.trained_model = lsimodel.LsiModel.load(
+                model_path+"/trained_model")

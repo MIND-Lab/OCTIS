@@ -33,24 +33,6 @@ class LDA_Model(Abstract_Model):
             'per_word_topics': False,
             'callbacks': None}
 
-    def map_vocabulary(self):
-        """
-        Create a dictionary to allow fast retrieving
-        of a word from an Id.
-        Id's are used to represent the words of
-        the vocabulary
-        """
-        self.id2word = corpora.Dictionary(self.dataset.get_corpus())
-
-    def build_model(self):
-        """
-        Adapt the corpus to the model
-        """
-        self.id_corpus = [self.id2word.doc2bow(
-            document) for document in self.dataset.get_corpus()]
-        self.builded = True
-        self.trained = False
-
     def train_model(self):
         """
         Train the model and save all the data
@@ -87,12 +69,10 @@ class LDA_Model(Abstract_Model):
     def get_word_topic_weights(self):
         """
         Return False if the model is not trained,
-        produce the topic word matrix
-        and return True otherwise
+        return the word topic weights matrix otherwise
         """
         if self.trained:
-            self.topic_word_matrix = self.trained_model.get_topics()
-            return self.topic_word_matrix
+            return self.trained_model.get_topics()
         return None
 
     def get_document_topics(self, document):
@@ -159,3 +139,32 @@ class LDA_Model(Abstract_Model):
                 result.append(self.get_document_topics(document))
             return result
         return False
+
+    def save(self, model_path, dataset_path=None):
+        """
+        Save the model in a folder.
+        By default the dataset is not saved
+
+        Parameters
+        ----------
+        model_path : model directory path
+        dataset_path : dataset path (optional)
+        """
+        super().save(model_path, dataset_path)
+        if self.trained:
+            self.trained_model.save(model_path+"/trained_model")
+
+    def load(self, model_path, dataset_path=None):
+        """
+        Load the model from a folder.
+        By default the dataset is not loaded
+
+        Parameters
+        ----------
+        model_path : model directory path
+        dataset_path : dataset path (optional)
+        """
+        super().load(model_path, dataset_path)
+        if self.trained:
+            self.trained_model = ldamodel.LdaModel.load(
+                model_path+"/trained_model")
