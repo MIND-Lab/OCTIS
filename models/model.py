@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from dataset.dataset import Dataset
-from models.metrics import Coherence, Coherence_word_embeddings, Topic_diversity
 import gensim.corpora as corpora
 import json
 from pathlib import Path
@@ -87,68 +86,6 @@ class Abstract_Model(ABC):
                           value = value of the hyperparameter
         """
         self.hyperparameters.update(hyperparameters)
-
-    def get_topic_diversity(self, topk=25):
-        """
-        Get the topic diversity score
-
-        Parameters
-        ----------
-        topk : top k words (default 25)
-
-        Returns
-        -------
-        score : score of the metric
-        """
-        td = Topic_diversity(self.get_topics_terms(topk))
-        score = td.score(topk)
-        return score
-
-    def get_coherence(self, topk=25, measure='c_npmi'):
-        """
-        Get the coherence score
-
-        Parameters
-        ----------
-        topk : top k words (default 25)
-        measure : (default 'c_npmi') coherence measure to be used.
-                  other measures: 'u_mass', 'c_v', 'c_uci', 'c_npmi'
-
-        Returns
-        -------
-        score : score of the metric
-        """
-        coherence = Coherence(
-            self.get_topics_terms(topk),
-            self.dataset.get_corpus())
-        score = coherence.score(topk, measure)
-        return score
-
-    def get_coherence_word_embeddings(self, topk=25,
-                                      wv_path=None, binary=False):
-        """
-        Get the coherence word embeddings score
-
-        Parameters
-        ----------
-        topk : top k words (default 25)
-        wv_path : if word2vec_file is specified, it retrieves
-                  the word embeddings file (in word2vec format)
-                  to compute similarities between words, otherwise
-                  'word2vec-google-news-300' is downloaded
-        binary : True if the word2vec file is binary, False otherwise
-                 (default False)
-
-        Returns
-        -------
-        score : score of the metric
-        """
-        cwe = Coherence_word_embeddings(
-            self.get_topics_terms(topk),
-            wv_path,
-            binary)
-        score = cwe.score(topk)
-        return score
 
     def save(self, model_path, dataset_path=None):
         """

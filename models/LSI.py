@@ -3,6 +3,8 @@ from dataset.dataset import Dataset
 import re
 from gensim.models import lsimodel
 import gensim.corpora as corpora
+import numpy as np
+import json
 
 
 class LSI_Model(Abstract_Model):
@@ -47,13 +49,17 @@ class LSI_Model(Abstract_Model):
     def get_word_topic_weights(self):
         """
         Return False if the model is not trained,
-        produce the topic word matrix
-        and return True otherwise
+        return the topic word weight matrix otherwise
         """
         if self.trained:
-            self.topic_word_matrix = self.trained_model.get_topics()
-            return self.topic_word_matrix
-        return None
+            topic_word_matrix = self.trained_model.get_topics()
+            result = []
+            for words_w in topic_word_matrix:
+                minimum = min(words_w)
+                words = words_w - minimum
+                result.append([float(i)/sum(words) for i in words])
+            return np.array(result)
+        return False
 
     def get_topics_terms(self, topk=10):
         """
@@ -81,7 +87,7 @@ class LSI_Model(Abstract_Model):
     def get_document_topic_weights(self, corpus):
         """
         Return False if the model is not trained,
-        return the topic weights for the document
+        return the topic weights for the documents
         of the corpus otherwise
 
         Parameters
@@ -101,7 +107,7 @@ class LSI_Model(Abstract_Model):
     def get_normalized_document_topic_weights(self, corpus):
         """
         Return False if the model is not trained,
-        return the topic weights for the document
+        return the normalized topic weights for the documents
         of the corpus otherwise
 
         Parameters
@@ -110,7 +116,7 @@ class LSI_Model(Abstract_Model):
 
         Returns
         -------
-        the topic weights of the documents
+        the normalized topic weights of the documents
         of the corpus
         """
         if self.trained:
@@ -128,7 +134,7 @@ class LSI_Model(Abstract_Model):
                     if topic[1] < min:
                         min = topic[1]
 
-                # For each topic compute normalized weitght
+                # For each topic compute normalized weight
                 # in the form (value-min)/(max-min)
                 topic_w = []
                 for topic in document_topic_weights:

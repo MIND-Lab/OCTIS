@@ -1,6 +1,7 @@
 from models.model import Abstract_Model
 from dataset.dataset import Dataset
 import re
+import numpy as np
 from gensim.models import ldamodel
 import gensim.corpora as corpora
 
@@ -134,9 +135,18 @@ class LDA_Model(Abstract_Model):
         of the corpus
         """
         if self.trained:
-            result = []
+            doc_topic_tuples = []
             for document in corpus:
-                result.append(self.get_document_topics(document))
+                doc_topic_tuples.append(self.get_document_topics(document))
+
+            result = np.zeros((
+                self.hyperparameters["num_topics"],
+                len(doc_topic_tuples)))
+
+            for ndoc in range(len(doc_topic_tuples)):
+                document = doc_topic_tuples[ndoc]
+                for topic_tuple in document:
+                    result[topic_tuple[0]][ndoc] = topic_tuple[1]
             return result
         return False
 
