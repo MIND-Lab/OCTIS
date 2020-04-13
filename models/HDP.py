@@ -56,7 +56,7 @@ class HDP_Model(Abstract_Model):
             var_converge=hyperparameters["var_convergence"],
             outputdir=hyperparameters["outputdir"],
             random_state=hyperparameters["random_state"]
-           )
+        )
         self.trained = True
         return True
 
