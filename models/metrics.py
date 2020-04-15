@@ -10,7 +10,7 @@ from sklearn.metrics import pairwise_distances
 from operator import add
 
 
-class word_embedding(ABC):
+class Abstract_Metric(ABC):
     """
     Class structure of a generic metric implementation
     """
@@ -48,7 +48,7 @@ def _KL(P, Q):
     return divergence
 
 
-class Topic_diversity(word_embedding):
+class Topic_diversity(Abstract_Metric):
     def __init__(self, topics):
         """
         Initialize metric
@@ -82,7 +82,7 @@ class Topic_diversity(word_embedding):
             return td
 
 
-class Coherence(word_embedding):
+class Coherence(Abstract_Metric):
     def __init__(self, topics, texts):
         """
         Initialize metric
@@ -126,7 +126,7 @@ class Coherence(word_embedding):
             return npmi.get_coherence()
 
 
-class Coherence_word_embeddings(word_embedding):
+class Coherence_word_embeddings(Abstract_Metric):
     def __init__(self, topics, word2vec_path=None, binary=False):
         """
         Initialize metric
@@ -178,7 +178,7 @@ class Coherence_word_embeddings(word_embedding):
             return np.mean(arrays)
 
 
-class Coherence_word_embeddings_pairwise(word_embedding):
+class Coherence_word_embeddings_pairwise(Abstract_Metric):
     def __init__(self, topics, w2v_model=None):
         """
         Initialize metric
@@ -235,7 +235,7 @@ class Coherence_word_embeddings_pairwise(word_embedding):
             return result
 
 
-class Coherence_word_embeddings_centroid(word_embedding):
+class Coherence_word_embeddings_centroid(Abstract_Metric):
     def __init__(self, topics, w2v_model=None):
         """
         Initialize metric
@@ -301,7 +301,7 @@ class Coherence_word_embeddings_centroid(word_embedding):
             return result
 
 
-class KL_uniform(word_embedding):
+class KL_uniform(Abstract_Metric):
     def __init__(self, phi):
         """
         Initialize metric
@@ -340,7 +340,7 @@ class KL_uniform(word_embedding):
         return result
 
 
-class KL_vacuous(word_embedding):
+class KL_vacuous(Abstract_Metric):
     def __init__(self, phi, theta):
         """
         Initialize metric
@@ -388,7 +388,7 @@ class KL_vacuous(word_embedding):
         return result
 
 
-class KL_background(word_embedding):
+class KL_background(Abstract_Metric):
     def __init__(self, theta):
         """
         Initialize metric
