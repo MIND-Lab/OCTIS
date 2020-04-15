@@ -1,9 +1,6 @@
 from models.model import Abstract_Model
-from dataset.dataset import Dataset
-import re
 import numpy as np
 from gensim.models import ldamodel
-import gensim.corpora as corpora
 
 
 class LDA_Model(Abstract_Model):

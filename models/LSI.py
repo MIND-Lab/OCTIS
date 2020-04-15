@@ -1,10 +1,6 @@
 from models.model import Abstract_Model
-from dataset.dataset import Dataset
-import re
 from gensim.models import lsimodel
-import gensim.corpora as corpora
 import numpy as np
-import json
 
 
 class LSI_Model(Abstract_Model):

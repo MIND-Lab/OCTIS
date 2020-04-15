@@ -5,9 +5,12 @@ import gensim.downloader as api
 from abc import ABC, abstractmethod
 import numpy as np
 import itertools
+from scipy import spatial
+from sklearn.metrics import pairwise_distances
+from operator import add
 
 
-class Abstract_Metric(ABC):
+class word_embedding(ABC):
     """
     Class structure of a generic metric implementation
     """
@@ -45,7 +48,7 @@ def _KL(P, Q):
     return divergence
 
 
-class Topic_diversity(Abstract_Metric):
+class Topic_diversity(word_embedding):
     def __init__(self, topics):
         """
         Initialize metric
@@ -79,7 +82,7 @@ class Topic_diversity(Abstract_Metric):
             return td
 
 
-class Coherence(Abstract_Metric):
+class Coherence(word_embedding):
     def __init__(self, topics, texts):
         """
         Initialize metric
@@ -123,7 +126,7 @@ class Coherence(Abstract_Metric):
             return npmi.get_coherence()
 
 
-class Coherence_word_embeddings(Abstract_Metric):
+class Coherence_word_embeddings(word_embedding):
     def __init__(self, topics, word2vec_path=None, binary=False):
         """
         Initialize metric
@@ -175,7 +178,130 @@ class Coherence_word_embeddings(Abstract_Metric):
             return np.mean(arrays)
 
 
-class KL_uniform(Abstract_Metric):
+class Coherence_word_embeddings_pairwise(word_embedding):
+    def __init__(self, topics, w2v_model=None):
+        """
+        Initialize metric
+
+        Parameters
+        ----------
+        topics : a list of lists of the top-n most likely words
+        w2v_model : a word2vector model, if is not provided, 
+                    google news 300 will be used instead
+        """
+        super().__init__()
+        self.topics = topics
+        if w2v_model is None:
+            self.wv = api.load('word2vec-google-news-300')
+        else:
+            self.wv = w2v_model.wv
+
+    def score(self, topk=10):
+        """
+        Retrieve the score of the metric
+
+        Parameters
+        ----------
+        topk : how many most likely words to consider in the
+               evaluation
+
+        Returns
+        -------
+        score : topic coherence computed on the word embeddings
+        """
+        if topk > len(self.topics[0]):
+            raise Exception('Words in topics are less than topk')
+        else:
+            result = 0.0
+            for topic in self.topics:
+                E = []
+
+                # Create matrix E (normalize word embeddings of
+                #   words represented as vectors in wv)
+                for word in topic[0:topk]:
+                    if word in self.wv.vocab:
+                        word_embedding = self.wv.__getitem__(word)
+                        normalized_we = word_embedding/word_embedding.sum()
+                        E.append(normalized_we)
+                E = np.array(E)
+
+                # Perform cosine similarity between E rows
+                distances = np.sum(pairwise_distances(E, metric='cosine'))
+                topic_coherence = (distances)/(2*topk*(topk-1))
+
+                # Update result with the computed coherence of the topic
+                result += topic_coherence
+            result = result/len(self.topics)
+            return result
+
+
+class Coherence_word_embeddings_centroid(word_embedding):
+    def __init__(self, topics, w2v_model=None):
+        """
+        Initialize metric
+
+        Parameters
+        ----------
+        topics : a list of lists of the top-n most likely words
+        w2v_model : a word2vector model, if is not provided, 
+                    google news 300 will be used instead
+        """
+        super().__init__()
+        self.topics = topics
+        if w2v_model is None:
+            self.wv = api.load('word2vec-google-news-300')
+        else:
+            self.wv = w2v_model.wv
+
+    def score(self, topk=10):
+        """
+        Retrieve the score of the metric
+
+        Parameters
+        ----------
+        topk : how many most likely words to consider in the
+               evaluation
+
+        Returns
+        -------
+        score : topic coherence computed on the word embeddings
+        """
+        if topk > len(self.topics[0]):
+            raise Exception('Words in topics are less than topk')
+        else:
+            result = 0
+            for topic in self.topics:
+                E = []
+                # average vector of the words in topic (centroid)
+                t = [0] * len(self.wv.__getitem__(topic[0]))
+
+                # Create matrix E (normalize word embeddings of
+                # words represented as vectors in wv) and
+                # average vector of the words in topic
+                for word in topic:
+                    if word in self.wv.vocab:
+                        word_embedding = self.wv.__getitem__(word)
+                        normalized_we = word_embedding/sum(word_embedding)
+                        E.append(normalized_we)
+                        t = list(map(add, t, word_embedding))
+                t = np.array(t)
+                t = t/(len(t)*sum(t))
+
+                topic_coherence = 0
+                # Perform cosine similarity between each word embedding in E
+                # and t.
+                for word_embedding in E:
+                    distance = spatial.distance.cosine(word_embedding, t)
+                    topic_coherence += distance
+                topic_coherence = topic_coherence/topk
+
+                # Update result with the computed coherence of the topic
+                result += topic_coherence
+            result /= len(self.topics)
+            return result
+
+
+class KL_uniform(word_embedding):
     def __init__(self, phi):
         """
         Initialize metric
@@ -214,7 +340,7 @@ class KL_uniform(Abstract_Metric):
         return result
 
 
-class KL_vacuous(Abstract_Metric):
+class KL_vacuous(word_embedding):
     def __init__(self, phi, theta):
         """
         Initialize metric
@@ -262,7 +388,7 @@ class KL_vacuous(Abstract_Metric):
         return result
 
 
-class KL_background(Abstract_Metric):
+class KL_background(word_embedding):
     def __init__(self, theta):
         """
         Initialize metric

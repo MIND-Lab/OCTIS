@@ -1,6 +1,5 @@
 import gensim
 import re
-import spacy
 from gensim.utils import simple_preprocess
 from nltk.corpus import stopwords
 from dataset.dataset import Dataset

@@ -1,9 +1,6 @@
 from models.model import Abstract_Model
-from dataset.dataset import Dataset
-import re
 import numpy as np
 from gensim.models import hdpmodel
-import gensim.corpora as corpora
 
 
 class HDP_Model(Abstract_Model):
