@@ -2,3 +2,4 @@ gensim
 nltk
 pandas
 spacy
+scikit-learn
