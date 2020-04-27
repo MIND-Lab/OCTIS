@@ -2,7 +2,7 @@ from evaluation_metrics.metrics import Abstract_Metric
 
 
 class Topic_diversity(Abstract_Metric):
-    def __init__(self, model_output,  topk=15):
+    def __init__(self, model_output,  metric_parameters={'topk':10}):
         """
         Initialize metric
 
@@ -11,11 +11,12 @@ class Topic_diversity(Abstract_Metric):
         model_output : output of the model in the format
                        [topics, topic word matrix, topic document matrix]
                        topics required.
-        topk : top k words on which the topic diversity
-               will be computed
+        metric_parameters : dictionary with key 'topk'
+                            topk: top k words on which the topic diversity
+                            will be computed
         """
         self.topics = model_output[0]
-        self.topk = topk
+        self.topk = metric_parameters["topk"]
 
     def score(self):
         """

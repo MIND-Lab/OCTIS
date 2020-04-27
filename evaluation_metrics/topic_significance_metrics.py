@@ -26,7 +26,7 @@ def _KL(P, Q):
 
 
 class KL_uniform(Abstract_Metric):
-    def __init__(self, model_output):
+    def __init__(self, model_output, metric_parameters={}):
         """
         Initialize metric
 
@@ -67,7 +67,7 @@ class KL_uniform(Abstract_Metric):
 
 
 class KL_vacuous(Abstract_Metric):
-    def __init__(self, model_output):
+    def __init__(self, model_output, metric_parameters={}):
         """
         Initialize metric
 
@@ -117,7 +117,7 @@ class KL_vacuous(Abstract_Metric):
 
 
 class KL_background(Abstract_Metric):
-    def __init__(self, model_output):
+    def __init__(self, model_output, metric_parameters={}):
         """
         Initialize metric
 
