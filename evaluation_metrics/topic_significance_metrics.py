@@ -25,18 +25,19 @@ def _KL(P, Q):
     return divergence
 
 
-
 class KL_uniform(Abstract_Metric):
-    def __init__(self, phi):
+    def __init__(self, model_output):
         """
         Initialize metric
 
         Parameters
         ----------
-        phi : distribution of topics over words matrix
-              phi[topic][word]
+        model_output : output of the model in the format
+                       [topics, topic word matrix, topic document matrix]
+                       distribution of topics over words matrix
+                       phi[topic][word] required
         """
-        self.phi = phi
+        self.phi = model_output[1]
 
     def score(self):
         """
@@ -66,19 +67,21 @@ class KL_uniform(Abstract_Metric):
 
 
 class KL_vacuous(Abstract_Metric):
-    def __init__(self, phi, theta):
+    def __init__(self, model_output):
         """
         Initialize metric
 
         Parameters
         ----------
-        phi : distribution of topics over words matrix
-              phi[topic][word]
-        theta : distribution of topics over documents matrix
-                theta[topic][document]
+        model_output : output of the model in the format
+                       [topics, topic word matrix, topic document matrix]
+                       distribution of topics over words matrix
+                       phi[topic][word] required.
+                       distribution of topics over documents matrix
+                       theta[topic][document] required.
         """
-        self.phi = phi
-        self.theta = theta
+        self.phi = model_output[1]
+        self.theta = model_output[2]
 
     def score(self):
         """
@@ -114,16 +117,18 @@ class KL_vacuous(Abstract_Metric):
 
 
 class KL_background(Abstract_Metric):
-    def __init__(self, theta):
+    def __init__(self, model_output):
         """
         Initialize metric
 
         Parameters
         ----------
-        theta : distribution of topics over documents matrix
-                theta[topic][document]
+        model_output : output of the model in the format
+                       [topics, topic word matrix, topic document matrix]
+                       distribution of topics over documents matrix
+                       theta[topic][document] required.
         """
-        self.theta = theta
+        self.theta = model_output[2]
 
     def score(self):
         """

@@ -11,57 +11,60 @@ from operator import add
 
 
 class Coherence(Abstract_Metric):
-    def __init__(self, topics, texts):
+    def __init__(self, model_output, texts, topk=10, measure='c_npmi'):
         """
         Initialize metric
 
         Parameters
         ----------
-        topics : lists of the words of each topic
+        model_output : output of the model in the format
+                       [topics, topic word matrix, topic document matrix]
+                       topics required.
         texts : list of documents (lis of lists of strings)
-        """
-        super().__init__()
-        self.topics = topics
-        self.texts = texts
-        self.dictionary = Dictionary(self.texts)
-
-    def score(self, topk=10, measure='c_npmi'):
-        """
-        Retrieve the score of the metric
-
-        Parameters
-        ----------
-        topics : a list of lists of the top-k words
-        texts : (list of lists of strings) represents the corpus
-                on which the empirical frequencies of words are computed
         topk : how many most likely words to consider in
                the evaluation
         measure : (default 'c_npmi') coherence measure to be used.
                   other measures: 'u_mass', 'c_v', 'c_uci', 'c_npmi'
+        """
+        super().__init__()
+        self.topics = model_output[0]
+        self.texts = texts
+        self.dictionary = Dictionary(self.texts)
+        self.topk = topk
+        self.measure = measure
+
+    def score(self):
+        """
+        Retrieve the score of the metric
+
         Returns
         -------
         score : coherence score
         """
-        if topk > len(self.topics[0]):
+        if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             npmi = CoherenceModel(
                 topics=self.topics,
                 texts=self.texts,
                 dictionary=self.dictionary,
-                coherence=measure,
-                topn=topk)
+                coherence=self.measure,
+                topn=self.topk)
             return npmi.get_coherence()
 
 
 class Coherence_word_embeddings(Abstract_Metric):
-    def __init__(self, topics, word2vec_path=None, binary=False):
+    def __init__(self, model_output, topk=10, word2vec_path=None, binary=False):
         """
         Initialize metric
 
         Parameters
         ----------
-        topics : a list of lists of the top-n most likely words
+        model_output : output of the model in the format
+                       [topics, topic word matrix, topic document matrix]
+                       topics required.
+        topk : how many most likely words to consider in the
+               evaluation
         word2vec_path : if word2vec_file is specified, it retrieves
                         the word embeddings file (in word2vec format)
                         to compute similarities between words, otherwise
@@ -70,73 +73,70 @@ class Coherence_word_embeddings(Abstract_Metric):
                  (default False)
         """
         super().__init__()
-        self.topics = topics
+        self.topics = model_output[0]
         self.binary = binary
+        self.topk = topk
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
             self.wv = KeyedVectors.load_word2vec_format(
                 word2vec_path, binary=binary)
 
-    def score(self, topk=10):
+    def score(self):
         """
         Retrieve the score of the metric
-
-        Parameters
-        ----------
-        topk : how many most likely words to consider in the
-               evaluation
 
         Returns
         -------
         score : topic coherence computed on the word embeddings
                 similarities
         """
-        if topk > len(self.topics[0]):
+        if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             arrays = []
             for _, topic in enumerate(self.topics):
                 if len(topic) > 0:
                     local_simi = []
-                    for w1, w2 in itertools.combinations(topic[0:topk], 2):
+                    for w1, w2 in itertools.combinations(topic[0:self.topk], 2):
                         if w1 in self.wv.vocab and w2 in self.wv.vocab:
                             local_simi.append(self.wv.similarity(w1, w2))
                     arrays.append(np.mean(local_simi))
             return np.mean(arrays)
 
+
 class Coherence_word_embeddings_pairwise(Abstract_Metric):
-    def __init__(self, topics, w2v_model=None):
+    def __init__(self, model_output, topk=10, w2v_model=None):
         """
         Initialize metric
 
         Parameters
         ----------
-        topics : a list of lists of the top-n most likely words
+        model_output : output of the model in the format
+                       [topics, topic word matrix, topic document matrix]
+                       topics required.
+        topk : how many most likely words to consider in the
+               evaluation
         w2v_model : a word2vector model, if is not provided,
                     google news 300 will be used instead
         """
         super().__init__()
-        self.topics = topics
+        self.topics = model_output[0]
+        self.topk = topk
         if w2v_model is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
             self.wv = w2v_model.wv
 
-    def score(self, topk=10):
+    def score(self):
         """
         Retrieve the score of the metric
-
-        Parameters
-        ----------
-        topk : how many most likely words to consider in the
-               evaluation
 
         Returns
         -------
         score : topic coherence computed on the word embeddings
         """
-        if topk > len(self.topics[0]):
+        if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             result = 0.0
@@ -145,7 +145,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
                 # Create matrix E (normalize word embeddings of
                 #   words represented as vectors in wv)
-                for word in topic[0:topk]:
+                for word in topic[0:self.topk]:
                     if word in self.wv.vocab:
                         word_embedding = self.wv.__getitem__(word)
                         normalized_we = word_embedding/word_embedding.sum()
@@ -154,7 +154,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
                 # Perform cosine similarity between E rows
                 distances = np.sum(pairwise_distances(E, metric='cosine'))
-                topic_coherence = (distances)/(2*topk*(topk-1))
+                topic_coherence = (distances)/(2*self.topk*(self.topk-1))
 
                 # Update result with the computed coherence of the topic
                 result += topic_coherence
@@ -163,37 +163,37 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
 
 class Coherence_word_embeddings_centroid(Abstract_Metric):
-    def __init__(self, topics, w2v_model=None):
+    def __init__(self, model_output, topk=10, w2v_model=None):
         """
         Initialize metric
 
         Parameters
         ----------
-        topics : a list of lists of the top-n most likely words
+        model_output : output of the model in the format
+                       [topics, topic word matrix, topic document matrix]
+                       topics required.
+        topk : how many most likely words to consider in the
+               evaluation
         w2v_model : a word2vector model, if is not provided,
                     google news 300 will be used instead
         """
         super().__init__()
-        self.topics = topics
+        self.topics = model_output[0]
+        self.topk = topk
         if w2v_model is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
             self.wv = w2v_model.wv
 
-    def score(self, topk=10):
+    def score(self):
         """
         Retrieve the score of the metric
-
-        Parameters
-        ----------
-        topk : how many most likely words to consider in the
-               evaluation
 
         Returns
         -------
         score : topic coherence computed on the word embeddings
         """
-        if topk > len(self.topics[0]):
+        if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             result = 0
@@ -220,7 +220,7 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
                 for word_embedding in E:
                     distance = spatial.distance.cosine(word_embedding, t)
                     topic_coherence += distance
-                topic_coherence = topic_coherence/topk
+                topic_coherence = topic_coherence/self.topk
 
                 # Update result with the computed coherence of the topic
                 result += topic_coherence

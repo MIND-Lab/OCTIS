@@ -163,3 +163,40 @@ class NMF_Model(Abstract_Model):
         if self.trained:
             self.trained_model = nmf.Nmf.load(
                 model_path+"/trained_model")
+
+    def get_output(self, topics=10, topic_word=True, topic_document=True):
+        """
+        Produce output of the model
+
+        Parameters
+        ----------
+        topics : number of most representative words to show
+                 per topic
+        topic_word : if False doesn't retrieve the topic_word matrix
+        topic_document : if False doesn't retrieve the topic_document matrix
+
+        Returns
+        -------
+        result : output in the format
+                 [topics, topic word matrix, topic document matrix]
+        """
+        result = []
+
+        if topics:
+            result.append(self.get_topics_terms(topics))
+        else:
+            result.append([])
+
+        if topic_word:
+            result.append(self.get_word_topic_weights())
+        else:
+            result.append([])
+
+        if topic_document:
+            result.append(
+                self.get_doc_topic_representation(
+                    self.dataset.get_corpus()))
+        else:
+            result.append([])
+
+        return result
