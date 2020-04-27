@@ -64,6 +64,25 @@ class LDA_Model(Abstract_Model):
         self.trained = True
         return True
 
+
+    def set_hyperparameters(self, hyperparameters):
+        """
+        Set the hyperparameters
+        Allows parameter alpha to be
+        a float (in this case alpha will be symmetric)
+
+        Parameters
+        ----------
+        hyperparameters : dictionary
+                          key = name of the hyperparameter
+                          value = value of the hyperparameter
+        """
+        super().set_hyperparameters(hyperparameters)
+        if isinstance(self.hyperparameters["alpha"], float):
+            self.hyperparameters["alpha"] = [
+                self.hyperparameters["alpha"]
+                ] * self.hyperparameters["num_topics"]
+
     def get_word_topic_weights(self):
         """
         Return False if the model is not trained,

@@ -2,3 +2,6 @@ gensim
 nltk
 pandas
 spacy
+scipy
+sklearn
+multiprocessing
