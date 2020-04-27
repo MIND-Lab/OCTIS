@@ -6,15 +6,15 @@ from skopt.utils import dimensions_aslist
 
 class Optimizer():
     """
-    Class structure of a generic optimizer implementation
+    Optimizer optimize hyperparameters to build topic models
     """
 
     # Parameters of the metric
     metric_parameters = {}
 
-    topk = 10
-    topic_word_matrix = True
-    topic_document_matrix = True
+    topk = 10  # if False the topk words will not be computed
+    topic_word_matrix = True  # if False the matrix will not be computed
+    topic_document_matrix = True  # if False the matrix will not be computed
 
     def __init__(self, model, metric, metric_parameters={}):
         """
@@ -44,18 +44,25 @@ class Optimizer():
         -------
         result : score of the metric to maximize
         """
+
+        # Retrieve parameters labels
         params = {}
         for i in range(len(self.hyperparameters)):
             params[self.hyperparameters[i]] = hyperparameters[i]
 
         self.model.set_hyperparameters(params)
+
         self.model.train_model()
+
         model_output = self.model.get_output(
-            self.topk, self.topic_word_matrix, self.topic_document_matrix)
+            self.topk,
+            self.topic_word_matrix,
+            self.topic_document_matrix)
 
         metric = self.metric(model_output, self.metric_parameters)
         result = - metric.score()
         return result
+
     def optimize(self, search_space, optimization_parameters={}):
         """
         Optimize the hyperparameters of the model using random forest
@@ -75,6 +82,7 @@ class Optimizer():
                  (skopt OptimizeResult format)
         """
 
+        # Save parameters labels to use
         self.hyperparameters = list(sorted(search_space.keys()))
         params_space_list = dimensions_aslist(search_space)
 
@@ -120,6 +128,7 @@ class Optimizer():
 
         optimize_result.fun = - optimize_result.fun
 
+        # Associate parameters label with their best value after optimization
         params = {}
         for i in range(len(self.hyperparameters)):
             params[self.hyperparameters[i]] = optimize_result.x[i]
