@@ -10,8 +10,26 @@ from sklearn.metrics import pairwise_distances
 from operator import add
 
 
+coherence_defaults = {
+    'texts': None,
+    'topk': 10,
+    'measure': 'c_npmi'
+}
+
+coherence_we_defaults = {
+    'topk': 10,
+    'word2vec_path': None,
+    'binary': False
+}
+
+coherence_we_pc_defaults = {
+    'topk': 10,
+    'w2v_model':None
+}
+
+
 class Coherence(Abstract_Metric):
-    def __init__(self, model_output, texts, topk=10, measure='c_npmi'):
+    def __init__(self, model_output, metric_parameters=coherence_defaults):
         """
         Initialize metric
 
@@ -20,18 +38,19 @@ class Coherence(Abstract_Metric):
         model_output : output of the model in the format
                        [topics, topic word matrix, topic document matrix]
                        topics required.
-        texts : list of documents (lis of lists of strings)
-        topk : how many most likely words to consider in
-               the evaluation
-        measure : (default 'c_npmi') coherence measure to be used.
-                  other measures: 'u_mass', 'c_v', 'c_uci', 'c_npmi'
+        metric_parameters : dictionary with keys
+                            texts : list of documents (lis of lists of strings)
+                            topk : how many most likely words to consider in
+                            the evaluation
+                            measure : (default 'c_npmi') measure to use.
+                            other measures: 'u_mass', 'c_v', 'c_uci', 'c_npmi'
         """
         super().__init__()
         self.topics = model_output[0]
-        self.texts = texts
+        self.texts = metric_parameters['texts']
         self.dictionary = Dictionary(self.texts)
-        self.topk = topk
-        self.measure = measure
+        self.topk = metric_parameters['topk']
+        self.measure = metric_parameters['measure']
 
     def score(self):
         """
@@ -54,7 +73,7 @@ class Coherence(Abstract_Metric):
 
 
 class Coherence_word_embeddings(Abstract_Metric):
-    def __init__(self, model_output, topk=10, word2vec_path=None, binary=False):
+    def __init__(self, model_output, metric_parameters=coherence_we_defaults):
         """
         Initialize metric
 
@@ -63,24 +82,25 @@ class Coherence_word_embeddings(Abstract_Metric):
         model_output : output of the model in the format
                        [topics, topic word matrix, topic document matrix]
                        topics required.
-        topk : how many most likely words to consider in the
-               evaluation
-        word2vec_path : if word2vec_file is specified, it retrieves
-                        the word embeddings file (in word2vec format)
-                        to compute similarities between words, otherwise
-                        'word2vec-google-news-300' is downloaded
-        binary : True if the word2vec file is binary, False otherwise
-                 (default False)
+        metric_parameters : dictionary with keys
+                            topk : how many most likely words to consider
+                            word2vec_path : if word2vec_file is specified
+                            retrieves word embeddings file (in word2vec format)
+                            to compute similarities, otherwise
+                            'word2vec-google-news-300' is downloaded
+                            binary : True if the word2vec file is binary
+                            False otherwise (default False)
         """
         super().__init__()
         self.topics = model_output[0]
-        self.binary = binary
-        self.topk = topk
+        self.binary = metric_parameters['binary']
+        self.topk = metric_parameters['topk']
+        word2vec_path = metric_parameters['word2vec_path']
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
             self.wv = KeyedVectors.load_word2vec_format(
-                word2vec_path, binary=binary)
+                word2vec_path, binary=self.binary)
 
     def score(self):
         """
@@ -106,7 +126,7 @@ class Coherence_word_embeddings(Abstract_Metric):
 
 
 class Coherence_word_embeddings_pairwise(Abstract_Metric):
-    def __init__(self, model_output, topk=10, w2v_model=None):
+    def __init__(self, model_output, metric_parameters=coherence_we_pc_defaults):
         """
         Initialize metric
 
@@ -115,18 +135,18 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
         model_output : output of the model in the format
                        [topics, topic word matrix, topic document matrix]
                        topics required.
-        topk : how many most likely words to consider in the
-               evaluation
-        w2v_model : a word2vector model, if is not provided,
-                    google news 300 will be used instead
+        metric_parameters : dictionary with keys
+                            topk : how many most likely words to consider
+                            w2v_model : a word2vector model, if not provided,
+                            google news 300 will be used instead
         """
         super().__init__()
         self.topics = model_output[0]
-        self.topk = topk
-        if w2v_model is None:
+        self.topk = metric_parameters['topk']
+        if metric_parameters['w2v_model'] is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
-            self.wv = w2v_model.wv
+            self.wv = metric_parameters['w2v_model'].wv
 
     def score(self):
         """
@@ -163,7 +183,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
 
 class Coherence_word_embeddings_centroid(Abstract_Metric):
-    def __init__(self, model_output, topk=10, w2v_model=None):
+    def __init__(self, model_output, metric_parameters=coherence_we_pc_defaults):
         """
         Initialize metric
 
@@ -172,18 +192,18 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
         model_output : output of the model in the format
                        [topics, topic word matrix, topic document matrix]
                        topics required.
-        topk : how many most likely words to consider in the
-               evaluation
-        w2v_model : a word2vector model, if is not provided,
-                    google news 300 will be used instead
+        metric_parameters : dictionary with keys
+                            topk : how many most likely words to consider
+                            w2v_model : a word2vector model, if not provided,
+                            google news 300 will be used instead
         """
         super().__init__()
         self.topics = model_output[0]
-        self.topk = topk
-        if w2v_model is None:
+        self.topk = metric_parameters['topk']
+        if metric_parameters['w2v_model'] is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
-            self.wv = w2v_model.wv
+            self.wv = metric_parameters['w2v_model'].wv
 
     def score(self):
         """
