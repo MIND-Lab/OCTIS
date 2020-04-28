@@ -94,7 +94,7 @@ class Optimizer():
         rf_parameters = {
             'n_calls': 100,
             'n_random_starts': 10,
-            'acq_func': "EI",
+            'acq_func': "LCB",
             'random_state': None,
             'verbose': False,
             'n_points': 10000,

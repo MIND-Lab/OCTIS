@@ -3,6 +3,7 @@ from dataset.dataset import Dataset
 from evaluation_metrics.diversity_metrics import Topic_diversity
 from optimization.optimizer import Optimizer
 from skopt.space.space import Real, Integer
+import multiprocessing as mp
 
 
 # Load dataset
@@ -24,7 +25,8 @@ search_space = {
 opt_params = {}
 opt_params["n_calls"] = 10
 opt_params["n_random_starts"] = 2
-opt_params["verbose"] = True
+opt_params["n_jobs"] = mp.cpu_count() # Enable multiprocessing
+
 
 # Initialize optimizer
 optimizer = Optimizer(model, Topic_diversity, search_space, {'topk': 10}, opt_params)
