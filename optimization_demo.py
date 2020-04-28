@@ -24,21 +24,23 @@ search_space = {
     "eta": eta
 }
 
+# Define optimization parameters
+opt_params = {}
+opt_params["n_calls"] = 10
+opt_params["n_random_starts"] = 2
+
 # Initialize optimizer
-optimizer = Optimizer(model, Topic_diversity, {'topk': 10})
+optimizer = Optimizer(model, Topic_diversity, search_space, {'topk': 10}, opt_params)
 
 # Disable computing of topic document matrix and topic word matrix
 # To optimize code
 optimizer.topic_document_matrix = False
 optimizer.topic_word_matrix = False
 
-# Define optimization parameters
-opt_params = {}
-opt_params["n_calls"] = 10
-opt_params["n_random_starts"] = 2
+
 
 # Optimize
-res = optimizer = optimizer.optimize(search_space, opt_params)
+res = optimizer = optimizer.optimize()
 
 print(res[0]) # Best values for the hyperparameters
 print(res[1].fun) # Score of the metric with the best hyperparameters

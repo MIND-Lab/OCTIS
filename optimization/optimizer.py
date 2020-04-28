@@ -16,7 +16,8 @@ class Optimizer():
     topic_word_matrix = True  # if False the matrix will not be computed
     topic_document_matrix = True  # if False the matrix will not be computed
 
-    def __init__(self, model, metric, metric_parameters={}):
+    def __init__(self, model, metric, search_space,
+        metric_parameters={}, optimization_parameters={}):
         """
         Inititalize the optimizer for the model
 
@@ -24,11 +25,17 @@ class Optimizer():
         ----------
         model : model with hyperparameters to optimize
         metric : metric to use for optimization
+        search_space : a dictionary of hyperparameters to optimize
+                       (each parameter is defined as a skopt space)
+                       with the name of the hyperparameter given as key
         metric_parameters : dictionary with extra parameters of the metric
+        optimization_parameters : parameters of the random forest search
         """
         self.model = model
         self.metric = metric
         self.metric_parameters.update(metric_parameters)
+        self.search_space = search_space
+        self.optimization_parameters = optimization_parameters
 
     def _objective_function(self, hyperparameters):
         """
@@ -63,16 +70,13 @@ class Optimizer():
         result = - metric.score()
         return result
 
-    def optimize(self, search_space, optimization_parameters={}):
+    def optimize(self):
         """
         Optimize the hyperparameters of the model using random forest
 
         Parameters
         ----------
-        search_space : a dictionary of hyperparameters to optimize
-                       (each parameter is defined as a skopt space)
-                       with the name of the hyperparameter given as key
-        optimiation_parameters : parameters of the random forest search
+        
 
         Returns
         -------
@@ -83,8 +87,8 @@ class Optimizer():
         """
 
         # Save parameters labels to use
-        self.hyperparameters = list(sorted(search_space.keys()))
-        params_space_list = dimensions_aslist(search_space)
+        self.hyperparameters = list(sorted(self.search_space.keys()))
+        params_space_list = dimensions_aslist(self.search_space)
 
         # Initialize default random forest parameters
         rf_parameters = {
@@ -105,7 +109,7 @@ class Optimizer():
         }
 
         # Customize random forest parameters
-        rf_parameters.update(optimization_parameters)
+        rf_parameters.update(self.optimization_parameters)
 
         optimize_result = forest_minimize(
             func=self._objective_function,
