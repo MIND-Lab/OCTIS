@@ -14,20 +14,17 @@ model = NMF_Model(dataset)
 
 
 # Create search space for optimization
-num_topics = Integer(name='num_topics', low=18, high=22)
-alpha = Real(name='alpha', low=0.1, high=2.0)
-eta = Real(name='eta', low=0.1, high=2.0)
-
 search_space = {
-    "num_topics": num_topics,
-    "alpha": alpha,
-    "eta": eta
+    "num_topics": Integer(low=18, high=22),
+    "alpha": Real(low=0.1, high=2.0),
+    "eta": Real(low=0.1, high=2.0)
 }
 
 # Define optimization parameters
 opt_params = {}
 opt_params["n_calls"] = 10
 opt_params["n_random_starts"] = 2
+opt_params["verbose"] = True
 
 # Initialize optimizer
 optimizer = Optimizer(model, Topic_diversity, search_space, {'topk': 10}, opt_params)

@@ -129,8 +129,9 @@ class Optimizer():
             n_jobs=rf_parameters["n_jobs"],
             model_queue_size=rf_parameters["model_queue_size"]
         )
-
+        
         optimize_result.fun = - optimize_result.fun
+        optimize_result.func_vals = - optimize_result.func_vals
 
         # Associate parameters label with their best value after optimization
         params = {}
