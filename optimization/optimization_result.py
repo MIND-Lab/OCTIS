@@ -52,8 +52,7 @@ class Result():
 
 class Final_result(Result):
     """
-    Representation of the optimization result and
-    intermediate iterations
+    Representation of the optimized values and each iteration
     """
     iterations = []
 
