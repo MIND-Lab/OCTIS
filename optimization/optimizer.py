@@ -17,7 +17,7 @@ class Optimizer():
     topic_document_matrix = True  # if False the matrix will not be computed
 
     def __init__(self, model, metric, search_space,
-        metric_parameters={}, optimization_parameters={}):
+                 metric_parameters={}, optimization_parameters={}):
         """
         Inititalize the optimizer for the model
 
@@ -67,7 +67,10 @@ class Optimizer():
             self.topic_document_matrix)
 
         metric = self.metric(self.metric_parameters)
-        result = - metric.score(model_output)
+        if self.optimization_type == 'Maximize':
+            result = - metric.score(model_output)
+        else:
+            result = metric.score(model_output)
         return result
 
     def optimize(self):
@@ -76,7 +79,7 @@ class Optimizer():
 
         Parameters
         ----------
-        
+
 
         Returns
         -------
@@ -105,11 +108,14 @@ class Optimizer():
             'xi': 1.96,
             'n_jobs': 1,
             'model_queue_size': None,
-            'callback': None
+            'callback': None,
+            'optimization_type': 'Maximize'
         }
 
         # Customize random forest parameters
         rf_parameters.update(self.optimization_parameters)
+
+        self.optimization_type = rf_parameters['optimization_type']
 
         optimize_result = forest_minimize(
             func=self._objective_function,
@@ -129,9 +135,10 @@ class Optimizer():
             n_jobs=rf_parameters["n_jobs"],
             model_queue_size=rf_parameters["model_queue_size"]
         )
-        
-        optimize_result.fun = - optimize_result.fun
-        optimize_result.func_vals = - optimize_result.func_vals
+
+        if self.optimization_type == 'Maximize':
+            optimize_result.fun = - optimize_result.fun
+            optimize_result.func_vals = - optimize_result.func_vals
 
         # Associate parameters label with their best value after optimization
         params = {}
