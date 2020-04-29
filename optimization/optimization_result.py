@@ -8,7 +8,7 @@ class Evaluation():
     def __init__(self, hyperparameters_names, hyperparameters_values,
                  function_values):
         """
-        Initialize result
+        Initialize class
 
         Parameters
         ----------
@@ -58,7 +58,7 @@ class Best_evaluation(Evaluation):
 
     def __init__(self, params_names, params_values, iters, optimized_metric):
         """
-        Initialize result
+        Initialize class
 
         Parameters
         ----------

@@ -100,7 +100,7 @@ class Optimizer():
 
         Returns
         -------
-        result : Final_result object
+        result : Best_evaluation object
         """
 
         # Save parameters labels to use
@@ -156,7 +156,7 @@ class Optimizer():
             optimize_result.fun = - optimize_result.fun
             optimize_result.func_vals = - optimize_result.func_vals
 
-        # Create Final_result object from optimization results
+        # Create Best_evaluation object from optimization results
         result = Best_evaluation(self.hyperparameters,
                                  optimize_result.x,
                                  self._iterations,
