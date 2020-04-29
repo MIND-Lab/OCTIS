@@ -1,3 +1,5 @@
+import os
+os.chdir(os.path.pardir)
 from dataset.dataset import Dataset
 import preprocessing.sources.reuters as source
 from preprocessing.pipeline_handler import Pipeline_handler

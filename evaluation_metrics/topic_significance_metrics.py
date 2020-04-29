@@ -26,9 +26,15 @@ def _KL(P, Q):
 
 
 class KL_uniform(Abstract_Metric):
-    def __init__(self, model_output, metric_parameters={}):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
+        """
+        super().__init__()
+
+    def score(self, model_output):
+        """
+        Retrieves the score of the metric
 
         Parameters
         ----------
@@ -36,17 +42,13 @@ class KL_uniform(Abstract_Metric):
                        [topics, topic word matrix, topic document matrix]
                        distribution of topics over words matrix
                        phi[topic][word] required
-        """
-        self.phi = model_output[1]
-
-    def score(self):
-        """
-        Retrieves the score of the metric
 
         Returns
         -------
         result : score
         """
+        self.phi = model_output[1]
+
         # make uniform distribution
         val = 1.0 / len(self.phi[0])
         unif_distr = np.full(len(self.phi[0]), val)
@@ -67,9 +69,15 @@ class KL_uniform(Abstract_Metric):
 
 
 class KL_vacuous(Abstract_Metric):
-    def __init__(self, model_output, metric_parameters={}):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
+        """
+        super().__init__()
+
+    def score(self, model_output):
+        """
+        Retrieves the score of the metric
 
         Parameters
         ----------
@@ -79,18 +87,14 @@ class KL_vacuous(Abstract_Metric):
                        phi[topic][word] required.
                        distribution of topics over documents matrix
                        theta[topic][document] required.
-        """
-        self.phi = model_output[1]
-        self.theta = model_output[2]
-
-    def score(self):
-        """
-        Retrieves the score of the metric
 
         Returns
         -------
         result : score
         """
+        self.phi = model_output[1]
+        self.theta = model_output[2]
+
         vacuous = np.zeros(self.phi.shape[1])
         for topic in range(len(self.theta)):
 
@@ -117,9 +121,15 @@ class KL_vacuous(Abstract_Metric):
 
 
 class KL_background(Abstract_Metric):
-    def __init__(self, model_output, metric_parameters={}):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
+        """
+        super().__init__()
+
+    def score(self, model_output):
+        """
+        Retrieves the score of the metric
 
         Parameters
         ----------
@@ -127,17 +137,13 @@ class KL_background(Abstract_Metric):
                        [topics, topic word matrix, topic document matrix]
                        distribution of topics over documents matrix
                        theta[topic][document] required.
-        """
-        self.theta = model_output[2]
-
-    def score(self):
-        """
-        Retrieves the score of the metric
 
         Returns
         -------
         result : score
         """
+        self.theta = model_output[2]
+
         # make uniform distribution
         val = 1.0 / len(self.theta[0])
         unif_distr = np.full(len(self.theta[0]), val)

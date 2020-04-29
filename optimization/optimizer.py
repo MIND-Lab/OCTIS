@@ -66,8 +66,8 @@ class Optimizer():
             self.topic_word_matrix,
             self.topic_document_matrix)
 
-        metric = self.metric(model_output, self.metric_parameters)
-        result = - metric.score()
+        metric = self.metric(self.metric_parameters)
+        result = - metric.score(model_output)
         return result
 
     def optimize(self):
