@@ -2,6 +2,7 @@ import numpy as np
 from skopt import forest_minimize
 from skopt.space.space import Real, Integer
 from skopt.utils import dimensions_aslist
+from optimization.optimization_result import Final_result
 
 
 class Optimizer():
@@ -11,6 +12,9 @@ class Optimizer():
 
     # Parameters of the metric
     metric_parameters = {}
+
+    # Values of hyperparameters and metrics for each iteration
+    _iterations = []
 
     topk = 10  # if False the topk words will not be computed
     topic_word_matrix = True  # if False the matrix will not be computed
@@ -57,8 +61,8 @@ class Optimizer():
         for i in range(len(self.hyperparameters)):
             params[self.hyperparameters[i]] = hyperparameters[i]
 
+        # Prepare model
         self.model.set_hyperparameters(params)
-
         self.model.train_model()
 
         model_output = self.model.get_output(
@@ -66,11 +70,24 @@ class Optimizer():
             self.topic_word_matrix,
             self.topic_document_matrix)
 
+        # Get metric score
         metric = self.metric(self.metric_parameters)
+        result = metric.score(model_output)
+
+        # Update metrics values for extra metrics
+        metrics_values = {self.metric.__name__: result}
+        iteration = [hyperparameters, metrics_values]
+        for extra_metric in self.extra_metrics:
+            tmp_metric = extra_metric(self.metric_parameters)
+            metrics_values[extra_metric.__name__] = tmp_metric.score(
+                model_output)
+
+        # Save iteration data
+        self._iterations.append(iteration)
+
         if self.optimization_type == 'Maximize':
-            result = - metric.score(model_output)
-        else:
-            result = metric.score(model_output)
+            result = - result
+
         return result
 
     def optimize(self):
@@ -83,10 +100,7 @@ class Optimizer():
 
         Returns
         -------
-        result : list [params, optimize_result]
-                 params: dictionary with optimized hyperparameters
-                 optimize_result: optimization result as an object
-                 (skopt OptimizeResult format)
+        result : Final_result object
         """
 
         # Save parameters labels to use
@@ -109,11 +123,13 @@ class Optimizer():
             'n_jobs': 1,
             'model_queue_size': None,
             'callback': None,
-            'optimization_type': 'Maximize'
+            'optimization_type': 'Maximize',
+            'extra_metrics': []
         }
 
         # Customize random forest parameters
         rf_parameters.update(self.optimization_parameters)
+        self.extra_metrics = rf_parameters["extra_metrics"]
 
         self.optimization_type = rf_parameters['optimization_type']
 
@@ -140,10 +156,10 @@ class Optimizer():
             optimize_result.fun = - optimize_result.fun
             optimize_result.func_vals = - optimize_result.func_vals
 
-        # Associate parameters label with their best value after optimization
-        params = {}
-        for i in range(len(self.hyperparameters)):
-            params[self.hyperparameters[i]] = optimize_result.x[i]
+        # Create Final_result object from optimization results
+        result = Final_result(self.hyperparameters,
+                              optimize_result.x,
+                              self._iterations,
+                              self.metric.__name__)
 
-        result = [params, optimize_result]
         return result
