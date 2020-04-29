@@ -2,7 +2,7 @@ import numpy as np
 from skopt import forest_minimize
 from skopt.space.space import Real, Integer
 from skopt.utils import dimensions_aslist
-from optimization.optimization_result import Final_result
+from optimization.optimization_result import Best_evaluation
 
 
 class Optimizer():
@@ -157,9 +157,9 @@ class Optimizer():
             optimize_result.func_vals = - optimize_result.func_vals
 
         # Create Final_result object from optimization results
-        result = Final_result(self.hyperparameters,
-                              optimize_result.x,
-                              self._iterations,
-                              self.metric.__name__)
+        result = Best_evaluation(self.hyperparameters,
+                                 optimize_result.x,
+                                 self._iterations,
+                                 self.metric.__name__)
 
         return result

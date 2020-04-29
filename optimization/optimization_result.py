@@ -1,4 +1,4 @@
-class Result():
+class Evaluation():
     """
     Representation of a single optimization iteration result
     """
@@ -50,7 +50,7 @@ class Result():
         return params
 
 
-class Final_result(Result):
+class Best_evaluation(Evaluation):
     """
     Representation of the optimized values and each iteration
     """
@@ -77,10 +77,10 @@ class Final_result(Result):
 
             # Save iteration informations
             iterations.append(
-                Result(params_names,
-                       iters[i][0],
-                       iters[i][1]
-                       )
+                Evaluation(params_names,
+                           iters[i][0],
+                           iters[i][1]
+                           )
             )
         super().__init__(params_names, params_values, function_values)
 
