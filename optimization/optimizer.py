@@ -102,6 +102,7 @@ class Optimizer():
         -------
         result : Best_evaluation object
         """
+        self._iterations = []
 
         # Save parameters labels to use
         self.hyperparameters = list(sorted(self.search_space.keys()))
