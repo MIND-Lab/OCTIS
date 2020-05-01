@@ -1,3 +1,11 @@
+import matplotlib.pyplot as plt
+import skopt.plots
+
+import matplotlib.backends.backend_pdf
+import matplotlib
+matplotlib.use('TKAgg')
+
+
 class Evaluation():
     """
     Representation of a single optimization iteration result
@@ -55,24 +63,27 @@ class Best_evaluation(Evaluation):
     Representation of the optimized values and each iteration
     """
     iterations = []
+    optimized_result = None
+    optimized_metric = None
 
-    def __init__(self, params_names, params_values, iters, optimized_metric):
+    def __init__(self, params_names, optimized_result, iters, optimized_metric):
         """
         Initialize class
 
         Parameters
         ----------
         params_names : list of hyperparameters names
-        params_values : list of hyperparameters values of the best result
+        optimized_result : OptimizeResult object
         iters : list of params_values and funcction_values of each iteration
         """
+        self.optimized_result = optimized_result
         iterations = []
         self.optimized_metric = optimized_metric
         function_values = {}
         for i in range(len(iters)):
 
             # If best hyperparameters are founded save their function values
-            if iters[i][0] == params_values:
+            if iters[i][0] == optimized_result.x:
                 function_values = iters[i][1]
 
             # Save iteration informations
@@ -82,6 +93,123 @@ class Best_evaluation(Evaluation):
                            iters[i][1]
                            )
             )
-        super().__init__(params_names, params_values, function_values)
+        super().__init__(params_names, optimized_result.x, function_values)
 
         self.iterations = iterations
+
+    def plot(self, iterations, metric=None):
+        """
+        Plot values of each iterations for a single metric
+
+        Parameters
+        ----------
+        iterations : iterations
+        metric : metric name 
+                 default: optimized metric
+        """
+        if self.optimized_result != None:
+            if metric == None:
+                metric = self.optimized_metric
+
+            # Create list of points to plot
+            x = list(range(len(iterations)))
+            y = []
+            for i in x:
+                y.append(iterations[i].function_values[metric])
+            plt.plot(x, y)
+
+    def plot_all(self, metric=None, extra_info=False, path=None):
+        """
+        Plot all the informations of the optimization
+
+        Parameters
+        ----------
+        metric : name of the metric to use to sort iterations
+                 if None, iterations will be plotted in chronological order
+        extra_info : True if skopt extra info are nedeed
+                     default: False
+        path : path in wich a pdf with all data will be saved
+               default: None, data will be showed instead
+        """
+
+        # Create metrics evaluations plot
+        figures = {"all": plt.figure()}
+        figures["all"].suptitle = "metrics evaluations"
+
+        # Sort iterations values by metric
+        if metric != None:
+            iterations = sorted(self.iterations,
+                                key=lambda i: i.function_values[metric])
+        else:
+            iterations = self.iterations
+
+        # Create hyperparameters plot and axes
+        parameters, axs = plt.subplots(len(self.hyperparameters))
+        figures["parameters"] = parameters
+
+        # Set hyperparameter name for the hyperparameters axes
+        i = 0
+        for param in self.hyperparameters.keys():
+            axs[i].set_title(param)
+            i += 1
+
+        # Plot all metrics evaluations in the same graph
+        legend = []
+        for metric in self.function_values.keys():
+            plt.figure(figures["all"].number)
+            self.plot(iterations, metric)
+            legend.append(metric)
+        plt.legend(legend, loc='upper left')
+
+        plt.figure(figures["parameters"].number)
+        x = range(len(iterations))
+        hyperparameters_points = [[] for i in range(len(self.hyperparameters))]
+
+        # Create list of points to plot for each hyperparameter
+        for i in x:
+            j = 0
+            for param in iterations[i].hyperparameters.keys():
+                hyperparameters_points[j].append(
+                    iterations[i].hyperparameters[param])
+                j += 1
+
+        # Plot each hyperparameter graph in the same figure
+        for i in range(len(hyperparameters_points)):
+            axs[i].plot(
+                x,
+                hyperparameters_points[i]
+            )
+
+
+        # Handle extra info from skopt
+        if extra_info:
+            axes = skopt.plots.plot_objective(self.optimized_result)
+            axes.flatten()[0].figure.suptitle("objective")
+            figures["objective"] = axes.flatten()[0].figure
+
+            axes2 = skopt.plots.plot_evaluations(self.optimized_result)
+            axes2.flatten()[0].figure.suptitle("evaluations")
+            figures["evaluations"] = axes2.flatten()[0].figure
+
+        # Create a nice formatting to show data
+        for _, figure in figures.items():
+                ID = figure.number
+                plt.figure(ID)
+                plt.subplots_adjust(
+                    left=0.15,
+                    right=0.85,
+                    top=0.85,
+                    bottom=0.15,
+                    wspace=0.22,
+                    hspace=0.22
+                )
+
+        if path == None:
+            plt.show()
+        else:
+            # Save pdf with all data
+            pdf = matplotlib.backends.backend_pdf.PdfPages(path+".pdf")
+            for _, figure in figures.items():
+                ID = figure.number
+                pdf.savefig(ID)
+            pdf.close()

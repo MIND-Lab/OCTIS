@@ -116,7 +116,7 @@ class Optimizer():
             'random_state': None,
             'verbose': False,
             'n_points': 10000,
-            'base_estimator': 'ET',
+            'base_estimator': 'RF',
             'kappa': 1.96,
             'x0': None,
             'y0': None,
@@ -159,7 +159,7 @@ class Optimizer():
 
         # Create Best_evaluation object from optimization results
         result = Best_evaluation(self.hyperparameters,
-                                 optimize_result.x,
+                                 optimize_result,
                                  self._iterations,
                                  self.metric.__name__)
 
