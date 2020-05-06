@@ -3,7 +3,6 @@ import skopt.plots
 
 import matplotlib.backends.backend_pdf
 import matplotlib
-matplotlib.use('TKAgg')
 
 
 class Evaluation():
@@ -132,9 +131,8 @@ class Best_evaluation(Evaluation):
                default: None, data will be showed instead
         """
 
-        # Create metrics evaluations plot
-        figures = {"all": plt.figure()}
-        figures["all"].suptitle = "metrics evaluations"
+        # Create pool of figures
+        figures = {}
 
         # Sort iterations values by metric
         if metric != None:
@@ -142,6 +140,22 @@ class Best_evaluation(Evaluation):
                                 key=lambda i: i.function_values[metric])
         else:
             iterations = self.iterations
+
+        # Plot all metrics evaluations in different graphs
+        for metric in self.function_values.keys():
+            if metric not in figures:
+                name = metric
+            else:
+                i = 2
+                name = metric + " 2"
+                while name in figures:
+                    i += 1
+                    name = metric + " "+str(i)
+
+            figures[name] = plt.figure()
+            plt.figure(figures[name].number)
+            figures[name].suptitle(name)
+            self.plot(iterations, metric)
 
         # Create hyperparameters plot and axes
         parameters, axs = plt.subplots(len(self.hyperparameters))
@@ -152,14 +166,6 @@ class Best_evaluation(Evaluation):
         for param in self.hyperparameters.keys():
             axs[i].set_title(param)
             i += 1
-
-        # Plot all metrics evaluations in the same graph
-        legend = []
-        for metric in self.function_values.keys():
-            plt.figure(figures["all"].number)
-            self.plot(iterations, metric)
-            legend.append(metric)
-        plt.legend(legend, loc='upper left')
 
         plt.figure(figures["parameters"].number)
         x = range(len(iterations))
@@ -180,7 +186,6 @@ class Best_evaluation(Evaluation):
                 hyperparameters_points[i]
             )
 
-
         # Handle extra info from skopt
         if extra_info:
             axes = skopt.plots.plot_objective(self.optimized_result)
@@ -193,16 +198,16 @@ class Best_evaluation(Evaluation):
 
         # Create a nice formatting to show data
         for _, figure in figures.items():
-                ID = figure.number
-                plt.figure(ID)
-                plt.subplots_adjust(
-                    left=0.15,
-                    right=0.85,
-                    top=0.85,
-                    bottom=0.15,
-                    wspace=0.22,
-                    hspace=0.22
-                )
+            ID = figure.number
+            plt.figure(ID)
+            plt.subplots_adjust(
+                left=0.15,
+                right=0.85,
+                top=0.85,
+                bottom=0.15,
+                wspace=0.22,
+                hspace=0.22
+            )
 
         if path == None:
             plt.show()

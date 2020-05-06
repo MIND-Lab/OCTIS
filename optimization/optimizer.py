@@ -10,9 +10,6 @@ class Optimizer():
     Optimizer optimize hyperparameters to build topic models
     """
 
-    # Parameters of the metric
-    metric_parameters = {}
-
     # Values of hyperparameters and metrics for each iteration
     _iterations = []
 
@@ -20,24 +17,21 @@ class Optimizer():
     topic_word_matrix = True  # if False the matrix will not be computed
     topic_document_matrix = True  # if False the matrix will not be computed
 
-    def __init__(self, model, metric, search_space,
-                 metric_parameters={}, optimization_parameters={}):
+    def __init__(self, model, metric, search_space, optimization_parameters={}):
         """
         Inititalize the optimizer for the model
 
         Parameters
         ----------
         model : model with hyperparameters to optimize
-        metric : metric to use for optimization
+        metric : initialized metric to use for optimization
         search_space : a dictionary of hyperparameters to optimize
                        (each parameter is defined as a skopt space)
                        with the name of the hyperparameter given as key
-        metric_parameters : dictionary with extra parameters of the metric
         optimization_parameters : parameters of the random forest search
         """
         self.model = model
         self.metric = metric
-        self.metric_parameters.update(metric_parameters)
         self.search_space = search_space
         self.optimization_parameters = optimization_parameters
 
@@ -71,16 +65,15 @@ class Optimizer():
             self.topic_document_matrix)
 
         # Get metric score
-        metric = self.metric(self.metric_parameters)
-        result = metric.score(model_output)
+        result = self.metric.score(model_output)
 
         # Update metrics values for extra metrics
-        metrics_values = {self.metric.__name__: result}
+        metrics_values = {self.metric.__class__.__name__: result}
         iteration = [hyperparameters, metrics_values]
         for extra_metric in self.extra_metrics:
-            tmp_metric = extra_metric(self.metric_parameters)
-            metrics_values[extra_metric.__name__] = tmp_metric.score(
-                model_output)
+            metrics_values[
+                extra_metric.__class__.__name__] = extra_metric.score(
+                    model_output)
 
         # Save iteration data
         self._iterations.append(iteration)
@@ -161,6 +154,6 @@ class Optimizer():
         result = Best_evaluation(self.hyperparameters,
                                  optimize_result,
                                  self._iterations,
-                                 self.metric.__name__)
+                                 self.metric.__class__.__name__)
 
         return result
