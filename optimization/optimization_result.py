@@ -117,14 +117,19 @@ class Best_evaluation(Evaluation):
                 y.append(iterations[i].function_values[metric])
             plt.plot(x, y)
 
-    def plot_all(self, metric=None, extra_info=False, path=None):
+    def plot_all(self, metric=None, hyperparameter=None,
+                 extra_info=False, path=None):
         """
         Plot all the informations of the optimization
 
         Parameters
         ----------
         metric : name of the metric to use to sort iterations
-                 if None, iterations will be plotted in chronological order
+                 if metric and hyperparameter are None,
+                 iterations will be plotted in chronological order
+        hyperparameter : name of the hyperparameter to use to sort iterations
+                 if metric and hyperparameter are None,
+                 iterations will be plotted in chronological order
         extra_info : True if skopt extra info are nedeed
                      default: False
         path : path in wich a pdf with all data will be saved
@@ -138,6 +143,10 @@ class Best_evaluation(Evaluation):
         if metric != None:
             iterations = sorted(self.iterations,
                                 key=lambda i: i.function_values[metric])
+        elif hyperparameter != None:
+            iterations = sorted(self.iterations,
+                                key=lambda i: i.hyperparameters[
+                                    hyperparameter])
         else:
             iterations = self.iterations
 
