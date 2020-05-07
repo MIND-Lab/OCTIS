@@ -1,6 +1,6 @@
 from evaluation_metrics.metrics import Abstract_Metric
 from gensim.corpora.dictionary import Dictionary
-from gensim.models.coherencemodel import CoherenceModel
+from gensim.models import CoherenceModel
 from gensim.models import KeyedVectors
 import gensim.downloader as api
 import numpy as np
@@ -8,10 +8,30 @@ import itertools
 from scipy import spatial
 from sklearn.metrics import pairwise_distances
 from operator import add
+from pathlib import Path
+
+
+def _load_default_texts():
+    """
+    Loads default wikipedia texts
+
+    Returns
+    -------
+    result : default wikipedia texts
+    """
+    file_name = "preprocessed_datasets/wikipedia/wikipedia_not_lemmatized_5/corpus.txt"
+    result = []
+    file = Path(file_name)
+    if file.is_file():
+        with open(file_name, 'r') as corpus_file:
+            for line in corpus_file:
+                result.append(line.split())
+        return result
+    return False
 
 
 coherence_defaults = {
-    'texts': None,
+    'texts': _load_default_texts(),
     'topk': 10,
     'measure': 'c_npmi'
 }

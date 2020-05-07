@@ -152,18 +152,9 @@ class Best_evaluation(Evaluation):
 
         # Plot all metrics evaluations in different graphs
         for metric in self.function_values.keys():
-            if metric not in figures:
-                name = metric
-            else:
-                i = 2
-                name = metric + " 2"
-                while name in figures:
-                    i += 1
-                    name = metric + " "+str(i)
-
-            figures[name] = plt.figure()
-            plt.figure(figures[name].number)
-            figures[name].suptitle(name)
+            figures[metric] = plt.figure()
+            plt.figure(figures[metric].number)
+            figures[metric].suptitle(metric)
             self.plot(iterations, metric)
 
         # Create hyperparameters plot and axes

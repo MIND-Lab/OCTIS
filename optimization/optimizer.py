@@ -71,9 +71,18 @@ class Optimizer():
         metrics_values = {self.metric.__class__.__name__: result}
         iteration = [hyperparameters, metrics_values]
         for extra_metric in self.extra_metrics:
-            metrics_values[
-                extra_metric.__class__.__name__] = extra_metric.score(
-                    model_output)
+
+            extra_metric_name = extra_metric.__class__.__name__
+            if extra_metric_name not in metrics_values:
+                name = extra_metric_name
+            else:
+                i = 2
+                name = extra_metric_name + " 2"
+                while name in metrics_values:
+                    i += 1
+                    name = extra_metric_name + " "+str(i)
+
+            metrics_values[name] = extra_metric.score(model_output)
 
         # Save iteration data
         self._iterations.append(iteration)
