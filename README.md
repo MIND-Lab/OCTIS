@@ -70,7 +70,7 @@ model.train_model()  # Train the model
 Evaluate a model
 ----------------
 
-To evaluate a model, choose ametric and follow two simple steps
+To evaluate a model, choose a metric and follow two simple steps
 
 Set the metric hyperparameters.
 
