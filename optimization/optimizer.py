@@ -17,7 +17,7 @@ class Optimizer():
     topic_word_matrix = True  # if False the matrix will not be computed
     topic_document_matrix = True  # if False the matrix will not be computed
 
-    def __init__(self, model, metric, search_space, optimization_parameters={}):
+    def __init__(self, model, dataset, metric, search_space, optimization_parameters={}):
         """
         Inititalize the optimizer for the model
 
@@ -31,6 +31,7 @@ class Optimizer():
         optimization_parameters : parameters of the random forest search
         """
         self.model = model
+        self.dataset = dataset
         self.metric = metric
         self.search_space = search_space
         self.optimization_parameters = optimization_parameters
@@ -56,10 +57,9 @@ class Optimizer():
             params[self.hyperparameters[i]] = hyperparameters[i]
 
         # Prepare model
-        self.model.set_hyperparameters(params)
-        self.model.train_model()
-
-        model_output = self.model.get_output(
+        model_output = self.model.train_model(
+            self.dataset,
+            params,
             self.topk,
             self.topic_word_matrix,
             self.topic_document_matrix)

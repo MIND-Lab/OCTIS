@@ -20,15 +20,14 @@ class Topic_diversity(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : output of the model in the format
-                       [topics, topic word matrix, topic document matrix]
-                       topics required.
+        model_output : dictionary, output of the model 
+                       key 'topics' required.
 
         Returns
         -------
         td : score
         """
-        self.topics = model_output[0]
+        self.topics = model_output["topics"]
         if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than '+str(self.topk))
         else:

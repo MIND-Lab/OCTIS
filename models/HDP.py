@@ -1,42 +1,66 @@
 from models.model import Abstract_Model
 import numpy as np
 from gensim.models import hdpmodel
+import gensim.corpora as corpora
 
 
 class HDP_Model(Abstract_Model):
 
-    def set_default_hyperparameters(self):
-        """
-        Set hyperparameters default values for the model
-        """
-        self.hyperparameters = {
-            'corpus': None,
-            'id2word': None,
-            'max_chunks': None,
-            'max_time': None,
-            'chunksize': 256,
-            'kappa': 1.0,
-            'tau': 64.0,
-            'K': 15,
-            'T': 150,
-            'alpha': 1,
-            'gamma': 1,
-            'eta': 0.01,
-            'scale': 1.0,
-            'var_convergence': 0.0001,
-            'outputdir': None,
-            'random_state': None}
+    hyperparameters = {
+        'corpus': None,
+        'id2word': None,
+        'max_chunks': None,
+        'max_time': None,
+        'chunksize': 256,
+        'kappa': 1.0,
+        'tau': 64.0,
+        'K': 15,
+        'T': 150,
+        'alpha': 1,
+        'gamma': 1,
+        'eta': 0.01,
+        'scale': 1.0,
+        'var_convergence': 0.0001,
+        'outputdir': None,
+        'random_state': None}
 
-    def train_model(self):
-        """
-        Train the model and save all the data
-        in trained_model
-        """
-        if not self.builded:
-            self.build_model()
+    id2word = None
+    id_corpus = None
 
+    def train_model(self, dataset, hyperparameters, topics=10,
+                    topic_word_matrix=True, topic_document_matrix=True):
+        """
+        Train the model and return output
+
+        Parameters
+        ----------
+        dataset : dataset to use to build the model
+        hyperparameters : hyperparameters to build the model
+        topics : if greather than 0 returns the top k most significant
+                 words for each topic in the output
+                 Default True
+        topic_word_matrix : if True returns the topic word matrix in the output
+                            Default True
+        topic_document_matrix : if True returns the topic document
+                                matrix in the output
+                                Default True
+
+        Returns
+        -------
+        result : dictionary with up to 3 entries,
+                 'topics', 'topic-word-matrix' and 
+                 'topic-document-matrix'
+        """
+        if self.id2word == None:
+            self.id2word = corpora.Dictionary(dataset.get_corpus())
+        if self.id_corpus == None:
+            self.id_corpus = [self.id2word.doc2bow(
+                document) for document in dataset.get_corpus()]
+
+        self.hyperparameters.update(hyperparameters)
         hyperparameters = self.hyperparameters
-        self.trained_model = hdpmodel.HdpModel(
+
+        trained_model = hdpmodel.HdpModel(
             corpus=self.id_corpus,
             id2word=self.id2word,
             max_chunks=hyperparameters["max_chunks"],
@@ -54,155 +78,39 @@ class HDP_Model(Abstract_Model):
             outputdir=hyperparameters["outputdir"],
             random_state=hyperparameters["random_state"]
         )
-        self.trained = True
-        return True
 
-    def get_word_topic_weights(self):
-        """
-        Return False if the model is not trained,
-        return the word topic weights matrix otherwise
-        """
-        if self.trained:
-            return self.trained_model.get_topics()
-        return None
+        result = {}
 
-    def get_document_topics(self, document):
-        """
-        Return False if the model is not trained,
-        return the topic representation of the
-        document otherwise
+        if topic_word_matrix:
+            result["topic-word-matrix"] = trained_model.get_topics()
 
-        Parameters
-        ----------
-        document : a document in format
-                   list of strings (words)
-
-        Returns
-        -------
-        the topic representation of the document
-        """
-        if self.trained:
-            return self.trained_model[self.id2word.doc2bow(document)]
-        return False
-
-    def get_topics_terms(self, topk=10):
-        """
-        Return False if the model is not trained,
-        return the topk words foreach topic otherwise
-
-        Parameters
-        ----------
-        topk: top k words to retrieve from each topic
-              (ordered by weight)
-
-        Returns
-        -------
-        result : list of lists, each list
-                 contains topk words for the topic
-        """
-        result = []
-        for i in range(len(self.trained_model.get_topics())):
-            result.append(self.trained_model.show_topic(
+        if topics > 0:
+            topic_terms = []
+        for i in range(len(trained_model.get_topics())):
+            topic_terms.append(trained_model.show_topic(
                 i,
-                topk,
+                topics,
                 False,
                 True
             ))
-        return result
 
-    def get_doc_topic_representation(self, corpus):
-        """
-        Return False if the model is not trained,
-        return the topic representation of the
-        corpus otherwise
+            result["topics"] = topic_terms
 
-        Parameters
-        ----------
-        corpus : a corpus
-
-        Returns
-        -------
-        the topic representation of the documents
-        of the corpus
-        """
-        if self.trained:
+        if topic_document_matrix:
             doc_topic_tuples = []
-            for document in corpus:
-                doc_topic_tuples.append(self.get_document_topics(document))
+            for document in dataset.get_corpus():
+                doc_topic_tuples.append(trained_model[
+                    self.id2word.doc2bow(document)])
 
-            result = np.zeros((
-                len(self.trained_model.get_topics()),
+            topic_document = np.zeros((
+                len(trained_model.get_topics()),
                 len(doc_topic_tuples)))
 
             for ndoc in range(len(doc_topic_tuples)):
                 document = doc_topic_tuples[ndoc]
                 for topic_tuple in document:
-                    result[topic_tuple[0]][ndoc] = topic_tuple[1]
-            return result
-        return False
+                    topic_document[topic_tuple[0]][ndoc] = topic_tuple[1]
 
-    def save(self, model_path, dataset_path=None):
-        """
-        Save the model in a folder.
-        By default the dataset is not saved
-
-        Parameters
-        ----------
-        model_path : model directory path
-        dataset_path : dataset path (optional)
-        """
-        super().save(model_path, dataset_path)
-        if self.trained:
-            self.trained_model.save(model_path+"/trained_model")
-
-    def load(self, model_path, dataset_path=None):
-        """
-        Load the model from a folder.
-        By default the dataset is not loaded
-
-        Parameters
-        ----------
-        model_path : model directory path
-        dataset_path : dataset path (optional)
-        """
-        super().load(model_path, dataset_path)
-        if self.trained:
-            self.trained_model = hdpmodel.HdpModel.load(
-                model_path+"/trained_model")
-
-    def get_output(self, topics=10, topic_word=True, topic_document=True):
-        """
-        Produce output of the model
-
-        Parameters
-        ----------
-        topics : number of most representative words to show
-                 per topic
-        topic_word : if False doesn't retrieve the topic_word matrix
-        topic_document : if False doesn't retrieve the topic_document matrix
-
-        Returns
-        -------
-        result : output in the format
-                 [topics, topic word matrix, topic document matrix]
-        """
-        result = []
-
-        if topics:
-            result.append(self.get_topics_terms(topics))
-        else:
-            result.append([])
-
-        if topic_word:
-            result.append(self.get_word_topic_weights())
-        else:
-            result.append([])
-
-        if topic_document:
-            result.append(
-                self.get_doc_topic_representation(
-                    self.dataset.get_corpus()))
-        else:
-            result.append([])
+            result["topic-document-matrix"] = topic_document
 
         return result

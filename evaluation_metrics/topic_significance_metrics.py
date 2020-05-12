@@ -38,16 +38,14 @@ class KL_uniform(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : output of the model in the format
-                       [topics, topic word matrix, topic document matrix]
-                       distribution of topics over words matrix
-                       phi[topic][word] required
+        model_output : dictionary, output of the model
+                       'topic-word-matrix' required
 
         Returns
         -------
         result : score
         """
-        self.phi = model_output[1]
+        self.phi = model_output["topic-word-matrix"]
 
         # make uniform distribution
         val = 1.0 / len(self.phi[0])
@@ -81,19 +79,16 @@ class KL_vacuous(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : output of the model in the format
-                       [topics, topic word matrix, topic document matrix]
-                       distribution of topics over words matrix
-                       phi[topic][word] required.
-                       distribution of topics over documents matrix
-                       theta[topic][document] required.
+        model_output : dictionary, output of the model
+                       'topic-word-matrix' required
+                       'topic-document-matrix' required
 
         Returns
         -------
         result : score
         """
-        self.phi = model_output[1]
-        self.theta = model_output[2]
+        self.phi = model_output["topic-word-matrix"]
+        self.theta = model_output["topic-document-matrix"]
 
         vacuous = np.zeros(self.phi.shape[1])
         for topic in range(len(self.theta)):
@@ -133,16 +128,14 @@ class KL_background(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : output of the model in the format
-                       [topics, topic word matrix, topic document matrix]
-                       distribution of topics over documents matrix
-                       theta[topic][document] required.
+        model_output : dictionary, output of the model
+                       'topic-document-matrix' required
 
         Returns
         -------
         result : score
         """
-        self.theta = model_output[2]
+        self.theta = model_output["topic-document-matrix"]
 
         # make uniform distribution
         val = 1.0 / len(self.theta[0])

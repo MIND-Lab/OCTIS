@@ -63,8 +63,9 @@ And build your model
 
 ```python
 from models.LDA import LDA_Model
-model = LDA_Model(dataset, hyperparameters)  # Create model
-model.train_model()  # Train the model
+model = LDA_Model()  # Create model
+# Train the model
+model_output = model.train_model(dataset, hyperparameters)
 ```
 
 Evaluate a model
@@ -90,13 +91,13 @@ topic_diversity_score = topic_diversity.score(model_output) # Compute score of t
 Optimize a model
 ----------------
 
-To optimize a model you need to select a model, a metric and the hyperparameters to optimize.
+To optimize a model you need to select a model, a dataset, a metric and the hyperparameters to optimize.
 
 First choose the model.
 
 ```python
 from models.LDA import LDA_Model
-model = LDA_Model(dataset)
+model = LDA_Model()
 ```
 
 Choose the metric.
@@ -121,6 +122,7 @@ Initialize an optimizer object and start the optimization.
 from optimization.optimizer import Optimizer
 optimizer = Optimizer(
 model,
+dataset,
 topic_diversity,
 search_space)
 result = optimizer.optimize()
