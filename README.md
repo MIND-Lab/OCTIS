@@ -27,6 +27,7 @@ Or use your own.
 import preprocessing.sources.custom_dataset as source
 dataset = source.retrieve("path\to\dataset")
 ```
+
 A custom dataset must have a document for each line of the file.
 
 Preprocess
@@ -36,93 +37,75 @@ To preprocess a dataset Initialize a Pipeline_handler and use the preprocess met
 
 ```python
 from preprocessing.pipeline_handler import Pipeline_handler
-pipeline_handler = Pipeline_handler(dataset)
-preprocessed = pipeline_handler.preprocess()
+
+pipeline_handler = Pipeline_handler(dataset) # Initialize pipeline handler
+preprocessed = pipeline_handler.preprocess() # preprocess
+
 preprocessed.save("dataset_folder") # Save the preprocessed dataset
 ```
-For the customization of the preprocess pipeline see the optimization demo example example in the examples folder.
+
+For the customization of the preprocess pipeline see the optimization demo example in the examples folder.
 
 Build a model
 -------------
 
-To build a model first load a preprocessed dataset.
+To build a model, load a preprocessed dataset, customize the model hyperparameters and use the train_model() method of the model class.
 
 ```python
 from dataset.dataset import Dataset
+from models.LDA import LDA_Model
+
+# Load a dataset
 dataset = Dataset()
 dataset.load("dataset_folder")
-```
-Set the hyperparameters.
 
-```python
+# Set hyperparameters
 hyperparameters = {}
 hyperparameters["num_topics"] = 20
-```
-And build your model
 
-```python
-from models.LDA import LDA_Model
 model = LDA_Model()  # Create model
-# Train the model
-model_output = model.train_model(dataset, hyperparameters)
+model_output = model.train_model(dataset, hyperparameters) # Train the model
 ```
 
 Evaluate a model
 ----------------
 
-To evaluate a model, choose a metric and follow two simple steps
-
-Set the metric hyperparameters.
-
-```python
-td_parameters ={
-'topk':10
-}
-```
-And compute the metric.
+To evaluate a model, choose a metric and use the score() method of the metric class.
 
 ```python
 from evaluation_metrics.diversity_metrics import Topic_diversity
-topic_diversity = Topic_diversity(td_parameters) # Initialize metric
-topic_diversity_score = topic_diversity.score(model_output) # Compute score of the metric
+
+# Set metric parameters
+td_parameters ={
+'topk':10
+}
+
+metric = Topic_diversity(td_parameters) # Initialize metric
+topic_diversity_score = metric.score(model_output) # Compute score of the metric
 ``` 
 
 Optimize a model
 ----------------
 
-To optimize a model you need to select a model, a dataset, a metric and the hyperparameters to optimize.
-
-First choose a model and a metric that you want optimize.
+To optimize a model you need to select a model, a dataset, a metric and the search space of the hyperparameters to optimize.
 
 ```python
-from models.LDA import LDA_Model
-from evaluation_metrics.diversity_metrics import Topic_diversity
-model = LDA_Model()
-topic_diversity = Topic_diversity(td_parameters) # Initialize metric
-```
+from optimization.optimizer import Optimizer
 
-Define the search space of the hyperparameters to optimize.
-
-```python
 search_space = {
 "alpha": Real(low=0.001, high=5.0),
 "eta": Real(low=0.001, high=5.0)
 }
-```
 
-Initialize an optimizer object and start the optimization.
+# Initialize an optimizer object and start the optimization.
 
-```python
-from optimization.optimizer import Optimizer
-optimizer = Optimizer(model, dataset, topic_diversity, search_space)
+optimizer = Optimizer(model, dataset, metric, search_space)
 result = optimizer.optimize()
+
+result.plot_all()
 ```
  
 The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you can use the plot and plot_all methods of the result.
-
-```python
-result.plot_all()
-```
 
 Available Models
 ----------------
