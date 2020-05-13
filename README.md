@@ -1,16 +1,15 @@
-# Topic modeling evaluation framework
+# Topic Modeling Evaluation Framework
 
 
-Evaluation framework that compare topic models' performance with respect to different metrics. The topic models are optimized using bayesian optimization techniques
+This framework aims to compare topic models' performance with respect to multiple different metrics. Topic models are optimized using Bayesian Optimization techniques.
 
 Features
 --------
 
-* Acquire datasets from multiple sources
-* Preprocess datasets
-* Build topic models from a list of implemented  models, or create your own
-* Evaluate models using a set of evaluation metrics
-* Optimize models with respect to a metric
+* Provide a set of state-of-the-art preprocessed text datasets, or you can preprocess your own dataset
+* Provide a set of known topic models, or you can integrate your own model
+* Optimize models with respect to a given metric using Bayesian Optimization
+* Evaluate your model using state-of-the-art evaluation metrics
 
 Acquire dataset
 ---------------
@@ -93,17 +92,12 @@ Optimize a model
 
 To optimize a model you need to select a model, a dataset, a metric and the hyperparameters to optimize.
 
-First choose the model.
+First choose a model and a metric that you want optimize.
 
 ```python
 from models.LDA import LDA_Model
-model = LDA_Model()
-```
-
-Choose the metric.
-
-```python
 from evaluation_metrics.diversity_metrics import Topic_diversity
+model = LDA_Model()
 topic_diversity = Topic_diversity(td_parameters) # Initialize metric
 ```
 
@@ -120,15 +114,11 @@ Initialize an optimizer object and start the optimization.
 
 ```python
 from optimization.optimizer import Optimizer
-optimizer = Optimizer(
-model,
-dataset,
-topic_diversity,
-search_space)
+optimizer = Optimizer(model, dataset, topic_diversity, search_space)
 result = optimizer.optimize()
 ```
  
-The result will be an object with optimized hyperparameters, best value of the metric and hyperparameters and metric value for each iteration of the optimization, to visualize the informations you can use the plot and plot_all methods of the result.
+The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you can use the plot and plot_all methods of the result.
 
 ```python
 result.plot_all()
