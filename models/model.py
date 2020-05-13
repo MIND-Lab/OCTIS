@@ -16,6 +16,15 @@ class Abstract_Model(ABC):
     @abstractmethod
     def train_model(self, dataset, hyperparameters):
         """
-        Train the model
+        Train the model.
+        Return a dictionary with up to 3 entries,
+        'topics', 'topic-word-matrix' and 'topic-document-matrix'.
+        'topics' is the list of the most significative words for
+        each topic (list of lists of strings).
+        'topic-word-matrix' is a matrix NxM where N is the number
+        of topics and M is the vocabulary length.
+        'topi-document-matrix' is a matrix NxM where N is the number
+        of topics and M is the number of documents in the corpus.
+
         """
         pass

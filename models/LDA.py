@@ -30,6 +30,7 @@ class LDA_Model(Abstract_Model):
 
     id2word = None
     id_corpus = None
+    dataset = None
 
     def train_model(self, dataset, hyperparameters, topics=10,
                     topic_word_matrix=True, topic_document_matrix=True):
@@ -57,9 +58,13 @@ class LDA_Model(Abstract_Model):
         """
         if self.id2word == None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
+
         if self.id_corpus == None:
             self.id_corpus = [self.id2word.doc2bow(
                 document) for document in dataset.get_corpus()]
+
+        if self.dataset == None:
+            self.dataset = dataset
 
         self.hyperparameters.update(hyperparameters)
         hyperparameters = self.hyperparameters
@@ -70,7 +75,7 @@ class LDA_Model(Abstract_Model):
                 self.hyperparameters["alpha"]
             ] * self.hyperparameters["num_topics"]
 
-        trained_model = ldamodel.LdaModel(
+        self.trained_model = ldamodel.LdaModel(
             corpus=self.id_corpus,
             id2word=self.id2word,
             num_topics=hyperparameters["num_topics"],
@@ -95,33 +100,44 @@ class LDA_Model(Abstract_Model):
         result = {}
 
         if topic_word_matrix:
-            result["topic-word-matrix"] = trained_model.get_topics()
+            result["topic-word-matrix"] = self.trained_model.get_topics()
 
         if topics > 0:
-            topic_terms = []
-            for i in range(self.hyperparameters["num_topics"]):
-                topic_words_list = []
-                for word_tuple in trained_model.get_topic_terms(i):
-                    topic_words_list.append(self.id2word[word_tuple[0]])
-                topic_terms.append(topic_words_list)
-
-            result["topics"] = topic_terms
+            result["topics"] = self._get_topics_words()
 
         if topic_document_matrix:
-            doc_topic_tuples = []
-            for document in dataset.get_corpus():
-                doc_topic_tuples.append(trained_model.get_document_topics(
-                    self.id2word.doc2bow(document)))
-
-            topic_document = np.zeros((
-                self.hyperparameters["num_topics"],
-                len(doc_topic_tuples)))
-
-            for ndoc in range(len(doc_topic_tuples)):
-                document = doc_topic_tuples[ndoc]
-                for topic_tuple in document:
-                    topic_document[topic_tuple[0]][ndoc] = topic_tuple[1]
-
-            result["topic-document-matrix"] = topic_document
+            result["topic-document-matrix"] = self._get_topic_document_matrix()
 
         return result
+
+    def _get_topics_words(self):
+        """
+        Return the most significative words for each topic.
+        """
+        topic_terms = []
+        for i in range(self.hyperparameters["num_topics"]):
+            topic_words_list = []
+            for word_tuple in self.trained_model.get_topic_terms(i):
+                topic_words_list.append(self.id2word[word_tuple[0]])
+            topic_terms.append(topic_words_list)
+        return topic_terms
+
+    def _get_topic_document_matrix(self):
+        """
+        Return the topic representation of the
+        corpus
+        """
+        doc_topic_tuples = []
+        for document in self.dataset.get_corpus():
+            doc_topic_tuples.append(self.trained_model.get_document_topics(
+                self.id2word.doc2bow(document)))
+
+        topic_document = np.zeros((
+            self.hyperparameters["num_topics"],
+            len(doc_topic_tuples)))
+
+        for ndoc in range(len(doc_topic_tuples)):
+            document = doc_topic_tuples[ndoc]
+            for topic_tuple in document:
+                topic_document[topic_tuple[0]][ndoc] = topic_tuple[1]
+        return topic_document

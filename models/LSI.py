@@ -19,6 +19,7 @@ class LSI_Model(Abstract_Model):
 
     id2word = None
     id_corpus = None
+    dataset = None
 
     def train_model(self, dataset, hyperparameters, topics=10,
                     topic_word_matrix=True, topic_document_matrix=True):
@@ -41,20 +42,24 @@ class LSI_Model(Abstract_Model):
         Returns
         -------
         result : dictionary with up to 3 entries,
-                 'topics', 'topic-word-matrix' and 
+                 'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
         if self.id2word == None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
+
         if self.id_corpus == None:
             self.id_corpus = [self.id2word.doc2bow(
                 document) for document in dataset.get_corpus()]
+
+        if self.dataset == None:
+            self.dataset = dataset
 
         self.hyperparameters.update(hyperparameters)
         hyperparameters = self.hyperparameters
 
         hyperparameters = self.hyperparameters
-        trained_model = lsimodel.LsiModel(
+        self.trained_model = lsimodel.LsiModel(
             corpus=self.id_corpus,
             id2word=self.id2word,
             num_topics=hyperparameters["num_topics"],
@@ -68,53 +73,68 @@ class LSI_Model(Abstract_Model):
         result = {}
 
         if topic_word_matrix:
-
-            topic_word_matrix = trained_model.get_topics()
-            normalized = []
-            for words_w in topic_word_matrix:
-                minimum = min(words_w)
-                words = words_w - minimum
-                normalized.append([float(i)/sum(words) for i in words])
-            topic_word_matrix = np.array(normalized)
-
-            result["topic-word-matrix"] = topic_word_matrix
+            result["topic-word-matrix"] = self._get_topic_word_matrix()
 
         if topics > 0:
-            topic_terms = []
-            for i in range(self.hyperparameters["num_topics"]):
-                topic_words_list = []
-                for word_tuple in trained_model.show_topic(i):
-                    topic_words_list.append(word_tuple[0])
-                topic_terms.append(topic_words_list)
-
-            result["topics"] = topic_terms
+            result["topics"] = self._get_topics_words()
 
         if topic_document_matrix:
-            bow = [self.id2word.doc2bow(document)
-                   for document in dataset.get_corpus()]
-            topic_weights = trained_model[bow]
-
-            topic_document = []
-
-            for document_topic_weights in topic_weights:
-
-                # Find min e max topic_weights values
-                minimum = document_topic_weights[0][1]
-                maximum = document_topic_weights[0][1]
-                for topic in document_topic_weights:
-                    if topic[1] > maximum:
-                        maximum = topic[1]
-                    if topic[1] < minimum:
-                        minimum = topic[1]
-
-                # For each topic compute normalized weight
-                # in the form (value-min)/(max-min)
-                topic_w = []
-                for topic in document_topic_weights:
-                    topic_w.append((topic[1]-minimum)/(maximum-minimum))
-                topic_document.append(topic_w)
-
-            result["topic-document-matrix"] = np.array(
-                topic_document).transpose()
+            result["topic-document-matrix"] = self._get_topic_document_matrix()
 
         return result
+
+    def _get_topic_word_matrix(self):
+        """
+        Return the topic representation of the words
+        """
+        topic_word_matrix = self.trained_model.get_topics()
+        normalized = []
+        for words_w in topic_word_matrix:
+            minimum = min(words_w)
+            words = words_w - minimum
+            normalized.append([float(i)/sum(words) for i in words])
+        topic_word_matrix = np.array(normalized)
+        return topic_word_matrix
+
+    def _get_topics_words(self):
+        """
+        Return the most significative words for each topic.
+        """
+        topic_terms = []
+        for i in range(self.hyperparameters["num_topics"]):
+            topic_words_list = []
+            for word_tuple in self.trained_model.show_topic(i):
+                topic_words_list.append(word_tuple[0])
+            topic_terms.append(topic_words_list)
+        return topic_terms
+
+    def _get_topic_document_matrix(self):
+        """
+        Return the topic representation of the
+        corpus
+        """
+        bow = [self.id2word.doc2bow(document)
+               for document in self.dataset.get_corpus()]
+        topic_weights = self.trained_model[bow]
+
+        topic_document = []
+
+        for document_topic_weights in topic_weights:
+
+            # Find min e max topic_weights values
+            minimum = document_topic_weights[0][1]
+            maximum = document_topic_weights[0][1]
+            for topic in document_topic_weights:
+                if topic[1] > maximum:
+                    maximum = topic[1]
+                if topic[1] < minimum:
+                    minimum = topic[1]
+
+            # For each topic compute normalized weight
+            # in the form (value-min)/(max-min)
+            topic_w = []
+            for topic in document_topic_weights:
+                topic_w.append((topic[1]-minimum)/(maximum-minimum))
+            topic_document.append(topic_w)
+
+        return np.array(topic_document).transpose()
