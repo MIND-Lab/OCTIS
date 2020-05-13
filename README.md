@@ -124,9 +124,7 @@ Implement your own Model
 ------------------------
 
 Models inherit from the class `Abstract_Model` defined in `models/model.py` .
-The abstract model is used to define a standard in the framework.
-To build your own model your class must override the `train_model(self, dataset, hyperparameters)` method.
-The train_model method always require at least a `Dataset` object and a Dictionary of hyperparameters as input and should return a dictionary with the output of the model as output.
+To build your own model your class must override the `train_model(self, dataset, hyperparameters)` method which always require at least a `Dataset` object and a Dictionary of hyperparameters as input and should return a dictionary with the output of the model as output.
 
 To better understand how a model work, let's have a look at the LDA implementation.
 The first step in developing a custom model is to define the dictionary of default hyperparameters values:
@@ -143,6 +141,7 @@ hyperparameters = {
     'callbacks': None}
 
 ```
+Defining the default hyperparameters values allows users to work on a subset of them without having to assign a value to each parameter.
 
 The following step is the `train_model()` override:
 
@@ -153,7 +152,7 @@ def train_model(self, dataset, hyperparameters, topics=10,
 
 ```
 
-The method require a dataset, the hyperparameters dictionary and 3 extra arguments used to enable or disable the computing of outputs to enhance performances during optimization precesses.
+The method require a dataset, the hyperparameters dictionary and 3 extra arguments used to enable or disable the computing of outputs to enhance performances during optimization processes.
 
 With the hyperparameters defaults, the ones in input and the dataset you should be able to write your own code and return as output a dictionary with at least 3 entries:
 
