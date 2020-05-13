@@ -35,7 +35,7 @@ class NMF_Model(Abstract_Model):
         ----------
         dataset : dataset to use to build the model
         hyperparameters : hyperparameters to build the model
-        topics : if greather than 0returns the most significant words
+        topics : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
         topic_word_matrix : if True returns the topic word matrix in the output

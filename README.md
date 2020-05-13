@@ -1,6 +1,5 @@
 # Topic Modeling Evaluation Framework
 
-
 This framework aims to compare topic models' performance with respect to multiple different metrics. Topic models are optimized using Bayesian Optimization techniques.
 
 Features
@@ -16,14 +15,14 @@ Acquire dataset
 
 To acquire a dataset you can use one of the built-in sources.
 
-```python
+``` python
 import preprocessing.sources.newsgroup as source
 dataset = source.retrieve()
 ```
 
 Or use your own.
 
-```python
+``` python
 import preprocessing.sources.custom_dataset as source
 dataset = source.retrieve("path\to\dataset")
 ```
@@ -35,7 +34,7 @@ Preprocess
 
 To preprocess a dataset Initialize a Pipeline_handler and use the preprocess method.
 
-```python
+``` python
 from preprocessing.pipeline_handler import Pipeline_handler
 
 pipeline_handler = Pipeline_handler(dataset) # Initialize pipeline handler
@@ -51,7 +50,7 @@ Build a model
 
 To build a model, load a preprocessed dataset, customize the model hyperparameters and use the train_model() method of the model class.
 
-```python
+``` python
 from dataset.dataset import Dataset
 from models.LDA import LDA_Model
 
@@ -72,7 +71,7 @@ Evaluate a model
 
 To evaluate a model, choose a metric and use the score() method of the metric class.
 
-```python
+``` python
 from evaluation_metrics.diversity_metrics import Topic_diversity
 
 # Set metric parameters
@@ -87,7 +86,7 @@ topic_diversity_score = metric.score(model_output) # Compute score of the metric
 Optimize a model
 ----------------
 
-To optimize a model you need to select a model, a dataset, a metric and the search space of the hyperparameters to optimize.
+To optimize a model you need to select a dataset, a metric and the search space of the hyperparameters to optimize.
 
 ```python
 from optimization.optimizer import Optimizer
@@ -103,6 +102,7 @@ result = optimizer.optimize()
 
 result.plot_all()
 ```
+
  
 The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you can use the plot and plot_all methods of the result.
 
@@ -119,3 +119,44 @@ Available Datasets
 
 * 20Newsgroup
 * Wikipedia
+
+Implement your own Model
+------------------------
+
+Models inherit from the class `Abstract_Model` defined in `models/model.py` .
+The abstract model is used to define a standard in the framework.
+To build your own model your class must override the `train_model(self, dataset, hyperparameters)` method.
+The train_model method always require at least a `Dataset` object and a Dictionary of hyperparameters as input and should return a dictionary with the output of the model as output.
+
+To better understand how a model work, let's have a look at the LDA implementation.
+The first step in developing a custom model is to define the dictionary of default hyperparameters values:
+
+``` python
+
+hyperparameters = {
+    'corpus': None,
+    'num_topics': 100,
+    'id2word': None,
+    'alpha': 'symmetric',
+    'eta': None,
+    # ...
+    'callbacks': None}
+
+```
+
+The following step is the `train_model()` override:
+
+``` python
+
+def train_model(self, dataset, hyperparameters, topics=10,
+                topic_word_matrix=True, topic_document_matrix=True):
+
+```
+
+The method require a dataset, the hyperparameters dictionary and 3 extra arguments used to enable or disable the computing of outputs to enhance performances during optimization precesses.
+
+With the hyperparameters defaults, the ones in input and the dataset you should be able to write your own code and return as output a dictionary with at least 3 entries:
+
+* topics: the list of the most significative words foreach topic (list of lists of strings).
+* topic-word-matrix: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
+* topic-document-matrix: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.

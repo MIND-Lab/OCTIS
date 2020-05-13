@@ -21,10 +21,10 @@ class Abstract_Model(ABC):
         'topics', 'topic-word-matrix' and 'topic-document-matrix'.
         'topics' is the list of the most significative words for
         each topic (list of lists of strings).
-        'topic-word-matrix' is a matrix NxM where N is the number
-        of topics and M is the vocabulary length.
-        'topi-document-matrix' is a matrix NxM where N is the number
-        of topics and M is the number of documents in the corpus.
+        'topic-word-matrix' is an NxV matrix of weights where N is the number
+        of topics and V is the vocabulary length.
+        'topic-document-matrix' is an NxD matrix of weights where N is the number
+        of topics and D is the number of documents in the corpus.
 
         """
         pass
