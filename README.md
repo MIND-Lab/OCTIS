@@ -123,3 +123,17 @@ The result will provide best-seen value of the metric with the corresponding hyp
 ```python
 result.plot_all()
 ```
+
+Available Models
+----------------
+
+* LDA
+* LSI
+* NMF
+* HDP
+
+Available Datasets
+----------------
+
+* 20Newsgroup
+* Wikipedia
