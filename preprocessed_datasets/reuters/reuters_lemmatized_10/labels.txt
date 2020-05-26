@@ -8459,4 +8459,3 @@
 ["interest", "money-fx"]
 ["acq"]
 ["crude", "ship"]
-["cocoa"]

@@ -2,7 +2,7 @@ exporter 0.0191
 fear 0.0147
 raise 0.0741
 many 0.0345
-export 0.1127
+export 0.1128
 could 0.1124
 far 0.0336
 reach 0.0481
@@ -25,7 +25,7 @@ run 0.0243
 short 0.0375
 term 0.111
 loss 0.163
-gain 0.0874
+gain 0.0875
 impose 0.0168
 mln 0.4213
 dlrs 0.4161
@@ -34,7 +34,7 @@ japanese 0.0425
 good 0.0668
 sell 0.1094
 world 0.0566
-market 0.1985
+market 0.1986
 cost 0.0726
 estimate 0.0801
 put 0.0392
@@ -44,14 +44,14 @@ firm 0.0747
 hit 0.0233
 new 0.1169
 able 0.017
-business 0.0724
+business 0.0725
 spokesman 0.0739
 remain 0.0786
 place 0.0284
-time 0.0828
-month 0.1654
+time 0.0829
+month 0.1655
 mean 0.0282
-complete 0.0571
+complete 0.057
 office 0.0173
 co 0.0438
 also 0.2111
@@ -81,9 +81,9 @@ producer 0.0467
 third 0.0431
 country 0.0976
 expand 0.023
-sale 0.1822
+sale 0.1821
 newspaper 0.0141
-share 0.2545
+share 0.2546
 view 0.0202
 commercial 0.0213
 pressure 0.0314
@@ -105,7 +105,7 @@ trading 0.0507
 partner 0.0208
 significant 0.0199
 stand 0.0223
-continue 0.0984
+continue 0.0985
 rule 0.0308
 yesterday 0.0644
 package 0.0141
@@ -118,7 +118,7 @@ record 0.0747
 public 0.0386
 work 0.0475
 spend 0.0151
-first 0.1166
+first 0.1167
 financial 0.0561
 call 0.0642
 step 0.0216
@@ -146,7 +146,7 @@ energy 0.0144
 demand 0.055
 revise 0.0275
 supply 0.0581
-expect 0.1755
+expect 0.1754
 low 0.0975
 decision 0.0377
 follow 0.0719
@@ -185,7 +185,7 @@ key 0.0197
 commodity 0.0206
 can 0.015
 high 0.1224
-see 0.1082
+see 0.1083
 sharply 0.0254
 crude 0.0369
 well 0.0528
@@ -195,7 +195,7 @@ reporter 0.0273
 delivery 0.0212
 trader 0.0355
 maintain 0.0256
-make 0.1751
+make 0.1752
 recent 0.0568
 purchase 0.0823
 international 0.0414
@@ -214,8 +214,7 @@ port 0.0134
 foreign 0.0766
 carry 0.019
 still 0.0583
-shipping 0.0121
-week 0.1264
+week 0.1263
 pay 0.0821
 claim 0.0143
 nearly 0.0184
@@ -275,7 +274,7 @@ venture 0.0162
 mine 0.0132
 know 0.0219
 project 0.0287
-own 0.0737
+own 0.0738
 local 0.0197
 unit 0.0999
 statement 0.0676
@@ -286,7 +285,7 @@ aim 0.0254
 certain 0.0337
 merger 0.0356
 analyst 0.0508
-base 0.0913
+base 0.0914
 loan 0.046
 position 0.0347
 area 0.0411
@@ -303,7 +302,6 @@ look 0.0285
 feed 0.0177
 investment 0.0728
 banking 0.019
-opportunity 0.0128
 find 0.0265
 chance 0.0136
 case 0.0186
@@ -350,8 +348,8 @@ main 0.0279
 money 0.0565
 range 0.0389
 compare 0.0838
-company 0.2844
-operation 0.0861
+company 0.2845
+operation 0.0862
 half 0.0359
 negotiation 0.0259
 acquisition 0.0743
@@ -359,7 +357,7 @@ exist 0.0197
 restructure 0.0174
 sign 0.0456
 side 0.0136
-acquire 0.0724
+acquire 0.0725
 discuss 0.0245
 equity 0.0212
 period 0.084
@@ -399,7 +397,7 @@ dividend 0.0613
 declare 0.0236
 cent 0.0304
 pretax 0.0178
-profit 0.1303
+profit 0.1304
 turnover 0.0175
 tax 0.0942
 extraordinary 0.0318
@@ -445,7 +443,6 @@ datum 0.0202
 trend 0.0167
 exceed 0.016
 expectation 0.0138
-night 0.0126
 ease 0.0184
 intend 0.0238
 develop 0.0249
@@ -493,7 +490,7 @@ quote 0.024
 break 0.016
 manager 0.0138
 investor 0.0332
-cash 0.0789
+cash 0.079
 receive 0.0561
 strong 0.0444
 economist 0.0236
@@ -534,7 +531,6 @@ close 0.0609
 recently 0.0252
 earlier 0.0577
 proposal 0.0389
-inventory 0.0128
 part 0.0576
 tomorrow 0.0217
 unlikely 0.0149
@@ -548,7 +544,6 @@ announcement 0.0167
 expansion 0.0148
 principle 0.0138
 intervene 0.0129
-house 0.0128
 assistance 0.0129
 file 0.0221
 former 0.015
@@ -557,7 +552,6 @@ board 0.0314
 attempt 0.0188
 payment 0.0483
 split 0.0319
-resolve 0.0128
 season 0.0156
 initial 0.0183
 french 0.0197
@@ -575,7 +569,6 @@ face 0.0248
 bring 0.0403
 even 0.0286
 monetary 0.0204
-manufacturing 0.0123
 takeover 0.0269
 indicate 0.0213
 asset 0.0616
@@ -672,7 +665,6 @@ fuel 0.0135
 respectively 0.0233
 petroleum 0.0149
 fail 0.0212
-oppose 0.0126
 holding 0.0129
 specific 0.0135
 narrow 0.0132

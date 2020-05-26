@@ -8,7 +8,7 @@ class Dataset:
     access, save and edit the dataset data
     """
 
-    def __init__(self, corpus=[], vocabulary={}, metadata={}, labels=[]):
+    def __init__(self, corpus=[], vocabulary={}, metadata={}, labels=[], partition=[]):
         """
         Initialize a dataset, parameters are optional
         if you want to load a dataset, initialize this
@@ -25,6 +25,7 @@ class Dataset:
         self.set_vocabulary(vocabulary)
         self.set_metadata(metadata)
         self.set_labels(labels)
+        self.set_partition(partition)
 
     # Corpus setter
 
@@ -35,6 +36,17 @@ class Dataset:
     def get_corpus(self):
         if self.__corpus != []:
             return self.__corpus
+        return False
+
+     # Partition setter
+
+    def set_partition(self, partition):
+        self.__partition = partition
+
+    # Partition getter
+    def get_partition(self):
+        if self.__partition != []:
+            return self.__partition
         return False
 
     # Labels setter
@@ -155,7 +167,7 @@ class Dataset:
     def _save_labels(self, file_name):
         """
         Saves the labels in a file, each line contains
-        the labels od a single document
+        the labels of a single document
 
         Parameters
         ----------
@@ -192,6 +204,49 @@ class Dataset:
                 for line in labels_file:
                     labels.append(json.loads(line))
             self.set_labels(labels)
+            return True
+        return False
+
+    def _save_partition(self, file_name):
+        """
+        Saves the partition in a file, each line contains
+        the train/test label of a single document
+
+        Parameters
+        ----------
+        file_name : name of the file to write
+
+        Returns
+        -------
+        True if the data is saved, False otherwise
+        """
+        data = self.get_partition()
+        if data:
+            with open(file_name, 'w') as outfile:
+                for element in data:
+                    outfile.write("%s\n" % element)
+                return True
+        return False
+
+    def _load_partition(self, file_name):
+        """
+        Loads partition from a file
+
+        Parameters
+        ----------
+        file_name : name of the file to read
+
+        Returns
+        -------
+        True if the data is updated, False otherwise
+        """
+        partition = []
+        file = Path(file_name)
+        if file.is_file():
+            with open(file_name, 'r') as partition_file:
+                for line in partition_file:
+                    partition.append(line[0:len(line)-1])
+            self.set_partition(partition)
             return True
         return False
 
@@ -256,6 +311,7 @@ class Dataset:
         corpus_saved = self._save_corpus(path+"/corpus.txt")
         vocabulary_saved = self._save_vocabulary(path+"/vocabulary.txt")
         self._save_labels(path+"/labels.txt")
+        self._save_partition(path+"/partition.txt")
         metadata_saved = self._save_metadata(path+"/metadata.json")
         return corpus_saved and vocabulary_saved and metadata_saved
 
@@ -274,5 +330,6 @@ class Dataset:
         corpus_readed = self._load_corpus(path+"/corpus.txt")
         vocabulary_readed = self._load_vocabulary(path+"/vocabulary.txt")
         self._load_labels(path+"/labels.txt")
+        self._load_partition(path+"/partition.txt")
         metadata_readed = self._load_metadata(path+"/metadata.json")
         return corpus_readed and vocabulary_readed and metadata_readed

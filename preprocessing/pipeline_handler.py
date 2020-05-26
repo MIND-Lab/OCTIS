@@ -74,6 +74,9 @@ class Pipeline_handler:
         categories = []
         if "doc_labels" in self.dataset:
             categories = self.dataset["doc_labels"]
+        partition = []
+        if "partition" in self.dataset:
+            partition = self.dataset["partition"]
 
         if self.multiprocess:
             pool = tools.create_pool(self.num_proc)
@@ -131,7 +134,8 @@ class Pipeline_handler:
         result = tools.remove_docs(
             corpus,
             self.min_words_for_doc,
-            categories)
+            categories,
+            partition)
 
         if self.multiprocess:
             pool.close()

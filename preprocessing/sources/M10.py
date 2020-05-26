@@ -7,8 +7,8 @@ def retrieve():
 
     Returns
     -------
-    result : dictionary with corpus and 
-             labels of the corpus
+    result : dictionary with corpus, training and test partitions
+             and labels of the corpus
     """
     path = 'https://raw.githubusercontent.com/shiruipan/TriDNR/master/data/M10/'
     return nu._retrieve(path+'docs.txt', path+'labels.txt')

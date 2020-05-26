@@ -187,7 +187,7 @@ def filter_words(corpus, words):
     return result
 
 
-def remove_docs(corpus, min_doc=0, labels=[]):
+def remove_docs(corpus, min_doc=0, labels=[], partition=[]):
     """
     Remove documents with less than min_doc words
     from the corpus and create a dictioonary with
@@ -207,7 +207,9 @@ def remove_docs(corpus, min_doc=0, labels=[]):
     n = 0
     new_corpus = []
     new_labels = []
+    new_partition = []
     compute_labels = len(labels) > 0
+    compute_partition = len(partition) > 0
     words_mean = 0
     distinct_labels = {}
     for document in corpus:
@@ -220,6 +222,8 @@ def remove_docs(corpus, min_doc=0, labels=[]):
                 for label in labels[n]:
                     if not label in distinct_labels:
                         distinct_labels[label] = True
+            if compute_partition:
+                new_partition.append(partition[n])
             n += 1
     words_document_mean = 0
     if n > 0:
@@ -232,7 +236,13 @@ def remove_docs(corpus, min_doc=0, labels=[]):
     if compute_labels:
         extra_info["labels"] = list(distinct_labels.keys())
         extra_info["total_labels"] = len(extra_info["labels"])
-    return Dataset(new_corpus, vocabulary, extra_info, new_labels)
+
+    return Dataset(
+        new_corpus,
+        vocabulary,
+        extra_info,
+        new_labels,
+        new_partition)
 
 
 def get_vocabulary(corpus):
