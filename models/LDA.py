@@ -103,21 +103,21 @@ class LDA_Model(Abstract_Model):
             result["topic-word-matrix"] = self.trained_model.get_topics()
 
         if topics > 0:
-            result["topics"] = self._get_topics_words()
+            result["topics"] = self._get_topics_words(topics)
 
         if topic_document_matrix:
             result["topic-document-matrix"] = self._get_topic_document_matrix()
 
         return result
 
-    def _get_topics_words(self):
+    def _get_topics_words(self, topk):
         """
         Return the most significative words for each topic.
         """
         topic_terms = []
         for i in range(self.hyperparameters["num_topics"]):
             topic_words_list = []
-            for word_tuple in self.trained_model.get_topic_terms(i):
+            for word_tuple in self.trained_model.get_topic_terms(i, topk):
                 topic_words_list.append(self.id2word[word_tuple[0]])
             topic_terms.append(topic_words_list)
         return topic_terms
