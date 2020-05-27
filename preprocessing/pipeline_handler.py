@@ -77,6 +77,10 @@ class Pipeline_handler:
         partition = []
         if "partition" in self.dataset:
             partition = self.dataset["partition"]
+        edges = []
+        if "edges" in self.dataset:
+            edges = self.dataset["edges"]
+        
 
         if self.multiprocess:
             pool = tools.create_pool(self.num_proc)
@@ -135,7 +139,8 @@ class Pipeline_handler:
             corpus,
             self.min_words_for_doc,
             categories,
-            partition)
+            partition,
+            edges)
 
         if self.multiprocess:
             pool.close()

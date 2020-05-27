@@ -4,11 +4,12 @@ from pathlib import Path
 
 class Dataset:
     """
-    Dataset handles a dataset and offer methods
+    Dataset handles a dataset and offer methods to
     access, save and edit the dataset data
     """
 
-    def __init__(self, corpus=[], vocabulary={}, metadata={}, labels=[], partition=[]):
+    def __init__(self, corpus=[], vocabulary={}, metadata={},
+                 labels=[], partition=[], edges=[]):
         """
         Initialize a dataset, parameters are optional
         if you want to load a dataset, initialize this
@@ -17,15 +18,18 @@ class Dataset:
         Parameters
         ----------
         corpus : corpus of the dataset
-        vocabullary : vocabulary of the dataset
+        vocabulary : vocabulary of the dataset
         metadata : metadata of the dataset
         labels : labels of the dataset
+        partition : partition of the dataset
+        edges : edges of the dataset
         """
         self.set_corpus(corpus)
         self.set_vocabulary(vocabulary)
         self.set_metadata(metadata)
         self.set_labels(labels)
         self.set_partition(partition)
+        self.set_edges(edges)
 
     # Corpus setter
 
@@ -47,6 +51,17 @@ class Dataset:
     def get_partition(self):
         if self.__partition != []:
             return self.__partition
+        return False
+
+    # Edges setter
+
+    def set_edges(self, edges):
+        self.__edges = edges
+
+    # Edges getter
+    def get_edges(self):
+        if self.__edges != []:
+            return self.__edges
         return False
 
     # Labels setter
@@ -161,6 +176,48 @@ class Dataset:
                 for line in corpus_file:
                     corpus.append(line.split())
             self.set_corpus(corpus)
+            return True
+        return False
+
+    def _save_edges(self, file_name):
+        """
+        Saves edges in a file, a line for each document
+
+        Parameters
+        ----------
+        file_name : name of the file to write
+
+        Returns
+        -------
+        True if the data is saved, False otherwise
+        """
+        data = self.get_edges()
+        if data:
+            with open(file_name, 'w') as outfile:
+                for element in data:
+                    outfile.write("%s\n" % element)
+                return True
+        return False
+
+    def _load_edges(self, file_name):
+        """
+        Loads edges from a file
+
+        Parameters
+        ----------
+        file_name : name of the file to read
+
+        Returns
+        -------
+        True if the data is updated, False otherwise
+        """
+        edges = []
+        file = Path(file_name)
+        if file.is_file():
+            with open(file_name, 'r') as edges_file:
+                for line in edges_file:
+                    edges.append(line[0:len(line)-1])
+            self.set_edges(edges)
             return True
         return False
 
@@ -312,6 +369,7 @@ class Dataset:
         vocabulary_saved = self._save_vocabulary(path+"/vocabulary.txt")
         self._save_labels(path+"/labels.txt")
         self._save_partition(path+"/partition.txt")
+        self._save_edges(path+"/edges.txt")
         metadata_saved = self._save_metadata(path+"/metadata.json")
         return corpus_saved and vocabulary_saved and metadata_saved
 
@@ -331,5 +389,6 @@ class Dataset:
         vocabulary_readed = self._load_vocabulary(path+"/vocabulary.txt")
         self._load_labels(path+"/labels.txt")
         self._load_partition(path+"/partition.txt")
+        self._load_edges(path+"/edges.txt")
         metadata_readed = self._load_metadata(path+"/metadata.json")
         return corpus_readed and vocabulary_readed and metadata_readed

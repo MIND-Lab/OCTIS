@@ -187,7 +187,7 @@ def filter_words(corpus, words):
     return result
 
 
-def remove_docs(corpus, min_doc=0, labels=[], partition=[]):
+def remove_docs(corpus, min_doc=0, labels=[], partition=[], edges=[]):
     """
     Remove documents with less than min_doc words
     from the corpus and create a dictioonary with
@@ -199,6 +199,8 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[]):
     min_doc : optional, default 0
               minimum number of words per document
     labels : optional, list of labels of the documents
+    partition : optional, partition of the dataset
+    edges : optional, edges of a relational dataset
 
     Returns
     -------
@@ -208,8 +210,10 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[]):
     new_corpus = []
     new_labels = []
     new_partition = []
+    new_edges = []
     compute_labels = len(labels) > 0
     compute_partition = len(partition) > 0
+    compute_edges = len(edges) > 0
     words_mean = 0
     distinct_labels = {}
     for document in corpus:
@@ -224,6 +228,8 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[]):
                         distinct_labels[label] = True
             if compute_partition:
                 new_partition.append(partition[n])
+            if compute_edges:
+                new_edges.append(edges[n])
             n += 1
     words_document_mean = 0
     if n > 0:
@@ -242,7 +248,8 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[]):
         vocabulary,
         extra_info,
         new_labels,
-        new_partition)
+        new_partition,
+        new_edges)
 
 
 def get_vocabulary(corpus):
