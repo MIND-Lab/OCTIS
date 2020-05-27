@@ -13,7 +13,7 @@ class Evaluation():
     function_values = {}
 
     def __init__(self, hyperparameters_names, hyperparameters_values,
-                 function_values):
+                function_values):
         """
         Initialize class
 
@@ -35,7 +35,7 @@ class Evaluation():
         self.function_values = function_values
 
     def _make_params_dict(self, hyperparameters_names,
-                          hyperparameters_values):
+                        hyperparameters_values):
         """
         Create dictionary of hyperparameters
         from the list of name and the list of values
@@ -79,23 +79,50 @@ class Best_evaluation(Evaluation):
         iterations = []
         self.optimized_metric = optimized_metric
         function_values = {}
-        for i in range(len(iters)):
 
-            # If best hyperparameters are founded save their function values
-            if iters[i][0] == optimized_result.x:
-                function_values = iters[i][1]
+        key_min = lambda res: res.fun
+        best_values = min( optimized_result, key = key_min )
 
-            # Save iteration informations
-            iterations.append(
-                Evaluation(params_names,
-                           iters[i][0],
-                           iters[i][1]
-                           )
-            )
-        super().__init__(params_names, optimized_result.x, function_values)
+        function_values = best_values.fun
+        function_solution = best_values.x
 
-        self.iterations = iterations
 
+        iterations.append(
+            Evaluation(params_names,
+                       function_solution,
+                       function_values
+                       )
+        )
+    
+        super().__init__(params_names, function_solution, function_values)
+
+        self.iterations = iterations 
+
+    def save(self, name="save", path=None):
+        """
+        Save the values in a txt file
+
+        Parameters
+        ----------
+        name : name of the txt file saved
+        path : path in wich a txt with best data will be saved
+        """    
+        if( path != None ):
+            if( path[-1] != '/' ):
+                path = path + "/"
+                
+            name = path + name + ".txt"
+        else:
+            name = name + ".txt"
+
+        L  = [str(self.hyperparameters), "\n"+str(self.function_values), "\nOptimized metric: "+str(self.optimized_metric) ]
+        
+        file = open(name,"w") 
+        
+        file.writelines(L) 
+        file.close() 
+
+    #DA SISTEMARE
     def plot(self, iterations, metric=None):
         """
         Plot values of each iterations for a single metric
@@ -117,6 +144,7 @@ class Best_evaluation(Evaluation):
                 y.append(iterations[i].function_values[metric])
             plt.plot(x, y)
 
+    #DA SISTEMARE
     def plot_all(self, metric=None, hyperparameter=None,
                  extra_info=False, path=None):
         """
@@ -210,7 +238,7 @@ class Best_evaluation(Evaluation):
             )
 
         if path == None:
-            plt.show()
+            plt.savefig( "plot.png" ) 
         else:
             # Save pdf with all data
             pdf = matplotlib.backends.backend_pdf.PdfPages(path+".pdf")
