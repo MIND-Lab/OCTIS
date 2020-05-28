@@ -26,8 +26,9 @@ class NMF_Model(Abstract_Model):
     id_corpus = None
     dataset = None
 
-    def train_model(self, dataset, hyperparameters, topics=10,
-                    topic_word_matrix=True, topic_document_matrix=True):
+    def train_model(self, dataset, hyperparameters={}, topics=10,
+                    topic_word_matrix=True, topic_document_matrix=True,
+                    use_partitions=True, update_with_test=False):
         """
         Train the model and return output
 
@@ -50,6 +51,10 @@ class NMF_Model(Abstract_Model):
                  'topics', 'topic-word-matrix' and 
                  'topic-document-matrix'
         """
+        partition = []
+        if use_partitions:
+            partition = dataset.get_partitioned_corpus()
+
         if self.id2word == None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
 
@@ -89,6 +94,28 @@ class NMF_Model(Abstract_Model):
 
         if topic_document_matrix:
             result["topic-document-matrix"] = self._get_topic_document_matrix()
+
+        if use_partitions:
+            new_corpus = [self.id2word.doc2bow(
+                document) for document in partition[1]]
+            if update_with_test:
+                self.trained_model.update(new_corpus)
+
+                if topic_word_matrix:
+                    result["test-topic-word-matrix"] = self.trained_model.get_topics()
+
+                if topics > 0:
+                    result["test-topics"] = self._get_topics_words(topics)
+
+                if topic_document_matrix:
+                    result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+
+            else:
+                test_document_topic_matrix = []
+                for document in new_corpus:
+                    test_document_topic_matrix.append(
+                        self.trained_model[document])
+                result["test-document-topic-matrix"] = test_document_topic_matrix
 
         return result
 

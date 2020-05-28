@@ -21,8 +21,9 @@ class LSI_Model(Abstract_Model):
     id_corpus = None
     dataset = None
 
-    def train_model(self, dataset, hyperparameters, topics=10,
-                    topic_word_matrix=True, topic_document_matrix=True):
+    def train_model(self, dataset, hyperparameters={}, topics=10,
+                    topic_word_matrix=True, topic_document_matrix=True,
+                    use_partitions=True, update_with_test=False):
         """
         Train the model and return output
 
@@ -45,6 +46,10 @@ class LSI_Model(Abstract_Model):
                  'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
+        partition = []
+        if use_partitions:
+            partition = dataset.get_partitioned_corpus()
+
         if self.id2word == None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
 
@@ -76,10 +81,32 @@ class LSI_Model(Abstract_Model):
             result["topic-word-matrix"] = self._get_topic_word_matrix()
 
         if topics > 0:
-            result["topics"] = self._get_topics_words()
+            result["topics"] = self._get_topics_words(topics)
 
         if topic_document_matrix:
             result["topic-document-matrix"] = self._get_topic_document_matrix()
+
+        if use_partitions:
+            new_corpus = [self.id2word.doc2bow(
+                document) for document in partition[1]]
+            if update_with_test:
+                self.trained_model.add_documents(new_corpus)
+
+                if topic_word_matrix:
+                    result["test-topic-word-matrix"] = self._get_topic_word_matrix()
+
+                if topics > 0:
+                    result["test-topics"] = self._get_topics_words(topics)
+
+                if topic_document_matrix:
+                    result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+
+            else:
+                test_document_topic_matrix = []
+                for document in new_corpus:
+                    test_document_topic_matrix.append(
+                        self.trained_model[document])
+                result["test-document-topic-matrix"] = test_document_topic_matrix
 
         return result
 
@@ -96,14 +123,14 @@ class LSI_Model(Abstract_Model):
         topic_word_matrix = np.array(normalized)
         return topic_word_matrix
 
-    def _get_topics_words(self):
+    def _get_topics_words(self, topics):
         """
         Return the most significative words for each topic.
         """
         topic_terms = []
         for i in range(self.hyperparameters["num_topics"]):
             topic_words_list = []
-            for word_tuple in self.trained_model.show_topic(i):
+            for word_tuple in self.trained_model.show_topic(i, topics):
                 topic_words_list.append(word_tuple[0])
             topic_terms.append(topic_words_list)
         return topic_terms

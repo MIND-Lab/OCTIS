@@ -36,11 +36,24 @@ class Dataset:
     def set_corpus(self, corpus):
         self.__corpus = corpus
 
-    # Corpus getter
+    # Whole Corpus getter
     def get_corpus(self):
         if self.__corpus != []:
             return self.__corpus
         return False
+
+    # Partitioned Corpus getter
+    def get_partitioned_corpus(self):
+        if self.__corpus != [] and self.__partition != []:
+            train_corpus = []
+            test_corpus = []
+            for i in range(len(self.__partition)):
+                if self.__partition[i] == "training":
+                    train_corpus.append(self.__corpus[i])
+                else:
+                    test_corpus.append(self.__corpus[i])
+            return [train_corpus,
+                    test_corpus]
 
      # Partition setter
 
