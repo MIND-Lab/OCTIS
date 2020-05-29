@@ -315,13 +315,13 @@ class Optimizer():
                         give to the plot
 
         """    
-        media = total_mean( list_of_res )
+        media = self.total_mean( list_of_res )
         array = [ i for i in range( len( media ) ) ]
         plt.plot(array, media, color='blue', label= "res" )
 
         plt.fill_between(array, 
-                        lower_standard_deviation( list_of_res ), 
-                        upper_standard_deviation( list_of_res ),
+                        self.lower_standard_deviation( list_of_res ), 
+                        self.upper_standard_deviation( list_of_res ),
                         color='blue', alpha=0.2)
 
         plt.ylabel('min f(x) after n calls')
@@ -346,7 +346,8 @@ class Optimizer():
                 n_stop : number of evaluation without improvement
 
             """
-            super(EarlyStopper, self).__init__()
+			#super.(EarlyStopper, self).__init__()
+            EarlyStopper(EarlyStopper, self).__init__()
             self.n_stop = n_stop
 
         def _criterion(self, result):
@@ -365,8 +366,8 @@ class Optimizer():
                         there is not enough data yet to make a decision.
 
             """
-            if len(result.func_vals) >= self.n_stop + n_random_starts:
-                func_vals = convergence_res( result )
+            if len(result.func_vals) >= self.n_stop + default_parameters["n_random_starts"]:
+                func_vals = super.convergence_res( result ) #not sure
                 #print("func_vals", func_vals)
                 worst = func_vals[ len(func_vals) - (self.n_stop) ]
                 best = func_vals[-1]
@@ -453,7 +454,7 @@ class Optimizer():
                                             callback=[checkpoint_saver[i] ] ) )
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
             
             elif ( save == True and early_stop == False ):
                 for i in range( different_iteration ):
@@ -470,7 +471,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
                 number_of_call_r = number_of_call - save_step
 
@@ -495,7 +496,7 @@ class Optimizer():
                             checkpoint_saver[i] = checkpoint_saver_t
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
                         number_of_call_r = number_of_call_r - save_step
 
                     else:
@@ -515,7 +516,7 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
                         number_of_call_r = number_of_call_r - save_step
 
             elif ( save == False and early_stop == True ):
@@ -527,7 +528,7 @@ class Optimizer():
                                             n_calls=number_of_call, 
                                             x0=x0[i], 
                                             y0=y0[i],
-                                            callback= [ MyCustomEarlyStopper( n_stop = early_step ) ], 
+                                            callback= [ self.MyCustomEarlyStopper( n_stop = early_step ) ], 
                                             random_state=random_state )
 
                     if( len( res_temp.func_vals ) < number_of_call + len( y0[i] ) ):
@@ -548,7 +549,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
     
             elif ( save == True and early_stop == True ):
 
@@ -562,7 +563,7 @@ class Optimizer():
                                             x0=x0[i], 
                                             y0=y0[i], 
                                             random_state=random_state,
-                                            callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ] )
+                                            callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ] )
 
                     if( len( res_temp.func_vals ) < save_step + len( y0[i] ) ):
                         lenght_complementare = save_step + len( y0[i] ) - len( res_temp.func_vals )
@@ -578,7 +579,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
                 number_of_call_r = number_of_call - save_step
 
@@ -598,7 +599,7 @@ class Optimizer():
                                                 n_calls=save_step, 
                                                 x0=x0_restored, 
                                                 y0=y0_restored,
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ], 
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ], 
                                                 random_state=random_state)
 
                             checkpoint_saver[i] = checkpoint_saver_t
@@ -623,7 +624,7 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
                         
 
                     else:
@@ -638,7 +639,7 @@ class Optimizer():
                                                 n_calls=number_of_call_r, 
                                                 x0=x0_restored, 
                                                 y0=y0_restored,
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ], 
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ], 
                                                 random_state=random_state)
 
                         number_of_call_r = number_of_call_r - save_step
@@ -656,12 +657,12 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
     
         
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
             else:
                 print("Not implemented \n")
@@ -681,7 +682,7 @@ class Optimizer():
                                                 random_state=random_state ) )
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
             elif ( ( save_step >= number_of_call and save == True ) and  ( early_step >= number_of_call or early_stop == False ) ):
                 for i in range( different_iteration ):
@@ -700,7 +701,7 @@ class Optimizer():
                                                 callback=[checkpoint_saver[i] ] ) )
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
             
             elif ( save == True and early_stop == False ):
                 for i in range( different_iteration ):
@@ -719,7 +720,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
                 number_of_call_r = number_of_call - save_step
 
@@ -748,7 +749,7 @@ class Optimizer():
                             checkpoint_saver[i] = checkpoint_saver_t
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
 
                         number_of_call_r = number_of_call_r - save_step
 
@@ -771,7 +772,7 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
                         number_of_call_r = number_of_call_r - save_step
 
             elif ( save == False and early_stop == True ):
@@ -786,7 +787,7 @@ class Optimizer():
                                                 n_random_starts = n_random_starts,
                                                 x0=x0[i], 
                                                 y0=y0[i],
-                                                callback=[ MyCustomEarlyStopper( n_stop = early_step ) ] )
+                                                callback=[ self.MyCustomEarlyStopper( n_stop = early_step ) ] )
 
                     if( len( res_temp.func_vals ) < number_of_call + len( y0[i] ) ):
                         #print( "EARLY_f" )
@@ -806,7 +807,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
     
             elif ( save == True and early_stop == True ):
 
@@ -822,7 +823,7 @@ class Optimizer():
                                                 n_random_starts = n_random_starts,
                                                 x0=x0[i], 
                                                 y0=y0[i], 
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ] )
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ] )
 
                     if( len( res_temp.func_vals ) < save_step + len( y0[i] ) ):
                         lenght_complementare = save_step + len( y0[i] ) - len( res_temp.func_vals )
@@ -838,7 +839,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
                 number_of_call_r = number_of_call - save_step
 
@@ -858,7 +859,7 @@ class Optimizer():
                                                 n_calls=save_step, 
                                                 x0=x0_restored, 
                                                 y0=y0_restored,
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ], 
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ], 
                                                 random_state=random_state)
 
                             checkpoint_saver[i] = checkpoint_saver_t
@@ -883,7 +884,7 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
                         
 
                     else:
@@ -898,7 +899,7 @@ class Optimizer():
                                                 n_calls=number_of_call_r, 
                                                 x0=x0_restored, 
                                                 y0=y0_restored,
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ], 
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ], 
                                                 random_state=random_state)
 
                         number_of_call_r = number_of_call_r - save_step
@@ -916,12 +917,12 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
     
         
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
             else:
                 print("Not implemented \n")
@@ -949,7 +950,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
             elif ( ( save_step >= number_of_call and save == True ) and  ( early_step >= number_of_call or early_stop == False )  ):
                 for i in range( different_iteration ):
@@ -973,11 +974,11 @@ class Optimizer():
                     res_t = opt.run(f, number_of_call)
                     res.append( res_t )
 
-                checkpoint_saver = dump_BO( res, save_name ) #save
+                checkpoint_saver = self.dump_BO( res, save_name ) #save
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
             elif ( save == True and early_stop == False ):
                 
@@ -1001,17 +1002,17 @@ class Optimizer():
                     res_t = opt.run(f, save_step)
                     res.append( res_t )
 
-                checkpoint_saver = dump_BO( res, save_name ) #save
+                checkpoint_saver = self.dump_BO( res, save_name ) #save
                 number_of_call_r = number_of_call - save_step
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
                 
 
                 while ( number_of_call_r > 0 ) :
                     if( number_of_call_r >= save_step ):
-                        partial_res = load_BO( checkpoint_saver ) #restore
+                        partial_res = self.load_BO( checkpoint_saver ) #restore
 
                         for i in range( different_iteration ):
                             x0_restored = partial_res[i].x_iters
@@ -1035,15 +1036,15 @@ class Optimizer():
                             res_t = opt.run(f, save_step)
                             res[i] = res_t
 
-                        checkpoint_saver = dump_BO( res, save_name ) #save
+                        checkpoint_saver = self.dump_BO( res, save_name ) #save
                         number_of_call_r = number_of_call_r - save_step
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
 
                     else:
-                        partial_res = load_BO( checkpoint_saver ) #restore
+                        partial_res = self.load_BO( checkpoint_saver ) #restore
                         for i in range( different_iteration ):
                             x0_restored = partial_res[i].x_iters
                             y0_restored = list(partial_res[i].func_vals)
@@ -1066,12 +1067,12 @@ class Optimizer():
                             res_t = opt.run(f, number_of_call_r)
                             res[i] = res_t
 
-                        checkpoint_saver = dump_BO( res, save_name ) #save
+                        checkpoint_saver = self.dump_BO( res, save_name ) #save
                         number_of_call_r = number_of_call_r - save_step
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
 
             #TO DO    callback=[ MyCustomEarlyStopper( n_stop = early_step ) ]
             elif ( save == False and early_stop == True ):
@@ -1088,8 +1089,9 @@ class Optimizer():
                                     acq_func=acq_func,
                                     n_random_starts = n_random_starts,
                                     acq_optimizer="sampling", 
-                                    random_state=random_state,
-                                    callback=[ MyCustomEarlyStopper( n_stop = early_step ) ])
+                                    random_state=random_state
+                                    #callback=[ self.MyCustomEarlyStopper( n_stop = early_step ) ]
+					)
 
                     if( x0[i] != None and y0[i] != None):
                         opt.tell(x0[i], y0[i], fit=True)
@@ -1098,7 +1100,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
     
             #TO DO
             elif ( save == True and early_stop == True ):
@@ -1115,7 +1117,7 @@ class Optimizer():
                                                 n_random_starts = n_random_starts,
                                                 x0=x0[i], 
                                                 y0=y0[i], 
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ] )
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ] )
 
                     if( len( res_temp.func_vals ) < save_step + len( y0[i] ) ):
                         lenght_complementare = save_step + len( y0[i] ) - len( res_temp.func_vals )
@@ -1131,7 +1133,7 @@ class Optimizer():
 
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
                 number_of_call_r = number_of_call - save_step
 
@@ -1151,7 +1153,7 @@ class Optimizer():
                                                 n_calls=save_step, 
                                                 x0=x0_restored, 
                                                 y0=y0_restored,
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ], 
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ], 
                                                 random_state=random_state)
 
                             checkpoint_saver[i] = checkpoint_saver_t
@@ -1176,7 +1178,7 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
                         
 
                     else:
@@ -1191,7 +1193,7 @@ class Optimizer():
                                                 n_calls=number_of_call_r, 
                                                 x0=x0_restored, 
                                                 y0=y0_restored,
-                                                callback=[checkpoint_saver[i], MyCustomEarlyStopper( n_stop = early_step ) ], 
+                                                callback=[checkpoint_saver[i], self.MyCustomEarlyStopper( n_stop = early_step ) ], 
                                                 random_state=random_state)
 
                         number_of_call_r = number_of_call_r - save_step
@@ -1209,12 +1211,12 @@ class Optimizer():
 
                         if( plot == True ):
                             name = plot_name + ".png"
-                            plot_bayesian_optimization( res, name )
+                            self.plot_bayesian_optimization( res, name )
     
         
                 if( plot == True ):
                     name = plot_name + ".png"
-                    plot_bayesian_optimization( res, name )
+                    self.plot_bayesian_optimization( res, name )
 
             else:
                 print("Not implemented \n")
@@ -1237,7 +1239,7 @@ class Optimizer():
         """    
         r = []
         for res in list_of_res:
-            r.append( list(convergence_res(res)) )
+            r.append( list(self.convergence_res(res)) )
         val = []
         for i in r:
             val.append( i[-1] )
@@ -1283,7 +1285,7 @@ class Optimizer():
         """    
         r = []
         for res in list_of_res:
-            r.append( list(convergence_res(res)) )
+            r.append( list(self.convergence_res(res)) )
         a = []
         media = []
         for i in range( len( list_of_res[0].func_vals ) ):
@@ -1310,11 +1312,11 @@ class Optimizer():
         """    
         r = []
         for res in list_of_res:
-            r.append( list(convergence_res(res)) )
+            r.append( list(self.convergence_res(res)) )
         a = []
         dev = []
         for i in range( len( list_of_res[0].func_vals ) ):
-            for j in range( n_test ):
+            for j in range( default_parameters["different_iteration"] ): #prima era n_test
                 a.append( r[j][i] )
             dev.append( np.std(a, dtype=np.float64) )
             a = []
@@ -1335,8 +1337,8 @@ class Optimizer():
             upper : A list of the higher standard 
                     deviation with the other tests runned
         """
-        media = total_mean(list_of_res)
-        dev = total_standard_deviation(list_of_res)
+        media = self.total_mean(list_of_res)
+        dev = self.total_standard_deviation(list_of_res)
         upper = []
         for i in range( len( media ) ):
             upper.append( media[i] + dev[i] ) 
@@ -1357,8 +1359,8 @@ class Optimizer():
             lower : A list of the lower standard 
                     deviation with the other tests runned
         """
-        media = total_mean(list_of_res)
-        dev = total_standard_deviation(list_of_res)
+        media = self.total_mean(list_of_res)
+        dev = self.total_standard_deviation(list_of_res)
         lower = []
         for i in range( len( media ) ):
             lower.append( media[i] - dev[i] ) 
@@ -1434,7 +1436,7 @@ class Optimizer():
         """
         r = []
         for res in list_of_res:
-            r.append( list(convergence_res_x(res, min)) )
+            r.append( list(self.convergence_res_x(res, min)) )
         a = []
         media = []
         for i in range( len( list_of_res[0].func_vals ) ):
@@ -1467,7 +1469,7 @@ class Optimizer():
         """
         r = []
         for res in list_of_res:
-            r.append( list(convergence_res_x(res, min)) )
+            r.append( list(self.convergence_res_x(res, min)) )
         a = []
         dev = []
         for i in range( len( list_of_res[0].func_vals ) ):
@@ -1497,8 +1499,8 @@ class Optimizer():
             upper : A list with the higher standard deviation 
                     from the tests runned in x
         """
-        media = total_mean_x(list_of_res, min)
-        dev = total_standard_deviation_x(list_of_res, min)
+        media = self.total_mean_x(list_of_res, min)
+        dev = self.total_standard_deviation_x(list_of_res, min)
         upper = []
         for i in range( len( media ) ):
             upper.append( media[i] + dev[i] ) 
@@ -1524,8 +1526,8 @@ class Optimizer():
             lower : A list with the lower standard deviation 
                     from the tests runned in x
         """
-        media = total_mean_x(list_of_res, min)
-        dev = total_standard_deviation_x(list_of_res, min)
+        media = self.total_mean_x(list_of_res, min)
+        dev = self.total_standard_deviation_x(list_of_res, min)
         lower = []
         for i in range( len( media ) ):
             lower.append( media[i] - dev[i] ) 
@@ -1541,7 +1543,7 @@ class Optimizer():
         """
             Return the min of a list of BO
         """    
-        min_res = min(list_of_res, key = my_key_fun )
+        min_res = min(list_of_res, key = self.my_key_fun )
         return [ min_res.fun, min_res.x ]
 
     def tabella(self, list_of_list_of_res ):
@@ -1568,7 +1570,7 @@ class Optimizer():
             for it in range( default_parameters["different_iteration"] ):
                 fun_media.append( i[0][it].fun )
             
-            lista.append( [ i[1], np.mean(fun_media, dtype=np.float64) , median( i[0] ), np.std(fun_media, dtype=np.float64), fun_min( i[0] ) ] )
+            lista.append( [ i[1], np.mean(fun_media, dtype=np.float64) , self.median( i[0] ), np.std(fun_media, dtype=np.float64), self.fun_min( i[0] ) ] )
             # nome, media, mediana, std, [.fun min, .x min]
         return lista
 
@@ -1597,8 +1599,8 @@ class Optimizer():
         """    
         list_medie = []
         for i in list_of_list_of_res:
-            list_medie.append( [ total_mean( i[0] ), i[1], i[2] ] )
-        list_medie.sort( key = my_key_sort )
+            list_medie.append( [ self.total_mean( i[0] ), i[1], i[2] ] )
+        list_medie.sort( key = self.my_key_sort )
         list_medie = list_medie[:5]
         return list_medie
 
