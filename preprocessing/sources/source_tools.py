@@ -55,17 +55,24 @@ def _retrieve(corpus_path, labels_path, edges_path):
                                    train_size=0.7,
                                    stratify=labels)
 
-    partition = ["train"] * len(corpus)
+    partitioned_corpus = []
+    partitioned_labels = []
+    partitioned_edges = []
+
     for doc in train:
-        partition[doc] = "training"
+        partitioned_corpus.append(corpus[doc])
+        partitioned_labels.append(labels[doc])
+        partitioned_edges.append(edges_list[doc])
 
     for doc in test:
-        partition[doc] = "test"
+        partitioned_corpus.append(corpus[doc])
+        partitioned_labels.append(labels[doc])
+        partitioned_edges.append(edges_list[doc])
 
     result = {}
-    result["corpus"] = corpus
-    result["edges"] = edges_list
-    result["partition"] = partition
-    result["doc_labels"] = labels
+    result["corpus"] = partitioned_corpus
+    result["edges"] = partitioned_edges
+    result["partition"] = len(train)
+    result["doc_labels"] = partitioned_labels
 
     return result

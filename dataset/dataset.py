@@ -9,7 +9,7 @@ class Dataset:
     """
 
     def __init__(self, corpus=[], vocabulary={}, metadata={},
-                 labels=[], partition=[], edges=[]):
+                 labels=[], edges=[]):
         """
         Initialize a dataset, parameters are optional
         if you want to load a dataset, initialize this
@@ -21,14 +21,12 @@ class Dataset:
         vocabulary : vocabulary of the dataset
         metadata : metadata of the dataset
         labels : labels of the dataset
-        partition : partition of the dataset
         edges : edges of the dataset
         """
         self.set_corpus(corpus)
         self.set_vocabulary(vocabulary)
         self.set_metadata(metadata)
         self.set_labels(labels)
-        self.set_partition(partition)
         self.set_edges(edges)
 
     # Corpus setter
@@ -44,27 +42,16 @@ class Dataset:
 
     # Partitioned Corpus getter
     def get_partitioned_corpus(self):
-        if self.__corpus != [] and self.__partition != []:
+        last_td = self.__metadata["last-training-doc"]
+        if self.__corpus != [] and last_td != 0:
             train_corpus = []
             test_corpus = []
-            for i in range(len(self.__partition)):
-                if self.__partition[i] == "training":
-                    train_corpus.append(self.__corpus[i])
-                else:
-                    test_corpus.append(self.__corpus[i])
+            for i in range(last_td):
+                train_corpus.append(self.__corpus[i])
+            for i in range(last_td, len(self.__corpus)):
+                test_corpus.append(self.__corpus[i])
             return [train_corpus,
                     test_corpus]
-
-     # Partition setter
-
-    def set_partition(self, partition):
-        self.__partition = partition
-
-    # Partition getter
-    def get_partition(self):
-        if self.__partition != []:
-            return self.__partition
-        return False
 
     # Edges setter
 
@@ -277,49 +264,6 @@ class Dataset:
             return True
         return False
 
-    def _save_partition(self, file_name):
-        """
-        Saves the partition in a file, each line contains
-        the train/test label of a single document
-
-        Parameters
-        ----------
-        file_name : name of the file to write
-
-        Returns
-        -------
-        True if the data is saved, False otherwise
-        """
-        data = self.get_partition()
-        if data:
-            with open(file_name, 'w') as outfile:
-                for element in data:
-                    outfile.write("%s\n" % element)
-                return True
-        return False
-
-    def _load_partition(self, file_name):
-        """
-        Loads partition from a file
-
-        Parameters
-        ----------
-        file_name : name of the file to read
-
-        Returns
-        -------
-        True if the data is updated, False otherwise
-        """
-        partition = []
-        file = Path(file_name)
-        if file.is_file():
-            with open(file_name, 'r') as partition_file:
-                for line in partition_file:
-                    partition.append(line[0:len(line)-1])
-            self.set_partition(partition)
-            return True
-        return False
-
     def _save_vocabulary(self, file_name):
         """
         Saves vocabulary dictionary in a file
@@ -381,7 +325,6 @@ class Dataset:
         corpus_saved = self._save_corpus(path+"/corpus.txt")
         vocabulary_saved = self._save_vocabulary(path+"/vocabulary.txt")
         self._save_labels(path+"/labels.txt")
-        self._save_partition(path+"/partition.txt")
         self._save_edges(path+"/edges.txt")
         metadata_saved = self._save_metadata(path+"/metadata.json")
         return corpus_saved and vocabulary_saved and metadata_saved
@@ -401,7 +344,6 @@ class Dataset:
         corpus_readed = self._load_corpus(path+"/corpus.txt")
         vocabulary_readed = self._load_vocabulary(path+"/vocabulary.txt")
         self._load_labels(path+"/labels.txt")
-        self._load_partition(path+"/partition.txt")
         self._load_edges(path+"/edges.txt")
         metadata_readed = self._load_metadata(path+"/metadata.json")
         return corpus_readed and vocabulary_readed and metadata_readed

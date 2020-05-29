@@ -13,14 +13,12 @@ def retrieve():
     dataset = gd.load("20-newsgroups")
     corpus = []
     labels = []
-    partition = []
+    partition = None
 
     for data in dataset:
         corpus.append(data["data"])
-        if data["set"] == "train":
-            partition.append("training")
-        else:
-            partition.append(data["set"])
+        if data["set"] == "test" and partition == None:
+            partition = len(corpus) -1
         labels.append([data["topic"]])
     result = {}
     result["partition"] = partition

@@ -11,17 +11,22 @@ def retrieve():
              and labels of the corpus
     """
     documents = reuters.fileids()
-    corpus = []
-    labels = []
-    partition = []
+    train_corpus = []
+    test_corpus = []
+    train_labels = []
+    test_labels = []
     for document in documents:
-        labels.append(reuters.categories(document))
+        doc_partition = document.split("/")[0]
         doc = reuters.words(document)
-        partition.append(document.split("/")[0])
         doc_with_spaces = " ".join(doc)
-        corpus.append(doc_with_spaces)
+        if doc_partition == "training":
+            train_labels.append(reuters.categories(document))
+            train_corpus.append(doc_with_spaces)
+        else:
+            test_labels.append(reuters.categories(document))
+            test_corpus.append(doc_with_spaces)
     result = {}
-    result["partition"] = partition
-    result["corpus"] = corpus
-    result["doc_labels"] = labels
+    result["corpus"] = train_corpus + test_corpus
+    result["partition"] = len(train_corpus)
+    result["doc_labels"] = train_labels + test_labels
     return result

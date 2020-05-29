@@ -187,7 +187,8 @@ def filter_words(corpus, words):
     return result
 
 
-def remove_docs(corpus, min_doc=0, labels=[], partition=[], edges=[]):
+def remove_docs(corpus, min_doc=0, labels=[], partition=0,
+                edges=[], extra_data=""):
     """
     Remove documents with less than min_doc words
     from the corpus and create a dictioonary with
@@ -209,10 +210,8 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[], edges=[]):
     n = 0
     new_corpus = []
     new_labels = []
-    new_partition = []
     new_edges = []
     compute_labels = len(labels) > 0
-    compute_partition = len(partition) > 0
     compute_edges = len(edges) > 0
     words_mean = 0
     distinct_labels = {}
@@ -226,11 +225,12 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[], edges=[]):
                 for label in labels[n]:
                     if not label in distinct_labels:
                         distinct_labels[label] = True
-            if compute_partition:
-                new_partition.append(partition[n])
             if compute_edges:
                 new_edges.append(edges[n])
             n += 1
+        else:
+            if n <= partition:
+                partition -= 1
     words_document_mean = 0
     if n > 0:
         words_document_mean = round(words_mean/n)
@@ -239,6 +239,8 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[], edges=[]):
     extra_info["total_documents"] = n
     extra_info["words_document_mean"] = words_document_mean
     extra_info["vocabulary_length"] = len(vocabulary)
+    extra_info["last-training-doc"] = partition
+    extra_info["preprocessing-info"] = extra_data
     if compute_labels:
         extra_info["labels"] = list(distinct_labels.keys())
         extra_info["total_labels"] = len(extra_info["labels"])
@@ -248,7 +250,6 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=[], edges=[]):
         vocabulary,
         extra_info,
         new_labels,
-        new_partition,
         new_edges)
 
 

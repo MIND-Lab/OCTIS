@@ -58,6 +58,8 @@ class Pipeline_handler:
         """
         self.stop_words.extend(self.stop_words_extension)
         pipeline = []
+        extra_data = "Steps:\n"
+        parameters = "Parameters:\n"
 
         if self.display_progress:
             print("Initializing preprocessing")
@@ -65,27 +67,34 @@ class Pipeline_handler:
         # Add each enabled step to the pipeline
         if self.remove_stopwords:
             pipeline.append(tools.remove_stopwords)
+            parameters += "  stopwords extension:" + str(
+                self.stop_words_extension
+            ) + "\n"
         if self.lemmatize:
             pipeline.append(tools.lemmatization)
         if self.filter_words:
             pipeline.append(tools.filter_words)
+            parameters += "  removed words with less than " + str(self.words_min_freq) + " or more than " + \
+                str(self.words_max_freq) + " documents with an occurrence of the word in corpus\n"
+            
+            parameters += "  removed documents with less than " + str(self.min_words_for_doc) + " words"
 
         corpus = self.dataset["corpus"]
         categories = []
         if "doc_labels" in self.dataset:
             categories = self.dataset["doc_labels"]
-        partition = []
+        partition = 0
         if "partition" in self.dataset:
             partition = self.dataset["partition"]
         edges = []
         if "edges" in self.dataset:
             edges = self.dataset["edges"]
-        
 
         if self.multiprocess:
             pool = tools.create_pool(self.num_proc)
 
         if self.remove_punctuation:
+            extra_data += "  remove_punctuation\n"
             if self.display_progress:
                 print("  step: remove_punctuation")
 
@@ -132,15 +141,20 @@ class Pipeline_handler:
             else:
                 corpus = step(corpus, arguments)
 
+            extra_data += "  "+step.__name__+"\n"
+
             if self.display_progress:
                 print("  step: "+step.__name__+" executed")
+        
+        extra_data += "  remove_docs\n"
+        extra_data += parameters
 
         result = tools.remove_docs(
             corpus,
             self.min_words_for_doc,
             categories,
             partition,
-            edges)
+            edges, extra_data)
 
         if self.multiprocess:
             pool.close()

@@ -7,14 +7,11 @@ name = name of the original dataset
 min = min %*10 of documents in wich each word must appear
 
 Dataset standard:
-A dataset is composed of a folder with up to 5 files:
+A dataset is composed of a folder with up to 4 files:
 corpus.txt = contains the corpus, each line is a document.
 labels.txt = contains the topics each document covers.
              Each line refer to a document.
              The labels of a document are serialized in a list.
-partition.txt = contains the label (training or test) to make a
-                partition of the dataset.
-                Each line refer to a document.
 metadata.json = contains extra info about the dataset
 vocabulary.txt = contains the words used in the dataset and their
                  frequency in the documents of the corpus.
