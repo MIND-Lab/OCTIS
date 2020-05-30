@@ -86,6 +86,13 @@ class Dataset:
             return self.__metadata
         return False
 
+    # Info getter
+    def get_info(self):
+        if self.__metadata != {}:
+            if "info" in self.__metadata:
+                return self.__metadata["info"]
+        return False
+
     # Vocabulary setter
 
     def set_vocabulary(self, vocabulary):

@@ -29,4 +29,10 @@ def retrieve():
     result["corpus"] = train_corpus + test_corpus
     result["partition"] = len(train_corpus)
     result["doc_labels"] = train_labels + test_labels
+    result["info"] = {
+        "name": "Reuters-21578, Distribution 1.0",
+        "link": "https://kdd.ics.uci.edu/databases/reuters21578/reuters21578.tar.gz",
+        "source": "https://www.nltk.org/",
+        "info": "https://kdd.ics.uci.edu/databases/reuters21578/README.txt"
+    }
     return result

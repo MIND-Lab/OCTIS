@@ -188,7 +188,7 @@ def filter_words(corpus, words):
 
 
 def remove_docs(corpus, min_doc=0, labels=[], partition=0,
-                edges=[], extra_data=""):
+                edges=[], extra_data="", info={}):
     """
     Remove documents with less than min_doc words
     from the corpus and create a dictioonary with
@@ -202,7 +202,9 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
     labels : optional, list of labels of the documents
     partition : optional, partition of the dataset
     edges : optional, edges of a relational dataset
-
+    extra_data : preprocessing info
+    info : original dataset informations
+    
     Returns
     -------
     result : dictionary with corpus and relatve infos
@@ -241,6 +243,7 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
     extra_info["vocabulary_length"] = len(vocabulary)
     extra_info["last-training-doc"] = partition
     extra_info["preprocessing-info"] = extra_data
+    extra_info["info"] = info
     if compute_labels:
         extra_info["labels"] = list(distinct_labels.keys())
         extra_info["total_labels"] = len(extra_info["labels"])

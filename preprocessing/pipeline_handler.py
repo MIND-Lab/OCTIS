@@ -89,6 +89,9 @@ class Pipeline_handler:
         edges = []
         if "edges" in self.dataset:
             edges = self.dataset["edges"]
+        info = {}
+        if "info" in self.dataset:
+            info = self.dataset["info"]
 
         if self.multiprocess:
             pool = tools.create_pool(self.num_proc)
@@ -154,7 +157,9 @@ class Pipeline_handler:
             self.min_words_for_doc,
             categories,
             partition,
-            edges, extra_data)
+            edges,
+            extra_data,
+            info)
 
         if self.multiprocess:
             pool.close()
