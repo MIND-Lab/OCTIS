@@ -28,6 +28,7 @@ dataset = source.retrieve("path\to\dataset")
 ```
 
 A custom dataset must have a document for each line of the file.
+Datasets can be partitioned in train and test sets.
 
 Preprocess
 ----------
@@ -65,6 +66,12 @@ hyperparameters["num_topics"] = 20
 model = LDA_Model()  # Create model
 model_output = model.train_model(dataset, hyperparameters) # Train the model
 ```
+
+If the dataset is partitioned, you can choose to:
+
+* Train the model on the training set and test it on the test documents
+* Train the model on the training set and update it with the test set
+* Train the model with the whole dataset, regardless of any partition.
 
 Evaluate a model
 ----------------
@@ -121,7 +128,8 @@ Available Datasets
 * Wikipedia
 
 ### Disclaimer
-Similarly to [`TensorFlow Datasets`](https://github.com/tensorflow/datasets) and HuggingFace's [`nlp`](https://github.com/huggingface/nlp) library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
+
+Similarly to [ `TensorFlow Datasets` ](https://github.com/tensorflow/datasets) and HuggingFace's [ `nlp` ](https://github.com/huggingface/nlp) library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
 
 If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, please get in touch through a GitHub issue. 
 
@@ -148,21 +156,36 @@ hyperparameters = {
     'callbacks': None}
 
 ```
+
 Defining the default hyperparameters values allows users to work on a subset of them without having to assign a value to each parameter.
 
 The following step is the `train_model()` override:
 
 ``` python
 
-def train_model(self, dataset, hyperparameters, topics=10,
-                topic_word_matrix=True, topic_document_matrix=True):
+ def train_model(self, dataset, hyperparameters={}, topics=10,
+                    topic_word_matrix=True, topic_document_matrix=True,
+                    use_partitions=True, update_with_test=False):
 
 ```
 
-The method require a dataset, the hyperparameters dictionary and 3 extra arguments used to enable or disable the computing of outputs to enhance performances during optimization processes.
+The LDA method require a dataset, the hyperparameters dictionary and 3 extra (optional) arguments used to enable or disable the computing of outputs to enhance performances during optimization processes.
+To allow trainint/test partitioning of the dataset 2 arguments are added to enable/disable the partitioning and choose if the model should be updated with the test set.
 
 With the hyperparameters defaults, the ones in input and the dataset you should be able to write your own code and return as output a dictionary with at least 3 entries:
 
 * topics: the list of the most significative words foreach topic (list of lists of strings).
 * topic-word-matrix: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
 * topic-document-matrix: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.
+
+if your model support the training/test partitioning it should also return:
+
+* test-document-topic-matrix: the document topic matrix of the test set.
+
+In case the model isn't updated with the test set.
+
+* test-topics: the list of the most significative words foreach topic (list of lists of strings) of the model updated with the test set.
+* test-topic-word-matrix: an NxV matrix of weights where N is the number of topics and V is the vocabulary length of the model updated with the test set.
+* test-topic-document-matrix: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus of the model updated with the test set.
+
+If the model is updated with the test set.
