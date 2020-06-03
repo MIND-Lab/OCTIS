@@ -3,7 +3,7 @@ import numpy as np
 from evaluation_metrics.metrics import Abstract_Metric
 
 
-citation = """
+citation = r"""
 @inproceedings{DBLP:conf/pkdd/AlSumaitBGD09,
   author    = {Loulwah AlSumait and
                Daniel Barbar{\'{a}} and
