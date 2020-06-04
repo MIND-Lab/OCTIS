@@ -32,6 +32,32 @@ class LDA_Model(Abstract_Model):
     id_corpus = None
     dataset = None
 
+    def info(self):
+        return {
+            "citation": r"""
+@inproceedings{DBLP:conf/nips/BleiNJ01,
+  author    = {David M. Blei and
+               Andrew Y. Ng and
+               Michael I. Jordan},
+  editor    = {Thomas G. Dietterich and
+               Suzanna Becker and
+               Zoubin Ghahramani},
+  title     = {Latent Dirichlet Allocation},
+  booktitle = {Advances in Neural Information Processing Systems 14 [Neural Information
+               Processing Systems: Natural and Synthetic, {NIPS} 2001, December 3-8,
+               2001, Vancouver, British Columbia, Canada]},
+  pages     = {601--608},
+  publisher = {{MIT} Press},
+  year      = {2001},
+  url       = {http://papers.nips.cc/paper/2070-latent-dirichlet-allocation},
+  timestamp = {Thu, 12 Mar 2020 11:31:34 +0100},
+  biburl    = {https://dblp.org/rec/conf/nips/BleiNJ01.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+            """,
+            "name": "LDA, Latent Dirichlet Allocation"
+        }
+
     def train_model(self, dataset, hyperparameters={}, topics=10,
                     topic_word_matrix=True, topic_document_matrix=True,
                     use_partitions=True, update_with_test=False):

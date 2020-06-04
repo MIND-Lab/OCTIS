@@ -28,6 +28,29 @@ class HDP_Model(Abstract_Model):
     id_corpus = None
     dataset = None
 
+    def info(self):
+        return {
+            "citation": r"""
+@inproceedings{DBLP:conf/nips/TehJBB04,
+  author    = {Yee Whye Teh and
+               Michael I. Jordan and
+               Matthew J. Beal and
+               David M. Blei},
+  title     = {Sharing Clusters among Related Groups: Hierarchical Dirichlet Processes},
+  booktitle = {Advances in Neural Information Processing Systems 17 [Neural Information
+               Processing Systems, {NIPS} 2004, December 13-18, 2004, Vancouver,
+               British Columbia, Canada]},
+  pages     = {1385--1392},
+  year      = {2004},
+  url       = {http://papers.nips.cc/paper/2698-sharing-clusters-among-related-groups-hierarchical-dirichlet-processes},
+  timestamp = {Fri, 06 Mar 2020 16:59:17 +0100},
+  biburl    = {https://dblp.org/rec/conf/nips/TehJBB04.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+            """,
+            "name": "HDP, Hierarchical Dirichlet Process"
+        }
+
     def train_model(self, dataset, hyperparameters={}, topics=10,
                     topic_word_matrix=True, topic_document_matrix=True,
                     use_partitions=True, update_with_test=False):
@@ -99,7 +122,7 @@ class HDP_Model(Abstract_Model):
 
         if topic_document_matrix:
             result["topic-document-matrix"] = self._get_topic_document_matrix()
-            
+
         if use_partitions:
             new_corpus = [self.id2word.doc2bow(
                 document) for document in partition[1]]

@@ -21,6 +21,11 @@ class LSI_Model(Abstract_Model):
     id_corpus = None
     dataset = None
 
+    def info(self):
+        return {
+            "name": "LSI, Latent Semantic Indexing"
+        }
+
     def train_model(self, dataset, hyperparameters={}, topics=10,
                     topic_word_matrix=True, topic_document_matrix=True,
                     use_partitions=True, update_with_test=False):

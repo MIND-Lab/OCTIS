@@ -26,6 +26,28 @@ class NMF_Model(Abstract_Model):
     id_corpus = None
     dataset = None
 
+    def info(self):
+        return {
+            "citation": r"""
+@article{DBLP:journals/tsp/ZhaoT17,
+  author    = {Renbo Zhao and
+               Vincent Y. F. Tan},
+  title     = {Online Nonnegative Matrix Factorization With Outliers},
+  journal   = {{IEEE} Trans. Signal Process.},
+  volume    = {65},
+  number    = {3},
+  pages     = {555--570},
+  year      = {2017},
+  url       = {https://doi.org/10.1109/TSP.2016.2620967},
+  doi       = {10.1109/TSP.2016.2620967},
+  timestamp = {Tue, 10 Mar 2020 10:51:48 +0100},
+  biburl    = {https://dblp.org/rec/journals/tsp/ZhaoT17.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+            """,
+            "name": "NMF, Non-negative Matrix Factorization"
+        }
+
     def train_model(self, dataset, hyperparameters={}, topics=10,
                     topic_word_matrix=True, topic_document_matrix=True,
                     use_partitions=True, update_with_test=False):
