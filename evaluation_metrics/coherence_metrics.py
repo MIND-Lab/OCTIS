@@ -47,6 +47,51 @@ coherence_we_pc_defaults = {
     'w2v_model': None
 }
 
+we_pc_citation = r"""
+@inproceedings{DBLP:conf/emnlp/DingNX18,
+  author    = {Ran Ding and
+               Ramesh Nallapati and
+               Bing Xiang},
+  editor    = {Ellen Riloff and
+               David Chiang and
+               Julia Hockenmaier and
+               Jun'ichi Tsujii},
+  title     = {Coherence-Aware Neural Topic Modeling},
+  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural
+               Language Processing, Brussels, Belgium, October 31 - November 4, 2018},
+  pages     = {830--836},
+  publisher = {Association for Computational Linguistics},
+  year      = {2018},
+  url       = {https://doi.org/10.18653/v1/d18-1096},
+  doi       = {10.18653/v1/d18-1096},
+  timestamp = {Tue, 28 Jan 2020 10:28:21 +0100},
+  biburl    = {https://dblp.org/rec/conf/emnlp/DingNX18.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+"""
+coherence_citation = r"""
+@inproceedings{DBLP:conf/wsdm/RoderBH15,
+  author    = {Michael R{\"{o}}der and
+               Andreas Both and
+               Alexander Hinneburg},
+  editor    = {Xueqi Cheng and
+               Hang Li and
+               Evgeniy Gabrilovich and
+               Jie Tang},
+  title     = {Exploring the Space of Topic Coherence Measures},
+  booktitle = {Proceedings of the Eighth {ACM} International Conference on Web Search
+               and Data Mining, {WSDM} 2015, Shanghai, China, February 2-6, 2015},
+  pages     = {399--408},
+  publisher = {{ACM}},
+  year      = {2015},
+  url       = {https://doi.org/10.1145/2684822.2685324},
+  doi       = {10.1145/2684822.2685324},
+  timestamp = {Tue, 21 May 2019 11:38:33 +0200},
+  biburl    = {https://dblp.org/rec/conf/wsdm/RoderBH15.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+"""
+
 
 class Coherence(Abstract_Metric):
     def __init__(self, metric_parameters=coherence_defaults):
@@ -67,6 +112,12 @@ class Coherence(Abstract_Metric):
         self.dictionary = Dictionary(self.texts)
         self.topk = metric_parameters['topk']
         self.measure = metric_parameters['measure']
+
+    def info(self):
+        return {
+            "citation": coherence_citation,
+            "name": "Coherence"
+        }
 
     def score(self, model_output):
         """
@@ -168,6 +219,12 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
         else:
             self.wv = metric_parameters['w2v_model'].wv
 
+    def info(self):
+        return {
+            "citation": we_pc_citation,
+            "name": "Coherence word embeddings pairwise"
+        }
+
     def score(self, model_output):
         """
         Retrieve the score of the metric
@@ -226,6 +283,12 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
             self.wv = api.load('word2vec-google-news-300')
         else:
             self.wv = metric_parameters['w2v_model'].wv
+
+    def info(self):
+        return {
+            "citation": we_pc_citation,
+            "name": "Coherence word embeddings centroid"
+        }
 
     def score(self, model_output):
         """
