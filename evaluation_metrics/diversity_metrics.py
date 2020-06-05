@@ -1,5 +1,23 @@
 from evaluation_metrics.metrics import Abstract_Metric
 
+citation = r"""
+@article{DBLP:journals/corr/abs-1907-04907,
+  author    = {Adji B. Dieng and
+               Francisco J. R. Ruiz and
+               David M. Blei},
+  title     = {Topic Modeling in Embedding Spaces},
+  journal   = {CoRR},
+  volume    = {abs/1907.04907},
+  year      = {2019},
+  url       = {http://arxiv.org/abs/1907.04907},
+  archivePrefix = {arXiv},
+  eprint    = {1907.04907},
+  timestamp = {Wed, 17 Jul 2019 10:27:36 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-1907-04907.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+"""
+
 
 class Topic_diversity(Abstract_Metric):
     def __init__(self, metric_parameters={'topk': 10}):
@@ -13,6 +31,12 @@ class Topic_diversity(Abstract_Metric):
                             will be computed
         """
         self.topk = metric_parameters["topk"]
+
+    def info(self):
+        return {
+            "citation": citation,
+            "name": "Topic diversity"
+        }
 
     def score(self, model_output):
         """

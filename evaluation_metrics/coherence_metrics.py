@@ -47,6 +47,23 @@ coherence_we_pc_defaults = {
     'w2v_model': None
 }
 
+coherence_we_citation = r"""
+@inproceedings{DBLP:conf/ldk/BelfordG19,
+  author    = {Mark Belford and
+               Derek Greene},
+  title     = {Comparison of Embedding Techniques for Topic Modeling Coherence Measures},
+  booktitle = {Proceedings of the Poster Session of the 2nd Conference on Language,
+               Data and Knowledge {(LDK} 2019), Leipzig, Germany, May 21, 2019},
+  pages     = {1--5},
+  year      = {2019},
+  crossref  = {DBLP:conf/ldk/2019p},
+  url       = {http://ceur-ws.org/Vol-2402/paper1.pdf},
+  timestamp = {Wed, 12 Feb 2020 16:44:16 +0100},
+  biburl    = {https://dblp.org/rec/conf/ldk/BelfordG19.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+"""
+
 we_pc_citation = r"""
 @inproceedings{DBLP:conf/emnlp/DingNX18,
   author    = {Ran Ding and
@@ -69,6 +86,7 @@ we_pc_citation = r"""
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 """
+
 coherence_citation = r"""
 @inproceedings{DBLP:conf/wsdm/RoderBH15,
   author    = {Michael R{\"{o}}der and
@@ -170,6 +188,12 @@ class Coherence_word_embeddings(Abstract_Metric):
         else:
             self.wv = KeyedVectors.load_word2vec_format(
                 word2vec_path, binary=self.binary)
+
+    def info(self):
+        return {
+            "citation": coherence_we_citation,
+            "name": "Coherence word embeddings"
+        }
 
     def score(self, model_output):
         """
