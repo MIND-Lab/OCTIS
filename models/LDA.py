@@ -2,31 +2,13 @@ from models.model import Abstract_Model
 import numpy as np
 from gensim.models import ldamodel
 import gensim.corpora as corpora
+import configuration.citations as citations
+import configuration.defaults as defaults
 
 
 class LDA_Model(Abstract_Model):
 
-    hyperparameters = {
-        'corpus': None,
-        'num_topics': 100,
-        'id2word': None,
-        'distributed': False,
-        'chunksize': 2000,
-        'passes': 1,
-        'update_every': 1,
-        'alpha': 'symmetric',
-        'eta': None,
-        'decay': 0.5,
-        'offset': 1.0,
-        'eval_every': 10,
-        'iterations': 50,
-        'gamma_threshold': 0.001,
-        'minimum_probability': 0.01,
-        'random_state': None,
-        'ns_conf': None,
-        'minimum_phi_value': 0.01,
-        'per_word_topics': False,
-        'callbacks': None}
+    hyperparameters = defaults.models_LDA_hyperparameters.copy()
 
     id2word = None
     id_corpus = None
@@ -34,27 +16,7 @@ class LDA_Model(Abstract_Model):
 
     def info(self):
         return {
-            "citation": r"""
-@inproceedings{DBLP:conf/nips/BleiNJ01,
-  author    = {David M. Blei and
-               Andrew Y. Ng and
-               Michael I. Jordan},
-  editor    = {Thomas G. Dietterich and
-               Suzanna Becker and
-               Zoubin Ghahramani},
-  title     = {Latent Dirichlet Allocation},
-  booktitle = {Advances in Neural Information Processing Systems 14 [Neural Information
-               Processing Systems: Natural and Synthetic, {NIPS} 2001, December 3-8,
-               2001, Vancouver, British Columbia, Canada]},
-  pages     = {601--608},
-  publisher = {{MIT} Press},
-  year      = {2001},
-  url       = {http://papers.nips.cc/paper/2070-latent-dirichlet-allocation},
-  timestamp = {Thu, 12 Mar 2020 11:31:34 +0100},
-  biburl    = {https://dblp.org/rec/conf/nips/BleiNJ01.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-            """,
+            "citation": citations.models_LDA,
             "name": "LDA, Latent Dirichlet Allocation"
         }
 
@@ -101,32 +63,15 @@ class LDA_Model(Abstract_Model):
         hyperparameters = self.hyperparameters
 
         # Allow alpha to be a float in case of symmetric alpha
-        if isinstance(self.hyperparameters["alpha"], float):
-            self.hyperparameters["alpha"] = [
-                self.hyperparameters["alpha"]
-            ] * self.hyperparameters["num_topics"]
+        if isinstance(hyperparameters["alpha"], float):
+            hyperparameters["alpha"] = [
+                hyperparameters["alpha"]
+            ] * hyperparameters["num_topics"]
 
-        self.trained_model = ldamodel.LdaModel(
-            corpus=self.id_corpus,
-            id2word=self.id2word,
-            num_topics=hyperparameters["num_topics"],
-            distributed=hyperparameters["distributed"],
-            chunksize=hyperparameters["chunksize"],
-            passes=hyperparameters["passes"],
-            update_every=hyperparameters["update_every"],
-            alpha=hyperparameters["alpha"],
-            eta=hyperparameters["eta"],
-            decay=hyperparameters["decay"],
-            offset=hyperparameters["offset"],
-            eval_every=hyperparameters["eval_every"],
-            iterations=hyperparameters["iterations"],
-            gamma_threshold=hyperparameters["gamma_threshold"],
-            minimum_probability=hyperparameters["minimum_probability"],
-            random_state=hyperparameters["random_state"],
-            ns_conf=hyperparameters["ns_conf"],
-            minimum_phi_value=hyperparameters["minimum_phi_value"],
-            per_word_topics=hyperparameters["per_word_topics"],
-            callbacks=hyperparameters["callbacks"])
+        hyperparameters["corpus"] = self.id_corpus
+        hyperparameters["id2word"] = self.id2word
+
+        self.trained_model = ldamodel.LdaModel(**hyperparameters)
 
         result = {}
 

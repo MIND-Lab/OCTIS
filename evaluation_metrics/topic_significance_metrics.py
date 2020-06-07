@@ -1,34 +1,6 @@
 import numpy as np
-
+import configuration.citations as citations
 from evaluation_metrics.metrics import Abstract_Metric
-
-
-citation = r"""
-@inproceedings{DBLP:conf/pkdd/AlSumaitBGD09,
-  author    = {Loulwah AlSumait and
-               Daniel Barbar{\'{a}} and
-               James Gentle and
-               Carlotta Domeniconi},
-  editor    = {Wray L. Buntine and
-               Marko Grobelnik and
-               Dunja Mladenic and
-               John Shawe{-}Taylor},
-  title     = {Topic Significance Ranking of {LDA} Generative Models},
-  booktitle = {Machine Learning and Knowledge Discovery in Databases, European Conference,
-               {ECML} {PKDD} 2009, Bled, Slovenia, September 7-11, 2009, Proceedings,
-               Part {I}},
-  series    = {Lecture Notes in Computer Science},
-  volume    = {5781},
-  pages     = {67--82},
-  publisher = {Springer},
-  year      = {2009},
-  url       = {https://doi.org/10.1007/978-3-642-04180-8\_22},
-  doi       = {10.1007/978-3-642-04180-8\_22},
-  timestamp = {Tue, 14 May 2019 10:00:47 +0200},
-  biburl    = {https://dblp.org/rec/conf/pkdd/AlSumaitBGD09.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-"""
 
 
 def _KL(P, Q):
@@ -62,7 +34,7 @@ class KL_uniform(Abstract_Metric):
 
     def info(self):
         return {
-            "citation": citation,
+            "citation": citations.em_topic_significance,
             "name": "KL_Uniform, Uniform distribution over words"
         }
 
@@ -109,7 +81,7 @@ class KL_vacuous(Abstract_Metric):
 
     def info(self):
         return {
-            "citation": citation,
+            "citation": citations.em_topic_significance,
             "name": "KL_Vacuous, Vacuous semantic distribution"
         }
 
@@ -164,7 +136,7 @@ class KL_background(Abstract_Metric):
 
     def info(self):
         return {
-            "citation": citation,
+            "citation": citations.em_topic_significance,
             "name": "KL_Background, Background distribution over documents"
         }
 

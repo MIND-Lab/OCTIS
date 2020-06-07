@@ -2,27 +2,13 @@ from models.model import Abstract_Model
 import numpy as np
 from gensim.models import hdpmodel
 import gensim.corpora as corpora
+import configuration.citations as citations
+import configuration.defaults as defaults
 
 
 class HDP_Model(Abstract_Model):
 
-    hyperparameters = {
-        'corpus': None,
-        'id2word': None,
-        'max_chunks': None,
-        'max_time': None,
-        'chunksize': 256,
-        'kappa': 1.0,
-        'tau': 64.0,
-        'K': 15,
-        'T': 150,
-        'alpha': 1,
-        'gamma': 1,
-        'eta': 0.01,
-        'scale': 1.0,
-        'var_convergence': 0.0001,
-        'outputdir': None,
-        'random_state': None}
+    hyperparameters = defaults.models_HDP_hyperparameters.copy()
 
     id2word = None
     id_corpus = None
@@ -30,24 +16,7 @@ class HDP_Model(Abstract_Model):
 
     def info(self):
         return {
-            "citation": r"""
-@inproceedings{DBLP:conf/nips/TehJBB04,
-  author    = {Yee Whye Teh and
-               Michael I. Jordan and
-               Matthew J. Beal and
-               David M. Blei},
-  title     = {Sharing Clusters among Related Groups: Hierarchical Dirichlet Processes},
-  booktitle = {Advances in Neural Information Processing Systems 17 [Neural Information
-               Processing Systems, {NIPS} 2004, December 13-18, 2004, Vancouver,
-               British Columbia, Canada]},
-  pages     = {1385--1392},
-  year      = {2004},
-  url       = {http://papers.nips.cc/paper/2698-sharing-clusters-among-related-groups-hierarchical-dirichlet-processes},
-  timestamp = {Fri, 06 Mar 2020 16:59:17 +0100},
-  biburl    = {https://dblp.org/rec/conf/nips/TehJBB04.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-            """,
+            "citation": citations.models_HDP,
             "name": "HDP, Hierarchical Dirichlet Process"
         }
 
@@ -93,24 +62,10 @@ class HDP_Model(Abstract_Model):
         self.hyperparameters.update(hyperparameters)
         hyperparameters = self.hyperparameters
 
-        self.trained_model = hdpmodel.HdpModel(
-            corpus=self.id_corpus,
-            id2word=self.id2word,
-            max_chunks=hyperparameters["max_chunks"],
-            max_time=hyperparameters["max_time"],
-            chunksize=hyperparameters["chunksize"],
-            kappa=hyperparameters["kappa"],
-            tau=hyperparameters["tau"],
-            K=hyperparameters["K"],
-            T=hyperparameters["T"],
-            alpha=hyperparameters["alpha"],
-            gamma=hyperparameters["gamma"],
-            eta=hyperparameters["eta"],
-            scale=hyperparameters["scale"],
-            var_converge=hyperparameters["var_convergence"],
-            outputdir=hyperparameters["outputdir"],
-            random_state=hyperparameters["random_state"]
-        )
+        hyperparameters["corpus"] = self.id_corpus
+        hyperparameters["id2word"] = self.id2word
+
+        self.trained_model = hdpmodel.HdpModel(**hyperparameters)
 
         result = {}
 

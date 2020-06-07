@@ -2,20 +2,12 @@ from models.model import Abstract_Model
 from gensim.models import lsimodel
 import numpy as np
 import gensim.corpora as corpora
+import configuration.defaults as defaults
 
 
 class LSI_Model(Abstract_Model):
 
-    hyperparameters = {
-        'corpus': None,
-        'num_topics': 100,
-        'id2word': None,
-        'distributed': False,
-        'chunksize': 20000,
-        'decay': 1.0,
-        'onepass': True,
-        'power_iters': 2,
-        'extra_samples': 100}
+    hyperparameters = defaults.models_LSI_hyperparameters.copy()
 
     id2word = None
     id_corpus = None
@@ -68,17 +60,10 @@ class LSI_Model(Abstract_Model):
         self.hyperparameters.update(hyperparameters)
         hyperparameters = self.hyperparameters
 
-        hyperparameters = self.hyperparameters
-        self.trained_model = lsimodel.LsiModel(
-            corpus=self.id_corpus,
-            id2word=self.id2word,
-            num_topics=hyperparameters["num_topics"],
-            distributed=hyperparameters["distributed"],
-            chunksize=hyperparameters["chunksize"],
-            decay=hyperparameters["decay"],
-            onepass=hyperparameters["onepass"],
-            power_iters=hyperparameters["power_iters"],
-            extra_samples=hyperparameters["extra_samples"])
+        hyperparameters["corpus"] = self.id_corpus
+        hyperparameters["id2word"] = self.id2word
+
+        self.trained_model = lsimodel.LsiModel(**hyperparameters)
 
         result = {}
 

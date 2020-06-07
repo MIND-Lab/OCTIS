@@ -3,116 +3,17 @@ from gensim.corpora.dictionary import Dictionary
 from gensim.models import CoherenceModel
 from gensim.models import KeyedVectors
 import gensim.downloader as api
+import configuration.citations as citations
+import configuration.defaults as defaults
 import numpy as np
 import itertools
 from scipy import spatial
 from sklearn.metrics import pairwise_distances
 from operator import add
-from pathlib import Path
-
-
-def _load_default_texts():
-    """
-    Loads default wikipedia texts
-
-    Returns
-    -------
-    result : default wikipedia texts
-    """
-    file_name = "preprocessed_datasets/wikipedia/wikipedia_not_lemmatized_5/corpus.txt"
-    result = []
-    file = Path(file_name)
-    if file.is_file():
-        with open(file_name, 'r') as corpus_file:
-            for line in corpus_file:
-                result.append(line.split())
-        return result
-    return False
-
-
-coherence_defaults = {
-    'texts': _load_default_texts(),
-    'topk': 10,
-    'measure': 'c_npmi'
-}
-
-coherence_we_defaults = {
-    'topk': 10,
-    'word2vec_path': None,
-    'binary': False
-}
-
-coherence_we_pc_defaults = {
-    'topk': 10,
-    'w2v_model': None
-}
-
-coherence_we_citation = r"""
-@inproceedings{DBLP:conf/ldk/BelfordG19,
-  author    = {Mark Belford and
-               Derek Greene},
-  title     = {Comparison of Embedding Techniques for Topic Modeling Coherence Measures},
-  booktitle = {Proceedings of the Poster Session of the 2nd Conference on Language,
-               Data and Knowledge {(LDK} 2019), Leipzig, Germany, May 21, 2019},
-  pages     = {1--5},
-  year      = {2019},
-  crossref  = {DBLP:conf/ldk/2019p},
-  url       = {http://ceur-ws.org/Vol-2402/paper1.pdf},
-  timestamp = {Wed, 12 Feb 2020 16:44:16 +0100},
-  biburl    = {https://dblp.org/rec/conf/ldk/BelfordG19.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-"""
-
-we_pc_citation = r"""
-@inproceedings{DBLP:conf/emnlp/DingNX18,
-  author    = {Ran Ding and
-               Ramesh Nallapati and
-               Bing Xiang},
-  editor    = {Ellen Riloff and
-               David Chiang and
-               Julia Hockenmaier and
-               Jun'ichi Tsujii},
-  title     = {Coherence-Aware Neural Topic Modeling},
-  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural
-               Language Processing, Brussels, Belgium, October 31 - November 4, 2018},
-  pages     = {830--836},
-  publisher = {Association for Computational Linguistics},
-  year      = {2018},
-  url       = {https://doi.org/10.18653/v1/d18-1096},
-  doi       = {10.18653/v1/d18-1096},
-  timestamp = {Tue, 28 Jan 2020 10:28:21 +0100},
-  biburl    = {https://dblp.org/rec/conf/emnlp/DingNX18.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-"""
-
-coherence_citation = r"""
-@inproceedings{DBLP:conf/wsdm/RoderBH15,
-  author    = {Michael R{\"{o}}der and
-               Andreas Both and
-               Alexander Hinneburg},
-  editor    = {Xueqi Cheng and
-               Hang Li and
-               Evgeniy Gabrilovich and
-               Jie Tang},
-  title     = {Exploring the Space of Topic Coherence Measures},
-  booktitle = {Proceedings of the Eighth {ACM} International Conference on Web Search
-               and Data Mining, {WSDM} 2015, Shanghai, China, February 2-6, 2015},
-  pages     = {399--408},
-  publisher = {{ACM}},
-  year      = {2015},
-  url       = {https://doi.org/10.1145/2684822.2685324},
-  doi       = {10.1145/2684822.2685324},
-  timestamp = {Tue, 21 May 2019 11:38:33 +0200},
-  biburl    = {https://dblp.org/rec/conf/wsdm/RoderBH15.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-"""
 
 
 class Coherence(Abstract_Metric):
-    def __init__(self, metric_parameters=coherence_defaults):
+    def __init__(self, metric_parameters=defaults.em_coherence.copy()):
         """
         Initialize metric
 
@@ -133,7 +34,7 @@ class Coherence(Abstract_Metric):
 
     def info(self):
         return {
-            "citation": coherence_citation,
+            "citation": citations.em_coherence,
             "name": "Coherence"
         }
 
@@ -164,7 +65,7 @@ class Coherence(Abstract_Metric):
 
 
 class Coherence_word_embeddings(Abstract_Metric):
-    def __init__(self, metric_parameters=coherence_we_defaults):
+    def __init__(self, metric_parameters=defaults.em_coherence_we.copy()):
         """
         Initialize metric
 
@@ -191,7 +92,7 @@ class Coherence_word_embeddings(Abstract_Metric):
 
     def info(self):
         return {
-            "citation": coherence_we_citation,
+            "citation": citations.em_coherence_we,
             "name": "Coherence word embeddings"
         }
 
@@ -225,7 +126,7 @@ class Coherence_word_embeddings(Abstract_Metric):
 
 
 class Coherence_word_embeddings_pairwise(Abstract_Metric):
-    def __init__(self, metric_parameters=coherence_we_pc_defaults):
+    def __init__(self, metric_parameters=defaults.em_coherence_we_pc.copy()):
         """
         Initialize metric
 
@@ -245,7 +146,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
     def info(self):
         return {
-            "citation": we_pc_citation,
+            "citation": citations.em_word_embeddings_pc,
             "name": "Coherence word embeddings pairwise"
         }
 
@@ -290,7 +191,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
 
 class Coherence_word_embeddings_centroid(Abstract_Metric):
-    def __init__(self, metric_parameters=coherence_we_pc_defaults):
+    def __init__(self, metric_parameters=defaults.em_coherence_we_pc.copy()):
         """
         Initialize metric
 
@@ -310,7 +211,7 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
 
     def info(self):
         return {
-            "citation": we_pc_citation,
+            "citation": citations.em_word_embeddings_pc,
             "name": "Coherence word embeddings centroid"
         }
 

@@ -2,25 +2,13 @@ from models.model import Abstract_Model
 import numpy as np
 from gensim.models import nmf
 import gensim.corpora as corpora
+import configuration.citations as citations
+import configuration.defaults as defaults
 
 
 class NMF_Model(Abstract_Model):
 
-    hyperparameters = {
-        'corpus': None,
-        'num_topics': 100,
-        'id2word': None,
-        'chunksize': 2000,
-        'passes': 1,
-        'kappa': 1.0,
-        'minimum_probability': 0.01,
-        'w_max_iter': 200,
-        'w_stop_condition': 0.0001,
-        'h_max_iter': 50,
-        'h_stop_condition': 0.001,
-        'eval_every': 10,
-        'normalize': True,
-        'random_state': None}
+    hyperparameters = defaults.models_NMF_hyperparaeters.copy()
 
     id2word = None
     id_corpus = None
@@ -28,23 +16,7 @@ class NMF_Model(Abstract_Model):
 
     def info(self):
         return {
-            "citation": r"""
-@article{DBLP:journals/tsp/ZhaoT17,
-  author    = {Renbo Zhao and
-               Vincent Y. F. Tan},
-  title     = {Online Nonnegative Matrix Factorization With Outliers},
-  journal   = {{IEEE} Trans. Signal Process.},
-  volume    = {65},
-  number    = {3},
-  pages     = {555--570},
-  year      = {2017},
-  url       = {https://doi.org/10.1109/TSP.2016.2620967},
-  doi       = {10.1109/TSP.2016.2620967},
-  timestamp = {Tue, 10 Mar 2020 10:51:48 +0100},
-  biburl    = {https://dblp.org/rec/journals/tsp/ZhaoT17.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-            """,
+            "citation": citations.models_NMF,
             "name": "NMF, Non-negative Matrix Factorization"
         }
 
@@ -90,21 +62,10 @@ class NMF_Model(Abstract_Model):
         self.hyperparameters.update(hyperparameters)
         hyperparameters = self.hyperparameters
 
-        self.trained_model = nmf.Nmf(
-            corpus=self.id_corpus,
-            id2word=self.id2word,
-            num_topics=hyperparameters["num_topics"],
-            chunksize=hyperparameters["chunksize"],
-            passes=hyperparameters["passes"],
-            kappa=hyperparameters["kappa"],
-            minimum_probability=hyperparameters["minimum_probability"],
-            w_max_iter=hyperparameters["w_max_iter"],
-            w_stop_condition=hyperparameters["w_stop_condition"],
-            h_max_iter=hyperparameters["h_max_iter"],
-            h_stop_condition=hyperparameters["h_stop_condition"],
-            eval_every=hyperparameters["eval_every"],
-            normalize=hyperparameters["normalize"],
-            random_state=hyperparameters["random_state"])
+        hyperparameters["corpus"] = self.id_corpus
+        hyperparameters["id2word"] = self.id2word
+
+        self.trained_model = nmf.Nmf(**hyperparameters)
 
         result = {}
 
