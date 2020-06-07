@@ -174,18 +174,18 @@ To allow trainint/test partitioning of the dataset 2 arguments are added to enab
 
 With the hyperparameters defaults, the ones in input and the dataset you should be able to write your own code and return as output a dictionary with at least 3 entries:
 
-* topics: the list of the most significative words foreach topic (list of lists of strings).
-* topic-word-matrix: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
-* topic-document-matrix: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.
+* `topics`: the list of the most significative words foreach topic (list of lists of strings).
+* `topic-word-matrix`: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
+* `topic-document-matrix`: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.
 
 if your model support the training/test partitioning it should also return:
 
-* test-document-topic-matrix: the document topic matrix of the test set.
+* `test-document-topic-matrix`: the document topic matrix of the test set.
 
 In case the model isn't updated with the test set.
 
-* test-topics: the list of the most significative words foreach topic (list of lists of strings) of the model updated with the test set.
-* test-topic-word-matrix: an NxV matrix of weights where N is the number of topics and V is the vocabulary length of the model updated with the test set.
-* test-topic-document-matrix: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus of the model updated with the test set.
+* `test-topics`: the list of the most significative words foreach topic (list of lists of strings) of the model updated with the test set.
+* `test-topic-word-matrix`: an NxV matrix of weights where N is the number of topics and V is the vocabulary length of the model updated with the test set.
+* `test-topic-document-matrix`: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus of the model updated with the test set.
 
 If the model is updated with the test set.
