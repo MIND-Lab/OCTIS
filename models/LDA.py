@@ -8,11 +8,8 @@ import configuration.defaults as defaults
 
 class LDA_Model(Abstract_Model):
 
-    hyperparameters = defaults.models_LDA_hyperparameters.copy()
-
     id2word = None
     id_corpus = None
-    dataset = None
 
     def info(self):
         return {
@@ -48,28 +45,29 @@ class LDA_Model(Abstract_Model):
         partition = []
         if use_partitions:
             partition = dataset.get_partitioned_corpus()
+        else:
+            partition = [dataset.get_corpus(), []]
 
         if self.id2word == None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
 
         if self.id_corpus == None:
             self.id_corpus = [self.id2word.doc2bow(
-                document) for document in dataset.get_corpus()]
+                document) for document in partition[0]]
 
-        if self.dataset == None:
-            self.dataset = dataset
-
-        self.hyperparameters.update(hyperparameters)
-        hyperparameters = self.hyperparameters
+        if "num_topics" not in hyperparameters:
+            hyperparameters["num_topics"] = 100
 
         # Allow alpha to be a float in case of symmetric alpha
-        if isinstance(hyperparameters["alpha"], float):
-            hyperparameters["alpha"] = [
-                hyperparameters["alpha"]
-            ] * hyperparameters["num_topics"]
+        if "alpha" in hyperparameters:
+            if isinstance(hyperparameters["alpha"], float):
+                hyperparameters["alpha"] = [
+                    hyperparameters["alpha"]
+                ] * hyperparameters["num_topics"]
 
         hyperparameters["corpus"] = self.id_corpus
         hyperparameters["id2word"] = self.id2word
+        self.hyperparameters = hyperparameters
 
         self.trained_model = ldamodel.LdaModel(**hyperparameters)
 
@@ -89,6 +87,7 @@ class LDA_Model(Abstract_Model):
                 document) for document in partition[1]]
             if update_with_test:
                 self.trained_model.update(new_corpus)
+                self.id_corpus.extend(new_corpus)
 
                 if topic_word_matrix:
                     result["test-topic-word-matrix"] = self.trained_model.get_topics()
@@ -126,9 +125,9 @@ class LDA_Model(Abstract_Model):
         corpus
         """
         doc_topic_tuples = []
-        for document in self.dataset.get_corpus():
-            doc_topic_tuples.append(self.trained_model.get_document_topics(
-                self.id2word.doc2bow(document)))
+        for document in self.id_corpus:
+            doc_topic_tuples.append(
+                self.trained_model.get_document_topics(document))
 
         topic_document = np.zeros((
             self.hyperparameters["num_topics"],
