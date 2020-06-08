@@ -1290,10 +1290,6 @@ class Optimizer():
                 for j in range( len(optimize_result[i].func_vals) ):
                     optimize_result[i].func_vals[j] = - optimize_result[i].func_vals[j]
 
-
-
-        tool.print_func_vals( optimize_result )
-
         # Create Best_evaluation object from optimization results
         result = Best_evaluation(self.hyperparameters,
                                  optimize_result,
