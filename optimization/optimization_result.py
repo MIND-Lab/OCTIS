@@ -98,7 +98,7 @@ class Best_evaluation(Evaluation):
 
         self.iterations = iterations 
 
-    def save(self, name="save", path=None):
+    def save(self, name="save", path=None, parameters = None):
         """
         Save the values in a txt file
 
@@ -115,7 +115,19 @@ class Best_evaluation(Evaluation):
         else:
             name = name + ".txt"
 
-        L  = [str(self.hyperparameters), "\n"+str(self.function_values), "\nOptimized metric: "+str(self.optimized_metric) ]
+        if( parameters != None ):
+            L  = [str(self.hyperparameters),
+                "\n"+str(self.function_values),
+                "\nOptimized metric: "+str(self.optimized_metric),
+                "\nParameters: "+str(parameters),
+                "\n------------------------------------------\n",
+                str(self.optimized_result)]
+        else:
+            L  = [str(self.hyperparameters),
+                "\n"+str(self.function_values),
+                "\nOptimized metric: "+str(self.optimized_metric),
+                "\n------------------------------------------\n",
+                str(self.optimized_result)]
         
         file = open(name,"w") 
         
