@@ -5,6 +5,7 @@ from skopt import dump, load
 import inspect, re
 from PIL import Image
 import matplotlib.pyplot as plt
+import os
 
 def get_concat_h( im1, im2):
     """
@@ -140,6 +141,31 @@ def early_condition( result, n_stop, n_random):
             return True
 
     return False
+
+def iteration_without_improvement( result ):
+    """
+        Compute the decision to stop or not.
+
+        Parameters
+        ----------
+        result : `OptimizeResult`, scipy object
+                The optimization as a OptimizeResult object.
+        
+        n_stop : Range of points without improvement
+
+        n_random : Random starting point
+
+        Returns
+        -------
+        decision : Return True if early stop condition has been reached
+    """
+    cont = 0
+    if( len(result) > 0 ):
+        func_vals = convergence_res( result )
+        last = func_vals[-1]
+        cont = func_vals.count(last)
+    
+    return cont
 
 def varname( p):
     """
@@ -574,7 +600,8 @@ def top_5( list_of_list_of_res ):
     list_medie = list_medie[:5]
     return list_medie
 
-def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO", log_scale = False):
+def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
+                                log_scale = False, path = None):
     """
         Save a plot of the result of a Bayesian_optimization 
         considering mean and standard deviation
@@ -603,22 +630,34 @@ def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO", log_scale = 
         if( i != max_list ):
             if( flag ):
                 plt.axvline( x=(i-1), color='red', label= "early stop")
-                flag = False
+                flag = False #In this way it doesn't generate too many label
             else:
                 plt.axvline( x=(i-1), color='red')
 
     if( log_scale ):
         plt.yscale('log')
 
+    x_int = range(0, array[-1]+1)
+    plt.xticks(x_int)
+
     plt.ylabel('min f(x) after n calls')
     plt.xlabel('Number of calls n')
     plt.legend(loc='best')
     plt.tight_layout()
     plt.grid(True)
-    plt.savefig( name_plot ) 
+    if( path == None ):
+        plt.savefig( name_plot ) #save in the current working directory
+    else:
+        if( path[-1] != '/' ):
+                path = path + "/"
+        current_dir = os.getcwd() #current working directory
+        os.chdir( path ) #change directory
+        plt.savefig( name_plot )
+        os.chdir( current_dir ) #reset directory to original
+
     plt.clf()
 
-def dump_BO( list_of_res, stringa = 'result' ):
+def dump_BO( list_of_res, stringa = 'result', path = None ):
     """
         Dump (save) the Bayesian_optimization result
 
@@ -635,10 +674,25 @@ def dump_BO( list_of_res, stringa = 'result' ):
                     just saved 
     """
     lista_dump = []
-    for n in range( len( list_of_res ) ):
-        name_file = stringa + str( n ) + '.pkl'
-        dump( list_of_res[n] , name_file)
-        lista_dump.append( name_file )
+    if( path == None ):
+        for n in range( len( list_of_res ) ):
+            name_file = stringa + str( n ) + '.pkl'
+            dump( list_of_res[n] , name_file)
+            lista_dump.append( name_file ) #save in the current working directory        
+    else:
+        current_dir = os.getcwd() #current working directory
+        os.chdir( path ) #change directory
+        if( path[-1] != '/' ):
+                path = path + "/"
+
+        for n in range( len( list_of_res ) ):
+            name_file = stringa + str( n ) + '.pkl'
+            dump( list_of_res[n] , name_file)
+
+            lista_dump.append( path + name_file )
+
+        os.chdir( current_dir ) #reset directory to original
+        
     return lista_dump
 
 def load_BO( lista_dump ):
