@@ -1,9 +1,9 @@
-import os
-os.chdir(os.path.pardir)
+#import os
+#os.chdir(os.path.pardir)
 
 from models.LDA import LDA_Model
 from dataset.dataset import Dataset
-from evaluation_metrics.coherence_metrics import Coherence_word_embeddings_pairwise, Coherence_word_embeddings_centroid
+from evaluation_metrics.diversity_metrics import Topic_diversity
 from evaluation_metrics.topic_significance_metrics import KL_uniform
 from optimization.optimizer import Optimizer
 from skopt.space.space import Real, Integer
@@ -19,26 +19,20 @@ dataset.load("preprocessed_datasets/newsgroup/newsgroup_lemmatized_10")
 model = LDA_Model()
 
 # Set model hyperparameters
-model.hyperparameters.update({'num_topics':20})
+model.hyperparameters['num_topics'] = 20
 
-# Coherence word embeddings pairwise
-metric_params = {
-    'topk':10,
-    'w2v_model': Word2Vec(dataset.get_corpus())
-}
-c_we_p = Coherence_word_embeddings_pairwise(metric_params)
-
-# Coherence word embeddings pairwise
-c_we_c = Coherence_word_embeddings_centroid(metric_params)
+# Define metrics
+topic_diversity = Topic_diversity()
+kl_uniform = KL_uniform()
 
 # Define optimization parameters
 opt_params = {}
-opt_params["n_calls"] = 10
+opt_params["n_calls"] = 30
 opt_params["minimizer"] = forest_minimize
 opt_params["different_iteration"] = 3
-opt_params["n_random_starts"] = 2
-opt_params["extra_metrics"] = [c_we_p] # List of extra metrics
-opt_params["n_jobs"] = mp.cpu_count() # Enable multiprocessing
+opt_params["n_random_starts"] = 5
+opt_params["extra_metrics"] = [kl_uniform] # List of extra metrics
+opt_params["n_jobs"] = mp.cpu_count() -1 # Enable multiprocessing
 opt_params["verbose"] = True
 
 # Create search space for optimization
@@ -51,13 +45,12 @@ search_space = {
 optimizer = Optimizer(
     model,
     dataset,
-    c_we_c,
+    topic_diversity,
     search_space,
     opt_params)
 
 # Disable computing of topic document matrix to optimize performance
 optimizer.topic_document_matrix = False
-optimizer.topic_word_matrix = False
 
 # Optimize
 res = optimizer.optimize()

@@ -57,9 +57,9 @@ class HDP_Model(Abstract_Model):
 
         hyperparameters["corpus"] = self.id_corpus
         hyperparameters["id2word"] = self.id2word
-        self.hyperparameters = hyperparameters
+        self.hyperparameters.update(hyperparameters)
 
-        self.trained_model = hdpmodel.HdpModel(**hyperparameters)
+        self.trained_model = hdpmodel.HdpModel(**self.hyperparameters)
 
         result = {}
 

@@ -10,6 +10,7 @@ class LDA_Model(Abstract_Model):
 
     id2word = None
     id_corpus = None
+    hyperparameters = {"num_topics": 100}
 
     def info(self):
         return {
@@ -56,7 +57,7 @@ class LDA_Model(Abstract_Model):
                 document) for document in partition[0]]
 
         if "num_topics" not in hyperparameters:
-            hyperparameters["num_topics"] = 100
+            hyperparameters["num_topics"] = self.hyperparameters["num_topics"]
 
         # Allow alpha to be a float in case of symmetric alpha
         if "alpha" in hyperparameters:
@@ -67,9 +68,9 @@ class LDA_Model(Abstract_Model):
 
         hyperparameters["corpus"] = self.id_corpus
         hyperparameters["id2word"] = self.id2word
-        self.hyperparameters = hyperparameters
+        self.hyperparameters.update(hyperparameters)
 
-        self.trained_model = ldamodel.LdaModel(**hyperparameters)
+        self.trained_model = ldamodel.LdaModel(**self.hyperparameters)
 
         result = {}
 

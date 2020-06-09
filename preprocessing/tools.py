@@ -204,12 +204,13 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
     edges : optional, edges of a relational dataset
     extra_data : preprocessing info
     info : original dataset informations
-    
+
     Returns
     -------
     result : dictionary with corpus and relatve infos
     """
     n = 0
+    count = 0
     new_corpus = []
     new_labels = []
     new_edges = []
@@ -223,8 +224,8 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
             words_mean += document_length
             new_corpus.append(document)
             if compute_labels:
-                new_labels.append(labels[n])
-                for label in labels[n]:
+                new_labels.append(labels[count])
+                for label in labels[count]:
                     if not label in distinct_labels:
                         distinct_labels[label] = True
             if compute_edges:
@@ -233,6 +234,7 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
         else:
             if n <= partition:
                 partition -= 1
+        count += 1
     words_document_mean = 0
     if n > 0:
         words_document_mean = round(words_mean/n)

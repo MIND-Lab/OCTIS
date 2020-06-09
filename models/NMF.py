@@ -10,6 +10,7 @@ class NMF_Model(Abstract_Model):
 
     id2word = None
     id_corpus = None
+    hyperparameters = {"num_topics": 100}
 
     def info(self):
         return {
@@ -57,9 +58,9 @@ class NMF_Model(Abstract_Model):
 
         hyperparameters["corpus"] = self.id_corpus
         hyperparameters["id2word"] = self.id2word
-        self.hyperparameters = hyperparameters
+        self.hyperparameters.update(hyperparameters)
 
-        self.trained_model = nmf.Nmf(**hyperparameters)
+        self.trained_model = nmf.Nmf(**self.hyperparameters)
 
         result = {}
 
