@@ -164,13 +164,11 @@ The following step is the `train_model()` override:
 ``` python
 
  def train_model(self, dataset, hyperparameters={}, topics=10,
-                    topic_word_matrix=True, topic_document_matrix=True,
-                    use_partitions=True, update_with_test=False):
+                    topic_word_matrix=True, topic_document_matrix=True):
 
 ```
 
 The LDA method require a dataset, the hyperparameters dictionary and 3 extra (optional) arguments used to enable or disable the computing of outputs to enhance performances during optimization processes.
-To allow trainint/test partitioning of the dataset 2 arguments are added to enable/disable the partitioning and choose if the model should be updated with the test set.
 
 With the hyperparameters defaults, the ones in input and the dataset you should be able to write your own code and return as output a dictionary with at least 3 entries:
 
@@ -183,6 +181,7 @@ if your model support the training/test partitioning it should also return:
 * `test-document-topic-matrix`: the document topic matrix of the test set.
 
 In case the model isn't updated with the test set.
+Or:
 
 * `test-topics`: the list of the most significative words foreach topic (list of lists of strings) of the model updated with the test set.
 * `test-topic-word-matrix`: an NxV matrix of weights where N is the number of topics and V is the vocabulary length of the model updated with the test set.
