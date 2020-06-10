@@ -11,6 +11,8 @@ class LDA_Model(Abstract_Model):
     id2word = None
     id_corpus = None
     hyperparameters = {"num_topics": 100}
+    use_partitions = True
+    update_with_test = False
 
     def info(self):
         return {
@@ -18,9 +20,14 @@ class LDA_Model(Abstract_Model):
             "name": "LDA, Latent Dirichlet Allocation"
         }
 
+    def partitioning(self, use_partitions, update_with_test=False):
+        self.use_partitions = use_partitions
+        self.update_with_test = update_with_test
+        self.id2word = None
+        self.id_corpus = None
+
     def train_model(self, dataset, hyperparameters={}, topics=10,
-                    topic_word_matrix=True, topic_document_matrix=True,
-                    use_partitions=True, update_with_test=False):
+                    topic_word_matrix=True, topic_document_matrix=True):
         """
         Train the model and return output
 
@@ -44,7 +51,7 @@ class LDA_Model(Abstract_Model):
                  'topic-document-matrix'
         """
         partition = []
-        if use_partitions:
+        if self.use_partitions:
             partition = dataset.get_partitioned_corpus()
         else:
             partition = [dataset.get_corpus(), []]
@@ -83,10 +90,10 @@ class LDA_Model(Abstract_Model):
         if topic_document_matrix:
             result["topic-document-matrix"] = self._get_topic_document_matrix()
 
-        if use_partitions:
+        if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
                 document) for document in partition[1]]
-            if update_with_test:
+            if self.update_with_test:
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)
 
