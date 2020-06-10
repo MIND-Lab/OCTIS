@@ -13,11 +13,25 @@ class LSI_Model(Abstract_Model):
     update_with_test = False
 
     def info(self):
+        """
+        Returns model informations
+        """
         return {
             "name": "LSI, Latent Semantic Indexing"
         }
 
     def partitioning(self, use_partitions, update_with_test=False):
+        """
+        Handle the partitioning system to use and reset the model to perform
+        new evaluations
+
+        Parameters
+        ----------
+        use_partitions: True if train/set partitioning is needed, False
+                        otherwise
+        update_with_test: True if the model should be updated with the test set,
+                          False otherwise
+        """
         self.use_partitions = use_partitions
         self.update_with_test = update_with_test
         self.id2word = None
