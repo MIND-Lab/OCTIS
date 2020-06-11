@@ -56,22 +56,22 @@ default_parameters = {
     'kernel': kernels[3], 
     'random_state': None,
     'noise': None,
-    'verbose': False,#
-    'n_points': 10000,#
+    'verbose': False,
+    'n_points': 10000,
     'base_estimator': 'RF',
-    'kappa': 1.96,#
+    'kappa': 1.96,
     'alpha': 1e-10,
     'x0': [None],
     'y0': [None],
-    'xi': 1.96,#
-    'n_jobs': 1,#
-    'model_queue_size': None,#
+    'xi': 1.96,
+    'n_jobs': 1,
+    'model_queue_size': None,
     'optimization_type': 'Maximize',
     'extra_metrics': [],
     'save': False, 
     'save_step': 1, 
     'save_name': "result",
-    'save_path': None,#where to save all file (log, txt, plot, etc)
+    'save_path': None, #where to save all file (log, txt, plot, etc)
     'early_stop': False, 
     'early_step': 10, 
     'plot': False, 
@@ -167,7 +167,6 @@ class Optimizer():
 
         return result
 
-    #Da commentare
     def Bayesian_optimization(self,
                             f ,#= self.self._objective_function,#
                             bounds ,#= params_space_list,#
@@ -199,6 +198,126 @@ class Optimizer():
                             n_jobs = default_parameters["n_jobs"],
                             model_queue_size = default_parameters["model_queue_size"]
         ):
+        """
+            Bayesian_optimization
+
+            Parameters
+            ----------
+            f : Function to minimize. 
+                Should take a single list of parameters and return the objective value.
+
+            bounds : List of search space dimensions. Each search dimension can be defined either as
+                    - (lower_bound, upper_bound) tuple (for Real or Integer dimensions),
+                    - (lower_bound, upper_bound, "prior") tuple (for Real dimensions),
+                    - list of categories (for Categorical dimensions), or
+                    - instance of a Dimension object (Real, Integer or Categorical).
+                    Note: The upper and lower bounds are inclusive for Integer.
+
+            minimizer : The base estimator to use for optimization.
+                        -gp_minimize
+                        -dummy_minimize
+                        -forest_minimize
+
+            number_of_call : Number of calls to f
+
+            different_iteration : Number of different iteration of a single Bayesian Optimization
+                                [min = 3]
+            
+            kernel : The kernel specifying the covariance function of the GP.
+            
+            acq_func : Function to minimize over the minimizer prior. Can be either
+                        - "LCB" for lower confidence bound.
+                        - "EI" for negative expected improvement.
+                        - "PI" for negative probability of improvement.
+                        - "gp_hedge" probabilistically choose one of the above three acquisition 
+                            functions at every iteration[only if minimizer == gp_minimize]
+                        - "EIps" for negated expected improvement.
+                        - "PIps" for negated probability of improvement.
+            
+            base_estimator_forest : The regressor to use as surrogate model. Can be either
+                                    - "RF" for random forest regressor
+                                    - "ET" for extra trees regressor
+                                    instance of regressor with support for return_std in its predict method.
+
+            random_state : Set random state to something other than None for reproducible results.
+            
+            noise_level : If set to “gaussian”, then it is assumed that y is a noisy estimate 
+                        of f(x) where the noise is gaussian.
+            
+            alpha : Value added to the diagonal of the kernel matrix during fitting. 
+                    Larger values correspond to increased noise level in the observations and 
+                    reduce potential numerical issue during fitting. If an array is passed, 
+                    it must have the same number of entries as the data used for fitting and is 
+                    used as datapoint-dependent noise level. Note that this is equivalent to adding
+                    a WhiteKernel with c=alpha. Allowing to specify the noise level directly as a 
+                    parameter is mainly for convenience and for consistency with Ridge.
+            
+            kappa : Controls how much of the variance in the predicted values should be taken into account. 
+                    If set to be very high, then we are favouring exploration over exploitation and vice versa. 
+                    Used when the acquisition is "LCB"
+            
+            X0 : Initial input points.
+            
+            Y0 : Evaluation of initial input points.
+            
+            n_random_starts : Number of evaluations of f with random points before 
+                            approximating it with minimizer
+            
+            save : [boolean] Save the Bayesian Optimization in a .pkl file 
+            
+            save_step : Integer interval after which save the .pkl file
+            
+            save_name : Name of the .pkl file saved.
+                        Useless if save is False.
+            
+            save_path : Path where .pkl, plot and result will be saved.
+            
+            early_stop : [boolean] Early stop policy.
+                        It will stop an interaction if it doesn't
+                        improve for early_step evaluations.
+            
+            early_step : Integer interval after which a current iteration
+                        is stopped if it doesn't improve.
+            
+            plot : [boolean] Plot the convergence of the Bayesian optimization 
+                    process, showing mean and standard deviation of the different
+                    iterations. 
+                    If save is True the plot is update every save_step evaluations.
+            
+            plot_name : Name of the .png file where the plot is saved.
+            
+            log_scale_plot : [boolean] If True the "y_axis" of the plot
+                            is set to log_scale
+            
+            verbose : Control the verbosity. It is advised to set the verbosity to True for long optimization runs.
+            
+            n_points : Number of points to sample to determine the next “best” point. 
+                    Useless if acq_optimizer is set to "lbfgs".
+            
+            xi  : Controls how much improvement one wants over the previous best values. 
+                Used when the acquisition is either "EI" or "PI".
+            
+            n_jobs : Number of cores to run in parallel while running the lbfgs optimizations 
+                    over the acquisition function. Valid only when acq_optimizer is set to “lbfgs.”
+                    Defaults to 1 core. If n_jobs=-1, then number of jobs is set to number of cores.
+            
+            model_queue_size : Keeps list of models only as long as the argument given.
+                            In the case of None, the list has no capped length.
+            
+            Returns
+            -------
+            res : List of different Bayesian Optimization run.
+                Important attributes of each element are:
+                - x [list]: location of the minimum.
+                - fun [float]: function value at the minimum.
+                - models: surrogate models used for each iteration.
+                - x_iters [list of lists]: location of function evaluation for each iteration.
+                - func_vals [array]: function value for each iteration.
+                - space [Space]: the optimization space.
+                - specs [dict]`: the call specifications.
+                - rng [RandomState instance]: State of the random state at the end of minimization.
+        
+        """  
         
         if( number_of_call <= 0 ):
             print("Error: number_of_call can't be <= 0")
