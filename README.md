@@ -106,8 +106,6 @@ search_space = {
 # Initialize an optimizer object and start the optimization.
 optimizer = Optimizer(model, dataset, metric, search_space)
 result = optimizer.optimize()
-
-result.plot_all()
 ```
 
  
