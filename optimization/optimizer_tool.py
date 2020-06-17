@@ -6,6 +6,7 @@ import inspect, re
 from PIL import Image
 import matplotlib.pyplot as plt
 import os
+from skopt.space.space import Real
 
 def get_concat_h( im1, im2):
     """
@@ -31,6 +32,49 @@ def get_concat_h( im1, im2):
     dst.paste(im1, (0, 0))
     dst.paste(im2, (im1.width, 0))
     return dst
+
+def dict_to_list_of_list(dict):
+    """
+        Return a list of a given dictionary.
+
+        Parameters
+        ----------
+        dict : a dictionary
+
+        Returns
+        -------
+        list_of_list : A list of the values
+                       of dict
+            
+    """ 
+    list_of_list = []
+    for element in dict:
+        list_of_list.append( dict[element].bounds )
+    return list_of_list
+
+def list_to_dict(lista, dict):
+    """
+        Return a dictionary of a given list.
+        The key of the dictionary are the same of dict.
+
+        Parameters
+        ----------
+        lista : list
+
+        dict : a dictionary
+
+        Returns
+        -------
+        space : A dictionary with the value of list and the
+                key of dict
+            
+    """ 
+    space = {}
+    i = 0
+    for element in dict:
+        space[element] = lista[i]#Real(low=lista[i], high=lista[i]+0.00000000000001)
+        i = i+1
+    return space
 
 def random_generator( bounds, n , n_iter):
     """
