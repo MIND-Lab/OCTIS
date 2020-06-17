@@ -109,7 +109,9 @@ result = optimizer.optimize()
 ```
 
  
-The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you can use the plot and plot_all methods of the result.
+The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you have to set 'plot' attribute of Bayesian_optimization to True. 
+
+You can find more [Here](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/master/optimization/README.md)
 
 Available Models
 ----------------
