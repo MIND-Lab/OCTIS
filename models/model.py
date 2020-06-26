@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+import os
+import json
+import numpy as np
 
 
 class Abstract_Model(ABC):
@@ -28,3 +31,36 @@ class Abstract_Model(ABC):
 
         """
         pass
+
+def save_model_output(model_output, path=os.curdir, appr_order=7, topics=True):
+    """
+    Saves the model output in the choosen directory
+
+    Parameters
+    ----------
+    model_output: output of the model
+    path: path in which the file will be saved
+    appr_order: approximation order (used to round model_output values)
+    topics: Boolean flag, default True. 
+            If True the most important words for each topic
+            will be saved.
+    """
+
+    if topics and ("topics" in model_output):
+        file = open("topics.json", "w")
+        json.dump(model_output["topics"], file)
+        file.close()
+
+    if topics and ("test-topics" in model_output):
+        file = open("test-topics.json", "w")
+        json.dump(model_output["test-topics"], file)
+        file.close()
+
+    to_save = {}
+    for single_output in model_output.keys():
+        if single_output != "topics" and single_output != "test-topics":
+            to_save[single_output] = (
+                model_output[single_output].round(appr_order))
+    np.savez_compressed(
+        "model_output",
+        **to_save)

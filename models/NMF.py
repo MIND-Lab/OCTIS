@@ -6,7 +6,6 @@ from sklearn.decomposition import DictionaryLearning
 from gensim.models import nmf
 import gensim.corpora as corpora
 import configuration.citations as citations
-import configuration.defaults as defaults
 
 
 class NMF_gensim(Abstract_Model):
@@ -160,6 +159,7 @@ class NMF_scikit(Abstract_Model):
     id_corpus = None
     use_partitions = True
     update_with_test = False
+    hyperparameters = {"num_topics": 100}
 
     def partitioning(self, use_partitions, update_with_test=False):
         """
@@ -239,7 +239,7 @@ class NMF_scikit(Abstract_Model):
             result["topics"] = self.get_topics(H, topics)
 
         if topic_document_matrix:
-            result["topic-document-matrix"] = np.array(W).transpose().tolist()
+            result["topic-document-matrix"] = np.array(W).transpose()
 
         if self.use_partitions:
             if self.update_with_test:
