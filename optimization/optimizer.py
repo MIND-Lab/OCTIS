@@ -110,6 +110,15 @@ class Optimizer():
         self.metric = metric
         self.search_space = search_space
         self.optimization_parameters = optimization_parameters
+
+        # Customize parameters update
+        default_parameters.update(self.optimization_parameters)
+        # Save parameters labels to use
+        self.hyperparameters = list(sorted(self.search_space.keys()))
+
+        self.extra_metrics = default_parameters["extra_metrics"]
+
+        self.optimization_type = default_parameters['optimization_type']
         
     def _objective_function(self, hyperparameters):
         """
@@ -118,6 +127,7 @@ class Optimizer():
         Parameters
         ----------
         hyperparameters : dictionary of hyperparameters
+                          (It's a list for real)
                           key: name of the parameter
                           value: skopt search space dimension
 
@@ -350,6 +360,8 @@ class Optimizer():
         if( default_parameters["minimizer"] == forest_minimize ):
             minimizer_stringa = "forest_minimize"
 
+        print("------------------------------------------")
+        print("------------------------------------------")
         print("Bayesian optimization parameters:\n-n_calls: ",default_parameters["n_calls"],
             "\n-different_iteration: ",default_parameters["different_iteration"],
             "\n-n_random_starts: ",default_parameters["n_random_starts"],
