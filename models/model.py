@@ -32,7 +32,8 @@ class Abstract_Model(ABC):
         """
         pass
 
-def save_model_output(model_output, path=os.curdir, appr_order=7, topics=True):
+
+def save_model_output(model_output, path=os.curdir, appr_order=7):
     """
     Saves the model output in the choosen directory
 
@@ -41,20 +42,7 @@ def save_model_output(model_output, path=os.curdir, appr_order=7, topics=True):
     model_output: output of the model
     path: path in which the file will be saved
     appr_order: approximation order (used to round model_output values)
-    topics: Boolean flag, default True. 
-            If True the most important words for each topic
-            will be saved.
     """
-
-    if topics and ("topics" in model_output):
-        file = open("topics.json", "w")
-        json.dump(model_output["topics"], file)
-        file.close()
-
-    if topics and ("test-topics" in model_output):
-        file = open("test-topics.json", "w")
-        json.dump(model_output["test-topics"], file)
-        file.close()
 
     to_save = {}
     for single_output in model_output.keys():
@@ -64,3 +52,32 @@ def save_model_output(model_output, path=os.curdir, appr_order=7, topics=True):
     np.savez_compressed(
         "model_output",
         **to_save)
+
+
+def load_model_output(output_path, vocabulary_path=None, topics=10):
+    """
+    Loads a model output from the choosen directory
+
+    Parameters
+    ----------
+    output_path: path in which th model output is saved
+    topics_path: path in which the vocabulary is saved
+                 (optional, used to retrieve the top k words of each topic)
+    topics: top k words to retrieve for each topic
+            (in case a vocabulary path is given)
+    """
+    output = dict(np.load(output_path))
+    if vocabulary_path != None:
+        file = open(vocabulary_path, "r")
+        vocabulary = json.load(file)
+        file.close()
+
+        topics_output = []
+        for topic in output["topic-word-matrix"]:
+            top_k = np.argsort(topic)[-topics:]
+            top_k_words = list(reversed([vocabulary[str(i)] for i in top_k]))
+            topics_output.append(top_k_words)
+
+        output["topics"] = topics_output
+
+    return output
