@@ -88,8 +88,8 @@ def save_csv(name_csv,
 
 
     if( time_x0 != None ):
-        print("Time_x0 ", time_x0 )
-        print("time", Time)
+        #print("Time_x0 ", time_x0 )
+        #print("time", Time)
         #for i in time_x0:
         Time = time_x0 + Time
 
@@ -110,11 +110,11 @@ def save_csv(name_csv,
             data_t.append(Surrogate)
             data_t.append(Acquisition)
             data_t.append( i )#n_point
-            print("i ", i)
-            print("j ", j)
+            #print("i ", i)
+            #print("j ", j)
             #print_x_iters(res)
             #print_func_vals(res)
-            print("time ", Time )
+            #print("time ", Time )
             data_t.append(Time[i][j])
 
 
