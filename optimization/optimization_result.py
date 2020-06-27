@@ -66,7 +66,7 @@ class Best_evaluation(Evaluation):
     optimized_result = None
     optimized_metric = None
 
-    def __init__(self, params_names, optimized_result, iters, optimized_metric):
+    def __init__(self, params_names, optimized_result, Maximize, iters, optimized_metric):
         """
         Initialize class
 
@@ -82,7 +82,10 @@ class Best_evaluation(Evaluation):
         function_values = {}
 
         key_min = lambda res: res.fun
-        best_values = min( optimized_result, key = key_min )
+        if Maximize:
+            best_values = max( optimized_result, key = key_min )
+        else:
+            best_values = min( optimized_result, key = key_min )
 
         function_values = best_values.fun
         function_solution = best_values.x
