@@ -16,6 +16,8 @@ from skopt import gp_minimize, forest_minimize, dummy_minimize
 import multiprocessing as mp
 from gensim.models import Word2Vec
 import time
+import resource
+import numpy as np
     
 # Load dataset
 dataset = Dataset()
@@ -53,7 +55,7 @@ my_y0 = []
 
 # Define optimization parameters
 opt_params = {}
-opt_params["n_calls"] = 10
+opt_params["n_calls"] = 5
 opt_params["minimizer"] = gp_minimize
 opt_params["different_iteration"] = 3
 opt_params["n_random_starts"] = 0 
@@ -61,10 +63,11 @@ opt_params["extra_metrics"] = [c_we_p] # List of extra metrics
 opt_params["n_jobs"] = mp.cpu_count() # Enable multiprocessing, if -1 do the same
 opt_params["save"] = True
 opt_params["save_step"] = 1
-opt_params["save_path"] = None #"risultati/giacomo/" 
+opt_params["save_path"] = "risultati/multi/" 
 opt_params["early_stop"] = False
 opt_params["save_name"] = "result_gp"
 opt_params["plot"] = True
+opt_params["time_x0"] = None
 
 my_x0 = random_generator(bounds = my_bounds,
                         n = Random_points, #Random points
@@ -83,14 +86,29 @@ optimizer = Optimizer(
 
 #y0
 my_y0 = []
-
+time_x0 = []
 for i in range( len(my_x0) ):
     my_y0.append([])
-    for j in range( len(my_x0[i])):
+    time_t = []
+    for j in range( len(my_x0[i]) ):
+        start_time = time.time()
+
         my_y0[i].append( optimizer._objective_function( hyperparameters=  my_x0[i][j] ) )
+        
+        end_time = time.time()
+        total_time = end_time - start_time
+        time_t.append(total_time)
+
+    time_x0.append(time_t)
+
+numpy_array = np.array(time_x0)
+transpose = numpy_array.T
+time_x0 = transpose.tolist()
 
 
 opt_params["y0"] = my_y0
+opt_params["time_x0"] = time_x0
+
 optimizer = Optimizer(
     model,
     dataset,
@@ -149,3 +167,5 @@ print("%s seconds" % (total_time))
 
 stringa_parameters = str(BO_parameters) + "\nTime: " + str(total_time) + " seconds"
 res.save(name ="Result_forest", parameters = stringa_parameters)
+
+print( resource.getrusage(resource.RUSAGE_SELF).ru_maxrss, "kilobytes" )
