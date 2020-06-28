@@ -1,9 +1,7 @@
 import csv
-import resource
-from optimization.optimizer_tool import print_func_vals as print_func_vals
-from optimization.optimizer_tool import print_x_iters as print_x_iters
+#from optimization.optimizer_tool import print_func_vals as print_func_vals
+#from optimization.optimizer_tool import print_x_iters as print_x_iters
 
-#what if X0 and Y0?
 
 def support_csv(name_csv, hyperparameters_name, data ): 
     """
@@ -13,8 +11,10 @@ def support_csv(name_csv, hyperparameters_name, data ):
         Parameters
         ----------
         name_csv : [string] name of the .csv file
+
         hyperparameters_name : [list of string] name of the 
                             hyperparameters
+
         data : [list of list] where the data are stored
     """
 
@@ -66,19 +66,36 @@ def save_csv(name_csv,
         Parameters
         ----------
         name_csv : [string] name of the .csv file
+
         dataset_name: [string] name of the dataset
+
         hyperparameters_name : [list of string] name of the 
                             hyperparameters
+
         num_topic : number of topic
+
         Surrogate : [string] surrogate model used
+
         Acquisition : [string] acquisition function used 
+
         Time : [list of list] Of time for each point evaluated
             by Bayesuan_optimization()
+
         res : result of a Bayesian_optimization()
+
+		Maximize : If True it will adjust the result
+
+        time_x0 : [list of list] If not-None it adds
+				x0 and y0 time to the csv file
+
         topic_diversity : If not None is added 
+
         KL_B : If not None is added  
+
         KL_U : If not None is added  
+
         KL_V : If not None is added 
+
     """
     data = []
 
@@ -88,9 +105,6 @@ def save_csv(name_csv,
 
 
     if( time_x0 != None ):
-        #print("Time_x0 ", time_x0 )
-        #print("time", Time)
-        #for i in time_x0:
         Time = time_x0 + Time
 
     for i in range( n_point ):
@@ -110,11 +124,6 @@ def save_csv(name_csv,
             data_t.append(Surrogate)
             data_t.append(Acquisition)
             data_t.append( i )#n_point
-            #print("i ", i)
-            #print("j ", j)
-            #print_x_iters(res)
-            #print_func_vals(res)
-            #print("time ", Time )
             data_t.append(Time[i][j])
 
 
@@ -141,11 +150,5 @@ def save_csv(name_csv,
             data.append( data_t )
                 
     support_csv(name_csv, hyperparameters_name, data)
-
-
-
-
-#print(resource.getpagesize() )
-#print( resource.getrusage(resource.RUSAGE_SELF).ru_maxrss, "kilobytes" )
     
 
