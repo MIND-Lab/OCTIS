@@ -3,7 +3,9 @@ from skopt.utils import dimensions_aslist
 from optimization.optimization_result import Best_evaluation
 from optimization.stopper import MyCustomEarlyStopper
 import optimization.optimizer_tool as tool
+from optimization.csv_creator import save_csv as save_csv
 
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -63,6 +65,7 @@ default_parameters = {
     'alpha': 1e-10,
     'x0': [None],
     'y0': [None],
+    'time_x0' : None,
     'xi': 1.96,
     'n_jobs': 1,
     'model_queue_size': None,
@@ -192,6 +195,7 @@ class Optimizer():
                             kappa = default_parameters["kappa"],
                             X0 = default_parameters["x0"],
                             Y0 = default_parameters["y0"],
+                            time_x0 = default_parameters["time_x0"],
                             n_random_starts = default_parameters["n_random_starts"],
                             save = default_parameters["save"],
                             save_step = default_parameters["save_step"],
@@ -269,15 +273,17 @@ class Optimizer():
             X0 : Initial input points.
             
             Y0 : Evaluation of initial input points.
+
+            time_x0 : Time to evaluate x0 and y0
             
             n_random_starts : Number of evaluations of f with random points before 
                             approximating it with minimizer
             
-            save : [boolean] Save the Bayesian Optimization in a .pkl file 
+            save : [boolean] Save the Bayesian Optimization in a .pkl and .cvs file 
             
             save_step : Integer interval after which save the .pkl file
             
-            save_name : Name of the .pkl file saved.
+            save_name : Name of the .pkl and .cvs file saved.
                         Useless if save is False.
             
             save_path : Path where .pkl, plot and result will be saved.
@@ -328,7 +334,7 @@ class Optimizer():
                 - rng [RandomState instance]: State of the random state at the end of minimization.
         
         """  
-        
+    
         if( number_of_call <= 0 ):
             print("Error: number_of_call can't be <= 0")
             return None
@@ -360,6 +366,7 @@ class Optimizer():
         if( default_parameters["minimizer"] == forest_minimize ):
             minimizer_stringa = "forest_minimize"
 
+
         print("------------------------------------------")
         print("------------------------------------------")
         print("Bayesian optimization parameters:\n-n_calls: ",default_parameters["n_calls"],
@@ -372,6 +379,9 @@ class Optimizer():
 
         #Dummy Minimize
         if( minimizer == dummy_minimize ):
+            if( save_path != None ):
+                save_name = save_path + save_name 
+
             if( save == False and early_stop == False ):
                 for i in range( different_iteration ):
                     res.append( dummy_minimize(f, 
@@ -389,7 +399,7 @@ class Optimizer():
             
             elif ( ( save_step >= number_of_call and save == True ) and  ( early_step >= number_of_call or early_stop == False ) ):
                 for i in range( different_iteration ):
-                    save_name_t = save_name + "_" + str(i) + ".pkl"
+                    save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
 
                     res.append( dummy_minimize(f, 
@@ -401,14 +411,21 @@ class Optimizer():
                                             callback=[checkpoint_saver[i] ],
                                             verbose= verbose,
                                             model_queue_size=model_queue_size ) )
+                
                 if( plot == True ):
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
             
             elif ( save == True and early_stop == False ):
+
+                time_eval = []
+
+                time_t = []
                 for i in range( different_iteration ):
-                    save_name_t = save_name + "_" + str(i) + ".pkl"
+                    save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
+
+                    start_time = time.time()
 
                     res.append( dummy_minimize(f, 
                                             bounds, 
@@ -420,22 +437,42 @@ class Optimizer():
                                             verbose= verbose,
                                             model_queue_size=model_queue_size ) )
 
+                    end_time = time.time()
+                    total_time = end_time - start_time
+                    time_t.append(total_time)
+
+                time_eval.append(time_t)
+
+                save_csv(name_csv = save_name + ".csv",
+                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'], 
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0 )
+
                 if( plot == True ):
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
                 number_of_call_r = number_of_call - save_step
 
+                time_t = []
                 while ( number_of_call_r > 0 ) :
                     if( number_of_call_r >= save_step ):
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
-                            save_name_t = "./" + save_name + "_" + str(i) + ".pkl"
+                            save_name_t = "./" + save_name + str(i) + ".pkl"
                             checkpoint_saver_t = CheckpointSaver( save_name_t ) #save
 
+                            start_time = time.time()
+                            
                             res[i] = dummy_minimize(f, 
                                                 bounds, 
                                                 n_calls=save_step, 
@@ -447,6 +484,25 @@ class Optimizer():
                                                 model_queue_size=model_queue_size)
 
                             checkpoint_saver[i] = checkpoint_saver_t
+
+                            end_time = time.time()
+                            total_time = end_time - start_time
+                            time_t.append(total_time)
+
+                        time_eval.append(time_t)
+
+                        save_csv(name_csv = save_name + ".csv",
+                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'], 
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0  )
+
+
                         if( plot == True ):
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
@@ -454,10 +510,12 @@ class Optimizer():
 
                     else:
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
+
+                            start_time = time.time()
 
                             res[i] = dummy_minimize(f, 
                                                 bounds, 
@@ -468,6 +526,23 @@ class Optimizer():
                                                 random_state=random_state,
                                                 verbose= verbose,
                                                 model_queue_size=model_queue_size)
+
+                            end_time = time.time()
+                            total_time = end_time - start_time
+                            time_t.append(total_time)
+
+                        time_eval.append(time_t)
+
+                        save_csv(name_csv = save_name + ".csv",
+                        dataset_name = self.dataset.metadata.name , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'],
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0 )
 
                         if( plot == True ):
                             name = plot_name + ".png"
@@ -501,7 +576,7 @@ class Optimizer():
             elif ( save == True and early_stop == True ):
 
                 for i in range( different_iteration ):
-                    save_name_t = save_name + "_" + str(i) + ".pkl"
+                    save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
 
                     res_temp = dummy_minimize(f, 
@@ -519,6 +594,7 @@ class Optimizer():
 
                     res.append( res_temp )
 
+
                 if( plot == True ):
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
@@ -529,11 +605,11 @@ class Optimizer():
                     
                     if( number_of_call_r >= save_step ):
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
-                            save_name_t = "./" + save_name + "_" + str(i) + ".pkl"
+                            save_name_t = "./" + save_name + str(i) + ".pkl"
                             checkpoint_saver_t = CheckpointSaver( save_name_t ) #save
 
                             res[i] = dummy_minimize(f, 
@@ -561,7 +637,7 @@ class Optimizer():
 
                     else:
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
@@ -595,6 +671,9 @@ class Optimizer():
 
         #Forest Minimize
         if( minimizer == forest_minimize ):
+            if( save_path != None ):
+                save_name = save_path + save_name 
+
             if( save == False and early_stop == False ):
                 for i in range( different_iteration ):
                     res.append( forest_minimize(f, 
@@ -618,7 +697,7 @@ class Optimizer():
 
             elif ( ( save_step >= number_of_call and save == True ) and  ( early_step >= number_of_call or early_stop == False ) ):
                 for i in range( different_iteration ):
-                    save_name_t = save_name + "_" + str(i) + ".pkl"
+                    save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
 
                     res.append( forest_minimize(f, 
@@ -642,15 +721,22 @@ class Optimizer():
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
             
             elif ( save == True and early_stop == False ):
+
+                time_eval = []
+
+                time_t = []
                 for i in range( different_iteration ):
-                    save_name_t = save_name + "_" + str(i) + ".pkl"
+                    save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
                     if( x0[i] == None ):
                         len_x0 = 0
                     else:
                         len_x0 = len( x0[i] )
 
+                    flag = False
                     if( save_step >= n_random_starts + len_x0 ):
+                        start_time = time.time()
+
                         res.append( forest_minimize(f, 
                                                 bounds,
                                                 base_estimator=base_estimator_forest,
@@ -670,7 +756,13 @@ class Optimizer():
                         
                         #number_of_call_r = number_of_call - save_step
 
+                        end_time = time.time()
+                        total_time = end_time - start_time
+                        time_t.append(total_time)
                     else:
+                        flag = True
+                        start_time = time.time()
+
                         res.append( forest_minimize(f, 
                                                 bounds,
                                                 base_estimator=base_estimator_forest,
@@ -688,23 +780,51 @@ class Optimizer():
                                                 model_queue_size=model_queue_size ) )
                         
                         #number_of_call_r = number_of_call - save_step - n_random_starts
+                        end_time = time.time()
+                        total_time = end_time - start_time
+                        time_t.append(total_time)
+ 
 
                 if( plot == True ):
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
                 number_of_call_r = number_of_call - save_step
+                if( flag ):
+                    fract = save_step + n_random_starts
+                else:
+                    fract = number_of_call - number_of_call_r   
 
+                time_t = [i/fract for i in time_t]
+                
+                for i in range(fract):
+                    time_eval.append(time_t)
+
+                save_csv(name_csv = save_name + ".csv",
+                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'], 
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0 )
+
+
+                time_t = []
                 while ( number_of_call_r > 0 ) :
                     if( number_of_call_r >= save_step ):
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
-                            save_name_t = "./" + save_name + "_" + str(i) + ".pkl"
+                            save_name_t = "./" + save_name + str(i) + ".pkl"
                             checkpoint_saver_t = CheckpointSaver( save_name_t ) #save
                             
+                            start_time = time.time()
+
                             res[i] = forest_minimize(f, 
                                                     bounds,
                                                     base_estimator=base_estimator_forest,
@@ -725,6 +845,25 @@ class Optimizer():
                 
 
                             checkpoint_saver[i] = checkpoint_saver_t
+
+                            end_time = time.time()
+                            total_time = end_time - start_time
+                            time_t.append(total_time)
+
+                        time_eval.append(time_t)
+
+                        save_csv(name_csv = save_name + ".csv",
+                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'], 
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0  )
+
+                        
                         if( plot == True ):
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
@@ -733,10 +872,12 @@ class Optimizer():
 
                     else:
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
+
+                            start_time = time.time()
 
                             res[i] = forest_minimize(f, 
                                                     bounds,
@@ -754,6 +895,25 @@ class Optimizer():
                                                     kappa=kappa, 
                                                     n_jobs=n_jobs, 
                                                     model_queue_size=model_queue_size )
+
+                            end_time = time.time()
+                            total_time = end_time - start_time
+                            time_t.append(total_time)
+
+                        time_eval.append(time_t)
+
+                        save_csv(name_csv = save_name + ".csv",
+                        dataset_name = self.dataset.metadata.name , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'],
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0 )
+
+
 
                         if( plot == True ):
                             name = plot_name + ".png"
@@ -793,7 +953,7 @@ class Optimizer():
     
             elif ( save == True and early_stop == True ):
                 for i in range( different_iteration ):
-                    save_name_t = save_name + "_" + str(i) + ".pkl"
+                    save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save    
 
                     if( x0[i] == None ):
@@ -854,11 +1014,11 @@ class Optimizer():
                     
                     if( number_of_call_r >= save_step ):
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
-                            save_name_t = "./" + save_name + "_" + str(i) + ".pkl"
+                            save_name_t = "./" + save_name + str(i) + ".pkl"
                             checkpoint_saver_t = CheckpointSaver( save_name_t ) #save
 
                             if( x0[i] == None ):
@@ -917,7 +1077,7 @@ class Optimizer():
 
                     else:
                         for i in range( different_iteration ):
-                            save_name_t = save_name + "_" + str(i) + ".pkl"
+                            save_name_t = save_name + str(i) + ".pkl"
                             partial_res = load( save_name_t )  #restore
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
@@ -1043,8 +1203,14 @@ class Optimizer():
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
             elif ( save == True and early_stop == False ):
-                
+
+                time_eval = []
+
+                time_t = []
                 for i in range( different_iteration ):
+
+                    start_time = time.time()
+
                     gpr = GaussianProcessRegressor(kernel=kernel, 
                                                 alpha=alpha,
                                                 normalize_y=True, 
@@ -1067,6 +1233,24 @@ class Optimizer():
                     res_t = opt.run(f, save_step)
                     res.append( res_t )
 
+                    end_time = time.time()
+                    total_time = end_time - start_time
+                    time_t.append(total_time)
+
+                time_eval.append(time_t)
+
+                save_csv(name_csv = save_path + save_name + ".csv",
+                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'], 
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0 )
+
+
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call - save_step
 
@@ -1075,6 +1259,7 @@ class Optimizer():
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                 
 
+                time_t = []
                 while ( number_of_call_r > 0 ) :
                     if( number_of_call_r >= save_step ):
                         partial_res = tool.load_BO( checkpoint_saver ) #restore
@@ -1082,6 +1267,8 @@ class Optimizer():
                         for i in range( different_iteration ):
                             x0_restored = partial_res[i].x_iters
                             y0_restored = list(partial_res[i].func_vals)
+
+                            start_time = time.time()
 
                             gpr = GaussianProcessRegressor(kernel=kernel, 
                                                         alpha=alpha,
@@ -1104,6 +1291,24 @@ class Optimizer():
                             res_t = opt.run(f, save_step)
                             res[i] = res_t
 
+                            end_time = time.time()
+                            total_time = end_time - start_time
+                            time_t.append(total_time)
+
+                        time_eval.append(time_t)
+
+                        save_csv(name_csv = save_path + save_name + ".csv",
+                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'], 
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0 )
+
+
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - save_step
 
@@ -1116,6 +1321,8 @@ class Optimizer():
                         for i in range( different_iteration ):
                             x0_restored = partial_res[i].x_iters
                             y0_restored = list(partial_res[i].func_vals)
+
+                            start_time = time.time()
 
                             gpr = GaussianProcessRegressor(kernel=kernel, 
                                                         alpha=alpha,
@@ -1137,6 +1344,24 @@ class Optimizer():
 
                             res_t = opt.run(f, number_of_call_r)
                             res[i] = res_t
+
+                            end_time = time.time()
+                            total_time = end_time - start_time
+                            time_t.append(total_time)
+
+                        time_eval.append(time_t)
+
+                        save_csv(name_csv = save_path + save_name + ".csv",
+                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
+                        hyperparameters_name = self.hyperparameters, 
+                        num_topic = self.model.hyperparameters['num_topics'], 
+                        Surrogate = minimizer_stringa,
+                        Acquisition = acq_func,
+                        Time = time_eval, 
+                        res = res,
+                        Maximize = (self.optimization_type == 'Maximize'),
+                        time_x0 = time_x0  )
+
 
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - save_step
@@ -1430,6 +1655,7 @@ class Optimizer():
                             kappa = default_parameters["kappa"],
                             X0 = default_parameters["x0"],
                             Y0 = default_parameters["y0"],
+                            time_x0 = default_parameters ["time_x0"],
                             n_random_starts = default_parameters["n_random_starts"],
                             save = default_parameters["save"],
                             save_step = default_parameters["save_step"],
@@ -1447,6 +1673,7 @@ class Optimizer():
                             model_queue_size = default_parameters["model_queue_size"]
         )    
 
+
         # To have the right result
         if self.optimization_type == 'Maximize':
             for i in range( len(optimize_result) ):
@@ -1454,11 +1681,15 @@ class Optimizer():
                 for j in range( len(optimize_result[i].func_vals) ):
                     optimize_result[i].func_vals[j] = - optimize_result[i].func_vals[j]
 
+        
+
         # Create Best_evaluation object from optimization results
         result = Best_evaluation(self.hyperparameters,
                                  optimize_result,
+                                 self.optimization_type == 'Maximize', #Maximize = (self.optimization_type == 'Maximize')
                                  self._iterations,
                                  self.metric.__class__.__name__)
 
+        
 
         return result
