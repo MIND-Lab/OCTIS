@@ -40,7 +40,7 @@ def save_model_output(model_output, path=os.curdir, appr_order=7):
     Parameters
     ----------
     model_output: output of the model
-    path: path in which the file will be saved
+    path: path in which the file will be saved and name of the file
     appr_order: approximation order (used to round model_output values)
     """
 
@@ -50,7 +50,7 @@ def save_model_output(model_output, path=os.curdir, appr_order=7):
             to_save[single_output] = (
                 model_output[single_output].round(appr_order))
     np.savez_compressed(
-        "model_output",
+        path,
         **to_save)
 
 
