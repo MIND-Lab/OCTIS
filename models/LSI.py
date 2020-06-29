@@ -112,7 +112,7 @@ class LSI_Model(Abstract_Model):
                 for document in new_corpus:
                     test_document_topic_matrix.append(
                         self.trained_model[document])
-                result["test-document-topic-matrix"] = test_document_topic_matrix
+                result["test-document-topic-matrix"] = np.array(test_document_topic_matrix)
 
         return result
 
