@@ -4,6 +4,7 @@ from optimization.optimization_result import Best_evaluation
 from optimization.stopper import MyCustomEarlyStopper
 import optimization.optimizer_tool as tool
 from optimization.csv_creator import save_csv as save_csv
+from models.model import save_model_output as save_model_output
 
 import time
 import matplotlib.pyplot as plt
@@ -13,6 +14,7 @@ import math
 from skopt import dump, load
 from skopt import callbacks
 from skopt.callbacks import CheckpointSaver
+from pathlib import Path #Path(path).mkdir(parents=True, exist_ok=True)
 
 
 #Acquisition function
@@ -71,6 +73,7 @@ default_parameters = {
     'model_queue_size': None,
     'optimization_type': 'Maximize',
     'extra_metrics': [],
+    'save_models': False,
     'save': False, 
     'save_step': 1, 
     'save_name': "result",
@@ -112,6 +115,12 @@ class Optimizer():
         self.dataset = dataset
         self.metric = metric
         self.search_space = search_space
+        self.actual_call = 0
+        self.actual_iteration = 0
+
+        if( optimization_parameters["save_path"][-1] != '/' ):
+            optimization_parameters["save_path"] = optimization_parameters["save_path"]+'/'
+
         self.optimization_parameters = optimization_parameters
 
         # Customize parameters update
@@ -122,8 +131,12 @@ class Optimizer():
         self.extra_metrics = default_parameters["extra_metrics"]
 
         self.optimization_type = default_parameters['optimization_type']
+
+        if( (default_parameters["save_models"] == True) and (default_parameters["save_path"] != None) ):
+            model_path = default_parameters["save_path"] + "models/"
+            Path(model_path).mkdir(parents=True, exist_ok=True)
         
-    def _objective_function(self, hyperparameters):
+    def _objective_function(self, hyperparameters, path = None):
         """
         objective function to optimize
 
@@ -151,6 +164,27 @@ class Optimizer():
             self.topk,
             self.topic_word_matrix,
             self.topic_document_matrix)
+
+        #Save the models
+        if( default_parameters["save_models"] ):
+            nome_giusto = str(self.actual_call) + "_" + str(self.actual_iteration) # "/nIterazione_nRun"
+            if( path == None ):
+                save_model_path = default_parameters["save_path"] + "models/" + nome_giusto
+            if( path != None ):
+                if( path[-1] != '/' ):
+                    path = path+'/'
+                save_model_path = path + nome_giusto
+                Path(path).mkdir(parents=True, exist_ok=True)
+
+            save_model_output(model_output, save_model_path)
+            if( self.actual_iteration +1 == default_parameters["different_iteration"] ):  #'n_calls': 100
+                #print( default_parameters["different_iteration"] , "if" )
+                self.actual_call = self.actual_call + 1
+                self.actual_iteration = 0
+            else:
+                #print( default_parameters["different_iteration"] , "else" )
+                self.actual_iteration = self.actual_iteration + 1
+
 
         # Get metric score
         result = self.metric.score(model_output)
@@ -366,6 +400,9 @@ class Optimizer():
         if( default_parameters["minimizer"] == forest_minimize ):
             minimizer_stringa = "forest_minimize"
 
+        if( (save == True) and (save_path != None) ):
+            Path(save_path).mkdir(parents=True, exist_ok=True)
+
 
         print("------------------------------------------")
         print("------------------------------------------")
@@ -376,6 +413,7 @@ class Optimizer():
             "\n-acq_func: ",default_parameters["acq_func"],
             "\n-kernel: ",default_parameters["kernel"] )
         print("------------------------------------------")
+
 
         #Dummy Minimize
         if( minimizer == dummy_minimize ):
@@ -1681,7 +1719,13 @@ class Optimizer():
                 for j in range( len(optimize_result[i].func_vals) ):
                     optimize_result[i].func_vals[j] = - optimize_result[i].func_vals[j]
 
-        
+            if( default_parameters["plot"] ):
+                tool.plot_bayesian_optimization( list_of_res = optimize_result, 
+                                    name_plot = default_parameters["plot_name"],
+                                    log_scale = default_parameters["log_scale_plot"], 
+                                    path = default_parameters["save_path"],
+                                    conv_min = False)
+
 
         # Create Best_evaluation object from optimization results
         result = Best_evaluation(self.hyperparameters,

@@ -157,6 +157,28 @@ def convergence_res( res):
         if( i != 0 and val[i] > val[i-1] ):
             val[i] = val[i-1]
     return val
+
+def convergence_res_max( res):
+    """
+        Given a single element of a
+        Bayesian_optimization return the 
+        convergence of y but max
+
+        Parameters
+        ----------
+        res : A single element of a 
+            Bayesian_optimization result
+
+        Returns
+        -------
+        val : A list with the best min seen for 
+            each evaluation
+    """    
+    val = res.func_vals
+    for i in range( len(val) ):
+        if( i != 0 and val[i] < val[i-1] ):
+            val[i] = val[i-1]
+    return val
     
 def early_condition( result, n_stop, n_random):
     """
@@ -299,6 +321,36 @@ def len_func_vals( list_of_res ):
         lista.append( len( i.func_vals ) )
     return lista
 
+def total_mean_max( list_of_res):
+    """
+        Given a Bayesian_optimization result 
+        return a list of the mean with the other 
+        tests runned but for the max
+
+        Parameters
+        ----------
+        list_of_res : A Bayesian_optimization result
+
+        Returns
+        -------
+        media : A list of the mean with the other 
+                tests runned
+    """    
+    r = []
+    different_iteration = len( list_of_res )
+    for res in list_of_res:
+        r.append( list(convergence_res_max(res)) )
+    a = []
+    media = []
+    max_len = max( len_func_vals( list_of_res ) ) 
+    for i in range( max_len ):
+        for j in range( different_iteration ):
+            if( len(r[j]) > i ):
+                a.append( r[j][i] )
+        media.append( np.mean(a, dtype=np.float64) )
+        a = []
+    return media
+
 def total_mean( list_of_res):
     """
         Given a Bayesian_optimization result 
@@ -359,6 +411,36 @@ def total_standard_deviation( list_of_res):
         a = []
     return dev
 
+def total_standard_deviation_max( list_of_res):
+    """
+        Given a Bayesian_optimization result 
+        return a list of the standard deviation
+        with the other tests runned 
+
+        Parameters
+        ----------
+        list_of_res : A Bayesian_optimization result
+
+        Returns
+        -------
+        dev : A list of the standard deviation
+            with the other test runned
+    """    
+    r = []
+    different_iteration = len( list_of_res )
+    for res in list_of_res:
+        r.append( list(convergence_res_max(res)) )
+    a = []
+    dev = []
+    max_len = max( len_func_vals( list_of_res ) ) 
+    for i in range( max_len ):
+        for j in range( different_iteration ):
+            if( len(r[j]) > i ):
+                a.append( r[j][i] )
+        dev.append( np.std(a, dtype=np.float64) )
+        a = []
+    return dev
+
 def upper_standard_deviation( list_of_res):
     """
         Given a Bayesian_optimization result 
@@ -381,6 +463,28 @@ def upper_standard_deviation( list_of_res):
         upper.append( media[i] + dev[i] ) 
     return upper
 
+def upper_standard_deviation_max( list_of_res):
+    """
+        Given a Bayesian_optimization result 
+        return a list of the higher standard 
+        deviation from the tests runned 
+
+        Parameters
+        ----------
+        list_of_res : A Bayesian_optimization result
+
+        Returns
+        -------
+        upper : A list of the higher standard 
+                deviation with the other tests runned
+    """
+    media = total_mean_max(list_of_res)
+    dev = total_standard_deviation_max(list_of_res)
+    upper = []
+    for i in range( len( media ) ):
+        upper.append( media[i] + dev[i] ) 
+    return upper
+
 def lower_standard_deviation( list_of_res):
     """
         Given a Bayesian_optimization result 
@@ -398,6 +502,28 @@ def lower_standard_deviation( list_of_res):
     """
     media = total_mean(list_of_res)
     dev = total_standard_deviation(list_of_res)
+    lower = []
+    for i in range( len( media ) ):
+        lower.append( media[i] - dev[i] ) 
+    return lower
+
+def lower_standard_deviation_max( list_of_res):
+    """
+        Given a Bayesian_optimization result 
+        return a list of the lower standard 
+        deviation from the tests runned 
+
+        Parameters
+        ----------
+        list_of_res : A Bayesian_optimization result
+
+        Returns
+        -------
+        lower : A list of the lower standard 
+                deviation with the other tests runned
+    """
+    media = total_mean_max(list_of_res)
+    dev = total_standard_deviation_max(list_of_res)
     lower = []
     for i in range( len( media ) ):
         lower.append( media[i] - dev[i] ) 
@@ -645,7 +771,7 @@ def top_5( list_of_list_of_res ):
     return list_medie
 
 def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
-                                log_scale = False, path = None):
+                                log_scale = False, path = None, conv_min = True):
     """
         Save a plot of the result of a Bayesian_optimization 
         considering mean and standard deviation
@@ -657,15 +783,31 @@ def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
         name_plot : The name of the file you want to 
                     give to the plot
 
-    """    
-    media = total_mean( list_of_res )
+        log_scale : y log scale if True
+
+        path : path where the plot file is saved
+
+        conv_min : If True the convergence is for the min,
+                    If False is for the max
+
+    """
+    if( conv_min ):    
+        media = total_mean( list_of_res )
+    else:
+        media = total_mean_max( list_of_res )
     array = [ i for i in range( len( media ) ) ]
     plt.plot(array, media, color='blue', label= "res" )
 
-    plt.fill_between(array, 
-                    lower_standard_deviation( list_of_res ), 
-                    upper_standard_deviation( list_of_res ),
-                    color='blue', alpha=0.2)
+    if( conv_min ):
+        plt.fill_between(array, 
+                        lower_standard_deviation( list_of_res ), 
+                        upper_standard_deviation( list_of_res ),
+                        color='blue', alpha=0.2)
+    else:
+        plt.fill_between(array, 
+                        lower_standard_deviation_max( list_of_res ),
+                        upper_standard_deviation_max( list_of_res ),
+                        color='blue', alpha=0.2)
 
     lista_early_stop = len_func_vals( list_of_res )
     max_list = max( lista_early_stop )
@@ -761,3 +903,40 @@ def load_BO( lista_dump ):
         lista_res_loaded.append( res_loaded )
     return lista_res_loaded
     
+def father_dir( path ):
+    """   
+        Return the father path of path
+
+        Parameters
+        ----------
+        path : a path
+    """
+    if( path[-1] == '/' ):
+        path = path[:len(path)-1]
+    last_occorrence = path.rfind("/")
+    if( last_occorrence == -1 ):
+        return "/"
+    else:
+        return path[:last_occorrence+1]
+
+def father_path_model( path ):
+    """   
+        Return a string with a right path
+        to insert in the object function path
+
+        Parameters
+        ----------
+        path : a path
+    """
+    last_occorrence = path.rfind("_")
+    if( last_occorrence == -1 ):
+        return "/"
+    else:
+        path =  path[:last_occorrence]
+        last_occorrence = path.rfind("_")
+        if( last_occorrence == -1 ):
+            return path + "random/"
+        else:
+            return path[:last_occorrence+1] + "random"
+
+
