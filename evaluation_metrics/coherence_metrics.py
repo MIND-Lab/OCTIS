@@ -60,6 +60,7 @@ class Coherence(Abstract_Metric):
                 texts=self.texts,
                 dictionary=self.dictionary,
                 coherence=self.measure,
+                processes=1,
                 topn=self.topk)
             return npmi.get_coherence()
 

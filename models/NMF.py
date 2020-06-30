@@ -90,7 +90,12 @@ class NMF_gensim(Abstract_Model):
             result["topic-word-matrix"] = self.trained_model.get_topics()
 
         if topics > 0:
-            result["topics"] = self._get_topics_words(topics)
+            topics_output = []
+            for topic in result["topic-word-matrix"]:
+                top_k = np.argsort(topic)[-topics:]
+                top_k_words = list(reversed([self.id2word[i] for i in top_k]))
+                topics_output.append(top_k_words)
+            result["topics"] = topics_output
 
         if topic_document_matrix:
             result["topic-document-matrix"] = self._get_topic_document_matrix()
@@ -106,7 +111,13 @@ class NMF_gensim(Abstract_Model):
                     result["test-topic-word-matrix"] = self.trained_model.get_topics()
 
                 if topics > 0:
-                    result["test-topics"] = self._get_topics_words(topics)
+                    topics_output = []
+                    for topic in result["test-topic-word-matrix"]:
+                        top_k = np.argsort(topic)[-topics:]
+                        top_k_words = list(
+                            reversed([self.id2word[i] for i in top_k]))
+                        topics_output.append(top_k_words)
+                    result["test-topics"] = topics_output
 
                 if topic_document_matrix:
                     result["test-topic-document-matrix"] = self._get_topic_document_matrix()
@@ -116,7 +127,8 @@ class NMF_gensim(Abstract_Model):
                 for document in new_corpus:
                     test_document_topic_matrix.append(
                         self.trained_model[document])
-                result["test-document-topic-matrix"] = np.array(test_document_topic_matrix)
+                result["test-document-topic-matrix"] = np.array(
+                    test_document_topic_matrix)
 
         return result
 
@@ -270,7 +282,7 @@ class NMF_scikit(Abstract_Model):
         return topic_list
 
 
-def NMF_Model(implementation="gensim"):
+def NMF_Model(implementation="scikit"):
     """
     Choose NMF implementation and return the correct model
 
