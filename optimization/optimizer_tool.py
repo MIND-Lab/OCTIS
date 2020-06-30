@@ -825,8 +825,10 @@ def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
 
     x_int = range(0, array[-1]+1)
     plt.xticks(x_int)
-
-    plt.ylabel('min f(x) after n calls')
+    if( conv_min ):
+        plt.ylabel('min f(x) after n calls')
+    else:
+        plt.ylabel('max f(x) after n calls')
     plt.xlabel('Number of calls n')
     plt.legend(loc='best')
     plt.tight_layout()
@@ -935,8 +937,8 @@ def father_path_model( path ):
         path =  path[:last_occorrence]
         last_occorrence = path.rfind("_")
         if( last_occorrence == -1 ):
-            return path + "random/"
+            return path + "model_x0_inizialization/"
         else:
-            return path[:last_occorrence+1] + "random"
+            return path[:last_occorrence+1] + "model_x0_inizialization/"
 
 
