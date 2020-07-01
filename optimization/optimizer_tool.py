@@ -76,7 +76,7 @@ def list_to_dict(lista, dict):
         i = i+1
     return space
 
-def random_generator( bounds, n , n_iter):
+def random_generator( bounds, n , n_iter, random_state = None):
     """
         Return a list of n random numbers in the bounds
         repeat itself for n_iter iteration.
@@ -86,11 +86,13 @@ def random_generator( bounds, n , n_iter):
 
         Parameters
         ----------
-        bounds : A list of bound for the random numbers
+        bounds : A dict of bound for the random numbers
 
         n : Number of random numbers for each iteration
 
         n_iter : Number of iterations
+
+        random_state : The random state
 
         Returns
         -------
@@ -104,12 +106,13 @@ def random_generator( bounds, n , n_iter):
     for i in range( n_iter ):
         for j in range( n ):
             array[i].append( [] )
-    dimensione = len( bounds )
+
     for i in range( n_iter ):
         for j in range( n ):
-            for d in range( dimensione ):
-                array[i][j].append( np.random.uniform(low = bounds[d][0], 
-                                                    high = bounds[d][1]) )
+            for b in bounds:
+                #print( bounds[b] )
+                array[i][j].append(  bounds[b].rvs(n_samples=1, random_state=random_state)[0] )
+
     return array
 
 def funct_eval( funct, points):
