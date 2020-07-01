@@ -171,7 +171,8 @@ class NMF_scikit(Abstract_Model):
     id_corpus = None
     use_partitions = True
     update_with_test = False
-    hyperparameters = {"num_topics": 100}
+    hyperparameters = {"num_topics": 100,
+                       "init": "random", "alpha": 0, "l1_ratio": 0}
 
     def partitioning(self, use_partitions, update_with_test=False):
         """
@@ -237,7 +238,11 @@ class NMF_scikit(Abstract_Model):
         self.hyperparameters.update(hyperparameters)
 
         model = NMF(
-            n_components=self.hyperparameters["num_topics"], init='random', random_state=0)
+            n_components=self.hyperparameters["num_topics"],
+            init=self.hyperparameters["init"],
+            alpha=self.hyperparameters["alpha"],
+            l1_ratio=self.hyperparameters["l1_ratio"],
+            random_state=0)
 
         W = model.fit_transform(self.id_corpus)
         H = model.components_
