@@ -152,3 +152,83 @@ def save_csv(name_csv,
     support_csv(name_csv, hyperparameters_name, data)
     
 
+def search_extra_csv(name_csv):
+    """
+        Search for "-" in the second row.
+        It needs for upload_csv to know where
+        to write.
+
+        Parameters
+        ----------
+        name_csv : [string] name of the .csv file
+    """
+    csvfile_r = open(name_csv, 'r', newline='')
+    read = csv.reader(csvfile_r)
+
+    search_list = []
+    flag = False
+    for row in read:
+        cont = 0
+        for element in row:
+            if( element == '-' ):
+                search_list.append(cont)
+            cont = cont + 1
+        if(flag):
+            break
+        flag = True
+
+    return search_list
+
+
+def upload_csv(name_csv,
+            topic_diversity, 
+            KL_B, 
+            KL_U, 
+            KL_V):
+    """
+        Upload save_csv.
+        Ad the data of topic_diversity, KL_B, KL_U, KL_V
+        metrics.
+
+        Parameters
+        ----------
+        name_csv : [string] name of the .csv file
+
+        topic_diversity : [list] where topic_diversity data are stored 
+
+        KL_B : [list] where KL_B data are stored  
+
+        KL_U : [list] where KL_U data are stored  
+
+        KL_V : [list] where KL_V data are stored
+    """
+
+    search_list = search_extra_csv(name_csv)
+    if( len(search_list) < 4 ):
+        return
+
+    csvfile_r = open(name_csv, 'r', newline='')
+    read = csv.reader(csvfile_r)
+
+    save_csv = [] #list of list
+    for row in read:
+        save_csv.append(row)
+
+    flag = False
+    cont = 0
+    for row in save_csv:
+        if( flag ):
+            row[search_list[0]] = topic_diversity[cont]
+            row[search_list[1]] = KL_B[cont]
+            row[search_list[2]] = KL_U[cont]
+            row[search_list[3]] = KL_V[cont]
+            cont = cont + 1
+        flag = True
+
+
+    
+    csvfile_w = open(name_csv, 'w', newline='')
+    writer = csv.writer(csvfile_w, quoting=csv.QUOTE_ALL)
+
+    for row in save_csv:
+        writer.writerow(row)
