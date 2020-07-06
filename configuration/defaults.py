@@ -38,3 +38,5 @@ em_coherence_we_pc = {
 }
 
 em_topic_diversity = {'topk': 10}
+
+em_invertedRBO = {'topk': 10, 'weight': 0.9}

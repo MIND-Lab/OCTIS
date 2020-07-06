@@ -50,18 +50,39 @@ class Topic_diversity(Abstract_Metric):
 
 
 class InvertedRBO(Abstract_Metric):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, metric_parameters=defaults.em_invertedRBO.copy()):
+        """
+        Initialize metric
 
-    def score(self, model_output, topk = 10, weight=0.9):
-        '''
-        :param weight: p (float), default 1.0: Weight of each agreement at depth d:
-        p**(d-1). When set to 1.0, there is no weight, the rbo returns to average overlap.
-        :param topic_list: a list of lists of words
-        :return: rank_biased_overlap over the topics
-        '''
+        Parameters
+        ----------
+        metric_parameters : dictionary with keys 'topk' and 'weight'
+                            topk: top k words on which the topic diversity
+                                  will be computed
+                            weight: p (float), default 1.0: Weight of each
+                                    agreement at depth d:p**(d-1). When set
+                                    to 1.0, there is no weight, the rbo returns
+                                    to average overlap.
+        """
+        super().__init__()
+        self. topk = metric_parameters["topk"]
+        self.weight = metric_parameters["weight"]
+
+    def score(self, model_output):
+        """
+        Retrieves the score of the metric
+
+        Parameters
+        ----------
+        model_output : dictionary, output of the model 
+                       key 'topics' required.
+
+        Returns
+        -------
+        td : score of the rank biased overlap over tht topics
+        """
         self.topics = model_output['topics']
-        if topk > len(self.topics[0]):
+        if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             collect = []
@@ -69,7 +90,10 @@ class InvertedRBO(Abstract_Metric):
                 word2index = self.get_word2index(list1, list2)
                 indexed_list1 = [word2index[word] for word in list1]
                 indexed_list2 = [word2index[word] for word in list2]
-                rbo_val = rbo(indexed_list1[:topk], indexed_list2[:topk], p=weight)[2]
+                rbo_val = rbo(
+                    indexed_list1[:self.topk],
+                    indexed_list2[:self.topk],
+                    p=self.weight)[2]
                 collect.append(rbo_val)
             return 1 - np.mean(collect)
 
@@ -78,4 +102,3 @@ class InvertedRBO(Abstract_Metric):
         words = words.union(set(list2))
         word2index = {w: i for i, w in enumerate(words)}
         return word2index
-
