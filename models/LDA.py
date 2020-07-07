@@ -161,7 +161,8 @@ class LDA_Model(Abstract_Model):
         doc_topic_tuples = []
         for document in self.id_corpus:
             doc_topic_tuples.append(
-                self.trained_model.get_document_topics(document))
+                self.trained_model.get_document_topics(document,
+                                                       minimum_probability=0))
 
         topic_document = np.zeros((
             self.hyperparameters["num_topics"],

@@ -9,6 +9,7 @@ import numpy as np
 import itertools
 from scipy import spatial
 from sklearn.metrics import pairwise_distances
+from sklearn.preprocessing import normalize
 from operator import add
 
 
@@ -176,9 +177,11 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
                 #   words represented as vectors in wv)
                 for word in topic[0:self.topk]:
                     if word in self.wv.vocab:
-                        word_embedding = self.wv.__getitem__(word)
-                        normalized_we = word_embedding/word_embedding.sum()
-                        E.append(normalized_we)
+                        word_embedding = np.reshape(
+                            self.wv.__getitem__(word), (1, -1))
+                        normalized_we = np.reshape(
+                            normalize(word_embedding), (1, -1))
+                        E.append(normalized_we[0])
                 E = np.array(E)
 
                 # Perform cosine similarity between E rows
@@ -244,9 +247,11 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
                 # average vector of the words in topic
                 for word in topic:
                     if word in self.wv.vocab:
-                        word_embedding = self.wv.__getitem__(word)
-                        normalized_we = word_embedding/sum(word_embedding)
-                        E.append(normalized_we)
+                        word_embedding = np.reshape(
+                            self.wv.__getitem__(word), (1, -1))
+                        normalized_we = np.reshape(
+                            normalize(word_embedding), (1, -1))
+                        E.append(normalized_we[0])
                         t = list(map(add, t, word_embedding))
                 t = np.array(t)
                 t = t/(len(t)*sum(t))
