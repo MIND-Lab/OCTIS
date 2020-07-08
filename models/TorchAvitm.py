@@ -48,7 +48,9 @@ class TorchAvitm(Abstract_Model):
         self.num_epochs = hyperparameters.get('num_epochs', 100)
         self.reduce_on_plateau = hyperparameters.get('reduce_on_plateau', False)
         
-        self.X_train, self.input_size = self.preprocess(dataset.get_corpus())
+        data_corpus = [','.join(i) for i in dataset.get_corpus()]
+        
+        self.X_train, self.input_size = self.preprocess(data_corpus)
       
         self.avitm_model = avitm.AVITM(input_size=self.input_size, n_components=self.n_components,
                                   model_type=self.model_type,hidden_sizes=self.hidden_sizes, 
