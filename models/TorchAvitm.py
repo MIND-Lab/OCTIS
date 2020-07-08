@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
 
 from models.model import Abstract_Model
 from sklearn.feature_extraction.text import CountVectorizer
