@@ -8,8 +8,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd 
 import numpy as np 
 
-from Avitm.pytorchavitm.avitm import avitm
-from Avitm.pytorchavitm import datasets
+from models.pytorchavitm.avitm import avitm
+from models.pytorchavitm import datasets
 
 
 class TorchAvitm(Abstract_Model):
