@@ -35,18 +35,18 @@ class TorchAvitm(Abstract_Model):
 
     def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True, topic_document_matrix=True):
 
-        self.n_components = hyperparameters['n_components']
-        self.model_type = hyperparameters['model_type']
-        self.hidden_sizes = hyperparameters['hidden_sizes']
-        self.activation = hyperparameters['activation']
-        self.dropout = hyperparameters['dropout']
-        self.learn_priors = hyperparameters['learn_priors']
-        self.batch_size = hyperparameters['batch_size']
-        self.lr = hyperparameters['lr']
-        self.momentum = hyperparameters['momentum']
-        self.solver = hyperparameters['solver']
-        self.num_epochs = hyperparameters['num_epochs']
-        self.reduce_on_plateau = hyperparameters['reduce_on_plateau']
+        self.n_components = hyperparameters.get('n_components', 10)
+        self.model_type = hyperparameters.get('model_type', 'prodLDA')
+        self.hidden_sizes = hyperparameters.get('hidden_sizes', (100,100))
+        self.activation = hyperparameters.get('activation', 'softplus')
+        self.dropout = hyperparameters.get('dropout', 0.2)
+        self.learn_priors = hyperparameters.get('learn_priors', True)
+        self.batch_size = hyperparameters.get('batch_size', 64)
+        self.lr = hyperparameters.get('lr', 2e-3)
+        self.momentum = hyperparameters.get('momentum', 0.99)
+        self.solver = hyperparameters.get('solver', 'adam')
+        self.num_epochs = hyperparameters.get('num_epochs', 100)
+        self.reduce_on_plateau = hyperparameters.get('reduce_on_plateau', False)
         
         self.X_train, self.input_size = self.preprocess(dataset.get_corpus())
       
