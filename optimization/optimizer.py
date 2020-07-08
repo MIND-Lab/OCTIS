@@ -132,7 +132,7 @@ class Optimizer():
 
         self.optimization_type = default_parameters['optimization_type']
 
-        if( (default_parameters["save_models"] == True) and (default_parameters["save_path"] != None) ):
+        if( (default_parameters["save_models"] == True) and (default_parameters["save_path"] is not None) ):
             model_path = default_parameters["save_path"] + "models/"
             Path(model_path).mkdir(parents=True, exist_ok=True)
         
@@ -170,7 +170,7 @@ class Optimizer():
             nome_giusto = str(self.actual_call) + "_" + str(self.actual_iteration) # "/nIterazione_nRun"
             if( path == None ):
                 save_model_path = default_parameters["save_path"] + "models/" + nome_giusto
-            if( path != None ):
+            if( path is not None ):
                 if( path[-1] != '/' ):
                     path = path+'/'
                 save_model_path = path + nome_giusto
@@ -220,32 +220,31 @@ class Optimizer():
                               minimizer=default_parameters["minimizer"],
                               number_of_call=default_parameters["n_calls"],
                               different_iteration = default_parameters["different_iteration"],
-                            kernel=default_parameters["kernel"],
-                            acq_func=default_parameters["acq_func"],
-                            base_estimator_forest=default_parameters["base_estimator"],
-                            random_state = default_parameters["random_state"],
-                            noise_level = default_parameters["noise"],
-                            alpha=default_parameters["alpha"],
-                            kappa=default_parameters["kappa"],
-                            X0=default_parameters["x0"],
-                            Y0=default_parameters["y0"],
-                            time_x0=default_parameters["time_x0"],
-                            n_random_starts=default_parameters["n_random_starts"],
-                            save=default_parameters["save"],
-                            save_step=default_parameters["save_step"],
-                            save_name=default_parameters["save_name"],
-                            save_path=default_parameters["save_path"],
-                            early_stop=default_parameters["early_stop"],
-                            early_step=default_parameters["early_step"],
-                            plot = default_parameters["plot"],
-                            plot_name = default_parameters["plot_name"],
-                            log_scale_plot = default_parameters["log_scale_plot"],
-                            verbose = default_parameters["verbose"],
-                            n_points = default_parameters["n_points"],
-                            xi  = default_parameters["xi"],
-                            n_jobs = default_parameters["n_jobs"],
-                            model_queue_size = default_parameters["model_queue_size"]
-        ):
+                              kernel=default_parameters["kernel"],
+                              acq_func=default_parameters["acq_func"],
+                              base_estimator_forest=default_parameters["base_estimator"],
+                              random_state = default_parameters["random_state"],
+                              noise_level = default_parameters["noise"],
+                              alpha=default_parameters["alpha"],
+                              kappa=default_parameters["kappa"],
+                              X0=default_parameters["x0"],
+                              Y0=default_parameters["y0"],
+                              time_x0=default_parameters["time_x0"],
+                              n_random_starts=default_parameters["n_random_starts"],
+                              save=default_parameters["save"],
+                              save_step=default_parameters["save_step"],
+                              save_name=default_parameters["save_name"],
+                              save_path=default_parameters["save_path"],
+                              early_stop=default_parameters["early_stop"],
+                              early_step=default_parameters["early_step"],
+                              plot = default_parameters["plot"],
+                              plot_name = default_parameters["plot_name"],
+                              log_scale_plot = default_parameters["log_scale_plot"],
+                              verbose = default_parameters["verbose"],
+                              n_points = default_parameters["n_points"],
+                              xi  = default_parameters["xi"],
+                              n_jobs = default_parameters["n_jobs"],
+                              model_queue_size = default_parameters["model_queue_size"]):
         """
             Bayesian_optimization
 
@@ -369,11 +368,11 @@ class Optimizer():
         
         """  
     
-        if( number_of_call <= 0 ):
+        if number_of_call <= 0:
             print("Error: number_of_call can't be <= 0")
             return None
 
-        if( different_iteration <= 2 ): 
+        if different_iteration <= 2:
             print("Error: different iteration should be 3 or more")
             return None
         
@@ -381,26 +380,26 @@ class Optimizer():
         #dimensioni = len( bounds )
         checkpoint_saver = [None] * different_iteration
 
-        if( X0 == [None] ):
+        if X0 == [None]:
             x0 = [None]*different_iteration
         else:
             x0 = X0
             
-        if( Y0 == [None] ):
+        if Y0 == [None]:
             y0 = [None]*different_iteration
         else:
             y0 = Y0
 
-        if( default_parameters["minimizer"] == gp_minimize ):
+        if default_parameters["minimizer"] == gp_minimize:
             minimizer_stringa = "gp_minimize"
         
-        if( default_parameters["minimizer"] == dummy_minimize ):
+        if default_parameters["minimizer"] == dummy_minimize:
             minimizer_stringa = "random_minimize"
 
-        if( default_parameters["minimizer"] == forest_minimize ):
+        if default_parameters["minimizer"] == forest_minimize:
             minimizer_stringa = "forest_minimize"
 
-        if( (save == True) and (save_path != None) ):
+        if save and save_path is not None:
             Path(save_path).mkdir(parents=True, exist_ok=True)
 
 
@@ -416,11 +415,11 @@ class Optimizer():
 
 
         #Dummy Minimize
-        if( minimizer == dummy_minimize ):
-            if( save_path != None ):
+        if minimizer == dummy_minimize:
+            if save_path is not None:
                 save_name = save_path + save_name 
 
-            if(not save and not early_stop):
+            if not save and not early_stop:
                 for i in range( different_iteration ):
                     res.append( dummy_minimize(f, 
                                             bounds, 
@@ -529,17 +528,15 @@ class Optimizer():
 
                         time_eval.append(time_t)
 
-                        save_csv(name_csv = save_name + ".csv",
-                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
-                        hyperparameters_name = self.hyperparameters, 
-                        num_topic = self.model.hyperparameters['num_topics'], 
-                        Surrogate = minimizer_stringa,
-                        Acquisition = acq_func,
-                        Time = time_eval, 
-                        res = res,
-                        Maximize = (self.optimization_type == 'Maximize'),
-                        time_x0 = time_x0  )
-
+                        save_csv(name_csv=save_name + ".csv",
+                                 dataset_name=self.dataset.get_metadata()["info"]["name"],
+                                 hyperparameters_name = self.hyperparameters,
+                                 num_topic = self.model.hyperparameters['num_topics'],
+                                 Surrogate = minimizer_stringa,
+                                 Acquisition = acq_func,
+                                 Time = time_eval, res = res,
+                                 Maximize = (self.optimization_type == 'Maximize'),
+                                 time_x0 = time_x0  )
 
                         if plot:
                             name = plot_name + ".png"
@@ -570,23 +567,21 @@ class Optimizer():
 
                         save_csv(name_csv = save_name + ".csv",
                                  dataset_name = self.dataset.metadata.name ,
-                                hyperparameters_name = self.hyperparameters,
-                                num_topic = self.model.hyperparameters['num_topics'],
-                                Surrogate = minimizer_stringa, Acquisition = acq_func,
-                                Time=time_eval, res=res,
-                        Maximize=(self.optimization_type == 'Maximize'),
-                        time_x0=time_x0 )
+                                 hyperparameters_name = self.hyperparameters,
+                                 num_topic = self.model.hyperparameters['num_topics'],
+                                 Surrogate = minimizer_stringa, Acquisition = acq_func,
+                                 Time=time_eval, res=res,
+                                 Maximize=(self.optimization_type == 'Maximize'),
+                                 time_x0=time_x0 )
 
                         if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                         number_of_call_r = number_of_call_r - save_step
 
-            elif (not save and early_stop):
-
-                for i in range( different_iteration ):
-
-                    res_temp=dummy_minimize(f,
+            elif not save and early_stop:
+                for i in range(different_iteration):
+                    res_temp = dummy_minimize(f,
                                             bounds, 
                                             n_calls=number_of_call, 
                                             x0=x0[i], 
@@ -701,7 +696,7 @@ class Optimizer():
 
         #Forest Minimize
         if( minimizer == forest_minimize ):
-            if( save_path != None ):
+            if save_path is not None:
                 save_name = save_path + save_name 
 
             if(not save and not early_stop):
@@ -758,7 +753,7 @@ class Optimizer():
                 for i in range( different_iteration ):
                     save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
-                    if( x0[i] == None ):
+                    if( x0[i] is None ):
                         len_x0 = 0
                     else:
                         len_x0 = len( x0[i] )
@@ -980,7 +975,7 @@ class Optimizer():
                     save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver(save_name_t) #save
 
-                    if x0[i] == None:
+                    if x0[i] is None:
                         len_x0 = 0
                     else:
                         len_x0 = len(x0[i])
@@ -1044,7 +1039,7 @@ class Optimizer():
                             save_name_t = "./" + save_name + str(i) + ".pkl"
                             checkpoint_saver_t = CheckpointSaver( save_name_t ) #save
 
-                            if( x0[i] == None ):
+                            if( x0[i] is None ):
                                 len_x0 = 0
                             else:
                                 len_x0 = len( x0[i] )
@@ -1104,7 +1099,7 @@ class Optimizer():
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
 
-                            if( x0[i] == None ):
+                            if( x0[i] is None ):
                                 len_x0 = 0
                             else:
                                 len_x0 = len( x0[i] )
@@ -1185,7 +1180,7 @@ class Optimizer():
                                     random_state=random_state,
                                     model_queue_size=model_queue_size )
 
-                    if( x0[i] != None and y0[i] != None):
+                    if( x0[i] is not None and y0[i] is not None):
                         opt.tell(x0[i], y0[i], fit=True)
                     res.append( opt.run(f, number_of_call) )
 
@@ -1212,7 +1207,7 @@ class Optimizer():
                                     random_state=random_state,
                                     model_queue_size=model_queue_size )
 
-                    if( x0[i] != None and y0[i] != None):
+                    if( x0[i] is not None and y0[i] is not None):
                         opt.tell(x0[i], y0[i], fit=True)
 
                     res_t = opt.run(f, number_of_call)
@@ -1249,7 +1244,7 @@ class Optimizer():
                                     random_state=random_state,
                                     model_queue_size=model_queue_size )
 
-                    if( x0[i] != None and y0[i] != None):
+                    if( x0[i] is not None and y0[i] is not None):
                         opt.tell(x0[i], y0[i], fit=True)
 
                     res_t = opt.run(f, save_step)
@@ -1414,7 +1409,7 @@ class Optimizer():
                                         random_state=random_state,
                                         model_queue_size=model_queue_size )
 
-                        if( x0[i] != None and y0[i] != None):
+                        if( x0[i] is not None and y0[i] is not None):
                             opt.tell(x0[i], y0[i], fit=True)
 
                         res_t = opt.run(f, early_step)
@@ -1533,7 +1528,7 @@ class Optimizer():
                                         random_state=random_state,
                                         model_queue_size=model_queue_size )
 
-                        if( x0[i] != None and y0[i] != None):
+                        if( x0[i] is not None and y0[i] is not None):
                             opt.tell(x0[i], y0[i], fit=True)
 
                         res_t = opt.run(f, save_step)
@@ -1606,14 +1601,11 @@ class Optimizer():
                                                             n_restarts_optimizer=0,
                                                             random_state = random_state)
     
-                                opt = skopt_optimizer(bounds, 
-                                        base_estimator=gpr, 
-                                        acq_func=acq_func,
-                                        n_random_starts = 0,
-                                        n_initial_points= 0,
-                                        acq_optimizer="sampling", 
-                                        random_state=random_state,
-                                        model_queue_size=model_queue_size )
+                                opt = skopt_optimizer(bounds, base_estimator=gpr,
+                                                      acq_func=acq_func, n_random_starts=0,
+                                                      n_initial_points=0, acq_optimizer="sampling",
+                                                      random_state=random_state,
+                                                      model_queue_size=model_queue_size )
 
                                 opt.tell(x0_restored, y0_restored, fit=True)
 
@@ -1663,52 +1655,52 @@ class Optimizer():
 
         # Optimization call
         optimize_result = self.Bayesian_optimization(
-                            f = self._objective_function,
+                            f=self._objective_function,
                             bounds = params_space_list,
                             minimizer = default_parameters["minimizer"],
-                            number_of_call = default_parameters["n_calls"],
-                            different_iteration = default_parameters["different_iteration"],
-                            kernel = default_parameters["kernel"],
-                            acq_func = default_parameters["acq_func"],
+                            number_of_call=default_parameters["n_calls"],
+                            different_iteration=default_parameters["different_iteration"],
+                            kernel=default_parameters["kernel"],
+                            acq_func=default_parameters["acq_func"],
                             base_estimator_forest=default_parameters["base_estimator"],
-                            random_state = default_parameters["random_state"],
-                            noise_level = default_parameters["noise"],
-                            alpha = default_parameters["alpha"],
-                            kappa = default_parameters["kappa"],
-                            X0 = default_parameters["x0"],
-                            Y0 = default_parameters["y0"],
-                            time_x0 = default_parameters ["time_x0"],
-                            n_random_starts = default_parameters["n_random_starts"],
-                            save = default_parameters["save"],
-                            save_step = default_parameters["save_step"],
-                            save_name = default_parameters["save_name"],
-                            save_path = default_parameters["save_path"],
-                            early_stop = default_parameters["early_stop"],
-                            early_step = default_parameters["early_step"],
-                            plot = default_parameters["plot"],
-                            plot_name = default_parameters["plot_name"],
-                            log_scale_plot = default_parameters["log_scale_plot"],
-                            verbose = default_parameters["verbose"],
-                            n_points = default_parameters["n_points"],
-                            xi  = default_parameters["xi"],
-                            n_jobs = default_parameters["n_jobs"],
-                            model_queue_size = default_parameters["model_queue_size"]
+                            random_state=default_parameters["random_state"],
+                            noise_level=default_parameters["noise"],
+                            alpha=default_parameters["alpha"],
+                            kappa=default_parameters["kappa"],
+                            X0=default_parameters["x0"],
+                            Y0=default_parameters["y0"],
+                            time_x0=default_parameters ["time_x0"],
+                            n_random_starts=default_parameters["n_random_starts"],
+                            save=default_parameters["save"],
+                            save_step=default_parameters["save_step"],
+                            save_name=default_parameters["save_name"],
+                            save_path=default_parameters["save_path"],
+                            early_stop=default_parameters["early_stop"],
+                            early_step=default_parameters["early_step"],
+                            plot=default_parameters["plot"],
+                            plot_name=default_parameters["plot_name"],
+                            log_scale_plot=default_parameters["log_scale_plot"],
+                            verbose=default_parameters["verbose"],
+                            n_points=default_parameters["n_points"],
+                            xi =default_parameters["xi"],
+                            n_jobs=default_parameters["n_jobs"],
+                            model_queue_size=default_parameters["model_queue_size"]
         )    
 
 
         # To have the right result
         if self.optimization_type == 'Maximize':
-            for i in range( len(optimize_result) ):
+            for i in range(len(optimize_result)):
                 optimize_result[i].fun = - optimize_result[i].fun
                 for j in range( len(optimize_result[i].func_vals) ):
                     optimize_result[i].func_vals[j] = - optimize_result[i].func_vals[j]
 
-            if( default_parameters["plot"] ):
-                tool.plot_bayesian_optimization( list_of_res = optimize_result, 
-                                    name_plot = default_parameters["plot_name"],
-                                    log_scale = default_parameters["log_scale_plot"], 
-                                    path = default_parameters["save_path"],
-                                    conv_min = False)
+            if default_parameters["plot"]:
+                tool.plot_bayesian_optimization(list_of_res=optimize_result,
+                                                name_plot=default_parameters["plot_name"],
+                                                log_scale=default_parameters["log_scale_plot"],
+                                                path=default_parameters["save_path"],
+                                                conv_min=False)
 
 
         # Create Best_evaluation object from optimization results
