@@ -3,7 +3,7 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
-from Avitm.pytorchavitm.avitm.inference_network import InferenceNetwork
+from models.pytorchavitm.avitm.inference_network import InferenceNetwork
 
 
 class DecoderNetwork(nn.Module):

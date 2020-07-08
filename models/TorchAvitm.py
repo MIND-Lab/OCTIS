@@ -33,22 +33,22 @@ class TorchAvitm(Abstract_Model):
         reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
     """
 
-    def train_model(self, dataset, hyparameters):
+    def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True, topic_document_matrix=True):
+
+        self.n_components = hyperparameters['n_components']
+        self.model_type = hyperparameters['model_type']
+        self.hidden_sizes = hyperparameters['hidden_sizes']
+        self.activation = hyperparameters['activation']
+        self.dropout = hyperparameters['dropout']
+        self.learn_priors = hyperparameters['learn_priors']
+        self.batch_size = hyperparameters['batch_size']
+        self.lr = hyperparameters['lr']
+        self.momentum = hyperparameters['momentum']
+        self.solver = hyperparameters['solver']
+        self.num_epochs = hyperparameters['num_epochs']
+        self.reduce_on_plateau = hyperparameters['reduce_on_plateau']
         
-        self.n_components = hyparameters['n_components']
-        self.model_type = hyparameters['model_type']
-        self.hidden_sizes = hyparameters['hidden_sizes']
-        self.activation = hyparameters['activation']
-        self.dropout = hyparameters['dropout']
-        self.learn_priors = hyparameters['learn_priors']
-        self.batch_size = hyparameters['batch_size']
-        self.lr = hyparameters['lr']
-        self.momentum = hyparameters['momentum']
-        self.solver = hyparameters['solver']
-        self.num_epochs = hyparameters['num_epochs']
-        self.reduce_on_plateau = hyparameters['reduce_on_plateau']
-        
-        self.X_train, self.input_size = self.preprocess(dataset)
+        self.X_train, self.input_size = self.preprocess(dataset.get_corpus())
       
         self.avitm_model = avitm.AVITM(input_size=self.input_size, n_components=self.n_components,
                                   model_type=self.model_type,hidden_sizes=self.hidden_sizes, 
@@ -62,7 +62,6 @@ class TorchAvitm(Abstract_Model):
         result = self.avitm_model.get_info()
         
         return result 
-    
 
     
     @staticmethod
@@ -77,7 +76,7 @@ class TorchAvitm(Abstract_Model):
         vec = CountVectorizer()
         X = vec.fit_transform(data)
         idx2token = {v: k for (k, v) in vec.vocabulary_.items()} 
-        train_data = datasets.BOWDataset(X.toarray(), idx2token)
+        #train_data = datasets.BOWDataset(X.toarray(), idx2token)
         train_bow = to_bow(X.toarray(), len(idx2token.keys()))
         train_data = datasets.BOWDataset(train_bow, idx2token)
         input_size = len(idx2token.keys())
