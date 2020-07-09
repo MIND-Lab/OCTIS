@@ -40,7 +40,7 @@ class TorchAvitm(Abstract_Model):
         
         X_train, input_size = self.preprocess(data_corpus)
       
-        avitm_model = avitm.AVITM(input_size=input_size, n_components=self.hyperparameters['n_components'],
+        avitm_model = avitm.AVITM(input_size=input_size, n_components=self.hyperparameters['num_topics'],
                                   model_type=self.hyperparameters['model_type'],
                                   hidden_sizes=self.hyperparameters['hidden_sizes'],
                                   activation=self.hyperparameters['activation'],
@@ -59,27 +59,30 @@ class TorchAvitm(Abstract_Model):
         return result
 
     def set_default_hyperparameters(self, hyperparameters):
-        self.hyperparameters['n_components'] = hyperparameters.get('n_components',
-                                                                   self.hyperparameters.get('n_components', 10))
-        self.hyperparameters['model_type'] = hyperparameters.get('model_type',
-                                                                 self.hyperparameters.get('model_type', 'prodLDA'))
-        self.hyperparameters['hidden_sizes'] = hyperparameters.get('hidden_sizes',
-                                                                   self.hyperparameters.get('hidden_sizes', (100, 100)))
-        self.hyperparameters['activation'] = hyperparameters.get('activation',
-                                                                 self.hyperparameters.get('activation', 'softplus'))
-        self.hyperparameters['dropout'] = hyperparameters.get('dropout', self.hyperparameters.get('dropout', 0.2))
-        self.hyperparameters['learn_priors'] = hyperparameters.get('learn_priors',
-                                                                   self.hyperparameters.get('learn_priors', True))
-        self.hyperparameters['batch_size'] = hyperparameters.get('batch_size',
-                                                                 self.hyperparameters.get('batch_size', 64))
-        self.hyperparameters['lr'] = hyperparameters.get('lr', self.hyperparameters.get('lr', 2e-3))
-        self.hyperparameters['momentum'] = hyperparameters.get('momentum', self.hyperparameters.get('momentum', 0.99))
-        self.hyperparameters['solver'] = hyperparameters.get('solver', self.hyperparameters.get('solver', 'adam'))
-        self.hyperparameters['num_epochs'] = hyperparameters.get('num_epochs',
-                                                                 self.hyperparameters.get('num_epochs', 100))
-        self.hyperparameters['reduce_on_plateau'] = hyperparameters.get('reduce_on_plateau',
-                                                                        self.hyperparameters.get('reduce_on_plateau',
-                                                                                                 False))
+        self.hyperparameters['num_topics'] = hyperparameters.get(
+            'num_topics', self.hyperparameters.get('num_topics', 10))
+        self.hyperparameters['model_type'] = hyperparameters.get(
+            'model_type',self.hyperparameters.get('model_type', 'prodLDA'))
+        self.hyperparameters['hidden_sizes'] = hyperparameters.get(
+            'hidden_sizes', self.hyperparameters.get('hidden_sizes', (100, 100)))
+        self.hyperparameters['activation'] = hyperparameters.get(
+            'activation', self.hyperparameters.get('activation', 'softplus'))
+        self.hyperparameters['dropout'] = hyperparameters.get(
+            'dropout', self.hyperparameters.get('dropout', 0.2))
+        self.hyperparameters['learn_priors'] = hyperparameters.get(
+            'learn_priors', self.hyperparameters.get('learn_priors', True))
+        self.hyperparameters['batch_size'] = hyperparameters.get(
+            'batch_size', self.hyperparameters.get('batch_size', 64))
+        self.hyperparameters['lr'] = hyperparameters.get(
+            'lr', self.hyperparameters.get('lr', 2e-3))
+        self.hyperparameters['momentum'] = hyperparameters.get(
+            'momentum', self.hyperparameters.get('momentum', 0.99))
+        self.hyperparameters['solver'] = hyperparameters.get(
+            'solver', self.hyperparameters.get('solver', 'adam'))
+        self.hyperparameters['num_epochs'] = hyperparameters.get(
+            'num_epochs', self.hyperparameters.get('num_epochs', 100))
+        self.hyperparameters['reduce_on_plateau'] = hyperparameters.get(
+            'reduce_on_plateau', self.hyperparameters.get('reduce_on_plateau', False))
 
     @staticmethod
     def preprocess(data):
