@@ -54,7 +54,7 @@ class TorchAvitm(Abstract_Model):
                                   reduce_on_plateau=self.hyperparameters['reduce_on_plateau'])
     
         avitm_model.fit(X_train)
-        result = self.avitm_model.get_info()
+        result = avitm_model.get_info()
         
         return result
 
