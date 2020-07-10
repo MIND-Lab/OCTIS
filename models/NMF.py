@@ -6,7 +6,7 @@ from sklearn.decomposition import DictionaryLearning
 from gensim.models import nmf
 import gensim.corpora as corpora
 import configuration.citations as citations
-
+import scipy.sparse
 
 class NMF_gensim(Abstract_Model):
 
@@ -217,12 +217,13 @@ class NMF_scikit(Abstract_Model):
                  'topic-document-matrix'
         """
         if self.id2word == None or self.id_corpus == None:
-            vectorizer = TfidfVectorizer()
+            vectorizer = TfidfVectorizer(min_df=0.0)
             corpus = dataset.get_corpus()
             real_corpus = []
             for document in corpus:
                 real_corpus.append(" ".join(document))
             X = vectorizer.fit_transform(real_corpus)
+            X = X.todense()
 
             lista = vectorizer.get_feature_names()
             self.id2word = {i: lista[i] for i in range(0, len(lista))}
@@ -242,11 +243,12 @@ class NMF_scikit(Abstract_Model):
             n_components=self.hyperparameters["num_topics"],
             init=self.hyperparameters["init"],
             alpha=self.hyperparameters["alpha"],
-            l1_ratio=self.hyperparameters["l1_ratio"],
-            random_state=0)
+            l1_ratio=self.hyperparameters["l1_ratio"])
 
-        W = model.fit_transform(self.id_corpus)
+        W = model.fit_transform(X)
+        W = W / W.sum(axis=1, keepdims=True)
         H = model.components_
+        H = H / H.sum(axis=1, keepdims=True)
 
         result = {}
 
@@ -264,13 +266,13 @@ class NMF_scikit(Abstract_Model):
                # NOT IMPLEMENTED YET
 
                 if topic_word_matrix:
-                    result["test-topic-word-matrix"] = H
+                    result["test-topic-word-matrix"] = W
 
                 if topics > 0:
-                    result["test-topics"] = self.get_topics(H, topics)
+                    result["test-topics"] = self.get_topics(W, topics)
 
                 if topic_document_matrix:
-                    result["test-topic-document-matrix"] = W
+                    result["test-topic-document-matrix"] = H
 
             else:
                 result["test-document-topic-matrix"] = model.transform(

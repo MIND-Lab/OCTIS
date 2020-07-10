@@ -22,7 +22,7 @@ def _load_default_texts():
 
 em_coherence = {
     'texts': _load_default_texts(),
-    'topn': 10,
+    'topk': 10,
     'measure': 'c_npmi'
 }
 
