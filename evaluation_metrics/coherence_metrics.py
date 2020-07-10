@@ -239,8 +239,14 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
             result = 0
             for topic in self.topics:
                 E = []
+
                 # average vector of the words in topic (centroid)
-                t = [0] * len(self.wv.__getitem__(topic[0]))
+                len_word_embedding = 0
+                for word in topic:
+                    if word in self.wv.vocab:
+                        len_word_embedding = len(self.wv.__getitem__(word))
+
+                t = [0] * len_word_embedding
 
                 # Create matrix E (normalize word embeddings of
                 # words represented as vectors in wv) and
