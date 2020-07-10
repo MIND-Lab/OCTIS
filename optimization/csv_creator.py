@@ -232,3 +232,48 @@ def upload_csv(name_csv,
 
     for row in save_csv:
         writer.writerow(row)
+
+
+def add_column(name_csv,
+            column_name,
+            column_data):
+    """
+        Upload name_csv.
+        Append the data column_data.
+
+        Parameters
+        ----------
+        name_csv : [string] name of the .csv file
+
+        column_name : [string] name of the column you want to add
+
+        column_data : [list] list of value you want to add in the last column.
+                        MUST be long as the other columns.
+    """
+
+    csvfile_r = open(name_csv, 'r', newline='')
+    read = csv.reader(csvfile_r)
+
+    save_csv = [] #list of list
+    for row in read:
+        save_csv.append(row)
+
+
+    flag = False
+    cont = 0
+    for row in save_csv:
+        if( flag ):
+            row.append(column_data[cont])
+            cont = cont + 1
+        else:
+            row.append(column_name)
+        flag = True
+
+
+
+    
+    csvfile_w = open(name_csv, 'w', newline='')
+    writer = csv.writer(csvfile_w, quoting=csv.QUOTE_ALL)
+
+    for row in save_csv:
+        writer.writerow(row)
