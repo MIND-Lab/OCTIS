@@ -17,7 +17,7 @@ class Abstract_Model(ABC):
         """
 
     @abstractmethod
-    def train_model(self, dataset, hyperparameters):
+    def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True, topic_document_matrix=True):
         """
         Train the model.
         Return a dictionary with up to 3 entries,
@@ -54,7 +54,7 @@ def save_model_output(model_output, path=os.curdir, appr_order=7):
         **to_save)
 
 
-def load_model_output(output_path, vocabulary_path=None, topics=10):
+def load_model_output(output_path, vocabulary_path=None, top_words=10):
     """
     Loads a model output from the choosen directory
 
@@ -63,7 +63,7 @@ def load_model_output(output_path, vocabulary_path=None, topics=10):
     output_path: path in which th model output is saved
     topics_path: path in which the vocabulary is saved
                  (optional, used to retrieve the top k words of each topic)
-    topics: top k words to retrieve for each topic
+    top_words: top k words to retrieve for each topic
             (in case a vocabulary path is given)
     """
     output = dict(np.load(output_path))
@@ -74,7 +74,7 @@ def load_model_output(output_path, vocabulary_path=None, topics=10):
 
         topics_output = []
         for topic in output["topic-word-matrix"]:
-            top_k = np.argsort(topic)[-topics:]
+            top_k = np.argsort(topic)[-top_words:]
             top_k_words = list(reversed([vocabulary[str(i)] for i in top_k]))
             topics_output.append(top_k_words)
 

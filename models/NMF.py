@@ -41,7 +41,7 @@ class NMF_gensim(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, topics=10,
+    def train_model(self, dataset, hyperparameters={}, top_words=10,
                     topic_word_matrix=True, topic_document_matrix=True):
         """
         Train the model and return output
@@ -50,7 +50,7 @@ class NMF_gensim(Abstract_Model):
         ----------
         dataset : dataset to use to build the model
         hyperparameters : hyperparameters to build the model
-        topics : if greather than 0 returns the most significant words
+        top_words : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
         topic_word_matrix : if True returns the topic word matrix in the output
@@ -89,10 +89,10 @@ class NMF_gensim(Abstract_Model):
         if topic_word_matrix:
             result["topic-word-matrix"] = self.trained_model.get_topics()
 
-        if topics > 0:
+        if top_words > 0:
             topics_output = []
             for topic in result["topic-word-matrix"]:
-                top_k = np.argsort(topic)[-topics:]
+                top_k = np.argsort(topic)[-top_words:]
                 top_k_words = list(reversed([self.id2word[i] for i in top_k]))
                 topics_output.append(top_k_words)
             result["topics"] = topics_output
@@ -110,10 +110,10 @@ class NMF_gensim(Abstract_Model):
                 if topic_word_matrix:
                     result["test-topic-word-matrix"] = self.trained_model.get_topics()
 
-                if topics > 0:
+                if top_words > 0:
                     topics_output = []
                     for topic in result["test-topic-word-matrix"]:
-                        top_k = np.argsort(topic)[-topics:]
+                        top_k = np.argsort(topic)[-top_words:]
                         top_k_words = list(
                             reversed([self.id2word[i] for i in top_k]))
                         topics_output.append(top_k_words)

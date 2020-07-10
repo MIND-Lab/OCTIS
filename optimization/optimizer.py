@@ -132,7 +132,7 @@ class Optimizer():
 
         self.optimization_type = default_parameters['optimization_type']
 
-        if( (default_parameters["save_models"] == True) and (default_parameters["save_path"] != None) ):
+        if( (default_parameters["save_models"] == True) and (default_parameters["save_path"] is not None) ):
             model_path = default_parameters["save_path"] + "models/"
             Path(model_path).mkdir(parents=True, exist_ok=True)
         
@@ -170,7 +170,7 @@ class Optimizer():
             nome_giusto = str(self.actual_call) + "_" + str(self.actual_iteration) # "/nIterazione_nRun"
             if( path == None ):
                 save_model_path = default_parameters["save_path"] + "models/" + nome_giusto
-            if( path != None ):
+            if( path is not None ):
                 if( path[-1] != '/' ):
                     path = path+'/'
                 save_model_path = path + nome_giusto
@@ -214,38 +214,37 @@ class Optimizer():
 
         return result
 
-    def Bayesian_optimization(self,
-                            f ,#= self.self._objective_function,#
-                            bounds ,#= params_space_list,#
-                            minimizer = default_parameters["minimizer"],
-                            number_of_call = default_parameters["n_calls"],
-                            different_iteration = default_parameters["different_iteration"],
-                            kernel = default_parameters["kernel"],
-                            acq_func = default_parameters["acq_func"],
-                            base_estimator_forest=default_parameters["base_estimator"],
-                            random_state = default_parameters["random_state"],
-                            noise_level = default_parameters["noise"],
-                            alpha = default_parameters["alpha"],
-                            kappa = default_parameters["kappa"],
-                            X0 = default_parameters["x0"],
-                            Y0 = default_parameters["y0"],
-                            time_x0 = default_parameters["time_x0"],
-                            n_random_starts = default_parameters["n_random_starts"],
-                            save = default_parameters["save"],
-                            save_step = default_parameters["save_step"],
-                            save_name = default_parameters["save_name"],
-                            save_path = default_parameters["save_path"],
-                            early_stop = default_parameters["early_stop"],
-                            early_step = default_parameters["early_step"],
-                            plot = default_parameters["plot"],
-                            plot_name = default_parameters["plot_name"],
-                            log_scale_plot = default_parameters["log_scale_plot"],
-                            verbose = default_parameters["verbose"],
-                            n_points = default_parameters["n_points"],
-                            xi  = default_parameters["xi"],
-                            n_jobs = default_parameters["n_jobs"],
-                            model_queue_size = default_parameters["model_queue_size"]
-        ):
+
+    def Bayesian_optimization(self, f ,#= self.self._objective_function,#
+                              bounds,#= params_space_list,#
+                              minimizer=default_parameters["minimizer"],
+                              number_of_call=default_parameters["n_calls"],
+                              different_iteration = default_parameters["different_iteration"],
+                              kernel=default_parameters["kernel"],
+                              acq_func=default_parameters["acq_func"],
+                              base_estimator_forest=default_parameters["base_estimator"],
+                              random_state = default_parameters["random_state"],
+                              noise_level = default_parameters["noise"],
+                              alpha=default_parameters["alpha"],
+                              kappa=default_parameters["kappa"],
+                              X0=default_parameters["x0"],
+                              Y0=default_parameters["y0"],
+                              time_x0=default_parameters["time_x0"],
+                              n_random_starts=default_parameters["n_random_starts"],
+                              save=default_parameters["save"],
+                              save_step=default_parameters["save_step"],
+                              save_name=default_parameters["save_name"],
+                              save_path=default_parameters["save_path"],
+                              early_stop=default_parameters["early_stop"],
+                              early_step=default_parameters["early_step"],
+                              plot = default_parameters["plot"],
+                              plot_name = default_parameters["plot_name"],
+                              log_scale_plot = default_parameters["log_scale_plot"],
+                              verbose = default_parameters["verbose"],
+                              n_points = default_parameters["n_points"],
+                              xi  = default_parameters["xi"],
+                              n_jobs = default_parameters["n_jobs"],
+                              model_queue_size = default_parameters["model_queue_size"]):
         """
             Bayesian_optimization
 
@@ -369,11 +368,11 @@ class Optimizer():
         
         """  
     
-        if( number_of_call <= 0 ):
+        if number_of_call <= 0:
             print("Error: number_of_call can't be <= 0")
             return None
 
-        if( different_iteration <= 2 ): 
+        if different_iteration <= 2:
             print("Error: different iteration should be 3 or more")
             return None
         
@@ -381,26 +380,26 @@ class Optimizer():
         #dimensioni = len( bounds )
         checkpoint_saver = [None] * different_iteration
 
-        if( X0 == [None] ):
+        if X0 == [None]:
             x0 = [None]*different_iteration
         else:
             x0 = X0
             
-        if( Y0 == [None] ):
+        if Y0 == [None]:
             y0 = [None]*different_iteration
         else:
             y0 = Y0
 
-        if( default_parameters["minimizer"] == gp_minimize ):
+        if default_parameters["minimizer"] == gp_minimize:
             minimizer_stringa = "gp_minimize"
         
-        if( default_parameters["minimizer"] == dummy_minimize ):
+        if default_parameters["minimizer"] == dummy_minimize:
             minimizer_stringa = "random_minimize"
 
-        if( default_parameters["minimizer"] == forest_minimize ):
+        if default_parameters["minimizer"] == forest_minimize:
             minimizer_stringa = "forest_minimize"
 
-        if( (save == True) and (save_path != None) ):
+        if save and save_path is not None:
             Path(save_path).mkdir(parents=True, exist_ok=True)
 
 
@@ -416,11 +415,11 @@ class Optimizer():
 
 
         #Dummy Minimize
-        if( minimizer == dummy_minimize ):
-            if( save_path != None ):
+        if minimizer == dummy_minimize:
+            if save_path is not None:
                 save_name = save_path + save_name 
 
-            if( save == False and early_stop == False ):
+            if not save and not early_stop:
                 for i in range( different_iteration ):
                     res.append( dummy_minimize(f, 
                                             bounds, 
@@ -431,11 +430,11 @@ class Optimizer():
                                             verbose= verbose,
                                             model_queue_size=model_queue_size ) )
                                             
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
             
-            elif ( ( save_step >= number_of_call and save == True ) and  ( early_step >= number_of_call or early_stop == False ) ):
+            elif ( ( save_step >= number_of_call and save) and  ( early_step >= number_of_call or not early_stop) ):
                 for i in range( different_iteration ):
                     save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
@@ -450,11 +449,11 @@ class Optimizer():
                                             verbose= verbose,
                                             model_queue_size=model_queue_size ) )
                 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
             
-            elif ( save == True and early_stop == False ):
+            elif ( save and not early_stop):
 
                 time_eval = []
 
@@ -492,7 +491,7 @@ class Optimizer():
                         Maximize = (self.optimization_type == 'Maximize'),
                         time_x0 = time_x0 )
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -529,19 +528,17 @@ class Optimizer():
 
                         time_eval.append(time_t)
 
-                        save_csv(name_csv = save_name + ".csv",
-                        dataset_name = self.dataset.get_metadata()["info"]["name"] , 
-                        hyperparameters_name = self.hyperparameters, 
-                        num_topic = self.model.hyperparameters['num_topics'], 
-                        Surrogate = minimizer_stringa,
-                        Acquisition = acq_func,
-                        Time = time_eval, 
-                        res = res,
-                        Maximize = (self.optimization_type == 'Maximize'),
-                        time_x0 = time_x0  )
+                        save_csv(name_csv=save_name + ".csv",
+                                 dataset_name=self.dataset.get_metadata()["info"]["name"],
+                                 hyperparameters_name = self.hyperparameters,
+                                 num_topic = self.model.hyperparameters['num_topics'],
+                                 Surrogate = minimizer_stringa,
+                                 Acquisition = acq_func,
+                                 Time = time_eval, res = res,
+                                 Maximize = (self.optimization_type == 'Maximize'),
+                                 time_x0 = time_x0  )
 
-
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                         number_of_call_r = number_of_call_r - save_step
@@ -555,15 +552,12 @@ class Optimizer():
 
                             start_time = time.time()
 
-                            res[i] = dummy_minimize(f, 
-                                                bounds, 
-                                                n_calls=number_of_call_r, 
-                                                x0=x0_restored, 
-                                                y0=y0_restored,
-                                                callback=[checkpoint_saver[i] ], 
-                                                random_state=random_state,
-                                                verbose= verbose,
-                                                model_queue_size=model_queue_size)
+                            res[i] = dummy_minimize(f, bounds, n_calls=number_of_call_r,
+                                                    x0=x0_restored, y0=y0_restored,
+                                                    callback=[checkpoint_saver[i]],
+                                                    random_state=random_state,
+                                                    verbose= verbose,
+                                                    model_queue_size=model_queue_size)
 
                             end_time = time.time()
                             total_time = end_time - start_time
@@ -572,33 +566,29 @@ class Optimizer():
                         time_eval.append(time_t)
 
                         save_csv(name_csv = save_name + ".csv",
-                        dataset_name = self.dataset.metadata.name , 
-                        hyperparameters_name = self.hyperparameters, 
-                        num_topic = self.model.hyperparameters['num_topics'],
-                        Surrogate = minimizer_stringa,
-                        Acquisition = acq_func,
-                        Time = time_eval, 
-                        res = res,
-                        Maximize = (self.optimization_type == 'Maximize'),
-                        time_x0 = time_x0 )
+                                 dataset_name = self.dataset.metadata.name ,
+                                 hyperparameters_name = self.hyperparameters,
+                                 num_topic = self.model.hyperparameters['num_topics'],
+                                 Surrogate = minimizer_stringa, Acquisition = acq_func,
+                                 Time=time_eval, res=res,
+                                 Maximize=(self.optimization_type == 'Maximize'),
+                                 time_x0=time_x0 )
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                         number_of_call_r = number_of_call_r - save_step
 
-            elif ( save == False and early_stop == True ):
-
-                for i in range( different_iteration ):
-
-                    res_temp = dummy_minimize(f, 
+            elif not save and early_stop:
+                for i in range(different_iteration):
+                    res_temp = dummy_minimize(f,
                                             bounds, 
                                             n_calls=number_of_call, 
                                             x0=x0[i], 
                                             y0=y0[i],
                                             callback= [ MyCustomEarlyStopper(
-                                                        n_stop = early_step,
-                                                        n_random_starts = default_parameters["n_random_starts"] )
+                                                        n_stop=early_step,
+                                                        n_random_starts=default_parameters["n_random_starts"] )
                                                     ], 
                                             random_state=random_state,
                                             verbose= verbose,
@@ -607,11 +597,11 @@ class Optimizer():
 
                 
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path=save_path )
     
-            elif ( save == True and early_stop == True ):
+            elif save and early_stop:
 
                 for i in range( different_iteration ):
                     save_name_t = save_name + str(i) + ".pkl"
@@ -625,17 +615,17 @@ class Optimizer():
                                             random_state=random_state,
                                             callback=[checkpoint_saver[i], 
                                                     MyCustomEarlyStopper(
-                                                                n_stop = early_step,
-                                                                n_random_starts = default_parameters["n_random_starts"] )],
+                                                                n_stop=early_step,
+                                                                n_random_starts=default_parameters["n_random_starts"] )],
                                             verbose= verbose,
                                             model_queue_size=model_queue_size )
 
                     res.append( res_temp )
 
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path=save_path )
 
                 number_of_call_r = number_of_call - save_step
 
@@ -657,8 +647,8 @@ class Optimizer():
                                                 y0=y0_restored,
                                                 callback=[checkpoint_saver[i], 
                                                         MyCustomEarlyStopper(
-                                                                n_stop = early_step,
-                                                                n_random_starts = default_parameters["n_random_starts"] ) ], 
+                                                                n_stop=early_step,
+                                                                n_random_starts=default_parameters["n_random_starts"] ) ],
                                                 random_state=random_state,
                                                 verbose= verbose,
                                                 model_queue_size=model_queue_size)
@@ -668,7 +658,7 @@ class Optimizer():
                         number_of_call_r = number_of_call_r - save_step
 
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                         
@@ -680,27 +670,24 @@ class Optimizer():
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
 
-                            res[i] = dummy_minimize(f, 
-                                                bounds, 
-                                                n_calls=number_of_call_r, 
-                                                x0=x0_restored, 
-                                                y0=y0_restored,
-                                                callback=[checkpoint_saver[i], 
-                                                        MyCustomEarlyStopper(
-                                                                n_stop = early_step,
-                                                                n_random_starts = default_parameters["n_random_starts"] ) ], 
-                                                random_state=random_state,
-                                                verbose= verbose,
-                                                model_queue_size=model_queue_size)
+                            res[i] = dummy_minimize(f, bounds, n_calls=number_of_call_r,
+                                                    x0=x0_restored, y0=y0_restored,
+                                                    callback=[checkpoint_saver[i],
+                                                              MyCustomEarlyStopper(
+                                                                  n_stop=early_step,
+                                                                  n_random_starts=
+                                                                  default_parameters["n_random_starts"])],
+                                                    random_state=random_state,
+                                                    verbose= verbose,
+                                                    model_queue_size=model_queue_size)
 
                         number_of_call_r = number_of_call_r - save_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
-    
-        
-                if( plot == True ):
+
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -709,10 +696,10 @@ class Optimizer():
 
         #Forest Minimize
         if( minimizer == forest_minimize ):
-            if( save_path != None ):
+            if save_path is not None:
                 save_name = save_path + save_name 
 
-            if( save == False and early_stop == False ):
+            if(not save and not early_stop):
                 for i in range( different_iteration ):
                     res.append( forest_minimize(f, 
                                                 bounds,
@@ -729,11 +716,11 @@ class Optimizer():
                                                 kappa=kappa, 
                                                 n_jobs=n_jobs, 
                                                 model_queue_size=model_queue_size ) )
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
-            elif ( ( save_step >= number_of_call and save == True ) and  ( early_step >= number_of_call or early_stop == False ) ):
+            elif ( ( save_step >= number_of_call and save) and  ( early_step >= number_of_call or not early_stop ) ):
                 for i in range( different_iteration ):
                     save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
@@ -754,11 +741,11 @@ class Optimizer():
                                                 kappa=kappa, 
                                                 n_jobs=n_jobs, 
                                                 model_queue_size=model_queue_size ) )
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
             
-            elif ( save == True and early_stop == False ):
+            elif (save and not early_stop):
 
                 time_eval = []
 
@@ -766,7 +753,7 @@ class Optimizer():
                 for i in range( different_iteration ):
                     save_name_t = save_name + str(i) + ".pkl"
                     checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save
-                    if( x0[i] == None ):
+                    if( x0[i] is None ):
                         len_x0 = 0
                     else:
                         len_x0 = len( x0[i] )
@@ -801,14 +788,12 @@ class Optimizer():
                         flag = True
                         start_time = time.time()
 
-                        res.append( forest_minimize(f, 
-                                                bounds,
+                        res.append( forest_minimize(f, bounds,
                                                 base_estimator=base_estimator_forest,
                                                 n_calls=save_step + n_random_starts,
                                                 acq_func=acq_func,
                                                 n_random_starts = n_random_starts,
-                                                x0=x0[i],
-                                                y0=y0[i],
+                                                x0=x0[i], y0=y0[i],
                                                 random_state=random_state,
                                                 callback=[checkpoint_saver[i] ],
                                                 verbose=verbose, 
@@ -821,14 +806,13 @@ class Optimizer():
                         end_time = time.time()
                         total_time = end_time - start_time
                         time_t.append(total_time)
- 
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path=save_path )
 
                 number_of_call_r = number_of_call - save_step
-                if( flag ):
+                if flag:
                     fract = save_step + n_random_starts
                 else:
                     fract = number_of_call - number_of_call_r   
@@ -902,7 +886,7 @@ class Optimizer():
                         time_x0 = time_x0  )
 
                         
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -951,16 +935,13 @@ class Optimizer():
                         Maximize = (self.optimization_type == 'Maximize'),
                         time_x0 = time_x0 )
 
-
-
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                         number_of_call_r = number_of_call_r - save_step
 
-            elif ( save == False and early_stop == True ):
-
-                for i in range( different_iteration ):
+            elif not save and early_stop:
+                for i in range(different_iteration):
                     
                     res_temp = forest_minimize(f, 
                                                 bounds,
@@ -985,22 +966,21 @@ class Optimizer():
 
                 
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
     
-            elif ( save == True and early_stop == True ):
+            elif save and early_stop:
                 for i in range( different_iteration ):
                     save_name_t = save_name + str(i) + ".pkl"
-                    checkpoint_saver[i] = CheckpointSaver( save_name_t ) #save    
+                    checkpoint_saver[i] = CheckpointSaver(save_name_t) #save
 
-                    if( x0[i] == None ):
+                    if x0[i] is None:
                         len_x0 = 0
                     else:
-                        len_x0 = len( x0[i] )
+                        len_x0 = len(x0[i])
 
-
-                    if( save_step >= n_random_starts + len_x0 ):
+                    if save_step >= n_random_starts + len_x0:
                         res_temp = forest_minimize(f, 
                                                     bounds,
                                                     base_estimator=base_estimator_forest,
@@ -1013,7 +993,7 @@ class Optimizer():
                                                     callback=[checkpoint_saver[i], 
                                                             MyCustomEarlyStopper(
                                                                     n_stop = early_step,
-                                                                    n_random_starts = default_parameters["n_random_starts"] ) ], 
+                                                                    n_random_starts=default_parameters["n_random_starts"] ) ],
                                                     verbose=verbose, 
                                                     n_points=n_points, 
                                                     xi=xi, 
@@ -1042,7 +1022,7 @@ class Optimizer():
 
                     res.append( res_temp )
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -1059,7 +1039,7 @@ class Optimizer():
                             save_name_t = "./" + save_name + str(i) + ".pkl"
                             checkpoint_saver_t = CheckpointSaver( save_name_t ) #save
 
-                            if( x0[i] == None ):
+                            if( x0[i] is None ):
                                 len_x0 = 0
                             else:
                                 len_x0 = len( x0[i] )
@@ -1108,10 +1088,9 @@ class Optimizer():
 
                         number_of_call_r = number_of_call_r - save_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
-                        
 
                     else:
                         for i in range( different_iteration ):
@@ -1120,7 +1099,7 @@ class Optimizer():
                             x0_restored = partial_res.x_iters
                             y0_restored = partial_res.func_vals
 
-                            if( x0[i] == None ):
+                            if( x0[i] is None ):
                                 len_x0 = 0
                             else:
                                 len_x0 = len( x0[i] )
@@ -1169,12 +1148,12 @@ class Optimizer():
 
                         number_of_call_r = number_of_call_r - save_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
     
         
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -1183,7 +1162,7 @@ class Optimizer():
                 
         #GP Minimize
         if( minimizer == gp_minimize ):
-            if( save == False and early_stop == False ):
+            if(not save and not early_stop ):
                 for i in range( different_iteration ):
                     gpr = GaussianProcessRegressor(kernel=kernel, 
                                                 alpha=alpha,
@@ -1201,15 +1180,15 @@ class Optimizer():
                                     random_state=random_state,
                                     model_queue_size=model_queue_size )
 
-                    if( x0[i] != None and y0[i] != None):
+                    if( x0[i] is not None and y0[i] is not None):
                         opt.tell(x0[i], y0[i], fit=True)
                     res.append( opt.run(f, number_of_call) )
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path=save_path )
 
-            elif ( ( save_step >= number_of_call and save == True ) and  ( early_step >= number_of_call or early_stop == False )  ):
+            elif ( ( save_step >= number_of_call and save) and  ( early_step >= number_of_call or not early_stop )  ):
                 for i in range( different_iteration ):
                     
                     gpr = GaussianProcessRegressor(kernel=kernel, 
@@ -1228,7 +1207,7 @@ class Optimizer():
                                     random_state=random_state,
                                     model_queue_size=model_queue_size )
 
-                    if( x0[i] != None and y0[i] != None):
+                    if( x0[i] is not None and y0[i] is not None):
                         opt.tell(x0[i], y0[i], fit=True)
 
                     res_t = opt.run(f, number_of_call)
@@ -1236,11 +1215,11 @@ class Optimizer():
 
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
-            elif ( save == True and early_stop == False ):
+            elif save and not early_stop:
 
                 time_eval = []
 
@@ -1265,7 +1244,7 @@ class Optimizer():
                                     random_state=random_state,
                                     model_queue_size=model_queue_size )
 
-                    if( x0[i] != None and y0[i] != None):
+                    if( x0[i] is not None and y0[i] is not None):
                         opt.tell(x0[i], y0[i], fit=True)
 
                     res_t = opt.run(f, save_step)
@@ -1292,7 +1271,7 @@ class Optimizer():
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call - save_step
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                 
@@ -1350,7 +1329,7 @@ class Optimizer():
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - save_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -1404,11 +1383,11 @@ class Optimizer():
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - save_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
-            elif ( save == False and early_stop == True ):
+            elif (not save and early_stop):
 
                 early_stop_flag = [False] * different_iteration
                 
@@ -1430,7 +1409,7 @@ class Optimizer():
                                         random_state=random_state,
                                         model_queue_size=model_queue_size )
 
-                        if( x0[i] != None and y0[i] != None):
+                        if( x0[i] is not None and y0[i] is not None):
                             opt.tell(x0[i], y0[i], fit=True)
 
                         res_t = opt.run(f, early_step)
@@ -1444,7 +1423,7 @@ class Optimizer():
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call - early_step
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                 
@@ -1485,7 +1464,7 @@ class Optimizer():
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - early_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -1523,11 +1502,11 @@ class Optimizer():
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - early_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
     
-            elif ( save == True and early_stop == True ):
+            elif ( save and early_stop):
 
                 early_stop_flag = [False] * different_iteration
                 
@@ -1549,7 +1528,7 @@ class Optimizer():
                                         random_state=random_state,
                                         model_queue_size=model_queue_size )
 
-                        if( x0[i] != None and y0[i] != None):
+                        if( x0[i] is not None and y0[i] is not None):
                             opt.tell(x0[i], y0[i], fit=True)
 
                         res_t = opt.run(f, save_step)
@@ -1563,7 +1542,7 @@ class Optimizer():
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call - save_step
 
-                if( plot == True ):
+                if plot:
                     name = plot_name + ".png"
                     tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
                 
@@ -1604,7 +1583,7 @@ class Optimizer():
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - save_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -1622,14 +1601,11 @@ class Optimizer():
                                                             n_restarts_optimizer=0,
                                                             random_state = random_state)
     
-                                opt = skopt_optimizer(bounds, 
-                                        base_estimator=gpr, 
-                                        acq_func=acq_func,
-                                        n_random_starts = 0,
-                                        n_initial_points= 0,
-                                        acq_optimizer="sampling", 
-                                        random_state=random_state,
-                                        model_queue_size=model_queue_size )
+                                opt = skopt_optimizer(bounds, base_estimator=gpr,
+                                                      acq_func=acq_func, n_random_starts=0,
+                                                      n_initial_points=0, acq_optimizer="sampling",
+                                                      random_state=random_state,
+                                                      model_queue_size=model_queue_size )
 
                                 opt.tell(x0_restored, y0_restored, fit=True)
 
@@ -1642,7 +1618,7 @@ class Optimizer():
                         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                         number_of_call_r = number_of_call_r - save_step
 
-                        if( plot == True ):
+                        if plot:
                             name = plot_name + ".png"
                             tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
 
@@ -1679,52 +1655,52 @@ class Optimizer():
 
         # Optimization call
         optimize_result = self.Bayesian_optimization(
-                            f = self._objective_function,
+                            f=self._objective_function,
                             bounds = params_space_list,
                             minimizer = default_parameters["minimizer"],
-                            number_of_call = default_parameters["n_calls"],
-                            different_iteration = default_parameters["different_iteration"],
-                            kernel = default_parameters["kernel"],
-                            acq_func = default_parameters["acq_func"],
+                            number_of_call=default_parameters["n_calls"],
+                            different_iteration=default_parameters["different_iteration"],
+                            kernel=default_parameters["kernel"],
+                            acq_func=default_parameters["acq_func"],
                             base_estimator_forest=default_parameters["base_estimator"],
-                            random_state = default_parameters["random_state"],
-                            noise_level = default_parameters["noise"],
-                            alpha = default_parameters["alpha"],
-                            kappa = default_parameters["kappa"],
-                            X0 = default_parameters["x0"],
-                            Y0 = default_parameters["y0"],
-                            time_x0 = default_parameters ["time_x0"],
-                            n_random_starts = default_parameters["n_random_starts"],
-                            save = default_parameters["save"],
-                            save_step = default_parameters["save_step"],
-                            save_name = default_parameters["save_name"],
-                            save_path = default_parameters["save_path"],
-                            early_stop = default_parameters["early_stop"],
-                            early_step = default_parameters["early_step"],
-                            plot = default_parameters["plot"],
-                            plot_name = default_parameters["plot_name"],
-                            log_scale_plot = default_parameters["log_scale_plot"],
-                            verbose = default_parameters["verbose"],
-                            n_points = default_parameters["n_points"],
-                            xi  = default_parameters["xi"],
-                            n_jobs = default_parameters["n_jobs"],
-                            model_queue_size = default_parameters["model_queue_size"]
+                            random_state=default_parameters["random_state"],
+                            noise_level=default_parameters["noise"],
+                            alpha=default_parameters["alpha"],
+                            kappa=default_parameters["kappa"],
+                            X0=default_parameters["x0"],
+                            Y0=default_parameters["y0"],
+                            time_x0=default_parameters ["time_x0"],
+                            n_random_starts=default_parameters["n_random_starts"],
+                            save=default_parameters["save"],
+                            save_step=default_parameters["save_step"],
+                            save_name=default_parameters["save_name"],
+                            save_path=default_parameters["save_path"],
+                            early_stop=default_parameters["early_stop"],
+                            early_step=default_parameters["early_step"],
+                            plot=default_parameters["plot"],
+                            plot_name=default_parameters["plot_name"],
+                            log_scale_plot=default_parameters["log_scale_plot"],
+                            verbose=default_parameters["verbose"],
+                            n_points=default_parameters["n_points"],
+                            xi =default_parameters["xi"],
+                            n_jobs=default_parameters["n_jobs"],
+                            model_queue_size=default_parameters["model_queue_size"]
         )    
 
 
         # To have the right result
         if self.optimization_type == 'Maximize':
-            for i in range( len(optimize_result) ):
+            for i in range(len(optimize_result)):
                 optimize_result[i].fun = - optimize_result[i].fun
                 for j in range( len(optimize_result[i].func_vals) ):
                     optimize_result[i].func_vals[j] = - optimize_result[i].func_vals[j]
 
-            if( default_parameters["plot"] ):
-                tool.plot_bayesian_optimization( list_of_res = optimize_result, 
-                                    name_plot = default_parameters["plot_name"],
-                                    log_scale = default_parameters["log_scale_plot"], 
-                                    path = default_parameters["save_path"],
-                                    conv_min = False)
+            if default_parameters["plot"]:
+                tool.plot_bayesian_optimization(list_of_res=optimize_result,
+                                                name_plot=default_parameters["plot_name"],
+                                                log_scale=default_parameters["log_scale_plot"],
+                                                path=default_parameters["save_path"],
+                                                conv_min=False)
 
 
         # Create Best_evaluation object from optimization results
