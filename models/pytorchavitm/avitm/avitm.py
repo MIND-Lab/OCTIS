@@ -49,8 +49,8 @@ class AVITM(object):
             "model must be 'LDA' or 'prodLDA'."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu'], \
-            "activation must be 'softplus' or 'relu'."
+        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu'], \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu', or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
         assert isinstance(learn_priors, bool), "learn_priors must be boolean."
         assert isinstance(batch_size, int) and batch_size > 0,\
@@ -58,7 +58,8 @@ class AVITM(object):
         assert lr > 0, "lr must be > 0."
         assert isinstance(momentum, float) and momentum > 0 and momentum <= 1,\
             "momentum must be 0 < float <= 1."
-        assert solver in ['adam', 'sgd'], "solver must be 'adam' or 'sgd'."
+        assert solver in ['adam', 'sgd', 'adadelta', 'adagrad'], \
+            "solver must be 'adam', 'adadelta', 'sgd' or 'adagrad'"
         assert isinstance(reduce_on_plateau, bool),\
             "reduce_on_plateau must be type bool."
 
@@ -88,6 +89,13 @@ class AVITM(object):
         elif self.solver == 'sgd':
             self.optimizer = optim.SGD(
                 self.model.parameters(), lr=lr, momentum=self.momentum)
+        elif self.solver == 'adagrad':
+            self.optimizer == optim.Adagrad(
+                self.model.parameters(), lr=lr)
+        elif self.solver == 'adadelta':
+            self.optimizer = optim.Adadelta(
+                self.model.parameters(), lr=lr)
+
 
         # init lr scheduler
         if self.reduce_on_plateau:
