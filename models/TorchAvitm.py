@@ -52,7 +52,11 @@ class TorchAvitm(Abstract_Model):
                                   momentum=self.hyperparameters['momentum'],
                                   solver=self.hyperparameters['solver'],
                                   num_epochs=self.hyperparameters['num_epochs'],
-                                  reduce_on_plateau=self.hyperparameters['reduce_on_plateau'])
+                                  reduce_on_plateau=self.hyperparameters[
+                                      'reduce_on_plateau'],
+                                  topic_prior_mean=self.hyperparameters["prior_mean"],
+                                  topic_prior_variance=self.hyperparameters[
+                                      "prior_variance"])
     
         avitm_model.fit(X_train)
         result = avitm_model.get_info()
@@ -82,6 +86,10 @@ class TorchAvitm(Abstract_Model):
             'num_epochs', self.hyperparameters.get('num_epochs', 100))
         self.hyperparameters['reduce_on_plateau'] = hyperparameters.get(
             'reduce_on_plateau', self.hyperparameters.get('reduce_on_plateau', False))
+        self.hyperparameters["prior_mean"] = hyperparameters.get(
+            'prior_mean', self.hyperparameters.get('prior_mean', 0.0))
+        self.hyperparameters["prior_variance"] = hyperparameters.get(
+            'prior_variance', self.hyperparameters.get('prior_variance', 0.0))
 
         default_hidden_sizes = [100, 100, 0]
         hidden_sizes = [self.hyperparameters.get('hidden_' + str(0),
