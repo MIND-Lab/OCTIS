@@ -21,7 +21,8 @@ class AVITM(object):
     def __init__(self, input_size, n_components=10, model_type='prodLDA',
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
                  learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
-                 solver='adam', num_epochs=100, reduce_on_plateau=False):
+                 solver='adam', num_epochs=100, reduce_on_plateau=False,
+                 topic_prior_mean=0.0, topic_prior_variance=0.0):
         """
         Initialize AVITM model.
 
@@ -62,6 +63,10 @@ class AVITM(object):
             "solver must be 'adam', 'adadelta', 'sgd' or 'adagrad'"
         assert isinstance(reduce_on_plateau, bool),\
             "reduce_on_plateau must be type bool."
+        assert isinstance(topic_prior_mean, float), \
+            "topic_prior_mean must be type float"
+        assert isinstance(topic_prior_variance, float) and topic_prior_variance >= 0, \
+            "topic prior_variance must be type float"
 
         self.input_size = input_size
         self.n_components = n_components
@@ -80,7 +85,7 @@ class AVITM(object):
         # init inference avitm network
         self.model = DecoderNetwork(
             input_size, n_components, model_type, hidden_sizes, activation,
-            dropout, learn_priors)
+            dropout, learn_priors, topic_prior_mean, topic_prior_variance)
 
         # init optimizer
         if self.solver == 'adam':

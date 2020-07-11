@@ -40,7 +40,8 @@ class TorchAvitm(Abstract_Model):
         
         X_train, input_size = self.preprocess(data_corpus)
       
-        avitm_model = avitm.AVITM(input_size=input_size, n_components=self.hyperparameters['num_topics'],
+        avitm_model = avitm.AVITM(input_size=input_size,
+                                  n_components=self.hyperparameters['num_topics'],
                                   model_type=self.hyperparameters['model_type'],
                                   hidden_sizes=self.hyperparameters['hidden_sizes'],
                                   activation=self.hyperparameters['activation'],
@@ -63,8 +64,6 @@ class TorchAvitm(Abstract_Model):
             'num_topics', self.hyperparameters.get('num_topics', 10))
         self.hyperparameters['model_type'] = hyperparameters.get(
             'model_type',self.hyperparameters.get('model_type', 'prodLDA'))
-        self.hyperparameters['hidden_sizes'] = hyperparameters.get(
-            'hidden_sizes', self.hyperparameters.get('hidden_sizes', (100, 100)))
         self.hyperparameters['activation'] = hyperparameters.get(
             'activation', self.hyperparameters.get('activation', 'softplus'))
         self.hyperparameters['dropout'] = hyperparameters.get(
@@ -83,6 +82,19 @@ class TorchAvitm(Abstract_Model):
             'num_epochs', self.hyperparameters.get('num_epochs', 100))
         self.hyperparameters['reduce_on_plateau'] = hyperparameters.get(
             'reduce_on_plateau', self.hyperparameters.get('reduce_on_plateau', False))
+
+        default_hidden_sizes = [100, 100, 0]
+        hidden_sizes = [self.hyperparameters.get('hidden_' + str(0),
+                                                 default_hidden_sizes[0])]
+        for i in range(1, 3):
+            curr_layer = self.hyperparameters.get('hidden_' + str(i),
+                                                  default_hidden_sizes[i])
+            if curr_layer > 0:
+                hidden_sizes.append(curr_layer)
+            else:
+                break
+
+        self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
     @staticmethod
     def preprocess(data):
