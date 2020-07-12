@@ -171,6 +171,7 @@ class AVITM(object):
             prior_mean, prior_variance, \
                 posterior_mean, posterior_variance, posterior_log_variance, \
                 word_dists, topic_word, topic_document = self.model(X)
+
             if epoch:
                 topic_doc_list.extend(topic_document)
                # append here topic document batch 
@@ -278,14 +279,16 @@ class AVITM(object):
 
                 # forward pass
                 self.model.zero_grad()
-                _, _, _, _, word_dists = self.model(X)
+                _, _, _, word_dists, topic_word, topic_document = self.model(X)
 
                 _, indices = torch.sort(word_dists, dim=1)
                 preds += [indices[:, :k]]
 
             preds = torch.cat(preds, dim=0)
-
-        return preds
+        info = {}
+        #info['topics'] =
+        #info['topic-document-matrix'] = topic_document
+        return list(preds, topic_document)
 
     def score(self, scorer='coherence', k=10, topics=5):
         """Score model."""

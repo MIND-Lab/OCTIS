@@ -36,12 +36,20 @@ class TorchAvitm(Abstract_Model):
 
         self.set_default_hyperparameters(hyperparameters)
 
-        data_corpus = [','.join(i) for i in dataset.get_corpus()]
-        
-        X_train, input_size = self.preprocess(data_corpus)
+
+        if self.test == True:
+            data = dataset.get_partitioned_corpus()
+            X_train = data[0]
+            X_test = data[1]
+            data_corpus_train = [','.join(i) for i in X_train]
+            data_corpus_test = [','.join(i) for i in X_test]
+            X_train, self.X_test, input_size = self.preprocess(data_corpus_train, data_corpus_test)
+        else:
+            data_corpus = [','.join(i) for i in dataset.get_corpus()]
+            X_train, input_size = self.preprocess(data_corpus)
       
-        avitm_model = avitm.AVITM(input_size=input_size,
-                                  n_components=self.hyperparameters['num_topics'],
+        self.avitm_model = avitm.AVITM(input_size=input_size,
+                                  n_components=self.hyperparameters['n_components'],
                                   model_type=self.hyperparameters['model_type'],
                                   hidden_sizes=self.hyperparameters['hidden_sizes'],
                                   activation=self.hyperparameters['activation'],
@@ -58,10 +66,17 @@ class TorchAvitm(Abstract_Model):
                                   topic_prior_variance=self.hyperparameters[
                                       "prior_variance"])
     
-        avitm_model.fit(X_train)
-        result = avitm_model.get_info()
+        self.avitm_model.fit(X_train)
+        result = self.avitm_model.get_info()
         
         return result
+
+    def inference(self):
+        assert isinstance(self.test, bool) and self.test == True
+
+        results = self.avitm_model.predict(self.X_test)
+
+        return results
 
     def set_default_hyperparameters(self, hyperparameters):
         self.hyperparameters['num_topics'] = hyperparameters.get(
@@ -106,24 +121,41 @@ class TorchAvitm(Abstract_Model):
 
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
+    def test_set(self, test_input=False):
+        if test_input:
+            self.test = True
+        else:
+            self.test = False
+
     @staticmethod
-    def preprocess(data):
+    def preprocess(data, test = None):
         
         def to_bow(data, min_length):
             """Convert index lists to bag of words representation of documents."""
             vect = [np.bincount(x[x != np.array(None)].astype('int'), minlength=min_length)
                     for x in data if np.sum(x[x != np.array(None)]) != 0]
             return np.array(vect)
-        
-        vec = CountVectorizer()
-        X = vec.fit_transform(data)
-        idx2token = {v: k for (k, v) in vec.vocabulary_.items()} 
-        #train_data = datasets.BOWDataset(X.toarray(), idx2token)
-        train_bow = to_bow(X.toarray(), len(idx2token.keys()))
-        train_data = datasets.BOWDataset(train_bow, idx2token)
-        input_size = len(idx2token.keys())
-        
-        return train_data, input_size 
+        if test is not None:
+            vec = CountVectorizer()
+            X_train = vec.fit_transform(data)
+            X_test = vec.transform(test)
+            idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
+            train_bow = to_bow(X_train.toarray(), len(idx2token.keys()))
+            test_bow = to_bow(X_test.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(train_bow, idx2token)
+            test_data = datasets.BOWDataset(test_bow, idx2token)
+            input_size = len(idx2token.keys())
+
+            return train_data,test_data, input_size
+
+        else:
+            vec = CountVectorizer()
+            X = vec.fit_transform(data)
+            idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
+            train_bow = to_bow(X.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(train_bow, idx2token)
+            input_size = len(idx2token.keys())
+            return train_data, input_size
     
 
 
