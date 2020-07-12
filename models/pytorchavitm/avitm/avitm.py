@@ -279,7 +279,7 @@ class AVITM(object):
 
                 # forward pass
                 self.model.zero_grad()
-                _, _, _, word_dists, _, _ = self.model(X)
+                _, _, _, _, _, word_dists, _, topic_document = self.model(X)
 
                 _, indices = torch.sort(word_dists, dim=1)
                 preds += [indices[:, :k]]
