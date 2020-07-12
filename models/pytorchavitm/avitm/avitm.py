@@ -279,7 +279,7 @@ class AVITM(object):
 
                 # forward pass
                 self.model.zero_grad()
-                _, _, _, word_dists, topic_word, topic_document = self.model(X)
+                _, _, _, word_dists, _, _ = self.model(X)
 
                 _, indices = torch.sort(word_dists, dim=1)
                 preds += [indices[:, :k]]
@@ -288,7 +288,7 @@ class AVITM(object):
         info = {}
         #info['topics'] =
         #info['topic-document-matrix'] = topic_document
-        return list(preds, topic_document)
+        return list(preds)
 
     def score(self, scorer='coherence', k=10, topics=5):
         """Score model."""
