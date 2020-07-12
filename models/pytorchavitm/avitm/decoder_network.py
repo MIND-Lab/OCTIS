@@ -12,7 +12,7 @@ class DecoderNetwork(nn.Module):
 
     def __init__(self, input_size, n_components=10, model_type='prodLDA',
                  hidden_sizes=(100,100), activation='softplus', dropout=0.2,
-                 learn_priors=True):
+                 learn_priors=True, topic_prior_mean=0.0, topic_prior_variance=0.0):
         """
         Initialize InferenceNetwork.
 
@@ -23,6 +23,8 @@ class DecoderNetwork(nn.Module):
             hidden_sizes : tuple, length = n_layers, (default (100, 100))
             activation : string, 'softplus', 'relu', (default 'softplus')
             learn_priors : bool, make priors learnable parameter
+            topic_prior_mean: double, mean parameter of the prior
+            topic_prior_variance: double, variance parameter of the prior
         """
         super(DecoderNetwork, self).__init__()
         assert isinstance(input_size, int), "input_size must by type int."
@@ -35,6 +37,11 @@ class DecoderNetwork(nn.Module):
         assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu'], \
             "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu', or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
+        assert isinstance(topic_prior_mean, float), \
+            "topic_prior_mean must be type float"
+        # and topic_prior_variance >= 0, \
+        assert isinstance(topic_prior_variance, float), \
+            "topic prior_variance must be type float"
 
         self.input_size = input_size
         self.n_components = n_components
@@ -50,7 +57,8 @@ class DecoderNetwork(nn.Module):
         # init prior parameters
         # \mu_1k = log \alpha_k + 1/K \sum_i log \alpha_i;
         # \alpha = 1 \forall \alpha
-        topic_prior_mean = 0.0
+
+        #self.topic_prior_mean = topic_prior_mean
         self.prior_mean = torch.tensor(
             [topic_prior_mean] * n_components)
         if torch.cuda.is_available():
@@ -60,7 +68,8 @@ class DecoderNetwork(nn.Module):
 
         # \Sigma_1kk = 1 / \alpha_k (1 - 2/K) + 1/K^2 \sum_i 1 / \alpha_k;
         # \alpha = 1 \forall \alpha
-        topic_prior_variance = 1. - (1. / self.n_components)
+
+        #topic_prior_variance = 1. - (1. / self.n_components)
         self.prior_variance = torch.tensor(
             [topic_prior_variance] * n_components)
         if torch.cuda.is_available():
