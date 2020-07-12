@@ -46,7 +46,7 @@ class InferenceNetwork(nn.Module):
         elif activation == 'leakyrelu':
             self.activation = nn.LeakyReLU()
         elif activation == 'swish':
-            self.activation = lambda x: x * nn.Sigmoid(x)
+            self.activation = Swish()
 
         self.input_layer = nn.Linear(input_size, hidden_sizes[0])
 
@@ -72,3 +72,12 @@ class InferenceNetwork(nn.Module):
         log_sigma = self.f_sigma_batchnorm(self.f_sigma(x))
 
         return mu, log_sigma
+
+
+class Swish(nn.Module):
+    def __init__(self, slope = 1):
+        super().__init__()
+        #self.slope = slope * torch.nn.Parameter(torch.ones(1))
+
+    def forward(self, x):
+        return x * torch.sigmoid(x) #self.slope *

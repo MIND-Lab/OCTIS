@@ -92,11 +92,13 @@ class TorchAvitm(Abstract_Model):
             'prior_variance', self.hyperparameters.get('prior_variance', 0.0))
 
         default_hidden_sizes = [100, 100, 0]
-        hidden_sizes = [self.hyperparameters.get('hidden_' + str(0),
-                                                 default_hidden_sizes[0])]
+        hidden_sizes = [hyperparameters.get(
+            'layer_' + str(0), self.hyperparameters.get(
+                'layer_' + str(0), default_hidden_sizes[0]))]
         for i in range(1, 3):
-            curr_layer = self.hyperparameters.get('hidden_' + str(i),
-                                                  default_hidden_sizes[i])
+            curr_layer = hyperparameters.get(
+                'layer_' + str(i), self.hyperparameters.get(
+                    'layer_' + str(i), default_hidden_sizes[i]))
             if curr_layer > 0:
                 hidden_sizes.append(curr_layer)
             else:

@@ -39,7 +39,8 @@ class DecoderNetwork(nn.Module):
         assert dropout >= 0, "dropout must be >= 0."
         assert isinstance(topic_prior_mean, float), \
             "topic_prior_mean must be type float"
-        assert isinstance(topic_prior_variance, float) and topic_prior_variance >= 0, \
+        # and topic_prior_variance >= 0, \
+        assert isinstance(topic_prior_variance, float), \
             "topic prior_variance must be type float"
 
         self.input_size = input_size
