@@ -213,6 +213,8 @@ def upload_csv(name_csv,
     save_csv = [] #list of list
     for row in read:
         save_csv.append(row)
+    
+    csvfile_r.close()
 
     flag = False
     cont = 0
@@ -232,6 +234,8 @@ def upload_csv(name_csv,
 
     for row in save_csv:
         writer.writerow(row)
+    
+    csvfile_w.close()
 
 
 def add_column(name_csv,

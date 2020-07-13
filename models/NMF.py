@@ -223,7 +223,6 @@ class NMF_scikit(Abstract_Model):
             for document in corpus:
                 real_corpus.append(" ".join(document))
             X = vectorizer.fit_transform(real_corpus)
-            X = X.todense()
 
             lista = vectorizer.get_feature_names()
             self.id2word = {i: lista[i] for i in range(0, len(lista))}
@@ -245,10 +244,10 @@ class NMF_scikit(Abstract_Model):
             alpha=self.hyperparameters["alpha"],
             l1_ratio=self.hyperparameters["l1_ratio"])
 
-        W = model.fit_transform(X)
-        W = W / W.sum(axis=1, keepdims=True)
+        W = model.fit_transform(self.id_corpus)
+        #W = W / W.sum(axis=1, keepdims=True)
         H = model.components_
-        H = H / H.sum(axis=1, keepdims=True)
+        #H = H / H.sum(axis=1, keepdims=True)
 
         result = {}
 

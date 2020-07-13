@@ -25,6 +25,15 @@ def _KL(P, Q):
     return divergence
 
 
+def _replace_zeros_lines(arr):
+    zero_lines = np.where(~arr.any(axis=1))[0]
+    val = 1.0 / len(arr[0])
+    vett = np.full(len(arr[0]), val)
+    for zero_line in zero_lines:
+        arr[zero_line] = vett.copy()
+    return arr
+
+
 class KL_uniform(Abstract_Metric):
     def __init__(self, metric_parameters={}):
         """
@@ -51,7 +60,8 @@ class KL_uniform(Abstract_Metric):
         -------
         result : score
         """
-        self.phi = model_output["topic-word-matrix"]
+        self.phi = _replace_zeros_lines(
+            model_output["topic-word-matrix"].astype(float))
 
         # make uniform distribution
         val = 1.0 / len(self.phi[0])
@@ -99,8 +109,10 @@ class KL_vacuous(Abstract_Metric):
         -------
         result : score
         """
-        self.phi = model_output["topic-word-matrix"]
-        self.theta = model_output["topic-document-matrix"]
+        self.phi = _replace_zeros_lines(
+            model_output["topic-word-matrix"].astype(float))
+        self.theta = _replace_zeros_lines(
+            model_output["topic-document-matrix"].astype(float))
 
         vacuous = np.zeros(self.phi.shape[1])
         for topic in range(len(self.theta)):
@@ -153,7 +165,8 @@ class KL_background(Abstract_Metric):
         -------
         result : score
         """
-        self.theta = model_output["topic-document-matrix"]
+        self.theta = _replace_zeros_lines(
+            model_output["topic-document-matrix"].astype(float))
 
         # make uniform distribution
         val = 1.0 / len(self.theta[0])
