@@ -162,12 +162,10 @@ def search_extra_csv(name_csv):
         ----------
         name_csv : [string] name of the .csv file
     """
-    csvfile_r = open(name_csv, 'r', newline='')
-    read = csv.reader(csvfile_r)
 
     search_list = []
     flag = False
-    for row in read:
+    for row in name_csv:
         cont = 0
         for element in row:
             if( element == '-' ):
@@ -176,6 +174,7 @@ def search_extra_csv(name_csv):
         if(flag):
             break
         flag = True
+    
 
     return search_list
 
@@ -203,18 +202,19 @@ def upload_csv(name_csv,
         KL_V : [list] where KL_V data are stored
     """
 
-    search_list = search_extra_csv(name_csv)
-    if( len(search_list) < 4 ):
-        return
-
     csvfile_r = open(name_csv, 'r', newline='')
     read = csv.reader(csvfile_r)
 
     save_csv = [] #list of list
     for row in read:
         save_csv.append(row)
-    
+
     csvfile_r.close()
+
+
+    search_list = search_extra_csv(save_csv)
+    if( len(search_list) < 4 ):
+        return
 
     flag = False
     cont = 0
