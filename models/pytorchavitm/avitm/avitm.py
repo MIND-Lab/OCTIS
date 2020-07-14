@@ -268,6 +268,7 @@ class AVITM(object):
             num_workers=mp.cpu_count())
 
         preds = []
+        topic_document_mat = []
 
         with torch.no_grad():
             for batch_samples in loader:
@@ -283,13 +284,11 @@ class AVITM(object):
 
                 _, indices = torch.sort(word_dists, dim=1)
                 preds += [indices[:, :k]]
+                topic_document_mat.append(topic_document)
 
             preds = torch.cat(preds, dim=0)
-        info = {}
-        #info['topics'] =
-        #info['topic-document-matrix'] = topic_document
-        return topic_document
 
+        return topic_document_mat
     def score(self, scorer='coherence', k=10, topics=5):
         """Score model."""
         if scorer == 'perplexity':

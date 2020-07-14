@@ -126,6 +126,11 @@ class TorchAvitm(Abstract_Model):
             self.test = True
         else:
             self.test = False
+    def info_test(self):
+        if self.test:
+            return self.X_test
+        else:
+            print('No partitioned dataset, please apply test_set method = True')
 
     @staticmethod
     def preprocess(data, test = None):
@@ -140,10 +145,10 @@ class TorchAvitm(Abstract_Model):
             X_train = vec.fit_transform(data)
             X_test = vec.transform(test)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-            #train_bow = to_bow(X_train.toarray(), len(idx2token.keys()))
-            #test_bow = to_bow(X_test.toarray(), len(idx2token.keys()))
-            train_data = datasets.BOWDataset(X_train, idx2token)
-            test_data = datasets.BOWDataset(X_test, idx2token)
+            train_bow = to_bow(X_train.toarray(), len(idx2token.keys()))
+            test_bow = to_bow(X_test.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(train_bow, idx2token)
+            test_data = datasets.BOWDataset(test_bow, idx2token)
             input_size = len(idx2token.keys())
 
             return train_data,test_data, input_size
@@ -152,8 +157,8 @@ class TorchAvitm(Abstract_Model):
             vec = CountVectorizer()
             X = vec.fit_transform(data)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-            #train_bow = to_bow(X.toarray(), len(idx2token.keys()))
-            train_data = datasets.BOWDataset(X, idx2token)
+            train_bow = to_bow(X.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(train_bow, idx2token)
             input_size = len(idx2token.keys())
             return train_data, input_size
     
