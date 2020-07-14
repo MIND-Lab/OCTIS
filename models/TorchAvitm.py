@@ -43,10 +43,10 @@ class TorchAvitm(Abstract_Model):
             X_test = data[1]
             data_corpus_train = [','.join(i) for i in X_train]
             data_corpus_test = [','.join(i) for i in X_test]
-            X_train, self.X_test, input_size = self.preprocess(data_corpus_train, data_corpus_test)
+            self.X_train, self.X_test, input_size = self.preprocess(data_corpus_train, data_corpus_test)
         else:
             data_corpus = [','.join(i) for i in dataset.get_corpus()]
-            X_train, input_size = self.preprocess(data_corpus)
+            self.X_train, input_size = self.preprocess(data_corpus)
       
         self.avitm_model = avitm.AVITM(input_size=input_size,
                                   n_components=self.hyperparameters['n_components'],
@@ -66,7 +66,7 @@ class TorchAvitm(Abstract_Model):
                                   topic_prior_variance=self.hyperparameters[
                                       "prior_variance"])
     
-        self.avitm_model.fit(X_train)
+        self.avitm_model.fit(self.X_train)
         result = self.avitm_model.get_info()
         
         return result
@@ -126,6 +126,7 @@ class TorchAvitm(Abstract_Model):
             self.test = True
         else:
             self.test = False
+
     def info_test(self):
         if self.test:
             return self.X_test
@@ -141,7 +142,7 @@ class TorchAvitm(Abstract_Model):
                     for x in data if np.sum(x[x != np.array(None)]) != 0]
             return np.array(vect)
         if test is not None:
-            vec = CountVectorizer()
+            vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
             X_train = vec.fit_transform(data)
             X_test = vec.transform(test)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
@@ -154,7 +155,7 @@ class TorchAvitm(Abstract_Model):
             return train_data,test_data, input_size
 
         else:
-            vec = CountVectorizer()
+            vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
             X = vec.fit_transform(data)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
             #train_bow = to_bow(X.toarray(), len(idx2token.keys()))
