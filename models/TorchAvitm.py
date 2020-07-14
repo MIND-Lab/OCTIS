@@ -145,10 +145,10 @@ class TorchAvitm(Abstract_Model):
             X_train = vec.fit_transform(data)
             X_test = vec.transform(test)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-            train_bow = to_bow(X_train.toarray(), len(idx2token.keys()))
-            test_bow = to_bow(X_test.toarray(), len(idx2token.keys()))
-            train_data = datasets.BOWDataset(train_bow, idx2token)
-            test_data = datasets.BOWDataset(test_bow, idx2token)
+            #train_bow = to_bow(X_train.toarray(), len(idx2token.keys()))
+            #test_bow = to_bow(X_test.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(X_train.toarray(), idx2token)
+            test_data = datasets.BOWDataset(X_test.toarray(), idx2token)
             input_size = len(idx2token.keys())
 
             return train_data,test_data, input_size
@@ -157,8 +157,8 @@ class TorchAvitm(Abstract_Model):
             vec = CountVectorizer()
             X = vec.fit_transform(data)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-            train_bow = to_bow(X.toarray(), len(idx2token.keys()))
-            train_data = datasets.BOWDataset(train_bow, idx2token)
+            #train_bow = to_bow(X.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(X.toarray(), idx2token)
             input_size = len(idx2token.keys())
             return train_data, input_size
     
