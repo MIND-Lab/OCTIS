@@ -288,7 +288,7 @@ class AVITM(object):
         info = {}
         #info['topics'] =
         #info['topic-document-matrix'] = topic_document
-        return list(preds)
+        return topic_document
 
     def score(self, scorer='coherence', k=10, topics=5):
         """Score model."""
