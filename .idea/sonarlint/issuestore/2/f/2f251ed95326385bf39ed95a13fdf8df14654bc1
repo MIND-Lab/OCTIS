@@ -1,0 +1,5 @@
+
+zpython:S117+"WRename this local variable "X_test" to match the regular expression ^[_a-z][a-z0-9_]*$.(§ú‚Ëùÿÿÿÿ8íÔ€´.
+{python:S117*"XRename this local variable "X_train" to match the regular expression ^[_a-z][a-z0-9_]*$.(ŸÖÊæüÿÿÿÿ8íÔ€´.
+wpython:S117‘"XRename this local variable "X_train" to match the regular expression ^[_a-z][a-z0-9_]*$.(ŸÈúå8íÔ€´.
+{python:S117’"WRename this local variable "X_test" to match the regular expression ^[_a-z][a-z0-9_]*$.(İıæ‘ıÿÿÿÿ8íÔ€´.

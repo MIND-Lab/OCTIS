@@ -1,0 +1,4 @@
+
+zpython:S5717*"]Change this default value to "None" and initialize this parameter inside the function/method.(…Ž™ üÿÿÿÿ
+qpython:S3776*"TRefactor this function to reduce its Cognitive Complexity from 29 to the 15 allowed.(…Ž™ üÿÿÿÿ
+jpython:S101	"NRename class "HDP_Model" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.(ÁÆéøþÿÿÿÿ

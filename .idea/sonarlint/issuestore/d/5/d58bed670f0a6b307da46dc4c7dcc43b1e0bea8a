@@ -1,0 +1,5 @@
+
+Lpython:S1066U"/Merge this if statement with the enclosing one.(”Šˆƒýÿÿÿÿ
+jpython:S101	"NRename class "LDA_Model" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.(‡Ô¹Ðýÿÿÿÿ
+lpython:S3776+"TRefactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed.(Üš€·
+upython:S5717+"]Change this default value to "None" and initialize this parameter inside the function/method.(Üš€·

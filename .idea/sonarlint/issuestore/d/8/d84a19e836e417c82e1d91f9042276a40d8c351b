@@ -1,0 +1,9 @@
+
+kpython:S101"ORename class "NMF_gensim" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.(²²Þ”ýÿÿÿÿ
+lpython:S3776,"TRefactor this function to reduce its Cognitive Complexity from 29 to the 15 allowed.(Üš€·
+upython:S5717,"]Change this default value to "None" and initialize this parameter inside the function/method.(Üš€·
+gpython:S101©"ORename class "NMF_scikit" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.(èü®ð
+rpython:S3776Ã"TRefactor this function to reduce its Cognitive Complexity from 23 to the 15 allowed.(…Ž™ üÿÿÿÿ
+{python:S5717Ã"]Change this default value to "None" and initialize this parameter inside the function/method.(…Ž™ üÿÿÿÿ
+epython:S117›"MRename this parameter "H" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ž®‘Ö
+ppython:S1542¥"RRename function "NMF_Model" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÈÁ›¾ùÿÿÿÿ
