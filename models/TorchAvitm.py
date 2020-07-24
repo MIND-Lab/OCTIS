@@ -11,7 +11,7 @@ from models.pytorchavitm import datasets
 class TorchAvitm(Abstract_Model):
 
     def __init__(self):
-        self.hyperparameters={}
+            self.hyperparameters={}
 
     def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True, topic_document_matrix=True):
         """

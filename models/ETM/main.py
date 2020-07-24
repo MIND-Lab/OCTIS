@@ -17,68 +17,74 @@ from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
 from torch.nn import functional as F
 from models.ETM import etm
+from models.model import Abstract_Model
 from models.ETM.utils import nearest_neighbors, get_topic_coherence, get_topic_diversity
 
-class ETM_Wrapper():
+class ETM_Wrapper(Abstract_Model):
 
     def __init__(self):
         self.hyperparameters = {}
 
-    def set_model(self, dataset, num_topics,t_hidden_size,rho_size, emb_size,
-                         theta_act, embeddings, train_embeddings, enc_drop, lr, optimizer, batch_size, epochs):
+    def train_model(self, dataset, hyperparameters,  embeddings = None, train_embeddings = True):
+        self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
+        best_epoch = 0
+        best_val_ppl = 1e9
+        all_val_ppls = []
+        #print('\n')
+        #print('Visualizing model quality before training...')
+        #visualize(self.model)
+        #print('\n')
+        for epoch in range(1, self.hyperparameters['epochs']):
+            self.train_epoch(epoch)
+        return self.get_info()
+
+    def set_model(self, dataset, hyperparameters, embeddings, train_embeddings):
         self.train_tokens, self.train_counts, self.vocab_size, self.vocab = self.preprocess(dataset)
         self.num_docs_train = self.train_tokens.shape[1]
-        self.epoch = epochs
-        self.num_topics = num_topics
-        self.t_hidden_size = t_hidden_size
-        self.rho_size = rho_size
-        self.emb_size = emb_size
-        self.theta_act = theta_act
         self.embeddings = embeddings
         self.train_embeddings = train_embeddings
-        self.enc_drop = enc_drop
-        self.lr = lr
-        self.optimizer = optimizer
-        self.batch_size = batch_size
-        self.epochs = epochs
-        self.data_list = []
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         np.random.seed(0)
         torch.manual_seed(0)
         if torch.cuda.is_available():
             torch.cuda.manual_seed(0)
 
+        self.set_default_hyperparameters(hyperparameters)
         ## define model and optimizer
-        self.model = etm.ETM(self.num_topics, self.vocab_size, self.t_hidden_size, self.rho_size, self.emb_size,
-                         self.theta_act, self.embeddings, self.train_embeddings, self.enc_drop).to(self.device)
+        self.model = etm.ETM(self.hyperparameters['num_topics'], self.vocab_size,
+                             self.hyperparameters['t_hidden_size'],
+                             self.hyperparameters['rho_size'], self.hyperparameters['emb_size'],
+                             self.hyperparameters['theta_act'], self.embeddings, self.train_embeddings,
+                             self.hyperparameters['enc_drop']).to(self.device)
         print('model: {}'.format(self.model))
 
-        if self.optimizer == 'adam':
-            self.optimizer = optim.Adam(self.model.parameters(), lr=self.lr)
-        elif self.optimizer == 'adagrad':
-            self.optimizer = optim.Adagrad(self.model.parameters(), lr=self.lr)
-        elif self.optimizer == 'adadelta':
-            self.optimizer = optim.Adadelta(self.model.parameters(), lr=self.lr)
-        elif self.optimizer == 'rmsprop':
-            self.optimizer = optim.RMSprop(self.model.parameters(), lr=self.lr)
-        elif self.optimizer == 'asgd':
-            self.optimizer = optim.ASGD(self.model.parameters(), lr=self.lr, t0=0, lambd=0.)
+        if self.hyperparameters['optimizer'] == 'adam':
+            self.optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparameters['lr'])
+        elif self.hyperparameters['optimizer'] == 'adagrad':
+            self.optimizer = optim.Adagrad(self.model.parameters(), lr=self.hyperparameters['lr'])
+        elif self.hyperparameters['optimizer'] == 'adadelta':
+            self.optimizer = optim.Adadelta(self.model.parameters(), lr=self.hyperparameters['lr'])
+        elif self.hyperparameters['optimizer'] == 'rmsprop':
+            self.optimizer = optim.RMSprop(self.model.parameters(), lr=self.hyperparameters['lr'])
+        elif self.hyperparameters['optimizer'] == 'asgd':
+            self.optimizer = optim.ASGD(self.model.parameters(), lr=self.hyperparameters['lr'], t0=0, lambd=0.)
         else:
             print('Defaulting to vanilla SGD')
-            self.optimizer = optim.SGD(self.model.parameters(), lr=self.lr)
+            self.optimizer = optim.SGD(self.model.parameters(), lr=self.hyperparameters['lr'])
 
     def train_epoch(self, epoch):
-
+        self.data_list = []
         self.model.train()
         acc_loss = 0
         acc_kl_theta_loss = 0
         cnt = 0
         indices = torch.randperm(self.num_docs_train)
-        indices = torch.split(indices, self.batch_size)
+        indices = torch.split(indices, self.hyperparameters['batch_size'])
         for idx, ind in enumerate(indices):
             self.optimizer.zero_grad()
             self.model.zero_grad()
-            data_batch = data.get_batch(self.train_tokens, self.train_counts, ind, self.vocab_size, self.emb_size, self.device)
+            data_batch = data.get_batch(self.train_tokens, self.train_counts, ind, self.vocab_size,
+                                        self.hyperparameters['emb_size'], self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             bow_norm = True
             if bow_norm:
@@ -88,7 +94,7 @@ class ETM_Wrapper():
             recon_loss, kld_theta = self.model(data_batch, normalized_data_batch)
             total_loss = recon_loss + kld_theta
             total_loss.backward()
-            #if args.clip > 0:
+            # if args.clip > 0:
             #    torch.nn.utils.clip_grad_norm_(self.model.parameters(), args.clip)
             self.optimizer.step()
 
@@ -101,44 +107,53 @@ class ETM_Wrapper():
                 cur_kl_theta = round(acc_kl_theta_loss / cnt, 2)
                 cur_real_loss = round(cur_loss + cur_kl_theta, 2)
 
-               # print('Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
-               #     epoch, idx, len(indices), self.optimizer.param_groups[0]['lr'], cur_kl_theta, cur_loss, cur_real_loss))
+            # print('Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
+            #     epoch, idx, len(indices), self.optimizer.param_groups[0]['lr'], cur_kl_theta, cur_loss, cur_real_loss))
             self.data_list.append(normalized_data_batch)
         cur_loss = round(acc_loss / cnt, 2)
         cur_kl_theta = round(acc_kl_theta_loss / cnt, 2)
         cur_real_loss = round(cur_loss + cur_kl_theta, 2)
-        print('*'*100)
+        print('*' * 100)
         print('Epoch----->{} .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
-                epoch, self.optimizer.param_groups[0]['lr'], cur_kl_theta, cur_loss, cur_real_loss))
-        print('*'*100)
+            epoch, self.optimizer.param_groups[0]['lr'], cur_kl_theta, cur_loss, cur_real_loss))
+        print('*' * 100)
 
-    def train_model(self):
-        best_epoch = 0
-        best_val_ppl = 1e9
-        all_val_ppls = []
-        #print('\n')
-        #print('Visualizing model quality before training...')
-        #visualize(self.model)
-        #print('\n')
-        for epoch in range(1, self.epochs):
-            self.train_epoch(epoch)
+    def get_info(self):
+        topic_w = []
         self.model.eval()
+        info = {}
         theta, _ = self.model.get_theta(torch.cat(self.data_list))
-        ## visualize topics using monte carlo
         with torch.no_grad():
             num_words = 10
             print('#' * 100)
             print('Visualize topics...')
             topics_words = []
             gammas = self.model.get_beta()
-            for k in range(self.num_topics):
+            for k in range(self.hyperparameters['num_topics']):
                 gamma = gammas[k]
                 top_words = list(gamma.cpu().numpy().argsort()[-num_words + 1:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
                 topics_words.append(' '.join(topic_words))
-                print('Topic {}: {}'.format(k, topic_words))
-        return self.model.get_beta(),theta , topic_words
+                #print('Topic {}: {}'.format(k, topic_words))
+                topic_w.append(topic_words)
+        info['topics'] = topic_w
+        info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
+        info['topic-document-matrix'] = theta.cpu().detach().numpy()
+        return info
     #beta topic-word distribution
+    #theta topic-document distribution
+    def set_default_hyperparameters(self, hyperparameters):
+        self.hyperparameters['num_topics'] = hyperparameters.get('num_topics', 10)
+        self.hyperparameters['epochs'] = hyperparameters.get('epochs', 20)
+        self.hyperparameters['t_hidden_size'] = hyperparameters.get('t_hidden_size', 800)
+        self.hyperparameters['rho_size'] = hyperparameters.get('rho_size', 300)
+        self.hyperparameters['emb_size'] = hyperparameters.get('emb_size', 300)
+        self.hyperparameters['theta_act'] = hyperparameters.get('theta_act', 'relu')
+        self.hyperparameters['enc_drop'] = hyperparameters.get('enc_drop', 0.0)
+        self.hyperparameters['lr'] = hyperparameters.get('lr', 0.005)
+        self.hyperparameters['optimizer'] = hyperparameters.get('optimizer', 'adam')
+        self.hyperparameters['batch_size'] = hyperparameters.get('batch_size', 128)
+
     @staticmethod
     def preprocess(dataset):
         data_corpus = [','.join(i) for i in dataset.get_corpus()]
