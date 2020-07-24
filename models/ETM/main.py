@@ -25,8 +25,9 @@ class ETM_Wrapper(Abstract_Model):
     def __init__(self):
         self.hyperparameters = {}
 
-    def train_model(self, dataset, hyperparameters,  embeddings = None, train_embeddings = True):
+    def train_model(self, dataset, hyperparameters,  embeddings = None, train_embeddings = True, top_words = 10):
         self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
+        self.top_word = top_words
         best_epoch = 0
         best_val_ppl = 1e9
         all_val_ppls = []
@@ -34,7 +35,7 @@ class ETM_Wrapper(Abstract_Model):
         #print('Visualizing model quality before training...')
         #visualize(self.model)
         #print('\n')
-        for epoch in range(1, self.hyperparameters['epochs']):
+        for epoch in range(0, self.hyperparameters['epochs']):
             self.train_epoch(epoch)
         return self.get_info()
 
@@ -124,14 +125,11 @@ class ETM_Wrapper(Abstract_Model):
         info = {}
         theta, _ = self.model.get_theta(torch.cat(self.data_list))
         with torch.no_grad():
-            num_words = 10
-            print('#' * 100)
-            print('Visualize topics...')
             topics_words = []
             gammas = self.model.get_beta()
             for k in range(self.hyperparameters['num_topics']):
                 gamma = gammas[k]
-                top_words = list(gamma.cpu().numpy().argsort()[-num_words + 1:][::-1])
+                top_words = list(gamma.cpu().numpy().argsort()[-self.top_word:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
                 topics_words.append(' '.join(topic_words))
                 #print('Topic {}: {}'.format(k, topic_words))
