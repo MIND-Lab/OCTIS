@@ -40,7 +40,18 @@ class ETM_Wrapper(Abstract_Model):
         return self.get_info()
 
     def set_model(self, dataset, hyperparameters, embeddings, train_embeddings):
-        self.train_tokens, self.train_counts, self.vocab_size, self.vocab = self.preprocess(dataset)
+
+        if self.test:
+            data = dataset.get_partitioned_corpus()
+            X_train = data[0]
+            X_test = data[1]
+            data_corpus_train = [','.join(i) for i in X_train]
+            data_corpus_test = [','.join(i) for i in X_test]
+            self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.vocab_size, self.vocab = self.preprocess(data_corpus_train, data_corpus_test)
+        else:
+            data_corpus = [','.join(i) for i in dataset.get_corpus()]
+            self.train_tokens, self.train_counts, self.vocab_size, self.vocab = self.preprocess(data_corpus, None)
+
         self.num_docs_train = self.train_tokens.shape[1]
         self.embeddings = embeddings
         self.train_embeddings = train_embeddings
@@ -123,24 +134,22 @@ class ETM_Wrapper(Abstract_Model):
         topic_w = []
         self.model.eval()
         info = {}
-        theta, _ = self.model.get_theta(torch.cat(self.data_list))
         with torch.no_grad():
-            topics_words = []
+            theta, _ = self.model.get_theta(torch.cat(self.data_list))
             gammas = self.model.get_beta()
             for k in range(self.hyperparameters['num_topics']):
                 gamma = gammas[k]
                 top_words = list(gamma.cpu().numpy().argsort()[-self.top_word:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
-                topics_words.append(' '.join(topic_words))
                 #print('Topic {}: {}'.format(k, topic_words))
                 topic_w.append(topic_words)
         info['topics'] = topic_w
         info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
         info['topic-document-matrix'] = theta.cpu().detach().numpy()
         return info
-    #beta topic-word distribution
-    #theta topic-document distribution
+
     def set_default_hyperparameters(self, hyperparameters):
+
         self.hyperparameters['num_topics'] = hyperparameters.get('num_topics', 10)
         self.hyperparameters['epochs'] = hyperparameters.get('epochs', 20)
         self.hyperparameters['t_hidden_size'] = hyperparameters.get('t_hidden_size', 800)
@@ -152,21 +161,44 @@ class ETM_Wrapper(Abstract_Model):
         self.hyperparameters['optimizer'] = hyperparameters.get('optimizer', 'adam')
         self.hyperparameters['batch_size'] = hyperparameters.get('batch_size', 128)
 
+    def test_set(self, test_input=False):
+        if test_input:
+            self.test = True
+        else:
+            self.test = False
+
     @staticmethod
-    def preprocess(dataset):
-        data_corpus = [','.join(i) for i in dataset.get_corpus()]
-        vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
-        X = vec.fit_transform(data_corpus)
-        idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-        vocab_size = len(idx2token.keys())
-        vocab = vec.vocabulary_.keys()
+    def preprocess(dataset, test=None):
+
         def split_bow(bow_in, n_docs):
             indices = np.asarray([np.asarray([w for w in bow_in[doc,:].indices]) for doc in range(n_docs)])
             counts = np.asarray([np.asarray([c for c in bow_in[doc,:].data]) for doc in range(n_docs)])
             return np.expand_dims(indices, axis = 0), np.expand_dims(counts, axis = 0)
 
-        bow_ts_h1_tokens, bow_ts_h1_count = split_bow(X, X.shape[0])
-        return bow_ts_h1_tokens, bow_ts_h1_count, vocab_size, list(vocab)
+        if test is not None:
+            vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
+            X_train = vec.fit_transform(dataset)
+            X_test = vec.transform(test)
+            idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
+            vocab_size = len(idx2token.keys())
+            vocab = vec.vocabulary_.keys()
+
+            X_train_tokens, X_train_count = split_bow(X_train, X_train.shape[0])
+            X_test_tokens, X_test_count = split_bow(X_test, X_test.shape[0])
+
+            return X_train_tokens, X_train_count,X_test_tokens, X_test_count, vocab_size, list(vocab)
+
+        else:
+            vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
+            X_train = vec.fit_transform(dataset)
+            idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
+            vocab_size = len(idx2token.keys())
+            vocab = vec.vocabulary_.keys()
+            X_train_tokens, X_train_count = split_bow(X_train, X_train.shape[0])
+
+            return X_train_tokens, X_train_count, vocab_size, list(vocab)
+
+
 """
 
 def visualize(m, show_emb=True):
