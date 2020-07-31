@@ -153,7 +153,7 @@ class ETM_Wrapper(Abstract_Model):
         self.model.eval()
         indices = torch.arange(0, self.test_tokens.shape[1])
         indices = torch.split(indices, self.hyperparameters['batch_size'])
-        prova = np.empty((1, 10))
+
         for idx, ind in enumerate(indices):
             data_batch = data.get_batch(self.test_tokens, self.test_counts, ind, self.vocab_size,
                                         self.hyperparameters['emb_size'], self.device)
@@ -165,7 +165,7 @@ class ETM_Wrapper(Abstract_Model):
             topic_d.append(theta.cpu().detach().numpy())
 
         info = self.get_info()
-        emp_array = np.empty((0, 10))
+        emp_array = np.empty((0, self.hyperparameters['num_topics']))
         topic_doc = np.asarray(topic_d)
         lenght = topic_doc.shape[0]
         #batch concatenation
