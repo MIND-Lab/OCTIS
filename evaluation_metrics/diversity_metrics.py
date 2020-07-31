@@ -7,7 +7,7 @@ from evaluation_metrics.rbo import rbo
 
 
 class Topic_diversity(Abstract_Metric):
-    def __init__(self, metric_parameters=defaults.em_topic_diversity.copy()):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
 
@@ -17,7 +17,9 @@ class Topic_diversity(Abstract_Metric):
                             topk: top k words on which the topic diversity
                             will be computed
         """
-        self.topk = metric_parameters["topk"]
+        parameters = defaults.em_topic_diversity.copy()
+        parameters.update(metric_parameters)
+        self.topk = parameters["topk"]
 
     def info(self):
         return {
@@ -50,7 +52,7 @@ class Topic_diversity(Abstract_Metric):
 
 
 class InvertedRBO(Abstract_Metric):
-    def __init__(self, metric_parameters=defaults.em_invertedRBO.copy()):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
 
@@ -65,8 +67,11 @@ class InvertedRBO(Abstract_Metric):
                                     to average overlap.
         """
         super().__init__()
-        self. topk = metric_parameters["topk"]
-        self.weight = metric_parameters["weight"]
+        parameters = defaults.em_invertedRBO.copy()
+        parameters.update(metric_parameters)
+
+        self. topk = parameters["topk"]
+        self.weight = parameters["weight"]
 
     def score(self, model_output):
         """
