@@ -121,6 +121,7 @@ Available Models
 * NMF
 * HDP
 * AVITM
+* ETM
 
 Available Datasets
 ----------------
