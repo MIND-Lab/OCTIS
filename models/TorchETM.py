@@ -149,6 +149,9 @@ class ETM_Wrapper(Abstract_Model):
         return info
 
     def inference(self):
+        
+        assert isinstance(self.test, bool) and self.test == True
+        
         topic_d = []
         self.model.eval()
         indices = torch.arange(0, self.test_tokens.shape[1])
