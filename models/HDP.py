@@ -22,6 +22,12 @@ class HDP_Model(Abstract_Model):
             "name": "HDP, Hierarchical Dirichlet Process"
         }
 
+    def hyperparameters_info(self):
+        """
+        Returns hyperparameters informations
+        """
+        return defaults.HDP_hyperparameters_info
+
     def partitioning(self, use_partitions, update_with_test=False):
         """
         Handle the partitioning system to use and reset the model to perform

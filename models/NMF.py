@@ -6,6 +6,7 @@ from sklearn.decomposition import DictionaryLearning
 from gensim.models import nmf
 import gensim.corpora as corpora
 import configuration.citations as citations
+import configuration.defaults as defaults
 import scipy.sparse
 
 class NMF_gensim(Abstract_Model):
@@ -23,6 +24,12 @@ class NMF_gensim(Abstract_Model):
             "citation": citations.models_NMF,
             "name": "NMF, Non-negative Matrix Factorization"
         }
+
+    def hyperparameters_info(self):
+        """
+        Returns hyperparameters informations
+        """
+        return defaults.NMF_gensim_hyperparameters_info
 
     def partitioning(self, use_partitions, update_with_test=False):
         """
@@ -175,6 +182,13 @@ class NMF_scikit(Abstract_Model):
     hyperparameters = {"num_topics": 100,
                        "init": "random", "alpha": 0, "l1_ratio": 0}
 
+    def hyperparameters_info(self):
+        """
+        Returns hyperparameters informations
+        """
+        return defaults.NMF_scikit_hyperparameters_info
+
+
     def partitioning(self, use_partitions, update_with_test=False):
         """
         Handle the partitioning system to use and reset the model to perform
@@ -289,7 +303,7 @@ class NMF_scikit(Abstract_Model):
         return topic_list
 
 
-def NMF_Model(implementation="scikit"):
+def NMF_Model(implementation="gensim"):
     """
     Choose NMF implementation and return the correct model
 

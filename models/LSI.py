@@ -20,6 +20,12 @@ class LSI_Model(Abstract_Model):
             "name": "LSI, Latent Semantic Indexing"
         }
 
+    def hyperparameters_info(self):
+        """
+        Returns hyperparameters informations
+        """
+        return defaults.LSI_hyperparameters_info
+
     def partitioning(self, use_partitions, update_with_test=False):
         """
         Handle the partitioning system to use and reset the model to perform
