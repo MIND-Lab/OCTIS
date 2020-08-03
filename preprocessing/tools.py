@@ -1,7 +1,6 @@
 import gensim
 import re
 from gensim.utils import simple_preprocess
-from nltk.corpus import stopwords
 from dataset.dataset import Dataset
 import multiprocessing as mp
 
