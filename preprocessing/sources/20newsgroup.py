@@ -1,7 +1,7 @@
 import gensim.downloader as gd
 
 
-def retrieve():
+def retrieve_20newsgroup():
     """
     Retrieve the corpus and the labels
 
