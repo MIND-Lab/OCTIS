@@ -17,9 +17,58 @@ result = optimizer.optimize()
 ```
 
  
-The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you can use the plot and plot_all methods of the result.
+The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information you can set the `save` paramater of `Bayesian_optimization()` to True. You can also set the `plot_optimization` to True to see the regression.
 
-Bayesian_optimization
-----------------
-
+Bayesian Optimization
+---------------------
 Bayesian_optimization is the core function.
+
+```python
+Bayesian_optimization(f, bounds, minimizer, number_of_call, optimization_runs, model_runs, kernel,
+                      acq_func, base_estimator_forest, random_state, noise_level, alpha, kappa,
+                      X0, Y0, time_x0, n_random_starts, save, save_step, save_name, save_path,
+                      early_stop, early_step, plot_optimization, plot_model, plot_name, log_scale_plot,
+                      verbose, n_points, xi, n_jobs, model_queue_size)
+                     
+```
+You can performe:
+- Random Search setting the minimizer to `skopt.dummy_minimize`.
+- Gaussian Process setting the minimizer to `skopt.gp_minimize`.
+- Random Forest setting the minimizer to `skopt.forest_minimize` and the base_estimator_forest to `RF`.
+- Extra Tree setting the minimizer to `skopt.forest_minimize` and the base_estimator_forest to `ET`.
+
+To know more you could see the [[Code]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/8dc4da42061b2e9ffd6ab1e5315614c7accbca2b/optimization/optimizer.py#L206-L365) or some Examples. 
+
+Nomenclature
+------------
+`f` : Function to minimize. Should take a single list of parameters and return the objective value.
+      For example: 
+```python
+#Rosenbrock function of 2 variables
+#min{f(x)} = 0
+#argmin{f(x)} -> (1, 1) = (a, a**2)
+def rosenbrock(x, a = 1, b = 100, noise_level = 0):
+    return (a-x[0])**2 + b* ((x[1]-x[0]**2))**2 + ( noise_level ** 2 ) * np.random.randn()
+```
+
+`number_of_call` : [integer] Number of calls to f, therefore number of points evaluated.
+
+`optimization_runs` : [integer] Number of different run of a single Bayesian Optimization. Usefull to know if the performance are given thanks to the Surrogate Model or thanks to the random initial point.
+
+`model_runs` : [integer] Number of different evaluation of the function in the same point and with the same hyperparameters. Usefull with a lot of noise, to reduce it.
+
+`early_stop` : [boolean] Early stop policy. It will stop an optimization_run if it doesn't improve for early_step evaluations.
+
+`plot_optimization` : [boolean] Plot the convergence of the Bayesian optimization process, showing mean and standard deviation of the different optimization runs. If save is True the plot is update every save_step evaluations.
+
+`plot_model` : [boolean] Plot the mean and standard deviation of the different model runs. If save is True the plot is update every save_step evaluations.
+            
+To know more you could see the [[Code]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/8dc4da42061b2e9ffd6ab1e5315614c7accbca2b/optimization/optimizer.py#L206-L365) or [[Skopt]](https://scikit-optimize.github.io/stable/index.html). 
+
+Examples
+------------
+You can find examples [[Here]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/tree/master/examples).
+
+
+
+
