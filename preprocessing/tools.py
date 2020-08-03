@@ -136,7 +136,7 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
     """
     Find words which
     document/word frequency is less than min_word_freq or
-    greather than max_word_freq
+    greater than max_word_freq
 
     Parameters
     ----------
