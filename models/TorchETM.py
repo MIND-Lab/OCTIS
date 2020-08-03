@@ -34,7 +34,7 @@ class ETM_Wrapper(Abstract_Model):
         #print('Visualizing model quality before training...')
         #visualize(self.model)
         #print('\n')
-        for epoch in range(0, self.hyperparameters['n_epochs']):
+        for epoch in range(0, self.hyperparameters['num_epochs']):
             self._train_epoch(epoch)
         if self.use_partitions:
             result = self.inference()
@@ -192,7 +192,7 @@ class ETM_Wrapper(Abstract_Model):
     def set_default_hyperparameters(self, hyperparameters):
 
         self.hyperparameters['num_topics'] = hyperparameters.get('num_topics', self.hyperparameters.get('num_topics', 10))
-        self.hyperparameters['n_epochs'] = hyperparameters.get('n_epochs', self.hyperparameters.get('n_epochs', 20))
+        self.hyperparameters['num_epochs'] = hyperparameters.get('num_epochs', self.hyperparameters.get('num_epochs', 20))
         self.hyperparameters['t_hidden_size'] = hyperparameters.get('t_hidden_size', self.hyperparameters.get('t_hidden_size',800))
         self.hyperparameters['rho_size'] = hyperparameters.get('rho_size',self.hyperparameters.get('rho_size', 300))
         self.hyperparameters['emb_size'] = hyperparameters.get('emb_size', self.hyperparameters.get('emb_size', 300))
