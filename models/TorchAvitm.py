@@ -37,7 +37,7 @@ class TorchAvitm(Abstract_Model):
         self.set_default_hyperparameters(hyperparameters)
 
 
-        if self.test == True:
+        if self.use_partitions == True:
             data = dataset.get_partitioned_corpus()
             X_train = data[0]
             X_test = data[1]
@@ -67,12 +67,16 @@ class TorchAvitm(Abstract_Model):
                                       "prior_variance"])
     
         self.avitm_model.fit(self.X_train)
-        result = self.avitm_model.get_info()
+        
+        if self.use_partitions:
+            result = self.inference()
+        else:
+            result = self.avitm_model.get_info()
         
         return result
 
     def inference(self):
-        assert isinstance(self.test, bool) and self.test == True
+        assert isinstance(self.use_partitions, bool) and self.use_partitions == True
 
         results = self.avitm_model.predict(self.X_test)
 
@@ -121,14 +125,15 @@ class TorchAvitm(Abstract_Model):
 
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
-    def test_set(self, test_input=False):
-        if test_input:
-            self.test = True
+    def partitioning(self, use_partitions=False):
+        
+        if use_partitions:
+            self.use_partitions = True
         else:
-            self.test = False
+            self.use_partitions = False
 
     def info_test(self):
-        if self.test:
+        if self.use_partitions:
             return self.X_test
         else:
             print('No partitioned dataset, please apply test_set method = True')
