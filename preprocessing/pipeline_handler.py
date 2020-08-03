@@ -24,13 +24,12 @@ class Pipeline_handler:
         """
         self.words_max_freq = len(dataset["corpus"])
         self.dataset = dataset
-        self.nlp = spacy.load("en")
 
         self.min_words_for_doc = min_words_for_doc
         self.words_min_freq = words_min_freq
         self.words_max_freq = words_max_freq
         self.num_proc = num_processes
-        if self.num_proc >1:
+        if self.num_proc > 1:
             self.multiprocess = True
 
         if type(stopwords) == str:
@@ -73,11 +72,11 @@ class Pipeline_handler:
             print("Initializing preprocessing")
 
         # Add each enabled step to the pipeline
-        if self.remove_stopwords:
-            pipeline.append(tools.remove_stopwords)
-            #parameters += "  stopwords extension:" + str(self.stop_words_extension) + "\n"
         if self.lemmatize:
             pipeline.append(tools.lemmatization)
+        if self.remove_stopwords:
+            pipeline.append(tools.remove_stopwords)
+            # parameters += "  stopwords extension:" + str(self.stop_words_extension) + "\n"
         if self.filter_words:
             pipeline.append(tools.filter_words)
             parameters += "  removed words with less than " + str(self.words_min_freq) +\
@@ -134,7 +133,7 @@ class Pipeline_handler:
                     self.words_min_freq,
                     self.words_max_freq)
             elif step.__name__ == "lemmatization":
-                arguments = [self.nlp, self.pos]
+                arguments = self.pos
             elif step.__name__ == "remove_stopwords":
                 arguments = self.stop_words
             else:

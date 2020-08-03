@@ -3,6 +3,7 @@ import re
 from gensim.utils import simple_preprocess
 from dataset.dataset import Dataset
 import multiprocessing as mp
+import spacy
 
 
 def create_pool(n_cpu):
@@ -108,24 +109,24 @@ def remove_stopwords(corpus, stop_words):
     return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in corpus]
 
 
-def lemmatization(corpus, arguments):
+def lemmatization(corpus, pos):
     """
     Lemmatize the words in the corpus
 
     Parameters
     ----------
     corpus: the corpus
-    arguments: list of 2 elements
-               [nlp, pos]
+    pos: pos tags to keep
     Returns
     -------
     result : corpus lemmatized
     """
+    nlp = spacy.load("en")
     result = []
     for document in corpus:
-        doc = arguments[0](" ".join(document))
-        if len(arguments[1]) > 0:
-            result.append([token.lemma_ for token in doc if token.pos_ in arguments[1]])
+        doc = nlp(" ".join(document))
+        if len(pos) > 0:
+            result.append([token.lemma_ for token in doc if token.pos_ in pos])
         else:
             result.append([token.lemma_ for token in doc])
     return result
