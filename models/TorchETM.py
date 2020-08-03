@@ -199,7 +199,7 @@ class ETM_Wrapper(Abstract_Model):
         self.hyperparameters['theta_act'] = hyperparameters.get('theta_act', self.hyperparameters.get('theta_act','relu'))
         self.hyperparameters['enc_drop'] = hyperparameters.get('enc_drop',self.hyperparameters.get('enc_drop',0.0))
         self.hyperparameters['lr'] = hyperparameters.get('lr', self.hyperparameters.get('lr',0.005))
-        self.hyperparameters['optimizer'] = hyperparameters.get('optimizer', self.hyperparameters.get('optimizer', 'adam')
+        self.hyperparameters['optimizer'] = hyperparameters.get('optimizer', self.hyperparameters.get('optimizer', 'adam'))
         self.hyperparameters['batch_size'] = hyperparameters.get('batch_size', self.hyperparameters.get('batch_size',128))
 
     def partitioning(self, use_partitions=False):
