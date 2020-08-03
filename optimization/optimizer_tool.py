@@ -773,11 +773,13 @@ def top_5( list_of_list_of_res ):
     list_medie = list_medie[:5]
     return list_medie
 
-def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
+def plot_bayesian_optimization_forced( list_of_res, name_plot = "plot_BO",
                                 log_scale = False, path = None, conv_min = True):
     """
         Save a plot of the result of a Bayesian_optimization 
-        considering mean and standard deviation
+        considering mean and standard deviation.
+        Similar to plot_bayesian_optimization but it force che x axes 
+        to show every number.
 
         Parameters
         ----------
@@ -848,11 +850,11 @@ def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
 
     plt.clf()
 
-def plot_bayesian_optimization_relaxed( list_of_res, name_plot = "plot_BO",
+def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
                                 log_scale = False, path = None, conv_min = True):
     """
         Save a plot of the result of a Bayesian_optimization 
-        considering mean and standard deviation with x axes relaxed
+        considering mean and standard deviation.
 
         Parameters
         ----------
