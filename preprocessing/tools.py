@@ -125,8 +125,10 @@ def lemmatization(corpus, arguments):
     result = []
     for document in corpus:
         doc = arguments[0](" ".join(document))
-        result.append(
-            [token.lemma_ for token in doc if token.pos_ in arguments[1]])
+        if len(arguments[1]) > 0:
+            result.append([token.lemma_ for token in doc if token.pos_ in arguments[1]])
+        else:
+            result.append([token.lemma_ for token in doc])
     return result
 
 
