@@ -170,7 +170,7 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
 
 def filter_words(corpus, words):
     """
-    Remove from the documents each occurence of the words in input
+    Remove from the documents each occurrence of the words in input
 
     Parameters
     ----------
@@ -226,7 +226,7 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
             if compute_labels:
                 new_labels.append(labels[count])
                 for label in labels[count]:
-                    if not label in distinct_labels:
+                    if label not in distinct_labels:
                         distinct_labels[label] = True
             if compute_edges:
                 new_edges.append(edges[n])
@@ -268,7 +268,7 @@ def get_vocabulary(corpus):
 
     Returns
     -------
-    vocabulary : ditionary of words
+    vocabulary : dictionary of words
                  key = word
                  value = word/doc frequency, rounded to 4 decimals
     """
