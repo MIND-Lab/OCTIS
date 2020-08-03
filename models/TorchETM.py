@@ -1,5 +1,4 @@
 #/usr/bin/python
-
 from __future__ import print_function
 
 import argparse
@@ -37,11 +36,16 @@ class ETM_Wrapper(Abstract_Model):
         #print('\n')
         for epoch in range(0, self.hyperparameters['epochs']):
             self._train_epoch(epoch)
-        return self.get_info()
+        if self.use_partitions:
+            result = self.inference()
+        else:
+            result = self.get_info()
+    
+        return result
 
     def set_model(self, dataset, hyperparameters, embeddings, train_embeddings):
 
-        if self.test:
+        if self.use_partitions:
             data = dataset.get_partitioned_corpus()
             X_train = data[0]
             X_test = data[1]
@@ -150,7 +154,7 @@ class ETM_Wrapper(Abstract_Model):
 
     def inference(self):
         
-        assert isinstance(self.test, bool) and self.test == True
+        assert isinstance(self.use_partitions, bool) and self.use_partitions == True
         
         topic_d = []
         self.model.eval()
@@ -198,11 +202,11 @@ class ETM_Wrapper(Abstract_Model):
         self.hyperparameters['optimizer'] = hyperparameters.get('optimizer', 'adam')
         self.hyperparameters['batch_size'] = hyperparameters.get('batch_size', 128)
 
-    def test_set(self, test_input=False):
-        if test_input:
-            self.test = True
+    def partitioning(self, use_partitions=False):
+        if use_partitions:
+            self.use_partitions = True
         else:
-            self.test = False
+            self.use_partitions = False
 
     @staticmethod
     def preprocess(dataset, test=None):
