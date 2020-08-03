@@ -174,9 +174,9 @@ class ETM_Wrapper(Abstract_Model):
         info = self.get_info()
         emp_array = np.empty((0, self.hyperparameters['num_topics']))
         topic_doc = np.asarray(topic_d)
-        lenght = topic_doc.shape[0]
+        length = topic_doc.shape[0]
         #batch concatenation
-        for i in range(lenght):
+        for i in range(length):
             emp_array = np.concatenate([emp_array, topic_doc[i]])
 
         info['test-topic-document-matrix'] = emp_array
