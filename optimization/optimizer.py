@@ -148,8 +148,8 @@ class Optimizer():
             self.dataset,
             params,
             self.topk,
-            self.topic_word_matrix,
-            self.topic_document_matrix)
+            topic_word_matrix=self.topic_word_matrix,
+            topic_document_matrix=self.topic_document_matrix)
 
         #print(self.actual_call,"_",self.actual_iteration,"->",self.metric.score(model_output) )
 

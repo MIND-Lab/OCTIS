@@ -24,8 +24,12 @@ class ETM_Wrapper(Abstract_Model):
     def __init__(self):
         self.hyperparameters = {}
 
-    def train_model(self, dataset, hyperparameters,  embeddings = None, train_embeddings = True, top_words = 10):
+    def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True,
+                    topic_document_matrix=True, embeddings=None, train_embeddings=True):
+        print(train_embeddings, "pre_set_model")
         self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
+        print(train_embeddings, "post_set_model")
+
         self.top_word = top_words
         best_epoch = 0
         best_val_ppl = 1e9
@@ -44,14 +48,14 @@ class ETM_Wrapper(Abstract_Model):
         return result
 
     def set_model(self, dataset, hyperparameters, embeddings, train_embeddings):
-
         if self.use_partitions:
             data = dataset.get_partitioned_corpus()
             X_train = data[0]
             X_test = data[1]
             data_corpus_train = [','.join(i) for i in X_train]
             data_corpus_test = [','.join(i) for i in X_test]
-            self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.vocab_size, self.vocab = self.preprocess(data_corpus_train, data_corpus_test)
+            self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, \
+            self.vocab_size, self.vocab = self.preprocess(data_corpus_train, data_corpus_test)
         else:
             data_corpus = [','.join(i) for i in dataset.get_corpus()]
             self.train_tokens, self.train_counts, self.vocab_size, self.vocab = self.preprocess(data_corpus, None)
@@ -67,11 +71,17 @@ class ETM_Wrapper(Abstract_Model):
 
         self.set_default_hyperparameters(hyperparameters)
         ## define model and optimizer
-        self.model = etm.ETM(self.hyperparameters['num_topics'], self.vocab_size,
-                             self.hyperparameters['t_hidden_size'],
-                             self.hyperparameters['rho_size'], self.hyperparameters['emb_size'],
-                             self.hyperparameters['theta_act'], self.embeddings, self.train_embeddings,
-                             self.hyperparameters['enc_drop']).to(self.device)
+        print(self.train_embeddings, "pre_set_default_hyp")
+
+        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'],
+                             vocab_size=self.vocab_size,
+                             t_hidden_size=self.hyperparameters['t_hidden_size'],
+                             rho_size=self.hyperparameters['rho_size'],
+                             emsize=self.hyperparameters['emb_size'],
+                             theta_act=self.hyperparameters['theta_act'],
+                             embeddings=self.embeddings,
+                             train_embeddings=self.train_embeddings,
+                             enc_drop=self.hyperparameters['enc_drop']).to(self.device)
         print('model: {}'.format(self.model))
 
         if self.hyperparameters['optimizer'] == 'adam':
