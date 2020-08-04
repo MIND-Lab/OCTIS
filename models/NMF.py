@@ -17,6 +17,66 @@ class NMF_gensim(Abstract_Model):
     use_partitions = True
     update_with_test = False
 
+    def __init__(self, num_topics=100, chunksize=2000, passes=1, kappa=1.0,
+                 minimum_probability=0.01, w_max_iter=200,
+                 w_stop_condition=0.0001, h_max_iter=50, h_stop_condition=0.001,
+                 eval_every=10, normalize=True, random_state=None):
+        """
+        Initialize NMF model
+
+        Parameters
+        ----------
+        num_topics (int, optional) – Number of topics to extract.
+
+        chunksize (int, optional) – Number of documents to be used in each 
+        training chunk.
+
+        passes (int, optional) – Number of full passes over the
+        training corpus. Leave at default passes=1 if your input
+        is an iterator.
+
+        kappa (float, optional) – Gradient descent step size.
+        Larger value makes the model train faster, but could
+        lead to non-convergence if set too large.
+
+        minimum_probability – If normalize is True, topics with
+        smaller probabilities are filtered out. If normalize is False,
+        topics with smaller factors are filtered out. If set to None,
+        a value of 1e-8 is used to prevent 0s.
+
+        w_max_iter (int, optional) – Maximum number of iterations to
+        train W per each batch.
+
+        w_stop_condition (float, optional) – If error difference gets less
+        than that, training of W stops for the current batch.
+
+        h_max_iter (int, optional) – Maximum number of iterations to train 
+        h per each batch.
+
+        h_stop_condition (float) – If error difference gets less than that,
+        training of h stops for the current batch.
+
+        eval_every (int, optional) – Number of batches after which l2 norm
+        of (v - Wh) is computed. Decreases performance if set too low.
+
+        normalize (bool or None, optional) – Whether to normalize the result.
+
+        random_state ({np.random.RandomState, int}, optional) – Seed for
+        random generator. Needed for reproducibility.
+        """
+        self.hyperparameters["num_topics"] = num_topics
+        self.hyperparameters["chunksize"] = chunksize
+        self.hyperparameters["passes"] = passes
+        self.hyperparameters["kappa"] = kappa
+        self.hyperparameters["minimum_probability"] = minimum_probability
+        self.hyperparameters["w_max_iter"] = w_max_iter
+        self.hyperparameters["w_stop_conditiom"] = w_stop_condition
+        self.hyperparameters["h_max_iter"] = h_max_iter
+        self.hyperparameters["h_stop_condition"] = h_stop_condition
+        self.hyperparameters["eval_every"] = eval_every
+        self.hyperparameters["normalize"] = normalize
+        self.hyperparameters["random_state"] = random_state
+
     def info(self):
         """
         Returns model informations
@@ -182,6 +242,47 @@ class NMF_scikit(Abstract_Model):
     update_with_test = False
     hyperparameters = {"num_topics": 100,
                        "init": "random", "alpha": 0, "l1_ratio": 0}
+
+    def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0):
+        """
+        Initialize NMF model
+
+        Parameters
+        ----------
+        num_topics (int) – Number of topics to extract.
+
+        init (string, optional) – Method used to initialize the procedure.
+        Default: None. Valid options:
+
+            None: ‘nndsvd’ if n_components <= min(n_samples, n_features),
+            otherwise random.
+
+            ‘random’: non-negative random matrices, scaled with:
+            sqrt(X.mean() / n_components)
+
+            ‘nndsvd’: Nonnegative Double Singular Value Decomposition (NNDSVD)
+            initialization (better for sparseness)
+
+            ‘nndsvda’: NNDSVD with zeros filled with the average of X
+            (better when sparsity is not desired)
+
+            ‘nndsvdar’: NNDSVD with zeros filled with small random values
+            (generally faster, less accurate alternative to NNDSVDa for when 
+            sparsity is not desired)
+
+        alpha (double, optional) – Constant that multiplies the regularization
+        terms. Set it to zero to have no regularization.
+
+        l1_ratio (double, optional) – The regularization mixing parameter, with
+        0 <= l1_ratio <= 1. For l1_ratio = 0 the penalty is an elementwise
+        L2 penalty (aka Frobenius Norm). For l1_ratio = 1 it is an
+        elementwise L1 penalty. For 0 < l1_ratio < 1, the penalty
+        is a combination of L1 and L2.
+        """
+        self.hyperparameters["num_topics"] = num_topics
+        self.hyperparameters["init"] = init
+        self.hyperparameters["alpha"] = alpha
+        self.hyperparameters["l1_ratio"] = l1_ratio
 
     def hyperparameters_info(self):
         """

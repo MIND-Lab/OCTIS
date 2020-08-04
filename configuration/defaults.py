@@ -129,9 +129,7 @@ onepass (bool, optional) – Whether the one-pass algorithm should be used for t
 
 power_iters (int, optional) – Number of power iteration steps to be used. Increasing the number of power iterations improves accuracy, but lowers performance \n
 
-extra_samples (int, optional) – Extra samples to be used besides the rank k. Can improve accuracy. \n
-
-dtype (type, optional) – Enforces a type for elements of the decomposed matrix.
+extra_samples (int, optional) – Extra samples to be used besides the rank k. Can improve accuracy.
 """
 
 NMF_gensim_hyperparameters_info = """

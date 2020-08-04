@@ -9,8 +9,46 @@ class LSI_Model(Abstract_Model):
 
     id2word = None
     id_corpus = None
+    hyperparameters = {}
     use_partitions = True
     update_with_test = False
+
+    def __init__(self, num_topics=200, chunksize=20000, decay=1.0,
+                 distributed=False, onepass=True, power_iters=2,
+                 extra_samples=100):
+        """
+        Initialize LSI model
+
+        Parameters
+        ----------
+        num_topics (int, optional) – Number of requested factors
+
+        chunksize (int, optional) – Number of documents to be used in each
+        training chunk. 
+
+        decay (float, optional) – Weight of existing observations relatively
+        to new ones. 
+
+        distributed (bool, optional) – If True - distributed mode (parallel
+        execution on several machines) will be used. 
+
+        onepass (bool, optional) – Whether the one-pass algorithm should be
+        used for training. Pass False to force a multi-pass stochastic algorithm. 
+
+        power_iters (int, optional) – Number of power iteration steps to be used.
+        Increasing the number of power iterations improves accuracy, but lowers
+        performance 
+
+        extra_samples (int, optional) – Extra samples to be used besides the rank
+        k. Can improve accuracy. 
+        """
+        self.hyperparameters["num_topics"] = num_topics
+        self.hyperparameters["chunksize"] = chunksize
+        self.hyperparameters["decay"] = decay
+        self.hyperparameters["distributed"] = distributed
+        self.hyperparameters["onepass"] = onepass
+        self.hyperparameters["power_iters"] = power_iters
+        self.hyperparameters["extra_samples"] = extra_samples
 
     def info(self):
         """
@@ -129,7 +167,8 @@ class LSI_Model(Abstract_Model):
                 for document in new_corpus:
 
                     document_topics_tuples = self.trained_model[document]
-                    document_topics = np.zeros(self.hyperparameters["num_topics"])
+                    document_topics = np.zeros(
+                        self.hyperparameters["num_topics"])
                     for single_tuple in document_topics_tuples:
                         document_topics[single_tuple[0]] = single_tuple[1]
 
