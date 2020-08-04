@@ -140,10 +140,16 @@ class LDA_Model(Abstract_Model):
             else:
                 test_document_topic_matrix = []
                 for document in new_corpus:
-                    test_document_topic_matrix.append(
-                        self.trained_model[document])
-                result["test-document-topic-matrix"] = np.array(
-                    test_document_topic_matrix)
+
+                    document_topics_tuples = self.trained_model[document]
+                    document_topics = np.zeros(self.hyperparameters["num_topics"])
+                    for single_tuple in document_topics_tuples:
+                        document_topics[single_tuple[0]] = single_tuple[1]
+
+                    test_document_topic_matrix.append(document_topics)
+
+                result["test-topic-document-matrix"] = np.array(
+                    test_document_topic_matrix).transpose()
 
         return result
 

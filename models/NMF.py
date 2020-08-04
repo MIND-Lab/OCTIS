@@ -9,6 +9,7 @@ import configuration.citations as citations
 import configuration.defaults as defaults
 import scipy.sparse
 
+
 class NMF_gensim(Abstract_Model):
 
     id2word = None
@@ -187,7 +188,6 @@ class NMF_scikit(Abstract_Model):
         Returns hyperparameters informations
         """
         return defaults.NMF_scikit_hyperparameters_info
-
 
     def partitioning(self, use_partitions, update_with_test=False):
         """
