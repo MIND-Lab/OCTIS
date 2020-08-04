@@ -41,7 +41,7 @@ class Topic_diversity(Abstract_Metric):
         td : score
         """
         self.topics = model_output["topics"]
-        if self.topk > len(self.topics[0]):
+        if self.topk >= len(self.topics[0]):
             raise Exception('Words in topics are less than '+str(self.topk))
         else:
             unique_words = set()
@@ -87,7 +87,7 @@ class InvertedRBO(Abstract_Metric):
         td : score of the rank biased overlap over tht topics
         """
         self.topics = model_output['topics']
-        if self.topk > len(self.topics[0]):
+        if self.topk >= len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             collect = []
