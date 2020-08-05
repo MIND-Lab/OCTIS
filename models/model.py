@@ -16,6 +16,13 @@ class Abstract_Model(ABC):
         Create a blank model to initialize
         """
 
+    def set_hyperparameters(self, **kwargs):
+        """
+        Set model hyperparameters
+        """
+        for key, value in kwargs.items():
+            self.hyperparameters[key] = value
+
     @abstractmethod
     def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True, topic_document_matrix=True):
         """

@@ -4,6 +4,7 @@ from gensim.utils import simple_preprocess
 from dataset.dataset import Dataset
 import multiprocessing as mp
 import spacy
+import string
 
 
 def create_pool(n_cpu):
@@ -70,9 +71,8 @@ def remove_punctuation(corpus, *_):
     -------
     corpus : corpus without punctuation
     """
-    corpus = [re.sub(r'\S*@\S*\s?', '', doc) for doc in corpus]
-    corpus = [re.sub(r'\s+', ' ', doc) for doc in corpus]
-    corpus = [re.sub(r"\'", "", doc) for doc in corpus]
+    corpus = [doc.translate(str.maketrans(
+        string.punctuation, ' '*len(string.punctuation))) for doc in corpus]
     return corpus
 
 
