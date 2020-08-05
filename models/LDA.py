@@ -10,9 +10,108 @@ class LDA_Model(Abstract_Model):
 
     id2word = None
     id_corpus = None
-    hyperparameters = {"num_topics": 100}.copy()
+    hyperparameters = {}
     use_partitions = True
     update_with_test = False
+
+    def __init__(self, num_topics=100, distributed=False, chunksize=2000,
+                 passes=1, update_every=1, alpha="symmetric", eta=None,
+                 decay=0.5, offset=1.0, eval_every=10, iterarions=50,
+                 gamma_threshold=0.001, minimum_probability=0.0,
+                 random_state=None, minimum_phi_value=0.1,
+                 per_word_topics=False):
+        """
+        Initialize LDA model
+
+        Parameters
+        ----------
+        num_topics (int, optional) – The number of requested latent topics to be
+        extracted from the training corpus.
+
+        distributed (bool, optional) – Whether distributed computing should be
+        used to accelerate training.
+
+        chunksize (int, optional) – Number of documents to be used in each
+        training chunk.
+
+        passes (int, optional) – Number of passes through the corpus during
+        training.
+
+        update_every (int, optional) – Number of documents to be iterated
+        through for each update. Set to 0 for batch learning, > 1 for
+        online iterative learning.
+
+        alpha ({numpy.ndarray, str}, optional) – Can be set to an 1D array of
+        length equal to the number of expected topics that expresses our 
+        a-priori belief for the each topics’ probability. Alternatively
+        default prior selecting strategies can be employed by supplying
+        a string:
+
+            ’asymmetric’: Uses a fixed normalized asymmetric prior of
+            1.0 / topicno.    
+
+            ’auto’: Learns an asymmetric prior from the corpus 
+            (not available if distributed==True).
+
+        eta ({float, np.array, str}, optional) – A-priori belief on word
+        probability, this can be:
+
+            scalar for a symmetric prior over topic/word probability,   
+
+            vector of length num_words to denote an asymmetric user defined 
+            probability for each word,  
+
+            matrix of shape (num_topics, num_words) to assign a probability
+            for each word-topic combination,    
+
+            the string ‘auto’ to learn the asymmetric prior from the data.
+
+        decay (float, optional) – A number between (0.5, 1] to weight what
+        percentage of the previous lambda value is forgotten when each new
+        document is examined.
+
+        offset (float, optional) – Hyper-parameter that controls how much
+        we will slow down the first steps the first few iterations.
+
+        eval_every (int, optional) – Log perplexity is estimated every
+        that many updates. Setting this to one slows down training by ~2x.
+
+        iterations (int, optional) – Maximum number of iterations through the
+        corpus when inferring the topic distribution of a corpus.
+
+        gamma_threshold (float, optional) – Minimum change in the value of the
+        gamma parameters to continue iterating.
+
+        minimum_probability (float, optional) – Topics with a probability lower
+        than this threshold will be filtered out.
+
+        random_state ({np.random.RandomState, int}, optional) – Either a
+        randomState object or a seed to generate one. Useful for reproducibility.
+
+        minimum_phi_value (float, optional) – if per_word_topics is True, this
+        represents a lower bound on the term probabilities.
+
+        per_word_topics (bool) – If True, the model also computes a list of
+        topics, sorted in descending order of most likely topics for each
+        word, along with their phi values multiplied by the feature length.
+
+        """
+        self.hyperparameters["num_topics"] = num_topics
+        self.hyperparameters["distributed"] = distributed
+        self.hyperparameters["chunksize"] = chunksize
+        self.hyperparameters["passes"] = passes
+        self.hyperparameters["update_every"] = update_every
+        self.hyperparameters["alpha"] = alpha
+        self.hyperparameters["eta"] = eta
+        self.hyperparameters["decay"] = decay
+        self.hyperparameters["offset"] = offset
+        self.hyperparameters["eval_every"] = eval_every
+        self.hyperparameters["iterations"] = iterarions
+        self.hyperparameters["gamma_threshold"] = gamma_threshold
+        self.hyperparameters["minimum_probability"] = minimum_probability
+        self.hyperparameters["random_state"] = random_state
+        self.hyperparameters["minimum_phi_value"] = minimum_phi_value
+        self.hyperparameters["per_word_topics"] = per_word_topics
 
     def info(self):
         """
@@ -142,7 +241,8 @@ class LDA_Model(Abstract_Model):
                 for document in new_corpus:
 
                     document_topics_tuples = self.trained_model[document]
-                    document_topics = np.zeros(self.hyperparameters["num_topics"])
+                    document_topics = np.zeros(
+                        self.hyperparameters["num_topics"])
                     for single_tuple in document_topics_tuples:
                         document_topics[single_tuple[0]] = single_tuple[1]
 
