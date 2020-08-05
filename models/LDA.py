@@ -128,6 +128,18 @@ class LDA_Model(Abstract_Model):
         """
         return defaults.LDA_hyperparameters_info
 
+    def set_hyperparameters(self, **kwargs):
+        """
+        Set model hyperparameters
+        """
+        super().set_hyperparameters(**kwargs)
+        # Allow alpha to be a float in case of symmetric alpha
+        if "alpha" in kwargs:
+            if isinstance(kwargs["alpha"], float):
+                self.hyperparameters["alpha"] = [
+                    kwargs["alpha"]
+                ] * self.hyperparameters["num_topics"]
+
     def partitioning(self, use_partitions, update_with_test=False):
         """
         Handle the partitioning system to use and reset the model to perform
