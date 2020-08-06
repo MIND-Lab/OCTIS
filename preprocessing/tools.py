@@ -150,8 +150,8 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
                 the boundaries
     """
     corpus_length = len(corpus)
-    minimum = round(min_word_freq*corpus_length)
-    maximum = round(max_word_freq*corpus_length)
+    #minimum = round(min_word_freq*corpus_length)
+    #maximum = round(max_word_freq*corpus_length)
     words_dict = {}
     for document in corpus:
         word_found_in_article = {}
@@ -165,7 +165,8 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
                 word_found_in_article[word] = True
     to_remove = {}
     for key, value in words_dict.items():
-        if value <= minimum or value >= maximum:
+        word_frequency = float(value)/float(corpus_length)
+        if word_frequency <= min_word_freq or word_frequency >= max_word_freq or len(key)<3:
             to_remove[key] = True
     return to_remove
 
@@ -222,7 +223,7 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
     distinct_labels = {}
     for document in corpus:
         document_length = len(document)
-        if document_length > min_doc:
+        if document_length >= min_doc:
             words_mean += document_length
             new_corpus.append(document)
             if compute_labels:
