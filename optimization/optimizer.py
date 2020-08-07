@@ -94,8 +94,8 @@ class Optimizer():
         self.dataset = dataset
         self.metric = metric
         self.search_space = search_space
-        self.actual_call = 0
-        self.actual_optimization_run = 0
+        self.current_call = 0
+        self.current_optimization_run = 0
 
         if( optimization_parameters["save_path"][-1] != '/' ):
             optimization_parameters["save_path"] = optimization_parameters["save_path"]+'/'
@@ -159,12 +159,12 @@ class Optimizer():
                                                 self.topic_document_matrix)
 
             model_res = self.metric.score(model_output)
-            self.matrix_model_runs[self.actual_call, self.actual_optimization_run, i] = model_res
+            self.matrix_model_runs[self.current_call, self.current_optimization_run, i] = model_res
             different_model_runs.append( model_res )
 
             #Save the models
             if( default_parameters["save_models"] ):
-                nome_giusto = str(self.actual_call) + "_" + str(self.actual_optimization_run) + "_" + str(i) # "<n_calls>_<optimization_runs>_<model_runs>"
+                nome_giusto = str(self.current_call) + "_" + str(self.current_optimization_run) + "_" + str(i) # "<n_calls>_<optimization_runs>_<model_runs>"
                 if( path == None ):
                     save_model_path = default_parameters["save_path"] + "models/" + nome_giusto
                 if( path is not None ):
@@ -178,15 +178,15 @@ class Optimizer():
         result = median_number(different_model_runs)
 
         #Indici save
-        if( self.actual_optimization_run +1 == default_parameters["optimization_runs"] ):  
+        if( self.current_optimization_run +1 == default_parameters["optimization_runs"]):
             #print( default_parameters["optimization_runs"] , "if" )
-            self.actual_call = self.actual_call + 1
-            self.actual_optimization_run = 0
+            self.current_call = self.current_call + 1
+            self.current_optimization_run = 0
         else:
             #print( default_parameters["optimization_runs"] , "else" )
-            self.actual_optimization_run = self.actual_optimization_run + 1
+            self.current_optimization_run = self.current_optimization_run + 1
 
-        #print(self.actual_call,"_",self.actual_optimization_run,"->",self.metric.score(model_output) )
+        #print(self.current_call,"_",self.current_optimization_run,"->",self.metric.score(model_output) )
 
         # Update metrics values for extra metrics
         metrics_values = {self.metric.__class__.__name__: result}
