@@ -40,6 +40,9 @@ em_coherence_we_pc = {
 em_topic_diversity = {'topk': 10}
 
 em_invertedRBO = {'topk': 10, 'weight': 0.9}
+em_word_embeddings_invertedRBO = {'topk': 10, 'weight': 0.9}
+
+em_f1_score = {'average': 'micro'}
 
 
 HDP_hyperparameters_info = """
