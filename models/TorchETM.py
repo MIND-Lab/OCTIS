@@ -29,7 +29,8 @@ class ETM_Wrapper(Abstract_Model):
         print(train_embeddings, "pre_set_model")
         self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
         print(train_embeddings, "post_set_model")
-
+        self.bool_topic_doc = topic_document_matrix
+        self.bool_topic_word = topic_word_matrix
         self.top_word = top_words
         best_epoch = 0
         best_val_ppl = 1e9
@@ -141,7 +142,8 @@ class ETM_Wrapper(Abstract_Model):
         cur_real_loss = round(cur_loss + cur_kl_theta, 2)
         print('*' * 100)
         print('Epoch----->{} .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
-            epoch + 1, self.optimizer.param_groups[0]['lr'], cur_kl_theta, cur_loss, cur_real_loss))
+            epoch + 1, self.optimizer.
+                param_groups[0]['lr'], cur_kl_theta, cur_loss, cur_real_loss))
         print('*' * 100)
 
     def get_info(self):
@@ -157,9 +159,18 @@ class ETM_Wrapper(Abstract_Model):
                 topic_words = [self.vocab[a] for a in top_words]
                 #print('Topic {}: {}'.format(k, topic_words))
                 topic_w.append(topic_words)
-        info['topics'] = topic_w
-        info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
-        info['topic-document-matrix'] = theta.cpu().detach().numpy()
+        if (self.bool_topic_doc == True) and (self.bool_topic_word == True):
+            info['topics'] = topic_w
+            info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
+            info['topic-document-matrix'] = theta.cpu().detach().numpy()
+        elif (self.bool_topic_doc == True) and (self.bool_topic_word == False):
+            info['topics'] = topic_w
+            info['topic-document-matrix'] = theta.cpu().detach().numpy()
+        elif (self.bool_topic_doc == False) and (self.bool_topic_word == True):
+            info['topics'] = topic_w
+            info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
+        else:
+            info['topics'] = topic_w
         return info
 
     def inference(self):

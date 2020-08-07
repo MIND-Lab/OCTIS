@@ -20,7 +20,7 @@ class TorchAvitm(Abstract_Model):
                 hyparameters: dict, with the below information:
 
                 input_size : int, dimension of input
-                n_components : int, number of topic components, (default 10)
+                num_topics : int, number of topic components, (default 10)
                 model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
                 hidden_sizes : tuple, length = n_layers, (default (100, 100))
                 activation : string, 'softplus', 'relu', (default 'softplus')
@@ -36,6 +36,8 @@ class TorchAvitm(Abstract_Model):
 
         self.set_default_hyperparameters(hyperparameters)
 
+        self.bool_topic_doc = topic_document_matrix
+        self.bool_topic_word = topic_word_matrix
 
         if self.use_partitions == True:
             data = dataset.get_partitioned_corpus()
@@ -49,7 +51,7 @@ class TorchAvitm(Abstract_Model):
             self.X_train, input_size = self.preprocess(data_corpus)
       
         self.avitm_model = avitm.AVITM(input_size=input_size,
-                                  n_components=self.hyperparameters['n_components'],
+                                  num_topics=self.hyperparameters['num_topics'],
                                   model_type=self.hyperparameters['model_type'],
                                   hidden_sizes=self.hyperparameters['hidden_sizes'],
                                   activation=self.hyperparameters['activation'],
@@ -64,7 +66,9 @@ class TorchAvitm(Abstract_Model):
                                       'reduce_on_plateau'],
                                   topic_prior_mean=self.hyperparameters["prior_mean"],
                                   topic_prior_variance=self.hyperparameters[
-                                      "prior_variance"])
+                                      "prior_variance"], topic_word_matrix=self.bool_topic_word,
+                                       topic_document_matrix= self.bool_topic_doc
+                                       )
     
         self.avitm_model.fit(self.X_train)
         
@@ -72,7 +76,6 @@ class TorchAvitm(Abstract_Model):
             result = self.inference()
         else:
             result = self.avitm_model.get_info()
-        
         return result
 
     def inference(self):
