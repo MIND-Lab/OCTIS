@@ -289,7 +289,8 @@ class AVITM(object):
 
             preds = torch.cat(preds, dim=0)
         results = self.get_info()
-        results['test-topic-document-matrix'] = np.vstack(np.asarray([i.cpu().detach().numpy() for i in topic_document_mat]))
+        if self.bool_t_d:
+            results['test-topic-document-matrix'] = np.vstack(np.asarray([i.cpu().detach().numpy() for i in topic_document_mat]))
         return results
 
     def score(self, scorer='coherence', k=10, topics=5):
