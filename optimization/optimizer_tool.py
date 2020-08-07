@@ -282,6 +282,22 @@ def print_x_iters( list_of_res):
     for i in range( len(list_of_res) ):
         print( list_of_res[i].x_iters )
 
+def median_number( lista ):
+    """
+        Given a list it 
+        return the median 
+
+        Parameters
+        ----------
+        lista : [list] List of numbers
+
+        Returns
+        -------
+        val : The median of the numbers
+    """    
+    val = statistics.median( lista )
+    return val
+
 def median( list_of_res):
     """
         Given a Bayesian_optimization result 
@@ -984,3 +1000,4 @@ def load_BO( lista_dump ):
         res_loaded = load( lista_dump[n] )
         lista_res_loaded.append( res_loaded )
     return lista_res_loaded
+
