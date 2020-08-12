@@ -1,6 +1,6 @@
 from skopt import forest_minimize
 import optimization.optimizer_tool as tool
-from optimization.csv_creator import save_csv as save_csv
+from optimization.csv_creator import save_csv
 from optimization.stopper import MyCustomEarlyStopper
 
 from skopt import load

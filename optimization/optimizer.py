@@ -2,10 +2,10 @@
 from skopt.space.space import Real, Integer
 from skopt.utils import dimensions_aslist
 from optimization.optimization_result import Best_evaluation
-from optimization.optimizer_tool import plot_bayesian_optimization as plot_bayesian_optimization
-from optimization.optimizer_tool import median_number as median_number
-from optimization.csv_creator import save_csv as save_csv
-from models.model import save_model_output as save_model_output
+from optimization.optimizer_tool import plot_bayesian_optimization
+from optimization.optimizer_tool import median_number
+from optimization.csv_creator import save_csv
+from models.model import save_model_output
 
 import time
 import numpy as np
@@ -16,9 +16,9 @@ import os
 from pathlib import Path  # Path(path).mkdir(parents=True, exist_ok=True)
 
 # Models
-from optimization.gp_minimizer import gp_minimizer as gp_minimizer
-from optimization.forest_minimizer import forest_minimizer as forest_minimizer
-from optimization.random_minimizer import random_minimizer as random_minimizer
+from optimization.gp_minimizer import gp_minimizer as gp_minimizer_function
+from optimization.forest_minimizer import forest_minimizer as forest_minimizer_function
+from optimization.random_minimizer import random_minimizer as random_minimizer_function
 from skopt import gp_minimize, forest_minimize, dummy_minimize
 
 # Kernel
@@ -116,7 +116,7 @@ class Optimizer():
 
         # Store the different value of the metric for each model_runs
 
-        if (default_parameters["minimizer"] != forest_minimizer):
+        if (default_parameters["minimizer"] != forest_minimize):
             self.matrix_model_runs = np.zeros((default_parameters["n_calls"],
                                                default_parameters["optimization_runs"],
                                                default_parameters["model_runs"]))
@@ -207,9 +207,9 @@ class Optimizer():
         if self.optimization_type == 'Maximize':
             result = - result
 
-        print("Model_runs ->", different_model_runs)
-        print("Mediana->", result)
-        print("Matrix->", self.matrix_model_runs)
+        #print("Model_runs ->", different_model_runs)
+        #print("Mediana->", result)
+        #print("Matrix->", self.matrix_model_runs)
 
         return result
 
@@ -424,7 +424,7 @@ class Optimizer():
 
         # Dummy Minimize
         if minimizer == dummy_minimize:
-            return random_minimizer(f=f, bounds=bounds,
+            return random_minimizer_function(f=f, bounds=bounds,
                                     number_of_call=number_of_call,
                                     optimization_runs=optimization_runs,
                                     model_runs=model_runs,
@@ -454,7 +454,7 @@ class Optimizer():
 
         # Forest Minimize
         elif minimizer == forest_minimize:
-            return forest_minimizer(f=f, bounds=bounds,
+            return forest_minimizer_function(f=f, bounds=bounds,
                                     number_of_call=number_of_call,
                                     optimization_runs=optimization_runs,
                                     model_runs=model_runs,
@@ -490,7 +490,7 @@ class Optimizer():
 
         # GP Minimize
         elif minimizer == gp_minimize:
-            return gp_minimizer(f=f, bounds=bounds,
+            return gp_minimizer_function(f=f, bounds=bounds,
                                 number_of_call=number_of_call,
                                 optimization_runs=optimization_runs,
                                 model_runs=model_runs,
