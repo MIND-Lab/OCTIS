@@ -3,6 +3,7 @@ from skopt.space.space import Real, Integer
 from skopt.utils import dimensions_aslist
 from optimization.optimization_result import Best_evaluation
 from optimization.optimizer_tool import plot_bayesian_optimization
+from optimization.optimizer_tool import plot_boxplot
 from optimization.optimizer_tool import median_number
 from optimization.csv_creator import save_csv
 from models.model import save_model_output
@@ -211,6 +212,25 @@ class Optimizer():
         #print("Mediana->", result)
         #print("Matrix->", self.matrix_model_runs)
 
+        # Need to work only when optimization_runs is 1
+        if default_parameters["plot_model"] and (default_parameters["optimization_runs"] == 1):
+            default_parameters["plot_model"] = True
+
+            if default_parameters["plot_name"].endswith(".png"):
+                name = default_parameters["plot_name"]
+            else:
+                name = default_parameters["plot_name"] + ".png"
+
+            if not default_parameters["plot_optimization"]:
+                name_model_plot = name
+            else:
+                name_model_plot = name[:-4] + "_model.png"
+
+            #print("name_model_plot->", name_model_plot)
+
+            plot_boxplot(self.matrix_model_runs, name_model_plot, path=default_parameters["save_path"])
+        
+
         return result
 
     def Bayesian_optimization(self, f,  # = self.self._objective_function,#
@@ -377,12 +397,6 @@ class Optimizer():
         if number_of_call <= 0:
             print("Error: number_of_call can't be <= 0")
             return None
-
-        # if optimization_runs <= 2:
-        #    print("Error: optimization_runs should be 3 or more")
-        #    return None
-
-        # res = []
 
         # dimensioni = len( bounds )
         checkpoint_saver = [None] * optimization_runs
