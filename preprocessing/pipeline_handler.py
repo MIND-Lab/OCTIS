@@ -89,6 +89,7 @@ class Pipeline_handler:
         categories = []
         if "doc_labels" in self.dataset:
             categories = self.dataset["doc_labels"]
+
         partition = 0
         if "partition" in self.dataset:
             partition = self.dataset["partition"]

@@ -16,7 +16,7 @@ class LDA_Model(Abstract_Model):
 
     def __init__(self, num_topics=100, distributed=False, chunksize=2000,
                  passes=1, update_every=1, alpha="symmetric", eta=None,
-                 decay=0.5, offset=1.0, eval_every=10, iterarions=50,
+                 decay=0.5, offset=1.0, eval_every=10, iterations=50,
                  gamma_threshold=0.001, minimum_probability=0.0,
                  random_state=None, minimum_phi_value=0.1,
                  per_word_topics=False):
@@ -106,7 +106,7 @@ class LDA_Model(Abstract_Model):
         self.hyperparameters["decay"] = decay
         self.hyperparameters["offset"] = offset
         self.hyperparameters["eval_every"] = eval_every
-        self.hyperparameters["iterations"] = iterarions
+        self.hyperparameters["iterations"] = iterations
         self.hyperparameters["gamma_threshold"] = gamma_threshold
         self.hyperparameters["minimum_probability"] = minimum_probability
         self.hyperparameters["random_state"] = random_state
@@ -183,16 +183,16 @@ class LDA_Model(Abstract_Model):
         """
         partition = []
         if self.use_partitions:
-            partition = dataset.get_partitioned_corpus()
+            train_corpus, validation_corpus, test_corpus = dataset.get_partitioned_corpus()
         else:
-            partition = [dataset.get_corpus(), []]
+            train_corpus = dataset.get_corpus()
 
-        if self.id2word == None:
+        if self.id2word is None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
 
-        if self.id_corpus == None:
-            self.id_corpus = [self.id2word.doc2bow(
-                document) for document in partition[0]]
+        if self.id_corpus is None:
+            self.id_corpus = [self.id2word.doc2bow(document)
+                              for document in train_corpus]
 
         if "num_topics" not in hyperparameters:
             hyperparameters["num_topics"] = self.hyperparameters["num_topics"]
@@ -228,7 +228,7 @@ class LDA_Model(Abstract_Model):
 
         if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
-                document) for document in partition[1]]
+                document) for document in test_corpus]
             if self.update_with_test:
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)

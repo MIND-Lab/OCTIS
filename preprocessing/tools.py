@@ -1,5 +1,5 @@
 import gensim
-import re
+from sklearn.model_selection import train_test_split
 from gensim.utils import simple_preprocess
 from dataset.dataset import Dataset
 import multiprocessing as mp
@@ -121,7 +121,11 @@ def lemmatization(corpus, pos):
     -------
     result : corpus lemmatized
     """
-    nlp = spacy.load("en")
+
+    nlp = spacy.load("en_core_web_sm")
+    #doc = nlp('i really would like a cup of coffee please. thanks. oh my goshes')
+    #print([token.lemma_ for token in doc if token.pos_ in pos])
+
     result = []
     for document in corpus:
         doc = nlp(" ".join(document))
@@ -210,7 +214,7 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
 
     Returns
     -------
-    result : dictionary with corpus and relatve infos
+    result : dictionary with corpus and relative infos
     """
     n = 0
     count = 0
@@ -218,7 +222,7 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
     new_labels = []
     new_edges = []
     compute_labels = len(labels) > 0
-    compute_edges = len(edges) > 0
+    compute_edges = 0 #len(edges) > 0
     words_mean = 0
     distinct_labels = {}
     for document in corpus:
@@ -240,13 +244,46 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
         count += 1
     words_document_mean = 0
     if n > 0:
-        words_document_mean = round(words_mean/n)
+        words_document_mean = round(words_mean/n, 2)
+
     vocabulary = get_vocabulary(new_corpus)
+
+    train, test, y_train, y_test = train_test_split(range(len(new_corpus)), new_labels,
+                                                    test_size=0.2,
+                                                    random_state=1, stratify=new_labels)
+
+    train, validation = train_test_split(train, test_size=0.25,
+                                         random_state=1,
+                                         stratify=y_train)
+
+    partitioned_corpus = []
+    partitioned_labels = []
+    partitioned_edges = []
+
+    for doc in train:
+        partitioned_corpus.append(new_corpus[doc])
+        partitioned_labels.append(new_labels[doc])
+        #partitioned_edges.append(new_edges[doc])
+
+    for doc in validation:
+        partitioned_corpus.append(new_corpus[doc])
+        partitioned_labels.append(new_labels[doc])
+        #partitioned_edges.append(new_edges[doc])
+
+    for doc in test:
+        partitioned_corpus.append(new_corpus[doc])
+        partitioned_labels.append(new_labels[doc])
+        #partitioned_edges.append(new_edges[doc])
+
+
     extra_info = {}
     extra_info["total_documents"] = n
     extra_info["words_document_mean"] = words_document_mean
+
     extra_info["vocabulary_length"] = len(vocabulary)
-    extra_info["last-training-doc"] = partition
+    extra_info["last-training-doc"] = len(train)
+    extra_info["last-validation-doc"] = len(validation)+len(train)
+
     extra_info["preprocessing-info"] = extra_data
     extra_info["info"] = info
     if compute_labels:
@@ -254,11 +291,11 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
         extra_info["total_labels"] = len(extra_info["labels"])
 
     return Dataset(
-        new_corpus,
+        partitioned_corpus,
         vocabulary,
         extra_info,
-        new_labels,
-        new_edges)
+        partitioned_labels,
+        partitioned_edges)
 
 
 def get_vocabulary(corpus):

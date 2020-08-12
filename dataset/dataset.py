@@ -42,16 +42,23 @@ class Dataset:
 
     # Partitioned Corpus getter
     def get_partitioned_corpus(self):
-        last_td = self.__metadata["last-training-doc"]
-        if self.__corpus != [] and last_td != 0:
+        last_training_doc = self.__metadata["last-training-doc"]
+        last_validation_doc = self.__metadata["last-validation-doc"]
+        #gestire l'eccezione se last_validation_doc non è definito, restituire
+        # il validation vuoto
+
+        if self.__corpus != [] and last_training_doc != 0:
             train_corpus = []
             test_corpus = []
-            for i in range(last_td):
+            validation_corpus = []
+
+            for i in range(last_training_doc):
                 train_corpus.append(self.__corpus[i])
-            for i in range(last_td, len(self.__corpus)):
+            for i in range(last_training_doc, last_validation_doc):
+                validation_corpus.append(self.__corpus[i])
+            for i in range(last_validation_doc, len(self.__corpus)):
                 test_corpus.append(self.__corpus[i])
-            return [train_corpus,
-                    test_corpus]
+            return train_corpus, validation_corpus, test_corpus
 
     # Edges setter
 
