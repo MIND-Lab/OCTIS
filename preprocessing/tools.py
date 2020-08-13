@@ -1,9 +1,10 @@
 import gensim
-import re
+from sklearn.model_selection import train_test_split
 from gensim.utils import simple_preprocess
-from nltk.corpus import stopwords
 from dataset.dataset import Dataset
 import multiprocessing as mp
+import spacy
+import string
 
 
 def create_pool(n_cpu):
@@ -70,9 +71,8 @@ def remove_punctuation(corpus, *_):
     -------
     corpus : corpus without punctuation
     """
-    corpus = [re.sub(r'\S*@\S*\s?', '', doc) for doc in corpus]
-    corpus = [re.sub(r'\s+', ' ', doc) for doc in corpus]
-    corpus = [re.sub(r"\'", "", doc) for doc in corpus]
+    corpus = [doc.translate(str.maketrans(
+        string.punctuation, ' '*len(string.punctuation))) for doc in corpus]
     return corpus
 
 
@@ -109,24 +109,30 @@ def remove_stopwords(corpus, stop_words):
     return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in corpus]
 
 
-def lemmatization(corpus, arguments):
+def lemmatization(corpus, pos):
     """
     Lemmatize the words in the corpus
 
     Parameters
     ----------
     corpus: the corpus
-    arguments: list of 2 elements
-               [nlp, pos]
+    pos: pos tags to keep
     Returns
     -------
     result : corpus lemmatized
     """
+
+    nlp = spacy.load("en_core_web_sm")
+    #doc = nlp('i really would like a cup of coffee please. thanks. oh my goshes')
+    #print([token.lemma_ for token in doc if token.pos_ in pos])
+
     result = []
     for document in corpus:
-        doc = arguments[0](" ".join(document))
-        result.append(
-            [token.lemma_ for token in doc if token.pos_ in arguments[1]])
+        doc = nlp(" ".join(document))
+        if len(pos) > 0:
+            result.append([token.lemma_ for token in doc if token.pos_ in pos])
+        else:
+            result.append([token.lemma_ for token in doc])
     return result
 
 
@@ -134,7 +140,7 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
     """
     Find words which
     document/word frequency is less than min_word_freq or
-    greather than max_word_freq
+    greater than max_word_freq
 
     Parameters
     ----------
@@ -148,8 +154,8 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
                 the boundaries
     """
     corpus_length = len(corpus)
-    minimum = round(min_word_freq*corpus_length)
-    maximum = round(max_word_freq*corpus_length)
+    #minimum = round(min_word_freq*corpus_length)
+    #maximum = round(max_word_freq*corpus_length)
     words_dict = {}
     for document in corpus:
         word_found_in_article = {}
@@ -163,14 +169,15 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
                 word_found_in_article[word] = True
     to_remove = {}
     for key, value in words_dict.items():
-        if value <= minimum or value >= maximum:
+        word_frequency = float(value)/float(corpus_length)
+        if word_frequency <= min_word_freq or word_frequency >= max_word_freq or len(key)<3:
             to_remove[key] = True
     return to_remove
 
 
 def filter_words(corpus, words):
     """
-    Remove from the documents each occurence of the words in input
+    Remove from the documents each occurrence of the words in input
 
     Parameters
     ----------
@@ -207,7 +214,7 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
 
     Returns
     -------
-    result : dictionary with corpus and relatve infos
+    result : dictionary with corpus and relative infos
     """
     n = 0
     count = 0
@@ -215,18 +222,18 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
     new_labels = []
     new_edges = []
     compute_labels = len(labels) > 0
-    compute_edges = len(edges) > 0
+    compute_edges = 0 #len(edges) > 0
     words_mean = 0
     distinct_labels = {}
     for document in corpus:
         document_length = len(document)
-        if document_length > min_doc:
+        if document_length >= min_doc:
             words_mean += document_length
             new_corpus.append(document)
             if compute_labels:
                 new_labels.append(labels[count])
                 for label in labels[count]:
-                    if not label in distinct_labels:
+                    if label not in distinct_labels:
                         distinct_labels[label] = True
             if compute_edges:
                 new_edges.append(edges[n])
@@ -237,13 +244,46 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
         count += 1
     words_document_mean = 0
     if n > 0:
-        words_document_mean = round(words_mean/n)
+        words_document_mean = round(words_mean/n, 2)
+
     vocabulary = get_vocabulary(new_corpus)
+
+    train, test, y_train, y_test = train_test_split(range(len(new_corpus)), new_labels,
+                                                    test_size=0.2,
+                                                    random_state=1, stratify=new_labels)
+
+    train, validation = train_test_split(train, test_size=0.25,
+                                         random_state=1,
+                                         stratify=y_train)
+
+    partitioned_corpus = []
+    partitioned_labels = []
+    partitioned_edges = []
+
+    for doc in train:
+        partitioned_corpus.append(new_corpus[doc])
+        partitioned_labels.append(new_labels[doc])
+        #partitioned_edges.append(new_edges[doc])
+
+    for doc in validation:
+        partitioned_corpus.append(new_corpus[doc])
+        partitioned_labels.append(new_labels[doc])
+        #partitioned_edges.append(new_edges[doc])
+
+    for doc in test:
+        partitioned_corpus.append(new_corpus[doc])
+        partitioned_labels.append(new_labels[doc])
+        #partitioned_edges.append(new_edges[doc])
+
+
     extra_info = {}
     extra_info["total_documents"] = n
     extra_info["words_document_mean"] = words_document_mean
+
     extra_info["vocabulary_length"] = len(vocabulary)
-    extra_info["last-training-doc"] = partition
+    extra_info["last-training-doc"] = len(train)
+    extra_info["last-validation-doc"] = len(validation)+len(train)
+
     extra_info["preprocessing-info"] = extra_data
     extra_info["info"] = info
     if compute_labels:
@@ -251,11 +291,11 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
         extra_info["total_labels"] = len(extra_info["labels"])
 
     return Dataset(
-        new_corpus,
+        partitioned_corpus,
         vocabulary,
         extra_info,
-        new_labels,
-        new_edges)
+        partitioned_labels,
+        partitioned_edges)
 
 
 def get_vocabulary(corpus):
@@ -268,7 +308,7 @@ def get_vocabulary(corpus):
 
     Returns
     -------
-    vocabulary : ditionary of words
+    vocabulary : dictionary of words
                  key = word
                  value = word/doc frequency, rounded to 4 decimals
     """

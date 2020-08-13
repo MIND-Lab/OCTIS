@@ -6,7 +6,7 @@ class Abstract_Metric(ABC):
     Class structure of a generic metric implementation
     """
 
-    def __init__(self):
+    def __init__(self, metric_parameters={}):
         pass
 
     @abstractmethod

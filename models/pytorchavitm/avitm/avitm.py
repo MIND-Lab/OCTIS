@@ -18,17 +18,17 @@ from models.pytorchavitm.avitm.decoder_network import DecoderNetwork
 
 class AVITM(object):
 
-    def __init__(self, input_size, n_components=10, model_type='prodLDA',
+    def __init__(self, input_size, num_topics=10, model_type='prodLDA',
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
                  learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False,
-                 topic_prior_mean=0.0, topic_prior_variance=0.0):
+                 topic_prior_mean=0.0, topic_prior_variance=0.0, topic_word_matrix=True, topic_document_matrix=True):
         """
         Initialize AVITM model.
 
         Args
             input_size : int, dimension of input
-            n_components : int, number of topic components, (default 10)
+            num_topics : int, number of topic components, (default 10)
             model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
             hidden_sizes : tuple, length = n_layers, (default (100, 100))
             activation : string, 'softplus', 'relu', (default 'softplus')
@@ -44,8 +44,8 @@ class AVITM(object):
         
         assert isinstance(input_size, int) and input_size > 0,\
             "input_size must by type int > 0."
-        assert isinstance(n_components, int) and input_size > 0,\
-            "n_components must by type int > 0."
+        assert isinstance(num_topics, int) and input_size > 0,\
+            "num_topics must by type int > 0."
         assert model_type in ['LDA', 'prodLDA'],\
             "model must be 'LDA' or 'prodLDA'."
         assert isinstance(hidden_sizes, tuple), \
@@ -70,7 +70,7 @@ class AVITM(object):
             "topic prior_variance must be type float"
 
         self.input_size = input_size
-        self.n_components = n_components
+        self.num_topics = num_topics
         self.model_type = model_type
         self.hidden_sizes = hidden_sizes
         self.activation = activation
@@ -84,10 +84,11 @@ class AVITM(object):
         self.reduce_on_plateau = reduce_on_plateau
         self.topic_prior_mean = topic_prior_mean
         self.topic_prior_variance = topic_prior_variance
-
+        self.bool_t_w= topic_word_matrix
+        self.bool_t_d = topic_document_matrix
         # init inference avitm network
         self.model = DecoderNetwork(
-            input_size, n_components, model_type, hidden_sizes, activation,
+            input_size, num_topics, model_type, hidden_sizes, activation,
             dropout, learn_priors, topic_prior_mean, topic_prior_variance)
 
         # init optimizer
@@ -144,7 +145,7 @@ class AVITM(object):
             prior_variance.log().sum() - posterior_log_variance.sum(dim=1)
         # combine terms
         KL = 0.5 * (
-            var_division + diff_term - self.n_components + logvar_det_division)
+            var_division + diff_term - self.num_topics + logvar_det_division)
 
         # Reconstruction term
         RL = -torch.sum(inputs * torch.log(word_dists + 1e-10), dim=1)
@@ -171,6 +172,7 @@ class AVITM(object):
             prior_mean, prior_variance, \
                 posterior_mean, posterior_variance, posterior_log_variance, \
                 word_dists, topic_word, topic_document = self.model(X)
+
             if epoch:
                 topic_doc_list.extend(topic_document)
                # append here topic document batch 
@@ -214,7 +216,7 @@ class AVITM(object):
                Momentum: {}\n\
                Reduce On Plateau: {}\n\
                Save Dir: {}".format(
-                   self.n_components, self.topic_prior_mean,
+                   self.num_topics, self.topic_prior_mean,
                    self.topic_prior_variance, self.model_type,
                    self.hidden_sizes, self.activation, self.dropout, self.learn_priors,
                    self.lr, self.momentum, self.reduce_on_plateau, save_dir))
@@ -267,6 +269,7 @@ class AVITM(object):
             num_workers=mp.cpu_count())
 
         preds = []
+        topic_document_mat = []
 
         with torch.no_grad():
             for batch_samples in loader:
@@ -278,14 +281,17 @@ class AVITM(object):
 
                 # forward pass
                 self.model.zero_grad()
-                _, _, _, _, word_dists = self.model(X)
+                _, _, _, _, _, word_dists, _, topic_document = self.model(X)
 
                 _, indices = torch.sort(word_dists, dim=1)
                 preds += [indices[:, :k]]
+                topic_document_mat.append(topic_document)
 
             preds = torch.cat(preds, dim=0)
-
-        return preds
+        results = self.get_info()
+        if self.bool_t_d:
+            results['test-topic-document-matrix'] = np.vstack(np.asarray([i.cpu().detach().numpy() for i in topic_document_mat]))
+        return results
 
     def score(self, scorer='coherence', k=10, topics=5):
         """Score model."""
@@ -308,7 +314,7 @@ class AVITM(object):
         scores = []
         i = 0
         while i < topics:
-            t = np.random.randint(0, self.n_components)
+            t = np.random.randint(0, self.num_topics)
             _, idxs = torch.topk(component_dists[t], k)
             component_words = [self.train_data.idx2token[idx]
                                for idx in idxs.cpu().numpy()]
@@ -342,8 +348,8 @@ class AVITM(object):
         component_dists = self.best_components
         topics = defaultdict(list)
         topics_list = []
-        if self.n_components is not None:
-            for i in range(self.n_components):
+        if self.num_topics is not None:
+            for i in range(self.num_topics):
                 _, idxs = torch.topk(component_dists[i], k)
                 component_words = [self.train_data.idx2token[idx]
                                    for idx in idxs.cpu().numpy()]
@@ -357,16 +363,23 @@ class AVITM(object):
         topic_word = self.get_topics()
         topic_word_dist = self.get_topic_word_mat()
         topic_document_dist = self.get_topic_document_mat()
-        
-        info['topics'] = topic_word
-        info['topic-word-matrix'] = topic_word_dist
-        info['topic-document-matrix'] = topic_document_dist
-    
+        if (self.bool_t_d == True) and (self.bool_t_w == True):
+            info['topics'] = topic_word
+            info['topic-word-matrix'] = topic_word_dist
+            info['topic-document-matrix'] = topic_document_dist
+        elif (self.bool_t_d == True) and (self.bool_t_w == False):
+            info['topics'] = topic_word
+            info['topic-document-matrix'] = topic_document_dist
+        elif (self.bool_t_d == False) and (self.bool_t_w == True):
+            info['topics'] = topic_word
+            info['topic-word-matrix'] = topic_word_dist
+        else:
+            info['topics'] = topic_word
         return info 
 
     def _format_file(self):
         model_dir = "AVITM_nc_{}_tpm_{}_tpv_{}_hs_{}_ac_{}_do_{}_lr_{}_mo_{}_rp_{}".\
-            format(self.n_components, 0.0, 1 - (1./self.n_components),
+            format(self.num_topics, 0.0, 1 - (1./self.num_topics),
                    self.model_type, self.hidden_sizes, self.activation,
                    self.dropout, self.lr, self.momentum,
                    self.reduce_on_plateau)

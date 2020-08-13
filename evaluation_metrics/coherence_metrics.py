@@ -14,7 +14,7 @@ from operator import add
 
 
 class Coherence(Abstract_Metric):
-    def __init__(self, metric_parameters=defaults.em_coherence.copy()):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
 
@@ -28,10 +28,13 @@ class Coherence(Abstract_Metric):
                             other measures: 'u_mass', 'c_v', 'c_uci', 'c_npmi'
         """
         super().__init__()
-        self.texts = metric_parameters['texts']
+        parameters = defaults.em_coherence.copy()
+        parameters.update(metric_parameters)
+
+        self.texts = parameters['texts']
         self.dictionary = Dictionary(self.texts)
-        self.topk = metric_parameters['topk']
-        self.measure = metric_parameters['measure']
+        self.topk = parameters['topk']
+        self.measure = parameters['measure']
 
     def info(self):
         return {
@@ -67,7 +70,7 @@ class Coherence(Abstract_Metric):
 
 
 class Coherence_word_embeddings(Abstract_Metric):
-    def __init__(self, metric_parameters=defaults.em_coherence_we.copy()):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
 
@@ -83,9 +86,12 @@ class Coherence_word_embeddings(Abstract_Metric):
                             False otherwise (default False)
         """
         super().__init__()
-        self.binary = metric_parameters['binary']
-        self.topk = metric_parameters['topk']
-        word2vec_path = metric_parameters['word2vec_path']
+        parameters = defaults.em_coherence_we.copy()
+        parameters.update(metric_parameters)
+
+        self.binary = parameters['binary']
+        self.topk = parameters['topk']
+        word2vec_path = parameters['word2vec_path']
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
@@ -128,7 +134,7 @@ class Coherence_word_embeddings(Abstract_Metric):
 
 
 class Coherence_word_embeddings_pairwise(Abstract_Metric):
-    def __init__(self, metric_parameters=defaults.em_coherence_we_pc.copy()):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
 
@@ -140,11 +146,14 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
                             google news 300 will be used instead
         """
         super().__init__()
-        self.topk = metric_parameters['topk']
-        if metric_parameters['w2v_model'] is None:
+        parameters = defaults.em_coherence_we_pc.copy()
+        parameters.update(metric_parameters)
+
+        self.topk = parameters['topk']
+        if parameters['w2v_model'] is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
-            self.wv = metric_parameters['w2v_model'].wv
+            self.wv = parameters['w2v_model'].wv
 
     def info(self):
         return {
@@ -195,7 +204,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
 
 class Coherence_word_embeddings_centroid(Abstract_Metric):
-    def __init__(self, metric_parameters=defaults.em_coherence_we_pc.copy()):
+    def __init__(self, metric_parameters={}):
         """
         Initialize metric
 
@@ -207,11 +216,14 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
                             google news 300 will be used instead
         """
         super().__init__()
-        self.topk = metric_parameters['topk']
-        if metric_parameters['w2v_model'] is None:
+        parameters = defaults.em_coherence_we_pc.copy()
+        parameters.update(metric_parameters)
+
+        self.topk = parameters['topk']
+        if parameters['w2v_model'] is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
-            self.wv = metric_parameters['w2v_model'].wv
+            self.wv = parameters['w2v_model'].wv
 
     def info(self):
         return {

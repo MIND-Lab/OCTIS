@@ -1,6 +1,6 @@
 import preprocessing.tools as tools
 import spacy
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords as nltk_stopwords
 
 
 class Pipeline_handler:
@@ -10,25 +10,10 @@ class Pipeline_handler:
     'process' method
     """
 
-    nlp = spacy.load("en")
-    stop_words = stopwords.words('english')
-
-    min_words_for_doc = 0
-    words_min_freq = 0
-    words_max_freq = 0
-    num_proc = 1
-
-    stop_words_extension = []
-    pos = ['NOUN', 'ADJ', 'VERB', 'ADV']
-
-    remove_punctuation = True
-    remove_stopwords = True
-    lemmatize = True
-    filter_words = True
-    multiprocess = False
-    display_progress = False
-
-    def __init__(self, dataset):
+    def __init__(self, dataset, min_words_for_doc=0, words_min_freq = 0, words_max_freq = 1,
+                 num_processes=1, stopwords='english', pos=['NOUN', 'ADJ', 'VERB', 'ADV'],
+                 remove_punctuation=True, remove_stopwords=True, lemmatize=True,
+                 filter_words=True, display_progress=False):
         """
         Initialize a Pipeline_handler
 
@@ -39,6 +24,28 @@ class Pipeline_handler:
         """
         self.words_max_freq = len(dataset["corpus"])
         self.dataset = dataset
+
+        self.min_words_for_doc = min_words_for_doc
+        self.words_min_freq = words_min_freq
+        self.words_max_freq = words_max_freq
+        self.num_proc = num_processes
+        if self.num_proc > 1:
+            self.multiprocess = True
+
+        if type(stopwords) == str:
+            self.stop_words = nltk_stopwords.words(stopwords)
+        elif type(stopwords) == list:
+            self.stop_words = stopwords
+        else:
+            print("type of stopwords parameter must be str or list of str")
+            self.stop_words = []
+
+        self.pos = pos
+        self.remove_punctuation = remove_punctuation
+        self.remove_stopwords = remove_stopwords
+        self.lemmatize = lemmatize
+        self.filter_words = filter_words
+        self.display_progress = display_progress
 
     def preprocess(self):
         """
@@ -56,7 +63,7 @@ class Pipeline_handler:
         -------
         Preprocessed dataset object
         """
-        self.stop_words.extend(self.stop_words_extension)
+        #self.stop_words.extend(self.stop_words_extension)
         pipeline = []
         extra_data = "Steps:\n"
         parameters = "Parameters:\n"
@@ -65,17 +72,16 @@ class Pipeline_handler:
             print("Initializing preprocessing")
 
         # Add each enabled step to the pipeline
-        if self.remove_stopwords:
-            pipeline.append(tools.remove_stopwords)
-            parameters += "  stopwords extension:" + str(
-                self.stop_words_extension
-            ) + "\n"
         if self.lemmatize:
             pipeline.append(tools.lemmatization)
+        if self.remove_stopwords:
+            pipeline.append(tools.remove_stopwords)
+            # parameters += "  stopwords extension:" + str(self.stop_words_extension) + "\n"
         if self.filter_words:
             pipeline.append(tools.filter_words)
-            parameters += "  removed words with less than " + str(self.words_min_freq) + " or more than " + \
-                str(self.words_max_freq) + " documents with an occurrence of the word in corpus\n"
+            parameters += "  removed words with less than " + str(self.words_min_freq) +\
+                          " or more than " + str(self.words_max_freq) + \
+                          " documents with an occurrence of the word in corpus\n"
             
             parameters += "  removed documents with less than " + str(self.min_words_for_doc) + " words"
 
@@ -83,6 +89,7 @@ class Pipeline_handler:
         categories = []
         if "doc_labels" in self.dataset:
             categories = self.dataset["doc_labels"]
+
         partition = 0
         if "partition" in self.dataset:
             partition = self.dataset["partition"]
@@ -121,26 +128,20 @@ class Pipeline_handler:
             if self.display_progress:
                 print("  step: "+step.__name__)
 
-            arguments = []
             if step.__name__ == "filter_words":
                 arguments = tools.words_to_remove(
                     corpus,
                     self.words_min_freq,
                     self.words_max_freq)
             elif step.__name__ == "lemmatization":
-                arguments = [self.nlp, self.pos]
+                arguments = self.pos
             elif step.__name__ == "remove_stopwords":
                 arguments = self.stop_words
             else:
                 arguments = []
 
             if self.multiprocess:
-                corpus = tools._multiprocess(
-                    pool,
-                    self.num_proc,
-                    step,
-                    corpus,
-                    arguments)
+                corpus = tools._multiprocess(pool, self.num_proc, step, corpus, arguments)
             else:
                 corpus = step(corpus, arguments)
 
@@ -152,14 +153,8 @@ class Pipeline_handler:
         extra_data += "  remove_docs\n"
         extra_data += parameters
 
-        result = tools.remove_docs(
-            corpus,
-            self.min_words_for_doc,
-            categories,
-            partition,
-            edges,
-            extra_data,
-            info)
+        result = tools.remove_docs(corpus, self.min_words_for_doc, categories,
+                                   partition, edges, extra_data, info)
 
         if self.multiprocess:
             pool.close()

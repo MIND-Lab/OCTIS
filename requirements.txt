@@ -5,3 +5,4 @@ spacy
 scikit-learn
 scikit-optimize
 matplotlib
+pytorch

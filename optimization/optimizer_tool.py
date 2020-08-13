@@ -282,6 +282,22 @@ def print_x_iters( list_of_res):
     for i in range( len(list_of_res) ):
         print( list_of_res[i].x_iters )
 
+def median_number( lista ):
+    """
+        Given a list it 
+        return the median 
+
+        Parameters
+        ----------
+        lista : [list] List of numbers
+
+        Returns
+        -------
+        val : The median of the numbers
+    """    
+    val = statistics.median( lista )
+    return val
+
 def median( list_of_res):
     """
         Given a Bayesian_optimization result 
@@ -773,11 +789,13 @@ def top_5( list_of_list_of_res ):
     list_medie = list_medie[:5]
     return list_medie
 
-def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
+def plot_bayesian_optimization_forced( list_of_res, name_plot = "plot_BO.png",
                                 log_scale = False, path = None, conv_min = True):
     """
         Save a plot of the result of a Bayesian_optimization 
-        considering mean and standard deviation
+        considering mean and standard deviation.
+        Similar to plot_bayesian_optimization but it force che x axes 
+        to show every number.
 
         Parameters
         ----------
@@ -848,11 +866,11 @@ def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO",
 
     plt.clf()
 
-def plot_bayesian_optimization_relaxed( list_of_res, name_plot = "plot_BO",
+def plot_bayesian_optimization( list_of_res, name_plot = "plot_BO.png",
                                 log_scale = False, path = None, conv_min = True):
     """
         Save a plot of the result of a Bayesian_optimization 
-        considering mean and standard deviation with x axes relaxed
+        considering mean and standard deviation.
 
         Parameters
         ----------
@@ -982,3 +1000,47 @@ def load_BO( lista_dump ):
         res_loaded = load( lista_dump[n] )
         lista_res_loaded.append( res_loaded )
     return lista_res_loaded
+
+def plot_boxplot(matrix, name_plot = "plot_model.png", path=None):
+    """
+        Save a boxplot of the data.
+        Works only when optimization_runs is 1.
+
+        Parameters
+        ----------
+        matrix: list of list of list of numbers
+                or a 3D matrix
+        
+        name_plot : The name of the file you want to 
+                    give to the plot
+
+        path : path where the plot file is saved
+    """
+
+    # Flat the matrix
+    #flat_matrix = matrix.flatten('F')
+    flat_matrix = []
+    for data_elem in matrix:
+        flat_matrix.append(data_elem[0])
+    
+    #print("Flat_matrix->", flat_matrix)
+
+    fig7, ax7 = plt.subplots()
+
+    ax7.set_title('Model runs')
+    plt.xlabel('n_calls')
+    plt.grid(True)
+
+    ax7.boxplot(flat_matrix)
+
+    if( path == None ):
+        plt.savefig( name_plot ) #save in the current working directory
+    else:
+        if( path[-1] != '/' ):
+                path = path + "/"
+        current_dir = os.getcwd() #current working directory
+        os.chdir( path ) #change directory
+        plt.savefig( name_plot )
+        os.chdir( current_dir ) #reset directory to original
+
+    plt.clf()

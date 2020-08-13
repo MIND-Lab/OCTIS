@@ -13,6 +13,59 @@ class HDP_Model(Abstract_Model):
     use_partitions = True
     update_with_test = False
 
+    def __init__(self, max_chunks=None, max_time=None, chunksize=256,
+                 kappa=1.0, tau=64.0, K=15, T=150, alpha=1,
+                 gamma=1, eta=0.01, scale=1.0, var_converge=0.0001):
+        """
+        Initialize HDP model
+
+        Parameters
+        ----------
+        max_chunks (int, optional) – Upper bound on how many chunks to process.
+        It wraps around corpus beginning in another corpus pass,
+        if there are not enough chunks in the corpus.
+
+        max_time (int, optional) – Upper bound on time (in seconds)
+        for which model will be trained.
+
+        chunksize (int, optional) – Number of documents in one chuck.
+
+        kappa (float,optional) – Learning parameter which acts as exponential
+        decay factor to influence extent of learning from each batch.
+
+        tau (float, optional) – Learning parameter which down-weights
+        early iterations of documents.
+
+        K (int, optional) – Second level truncation level
+
+        T (int, optional) – Top level truncation level
+
+        alpha (int, optional) – Second level concentration
+
+        gamma (int, optional) – First level concentration
+
+        eta (float, optional) – The topic Dirichlet
+
+        scale (float, optional) – Weights information from the
+        mini-chunk of corpus to calculate rhot.
+
+        var_converge (float, optional) – Lower bound on the right side of
+        convergence. Used when updating variational parameters
+        for a single document.
+        """
+        self.hyperparameters["max_chunks"] = max_chunks
+        self.hyperparameters["max_time"] = max_time
+        self.hyperparameters["chunksize"] = chunksize
+        self.hyperparameters["kappa"] = kappa
+        self.hyperparameters["tau"] = tau
+        self.hyperparameters["K"] = K
+        self.hyperparameters["T"] = T
+        self.hyperparameters["alpha"] = alpha
+        self.hyperparameters["gamma"] = gamma
+        self.hyperparameters["eta"] = eta
+        self.hyperparameters["scale"] = scale
+        self.hyperparameters["var_converge"] = var_converge
+
     def info(self):
         """
         Returns model informations
@@ -21,6 +74,12 @@ class HDP_Model(Abstract_Model):
             "citation": citations.models_HDP,
             "name": "HDP, Hierarchical Dirichlet Process"
         }
+
+    def hyperparameters_info(self):
+        """
+        Returns hyperparameters informations
+        """
+        return defaults.HDP_hyperparameters_info
 
     def partitioning(self, use_partitions, update_with_test=False):
         """
@@ -123,10 +182,17 @@ class HDP_Model(Abstract_Model):
             else:
                 test_document_topic_matrix = []
                 for document in new_corpus:
-                    test_document_topic_matrix.append(
-                        self.trained_model[document])
-                result["test-document-topic-matrix"] = np.array(
-                    test_document_topic_matrix)
+
+                    document_topics_tuples = self.trained_model[document]
+                    document_topics = np.zeros(
+                        len(self.trained_model.get_topics()))
+                    for single_tuple in document_topics_tuples:
+                        document_topics[single_tuple[0]] = single_tuple[1]
+
+                    test_document_topic_matrix.append(document_topics)
+
+                result["test-topic-document-matrix"] = np.array(
+                    test_document_topic_matrix).transpose()
 
         return result
 

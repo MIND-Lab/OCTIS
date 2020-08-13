@@ -2,7 +2,7 @@ import json
 from sklearn.model_selection import train_test_split
 
 
-def retrieve(path):
+def retrieve_wikipedia(path):
     """
     Retrieve the corpus and the labels
 

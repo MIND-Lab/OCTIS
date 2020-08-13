@@ -11,7 +11,7 @@ from models.pytorchavitm import datasets
 class TorchAvitm(Abstract_Model):
 
     def __init__(self):
-        self.hyperparameters={}
+            self.hyperparameters={}
 
     def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True, topic_document_matrix=True):
         """
@@ -20,7 +20,7 @@ class TorchAvitm(Abstract_Model):
                 hyparameters: dict, with the below information:
 
                 input_size : int, dimension of input
-                n_components : int, number of topic components, (default 10)
+                num_topics : int, number of topic components, (default 10)
                 model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
                 hidden_sizes : tuple, length = n_layers, (default (100, 100))
                 activation : string, 'softplus', 'relu', (default 'softplus')
@@ -36,12 +36,22 @@ class TorchAvitm(Abstract_Model):
 
         self.set_default_hyperparameters(hyperparameters)
 
-        data_corpus = [','.join(i) for i in dataset.get_corpus()]
-        
-        X_train, input_size = self.preprocess(data_corpus)
+        self.bool_topic_doc = topic_document_matrix
+        self.bool_topic_word = topic_word_matrix
+
+        if self.use_partitions == True:
+            data = dataset.get_partitioned_corpus()
+            X_train = data[0]
+            X_test = data[1]
+            data_corpus_train = [','.join(i) for i in X_train]
+            data_corpus_test = [','.join(i) for i in X_test]
+            self.X_train, self.X_test, input_size = self.preprocess(data_corpus_train, data_corpus_test)
+        else:
+            data_corpus = [','.join(i) for i in dataset.get_corpus()]
+            self.X_train, input_size = self.preprocess(data_corpus)
       
-        avitm_model = avitm.AVITM(input_size=input_size,
-                                  n_components=self.hyperparameters['num_topics'],
+        self.avitm_model = avitm.AVITM(input_size=input_size,
+                                  num_topics=self.hyperparameters['num_topics'],
                                   model_type=self.hyperparameters['model_type'],
                                   hidden_sizes=self.hyperparameters['hidden_sizes'],
                                   activation=self.hyperparameters['activation'],
@@ -56,12 +66,24 @@ class TorchAvitm(Abstract_Model):
                                       'reduce_on_plateau'],
                                   topic_prior_mean=self.hyperparameters["prior_mean"],
                                   topic_prior_variance=self.hyperparameters[
-                                      "prior_variance"])
+                                      "prior_variance"], topic_word_matrix=self.bool_topic_word,
+                                       topic_document_matrix= self.bool_topic_doc
+                                       )
     
-        avitm_model.fit(X_train)
-        result = avitm_model.get_info()
+        self.avitm_model.fit(self.X_train)
         
+        if self.use_partitions:
+            result = self.inference()
+        else:
+            result = self.avitm_model.get_info()
         return result
+
+    def inference(self):
+        assert isinstance(self.use_partitions, bool) and self.use_partitions == True
+
+        results = self.avitm_model.predict(self.X_test)
+
+        return results
 
     def set_default_hyperparameters(self, hyperparameters):
         self.hyperparameters['num_topics'] = hyperparameters.get(
@@ -106,24 +128,48 @@ class TorchAvitm(Abstract_Model):
 
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
+    def partitioning(self, use_partitions=False):
+        
+        if use_partitions:
+            self.use_partitions = True
+        else:
+            self.use_partitions = False
+
+    def info_test(self):
+        if self.use_partitions:
+            return self.X_test
+        else:
+            print('No partitioned dataset, please apply test_set method = True')
+
     @staticmethod
-    def preprocess(data):
+    def preprocess(data, test = None):
         
         def to_bow(data, min_length):
             """Convert index lists to bag of words representation of documents."""
             vect = [np.bincount(x[x != np.array(None)].astype('int'), minlength=min_length)
                     for x in data if np.sum(x[x != np.array(None)]) != 0]
             return np.array(vect)
-        
-        vec = CountVectorizer()
-        X = vec.fit_transform(data)
-        idx2token = {v: k for (k, v) in vec.vocabulary_.items()} 
-        #train_data = datasets.BOWDataset(X.toarray(), idx2token)
-        train_bow = to_bow(X.toarray(), len(idx2token.keys()))
-        train_data = datasets.BOWDataset(train_bow, idx2token)
-        input_size = len(idx2token.keys())
-        
-        return train_data, input_size 
+        if test is not None:
+            vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
+            X_train = vec.fit_transform(data)
+            X_test = vec.transform(test)
+            idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
+            #train_bow = to_bow(X_train.toarray(), len(idx2token.keys()))
+            #test_bow = to_bow(X_test.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(X_train.toarray(), idx2token)
+            test_data = datasets.BOWDataset(X_test.toarray(), idx2token)
+            input_size = len(idx2token.keys())
+
+            return train_data,test_data, input_size
+
+        else:
+            vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
+            X = vec.fit_transform(data)
+            idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
+            #train_bow = to_bow(X.toarray(), len(idx2token.keys()))
+            train_data = datasets.BOWDataset(X.toarray(), idx2token)
+            input_size = len(idx2token.keys())
+            return train_data, input_size
     
 
 

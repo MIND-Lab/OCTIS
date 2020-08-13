@@ -2,7 +2,7 @@ import preprocessing.sources.source_tools as nu
 import configuration.citations as citations
 
 
-def retrieve():
+def retrieve_m10():
     """
     Retrieve the corpus, partition, edges and the labels
 

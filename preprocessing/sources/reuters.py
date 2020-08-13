@@ -1,7 +1,7 @@
 from nltk.corpus import reuters
 
 
-def retrieve():
+def retrieve_reuters():
     """
     Retrieve the corpus and the labels
 

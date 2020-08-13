@@ -120,6 +120,8 @@ Available Models
 * LSI
 * NMF
 * HDP
+* AVITM
+* ETM
 
 Available Datasets
 ----------------
