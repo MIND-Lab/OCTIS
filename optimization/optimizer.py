@@ -58,9 +58,9 @@ default_parameters = {
     'save_path': None,  # where to save all file (log, txt, plot, etc)
     'early_stop': False,
     'early_step': 10,
-    'plot_optimization': False,
+    'plot_best_seen': False,
     'plot_model': False,
-    'plot_name': "Bayesian optimization plot",
+    'plot_prefix_name': "Bayesian optimization plot",
     'log_scale_plot': False
 }
 
@@ -216,12 +216,12 @@ class Optimizer():
         if default_parameters["plot_model"] and (default_parameters["optimization_runs"] == 1):
             default_parameters["plot_model"] = True
 
-            if default_parameters["plot_name"].endswith(".png"):
-                name = default_parameters["plot_name"]
+            if default_parameters["plot_prefix_name"].endswith(".png"):
+                name = default_parameters["plot_prefix_name"]
             else:
-                name = default_parameters["plot_name"] + ".png"
+                name = default_parameters["plot_prefix_name"] + ".png"
 
-            if not default_parameters["plot_optimization"]:
+            if not default_parameters["plot_best_seen"]:
                 name_model_plot = name
             else:
                 name_model_plot = name[:-4] + "_model.png"
@@ -256,9 +256,9 @@ class Optimizer():
                               save_path=default_parameters["save_path"],
                               early_stop=default_parameters["early_stop"],
                               early_step=default_parameters["early_step"],
-                              plot_optimization=default_parameters["plot_optimization"],
+                              plot_best_seen=default_parameters["plot_best_seen"],
                               plot_model=default_parameters["plot_model"],
-                              plot_name=default_parameters["plot_name"],
+                              plot_prefix_name=default_parameters["plot_prefix_name"],
                               log_scale_plot=default_parameters["log_scale_plot"],
                               verbose=default_parameters["verbose"],
                               n_points=default_parameters["n_points"],
@@ -351,7 +351,7 @@ class Optimizer():
             early_step : Integer interval after which a current optimization run
                         is stopped if it doesn't improve.
             
-            plot_optimization : [boolean] Plot the convergence of the Bayesian optimization 
+            plot_best_seen : [boolean] Plot the convergence of the Bayesian optimization 
                     process, showing mean and standard deviation of the different
                     optimization runs. 
                     If save is True the plot is update every save_step evaluations.
@@ -360,7 +360,7 @@ class Optimizer():
                     model runs. 
                     If save is True the plot is update every save_step evaluations.
             
-            plot_name : Name of the .png file where the plot is saved.
+            plot_prefix_name : Prefix of the name of the .png file where the plots are saved.
             
             log_scale_plot : [boolean] If True the "y_axis" of the plot
                             is set to log_scale
@@ -441,7 +441,6 @@ class Optimizer():
             return random_minimizer_function(f=f, bounds=bounds,
                                     number_of_call=number_of_call,
                                     optimization_runs=optimization_runs,
-                                    model_runs=model_runs,
                                     random_state=random_state,
                                     x0=x0,
                                     y0=y0,
@@ -453,9 +452,9 @@ class Optimizer():
                                     save_path=save_path,
                                     early_stop=early_stop,
                                     early_step=early_step,
-                                    plot_optimization=plot_optimization,
+                                    plot_best_seen=plot_best_seen,
                                     plot_model=plot_model,
-                                    plot_name=plot_name,
+                                    plot_prefix_name=plot_prefix_name,
                                     log_scale_plot=log_scale_plot,
                                     verbose=verbose,
                                     model_queue_size=model_queue_size,
@@ -463,7 +462,6 @@ class Optimizer():
                                     dataset_name=self.dataset.get_metadata()["info"]["name"],
                                     hyperparameters_name=self.hyperparameters,
                                     metric_name=self.metric.__class__.__name__,
-                                    num_topic=self.model.hyperparameters['num_topics'],
                                     maximize=(self.optimization_type == 'Maximize'))
 
         # Forest Minimize
@@ -471,7 +469,6 @@ class Optimizer():
             return forest_minimizer_function(f=f, bounds=bounds,
                                     number_of_call=number_of_call,
                                     optimization_runs=optimization_runs,
-                                    model_runs=model_runs,
                                     acq_func=acq_func,
                                     base_estimator_forest=base_estimator_forest,
                                     random_state=random_state,
@@ -486,9 +483,9 @@ class Optimizer():
                                     save_path=save_path,
                                     early_stop=early_stop,
                                     early_step=early_step,
-                                    plot_optimization=plot_optimization,
+                                    plot_best_seen=plot_best_seen,
                                     plot_model=plot_model,
-                                    plot_name=plot_name,
+                                    plot_prefix_name=plot_prefix_name,
                                     log_scale_plot=log_scale_plot,
                                     verbose=verbose,
                                     n_points=n_points,
@@ -499,7 +496,6 @@ class Optimizer():
                                     dataset_name=self.dataset.get_metadata()["info"]["name"],
                                     hyperparameters_name=self.hyperparameters,
                                     metric_name=self.metric.__class__.__name__,
-                                    num_topic=self.model.hyperparameters['num_topics'],
                                     maximize=(self.optimization_type == 'Maximize'))
 
         # GP Minimize
@@ -507,7 +503,6 @@ class Optimizer():
             return gp_minimizer_function(f=f, bounds=bounds,
                                 number_of_call=number_of_call,
                                 optimization_runs=optimization_runs,
-                                model_runs=model_runs,
                                 kernel=kernel,
                                 acq_func=acq_func,
                                 random_state=random_state,
@@ -523,9 +518,9 @@ class Optimizer():
                                 save_path=save_path,
                                 early_stop=early_stop,
                                 early_step=early_step,
-                                plot_optimization=plot_optimization,
+                                plot_best_seen=plot_best_seen,
                                 plot_model=plot_model,
-                                plot_name=plot_name,
+                                plot_prefix_name=plot_prefix_name,
                                 log_scale_plot=log_scale_plot,
                                 verbose=verbose,
                                 model_queue_size=model_queue_size,
@@ -533,7 +528,6 @@ class Optimizer():
                                 dataset_name=self.dataset.get_metadata()["info"]["name"],
                                 hyperparameters_name=self.hyperparameters,
                                 metric_name=self.metric.__class__.__name__,
-                                num_topic=self.model.hyperparameters['num_topics'],
                                 maximize=(self.optimization_type == 'Maximize'))
 
         else:
@@ -588,9 +582,9 @@ class Optimizer():
             save_path=default_parameters["save_path"],
             early_stop=default_parameters["early_stop"],
             early_step=default_parameters["early_step"],
-            plot_optimization=default_parameters["plot_optimization"],
+            plot_best_seen=default_parameters["plot_best_seen"],
             plot_model=default_parameters["plot_model"],
-            plot_name=default_parameters["plot_name"],
+            plot_prefix_name=default_parameters["plot_prefix_name"],
             log_scale_plot=default_parameters["log_scale_plot"],
             verbose=default_parameters["verbose"],
             n_points=default_parameters["n_points"],
@@ -605,9 +599,15 @@ class Optimizer():
                 for j in range(len(optimize_result[i].func_vals)):
                     optimize_result[i].func_vals[j] = - optimize_result[i].func_vals[j]
 
-            if default_parameters["plot_optimization"]:
+            if default_parameters["plot_best_seen"]:
+                name_plot = default_parameters["plot_prefix_name"]
+                if name_plot.endswith(".png") :
+                    name_plot = name_plot[:-4] + "_best_seen.png"
+                else:
+                    name_plot = name_plot + "_best_seen.png"
+
                 plot_bayesian_optimization(list_of_res=optimize_result,
-                                           name_plot=default_parameters["plot_name"],
+                                           name_plot=name_plot,
                                            log_scale=default_parameters["log_scale_plot"],
                                            path=default_parameters["save_path"],
                                            conv_min=False)

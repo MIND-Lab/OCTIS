@@ -1029,6 +1029,7 @@ def plot_boxplot(matrix, name_plot = "plot_model.png", path=None):
 
     ax7.set_title('Model runs')
     plt.xlabel('n_calls')
+    plt.grid(True)
 
     ax7.boxplot(flat_matrix)
 

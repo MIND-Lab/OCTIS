@@ -10,23 +10,21 @@ import time
 
 # Forest Minimize
 def forest_minimizer(f, bounds, number_of_call, optimization_runs,
-                     model_runs,  # ci va??
                      acq_func, base_estimator_forest, random_state, kappa, x0, y0,
                      time_x0, n_random_starts, save, save_step, save_name, save_path,
-                     early_stop, early_step, plot_optimization, plot_model,
-                     plot_name, log_scale_plot, verbose, n_points,
+                     early_stop, early_step, plot_best_seen, plot_model,
+                     plot_prefix_name, log_scale_plot, verbose, n_points,
                      xi, n_jobs, model_queue_size, checkpoint_saver,
-                     dataset_name, hyperparameters_name, metric_name,
-                     num_topic, maximize):
+                     dataset_name, hyperparameters_name, metric_name, maximize):
     res = []
     minimizer_stringa = "forest_minimize"
     # print(metric_name)
 
-    if plot_optimization:
-        if plot_name.endswith(".png"):
-            name = plot_name
+    if plot_best_seen:
+        if plot_prefix_name.endswith(".png") :
+            plot_best_seen_name = plot_prefix_name[:-4] + "_best_seen.png"
         else:
-            name = plot_name + ".png"
+            plot_best_seen_name = plot_prefix_name + "_best_seen.png"
 
     if save_path is not None:
         save_name = save_path + save_name
@@ -39,8 +37,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
                                        random_state=random_state, verbose=verbose,
                                        n_points=n_points, xi=xi, kappa=kappa,
                                        n_jobs=n_jobs, model_queue_size=model_queue_size))
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif (save_step >= number_of_call and save) and (early_step >= number_of_call or not early_stop):
         for i in range(optimization_runs):
@@ -54,8 +52,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
                                        callback=[checkpoint_saver[i]], verbose=verbose,
                                        n_points=n_points, xi=xi, kappa=kappa, n_jobs=n_jobs,
                                        model_queue_size=model_queue_size))
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif save and not early_stop:
         time_eval = []
@@ -109,8 +107,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
             #    for i in range((len_x0 - 1)):
             #        time_t.append(total_time)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
         number_of_call_r = number_of_call - save_step
         if flag:
@@ -125,7 +123,7 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
 
         save_csv(name_csv=save_name + ".csv", dataset_name=dataset_name,
                  hyperparameters_name=hyperparameters_name, metric_name=metric_name,
-                 num_topic=num_topic, Surrogate=minimizer_stringa,
+                 Surrogate=minimizer_stringa,
                  Acquisition=acq_func, Time=time_eval,
                  res=res, Maximize=maximize, time_x0=time_x0)
 
@@ -160,7 +158,6 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
 
                 save_csv(name_csv=save_name + ".csv", dataset_name=dataset_name,
                          hyperparameters_name=hyperparameters_name, metric_name=metric_name,
-                         num_topic=num_topic,
                          Surrogate=minimizer_stringa,
                          Acquisition=acq_func,
                          Time=time_eval,
@@ -168,8 +165,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
                          Maximize=maximize,
                          time_x0=time_x0)
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
                 number_of_call_r = number_of_call_r - save_step
 
@@ -209,7 +206,6 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
                          dataset_name=dataset_name,
                          hyperparameters_name=hyperparameters_name,
                          metric_name=metric_name,
-                         num_topic=num_topic,
                          Surrogate=minimizer_stringa,
                          Acquisition=acq_func,
                          Time=time_eval,
@@ -217,8 +213,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
                          Maximize=maximize,
                          time_x0=time_x0)
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
                 number_of_call_r = number_of_call_r - save_step
 
     elif not save and early_stop:
@@ -244,8 +240,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
 
             res.append(res_temp)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif save and early_stop:
         for i in range(optimization_runs):
@@ -288,8 +284,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
 
             res.append(res_temp)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
         number_of_call_r = number_of_call - save_step
 
@@ -329,8 +325,8 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
 
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
             else:
                 for i in range(optimization_runs):
@@ -373,11 +369,11 @@ def forest_minimizer(f, bounds, number_of_call, optimization_runs,
 
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     else:
         print("Not implemented \n")

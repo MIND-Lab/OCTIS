@@ -18,7 +18,6 @@ def gp_minimizer(f,
                 bounds,
                 number_of_call,
                 optimization_runs,
-                model_runs,
                 kernel,
                 acq_func,
                 random_state,
@@ -34,9 +33,9 @@ def gp_minimizer(f,
                 save_path,
                 early_stop,
                 early_step,
-                plot_optimization,
+                plot_best_seen,
                 plot_model,
-                plot_name,
+                plot_prefix_name,
                 log_scale_plot,
                 verbose,
                 model_queue_size,
@@ -44,16 +43,15 @@ def gp_minimizer(f,
                 dataset_name,
                 hyperparameters_name,
                 metric_name,
-                num_topic,
                 maximize):
     res = []
     minimizer_stringa = "gp_minimize"
 
-    if plot_optimization:
-        if plot_name.endswith(".png") :
-            name = plot_name
+    if plot_best_seen:
+        if plot_prefix_name.endswith(".png") :
+            plot_best_seen_name = plot_prefix_name[:-4] + "_best_seen.png"
         else:
-            name = plot_name + ".png"
+            plot_best_seen_name = plot_prefix_name + "_best_seen.png"
 
     gpr = GaussianProcessRegressor(kernel=kernel, 
                                     alpha=alpha,
@@ -78,8 +76,8 @@ def gp_minimizer(f,
                 opt.tell(x0[i], y0[i], fit=True)
             res.append( opt.run(f, number_of_call) )
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization( res, name, log_scale_plot, path=save_path )
+        if plot_best_seen:
+            tool.plot_bayesian_optimization( res, plot_best_seen_name, log_scale_plot, path=save_path )
 
     elif ( ( save_step >= number_of_call and save) and  ( early_step >= number_of_call or not early_stop )  ):
         for i in range( optimization_runs ):
@@ -101,8 +99,8 @@ def gp_minimizer(f,
 
         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif save and not early_stop:
 
@@ -138,7 +136,6 @@ def gp_minimizer(f,
                 dataset_name = dataset_name , 
                 hyperparameters_name = hyperparameters_name,
                 metric_name = metric_name,
-                num_topic = num_topic, 
                 Surrogate = minimizer_stringa,
                 Acquisition = acq_func,
                 Time = time_eval, 
@@ -150,8 +147,8 @@ def gp_minimizer(f,
         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
         number_of_call_r = number_of_call - save_step
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
         
 
         time_t = []
@@ -190,7 +187,6 @@ def gp_minimizer(f,
                         dataset_name = dataset_name , 
                         hyperparameters_name = hyperparameters_name,
                         metric_name = metric_name,
-                        num_topic = num_topic, 
                         Surrogate = minimizer_stringa,
                         Acquisition = acq_func,
                         Time = time_eval, 
@@ -201,8 +197,8 @@ def gp_minimizer(f,
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
             else:
                 partial_res = tool.load_BO( checkpoint_saver ) #restore
@@ -236,7 +232,6 @@ def gp_minimizer(f,
                         dataset_name = dataset_name , 
                         hyperparameters_name = hyperparameters_name,
                         metric_name = metric_name,
-                        num_topic = num_topic, 
                         Surrogate = minimizer_stringa,
                         Acquisition = acq_func,
                         Time = time_eval, 
@@ -247,8 +242,8 @@ def gp_minimizer(f,
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif (not save and early_stop):
 
@@ -280,8 +275,8 @@ def gp_minimizer(f,
         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
         number_of_call_r = number_of_call - early_step
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
         
 
         while ( number_of_call_r > 0 ) :
@@ -313,8 +308,8 @@ def gp_minimizer(f,
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call_r - early_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
             else:
                 partial_res = tool.load_BO( checkpoint_saver ) #restore
@@ -343,8 +338,8 @@ def gp_minimizer(f,
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call_r - early_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif ( save and early_stop):
 
@@ -376,8 +371,8 @@ def gp_minimizer(f,
         checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
         number_of_call_r = number_of_call - save_step
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
         
 
         while ( number_of_call_r > 0 ) :
@@ -409,8 +404,8 @@ def gp_minimizer(f,
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
             else:
                 partial_res = tool.load_BO( checkpoint_saver ) #restore
@@ -436,8 +431,8 @@ def gp_minimizer(f,
                 checkpoint_saver = tool.dump_BO( res, save_name, save_path ) #save
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization( res, name, log_scale_plot, path = save_path )
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     else:
         print("Not implemented \n")

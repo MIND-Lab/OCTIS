@@ -4,7 +4,6 @@ def save_csv(name_csv,
             dataset_name, 
             hyperparameters_name,
             metric_name,
-            num_topic, 
             Surrogate,
             Acquisition,
             Time, #list of list of time
@@ -25,8 +24,6 @@ def save_csv(name_csv,
                             hyperparameters
 
         metric_name : [string] name of the metric optimized
-
-        num_topic : number of topic
 
         Surrogate : [string] surrogate model used
 
@@ -57,11 +54,10 @@ def save_csv(name_csv,
     name_dict['DATASET'] = [dataset_name]*n_row
     for hyperparameter in hyperparameters_name:
         name_dict[hyperparameter] = [] #empty
-    name_dict['NUM_TOPIC'] = [num_topic]*n_row
     name_dict[ metric_name+'(optimized)'] = [] #empty
     name_dict['EXPERIMENT_ID'] = [] #empty
     name_dict['SURROGATE'] = [Surrogate]*n_row
-    name_dict['ACQUISITION'] = [Acquisition]*n_row
+    name_dict['ACQUISITION FUNC'] = [Acquisition]*n_row
     name_dict['NUM_ITERATION'] = [] #empty
     name_dict['TIME'] = [] #empty
 

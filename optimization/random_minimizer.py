@@ -13,7 +13,6 @@ def random_minimizer(f,
                      bounds,
                      number_of_call,
                      optimization_runs,
-                     model_runs,  # ci va??
                      random_state,
                      x0,
                      y0,
@@ -25,9 +24,9 @@ def random_minimizer(f,
                      save_path,
                      early_stop,
                      early_step,
-                     plot_optimization,
+                     plot_best_seen,
                      plot_model,
-                     plot_name,
+                     plot_prefix_name,
                      log_scale_plot,
                      verbose,
                      model_queue_size,
@@ -35,17 +34,16 @@ def random_minimizer(f,
                      dataset_name,
                      hyperparameters_name,
                      metric_name,
-                     num_topic,
                      maximize,
                      acq_func="None"):
     res = []
     minimizer_stringa = "random_minimize"
 
-    if plot_optimization:
-        if plot_name.endswith(".png"):
-            name = plot_name
+    if plot_best_seen:
+        if plot_prefix_name.endswith(".png") :
+            plot_best_seen_name = plot_prefix_name[:-4] + "_best_seen.png"
         else:
-            name = plot_name + ".png"
+            plot_best_seen_name = plot_prefix_name + "_best_seen.png"
 
     if save_path is not None:
         save_name = save_path + save_name
@@ -61,8 +59,8 @@ def random_minimizer(f,
                                       verbose=verbose,
                                       model_queue_size=model_queue_size))
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif ((save_step >= number_of_call and save) and (early_step >= number_of_call or not early_stop)):
         for i in range(optimization_runs):
@@ -79,8 +77,8 @@ def random_minimizer(f,
                                       verbose=verbose,
                                       model_queue_size=model_queue_size))
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif (save and not early_stop):
 
@@ -113,7 +111,6 @@ def random_minimizer(f,
                  dataset_name=dataset_name,
                  hyperparameters_name=hyperparameters_name,
                  metric_name=metric_name,
-                 num_topic=num_topic,
                  Surrogate=minimizer_stringa,
                  Acquisition=acq_func,
                  Time=time_eval,
@@ -121,8 +118,8 @@ def random_minimizer(f,
                  Maximize=maximize,
                  time_x0=time_x0)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
         number_of_call_r = number_of_call - save_step
 
@@ -161,7 +158,6 @@ def random_minimizer(f,
                          dataset_name=dataset_name,
                          hyperparameters_name=hyperparameters_name,
                          metric_name=metric_name,
-                         num_topic=num_topic,
                          Surrogate=minimizer_stringa,
                          Acquisition=acq_func,
                          Time=time_eval,
@@ -169,8 +165,8 @@ def random_minimizer(f,
                          Maximize=maximize,
                          time_x0=time_x0)
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
                 number_of_call_r = number_of_call_r - save_step
 
             else:
@@ -199,7 +195,6 @@ def random_minimizer(f,
                          dataset_name=dataset_name,
                          hyperparameters_name=hyperparameters_name,
                          metric_name=metric_name,
-                         num_topic=num_topic,
                          Surrogate=minimizer_stringa,
                          Acquisition=acq_func,
                          Time=time_eval,
@@ -207,8 +202,8 @@ def random_minimizer(f,
                          Maximize=maximize,
                          time_x0=time_x0)
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
                 number_of_call_r = number_of_call_r - save_step
 
     elif not save and early_stop:
@@ -227,8 +222,8 @@ def random_minimizer(f,
                                       model_queue_size=model_queue_size)
             res.append(res_temp)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     elif save and early_stop:
 
@@ -251,8 +246,8 @@ def random_minimizer(f,
 
             res.append(res_temp)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
         number_of_call_r = number_of_call - save_step
 
@@ -284,8 +279,8 @@ def random_minimizer(f,
 
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
 
             else:
@@ -307,11 +302,11 @@ def random_minimizer(f,
 
                 number_of_call_r = number_of_call_r - save_step
 
-                if plot_optimization:
-                    tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+                if plot_best_seen:
+                    tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
-        if plot_optimization:
-            tool.plot_bayesian_optimization(res, name, log_scale_plot, path=save_path)
+        if plot_best_seen:
+            tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
 
     else:
         print("Not implemented \n")
