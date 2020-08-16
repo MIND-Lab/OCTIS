@@ -1,8 +1,7 @@
 
 from models.model import Abstract_Model
 from sklearn.feature_extraction.text import CountVectorizer
-import pandas as pd 
-import numpy as np 
+import numpy as np
 
 from models.pytorchavitm.avitm import avitm
 from models.pytorchavitm import datasets
@@ -80,9 +79,7 @@ class TorchAvitm(Abstract_Model):
 
     def inference(self):
         assert isinstance(self.use_partitions, bool) and self.use_partitions == True
-
         results = self.avitm_model.predict(self.X_test)
-
         return results
 
     def set_default_hyperparameters(self, hyperparameters):
