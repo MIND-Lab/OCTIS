@@ -126,11 +126,7 @@ class TorchAvitm(Abstract_Model):
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
     def partitioning(self, use_partitions=False):
-        
-        if use_partitions:
-            self.use_partitions = True
-        else:
-            self.use_partitions = False
+            self.use_partitions = use_partitions
 
     def info_test(self):
         if self.use_partitions:
@@ -139,31 +135,21 @@ class TorchAvitm(Abstract_Model):
             print('No partitioned dataset, please apply test_set method = True')
 
     @staticmethod
-    def preprocess(data, test = None):
-        
-        def to_bow(data, min_length):
-            """Convert index lists to bag of words representation of documents."""
-            vect = [np.bincount(x[x != np.array(None)].astype('int'), minlength=min_length)
-                    for x in data if np.sum(x[x != np.array(None)]) != 0]
-            return np.array(vect)
+    def preprocess(data, test=None):
         if test is not None:
             vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
             X_train = vec.fit_transform(data)
             X_test = vec.transform(test)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-            #train_bow = to_bow(X_train.toarray(), len(idx2token.keys()))
-            #test_bow = to_bow(X_test.toarray(), len(idx2token.keys()))
             train_data = datasets.BOWDataset(X_train.toarray(), idx2token)
             test_data = datasets.BOWDataset(X_test.toarray(), idx2token)
             input_size = len(idx2token.keys())
 
-            return train_data,test_data, input_size
-
+            return train_data, test_data, input_size
         else:
             vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
             X = vec.fit_transform(data)
             idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-            #train_bow = to_bow(X.toarray(), len(idx2token.keys()))
             train_data = datasets.BOWDataset(X.toarray(), idx2token)
             input_size = len(idx2token.keys())
             return train_data, input_size
