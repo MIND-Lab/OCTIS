@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from os import path
 
 def save_csv(name_csv,
             dataset_name, 
@@ -7,9 +9,10 @@ def save_csv(name_csv,
             Surrogate,
             Acquisition,
             Time, #list of list of time
-            res, 
+            res,
             Maximize = False,
-            time_x0 = None,):
+            time_x0 = None,
+            len_x0 = 0):
     """
         Create a csv file to describe the topic model
         optimization.
@@ -34,16 +37,25 @@ def save_csv(name_csv,
 
         res : result of a Bayesian_optimization()
 
+        matrix_model_runs : The matrix of the different values
+                            of the model_runs
+
 		Maximize : If True it will adjust the result
 
         time_x0 : [list of list] If not-None it adds
 				x0 and y0 time to the csv file
-    """    
+    """
+    if not(name_csv.endswith(".csv")):
+        name_csv = name_csv + ".csv"
 
-    n_test = len( res )
-    n_point = len( res[0].func_vals )
+    if not(name_csv.endswith(".csv")):
+        name_csv_matrix = name_csv + "_matrix.csv"
+    else:
+        name_csv_matrix = name_csv[:-4] + "_matrix.csv"
 
-    n_row = n_test * n_point
+    n_point = len( res.func_vals )
+    n_row = n_point
+
 
     name_dict = {}
 
@@ -53,35 +65,95 @@ def save_csv(name_csv,
 
     name_dict['DATASET'] = [dataset_name]*n_row
     for hyperparameter in hyperparameters_name:
-        name_dict[hyperparameter] = [] #empty
-    name_dict[ metric_name+'(optimized)'] = [] #empty
-    name_dict['EXPERIMENT_ID'] = [] #empty
+        name_dict[hyperparameter] = [] # Empty
+    name_dict[ metric_name+'(optimized)'] = [] # Empty
     name_dict['SURROGATE'] = [Surrogate]*n_row
     name_dict['ACQUISITION FUNC'] = [Acquisition]*n_row
-    name_dict['NUM_ITERATION'] = [] #empty
-    name_dict['TIME'] = [] #empty
+    name_dict['NUM_ITERATION'] = [] # Empty
+
+    if( path.exists(name_csv_matrix) ):
+        df_old = pd.read_csv(name_csv_matrix) 
+    else:
+        df_old = None
+        name_dict['Mean(model_runs)'] = [None]*n_row # Unknown
+        name_dict['Standard_Deviation(model_runs)'] = [None]*n_row # Unknown
+
+    name_dict['TIME'] = [] # Empty
+
 
     for i in range( n_point ):
-        for j in range( n_test ):
-            
-            for k in range( len( res[j].x_iters[i] ) ): 
-                name_dict[hyperparameters_name[k]].append(res[j].x_iters[i][k]) #[hyperparameters_values]
+        for k in range( len( res.x_iters[i] ) ): 
+            name_dict[hyperparameters_name[k]].append(res.x_iters[i][k]) #[hyperparameters_values]
 
-            if Maximize:
-                name_dict[ metric_name+'(optimized)'].append( res[j].func_vals[i] * (-1) ) # -metric
-            else:
-                name_dict[ metric_name+'(optimized)'].append( res[j].func_vals[i] ) #+metric
+        if Maximize:
+            name_dict[ metric_name+'(optimized)'].append( res.func_vals[i] * (-1) ) # -metric
+        else:
+            name_dict[ metric_name+'(optimized)'].append( res.func_vals[i] ) #+metric
 
-            name_dict['EXPERIMENT_ID'].append( j )#n_test
-            name_dict['NUM_ITERATION'].append( i )#n_point
-            name_dict['TIME'].append(Time[i][j])
+        name_dict['NUM_ITERATION'].append( i )#n_point
+        name_dict['TIME'].append(Time[i]) #time
     
+    #print("NAME DICT->",name_dict)
 
     df = pd.DataFrame(name_dict)
+    if df_old is not None:
+        if len_x0 != 0:
+            #print(df_old)
+            #print("MEAN",df_old.to_dict()['Mean(model_runs)'] )
+            #print("STD",df_old.to_dict()['Standard_Deviation(model_runs)'] )
+            dict_temp = {}
+            dict_temp['Mean(model_runs)'] = [None]*len_x0
+            dict_temp['Standard_Deviation(model_runs)'] = [None]*len_x0
 
+            for element in df_old.to_dict()['Mean(model_runs)']:
+                dict_temp['Mean(model_runs)'].append(element)
+                #print(dict_temp['Mean(model_runs)'])
+            
+            for element in df_old.to_dict()['Standard_Deviation(model_runs)']:
+                dict_temp['Standard_Deviation(model_runs)'].append(element)
+
+            df_old = pd.DataFrame(dict_temp)
+            #print(df_old)
+
+        frames = [df, df_old]
+        df = pd.concat(frames, axis=1, sort=False)
+
+    #print("DataFrame->",df)
+
+    df.to_csv(name_csv, index=False, na_rep='Unkown')
+
+def save_matrix_csv(name_csv, matrix_model_runs):
+    """
+        Save a csv file named name_csv and save the
+        matrix of the model runs.
+
+        Parameters
+        ----------
+        name_csv : [string] name of the .csv file
+
+        matrix_model_runs : matrix of the model runs
+                            (the sub_matrix)
+    """
+    name_dict = {}
+    sub_matrix = matrix_model_runs
+
+    #print("sub_matrix",sub_matrix)
+    media = []
+    std = []
+    for array in sub_matrix:
+        media.append( np.mean(array) )
+        std.append( np.std(array) )
+
+    name_dict['Mean(model_runs)'] = media 
+    name_dict['Standard_Deviation(model_runs)'] = std 
+
+    df = pd.DataFrame(name_dict)
+    #print("START",df)
 
     if not(name_csv.endswith(".csv")):
-        name_csv = name_csv + ".csv"
+        name_csv = name_csv + "_matrix.csv"
+    else:
+        name_csv = name_csv[:-4] + "_matrix.csv"
 
     df.to_csv(name_csv, index=False, na_rep='Unkown')
 
