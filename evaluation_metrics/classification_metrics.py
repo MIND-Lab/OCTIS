@@ -19,10 +19,16 @@ class F1Score(Abstract_Metric):
         else:
             self.labels = metric_parameters['dataset'].get_labels()
         self.average = parameters['average']
+
         if 'use_log' in metric_parameters:
             self.use_log = metric_parameters['use_log']
         else:
             self.use_log = False
+
+        if 'kernel' in metric_parameters:
+            self.kernel = metric_parameters['kernel']
+        else:
+            self.kernel = 'linear'
 
     def info(self):
         return {
@@ -50,12 +56,13 @@ class F1Score(Abstract_Metric):
             self.train_document_representations = np.log(self.train_document_representations)
             self.test_document_representations = np.log(self.test_document_representations)
 
-
         train_labels = [l[0] for l in self.labels[:len(self.train_document_representations)]]
         test_labels = [l[0] for l in self.labels[
                                      -len(self.test_document_representations):]]
-
-        clf = svm.SVC(kernel='poly')
+        if self.kernel == 'linear':
+            clf = svm.LinearSVC()
+        else:
+            clf = svm.SVC(kernel=self.kernel)
         clf.fit(self.train_document_representations, train_labels)
         predicted_test_labels = clf.predict(self.test_document_representations)
 
