@@ -3,8 +3,8 @@ import configuration.citations as citations
 import configuration.defaults as defaults
 from sklearn.metrics import f1_score, confusion_matrix
 import numpy as np
-
 from sklearn import svm
+
 
 class F1Score(Abstract_Metric):
 
@@ -53,11 +53,11 @@ class F1Score(Abstract_Metric):
 
         train_labels = [l[0] for l in self.labels[:len(self.train_document_representations)]]
         test_labels = [l[0] for l in self.labels[
-                                     -len(self.test_documents_representations):]]
+                                     -len(self.test_document_representations):]]
 
         clf = svm.SVC(kernel='poly')
         clf.fit(self.train_document_representations, train_labels)
-        predicted_test_labels = clf.predict(self.test_documents_representations)
+        predicted_test_labels = clf.predict(self.test_document_representations)
 
         return f1_score(test_labels, predicted_test_labels, average=self.average)
         #, confusion_matrix(test_labels, predicted_test_labels)
