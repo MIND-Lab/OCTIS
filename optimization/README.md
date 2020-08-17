@@ -37,7 +37,7 @@ You can performe:
 - Random Forest setting the minimizer to `skopt.forest_minimize` and the base_estimator_forest to `RF`.
 - Extra Tree setting the minimizer to `skopt.forest_minimize` and the base_estimator_forest to `ET`.
 
-To know more you could see the [[Code]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/29f2ce28f7b03fa65f12933680eed61d2d6ee09b/optimization/optimizer.py#L231-L386) or some Examples. 
+To know more you could see the [[Code]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/29f2ce28f7b03fa65f12933680eed61d2d6ee09b/optimization/optimizer.py#L231-L386) or some [[Examples]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/tree/master/examples). 
 
 Nomenclature
 ------------
@@ -67,6 +67,7 @@ To know more you could see the [[Code]](https://github.com/MIND-Lab/topic-modeli
 Examples
 ------------
 You can find examples [[Here]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/tree/master/examples).
+If you want to see a simple example of the optimization you can see the file [optimization_demo_BO.py](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/master/examples/optimization_demo_BO.py)
 
 
 
