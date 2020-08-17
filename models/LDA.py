@@ -181,9 +181,8 @@ class LDA_Model(Abstract_Model):
                  'topics', 'topic-word-matrix' and 
                  'topic-document-matrix'
         """
-        partition = []
         if self.use_partitions:
-            train_corpus, validation_corpus, test_corpus = dataset.get_partitioned_corpus()
+            train_corpus, test_corpus = dataset.get_partitioned_corpus(use_validation=False)
         else:
             train_corpus = dataset.get_corpus()
 
