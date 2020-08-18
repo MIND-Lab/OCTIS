@@ -580,7 +580,7 @@ def plot_bayesian_optimization_old( list_of_res, name_plot = "plot_BO.png",
         plt.savefig( name_plot )
         os.chdir( current_dir ) #reset directory to original
 
-    plt.clf()
+    plt.close()
 
 def dump_BO( res, stringa = 'result', path = None ):
     """
@@ -678,7 +678,7 @@ def plot_boxplot(matrix, name_plot = "plot_model.png", path=None):
         plt.savefig( name_plot )
         os.chdir( current_dir ) #reset directory to original
 
-    plt.clf()
+    plt.close()
 
 def plot_bayesian_optimization( res, name_plot = "plot_BO.png",
                                 log_scale = False, path = None, conv_min = True):
@@ -733,4 +733,4 @@ def plot_bayesian_optimization( res, name_plot = "plot_BO.png",
         plt.savefig( name_plot )
         os.chdir( current_dir ) #reset directory to original
 
-    plt.clf()
+    plt.close()
