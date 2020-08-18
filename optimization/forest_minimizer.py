@@ -13,9 +13,8 @@ import numpy as np
 def forest_minimizer(f, bounds, number_of_call,
                     acq_func, base_estimator_forest, random_state, kappa, x0, y0,
                     time_x0, n_random_starts, save, save_step, save_name, save_path,
-                    early_stop, early_step, plot_best_seen, plot_model,
-                    plot_prefix_name, log_scale_plot, verbose, n_points,
-                    xi, n_jobs, model_queue_size, checkpoint_saver,
+                    early_stop, early_step, plot_best_seen, plot_prefix_name, 
+                    log_scale_plot, verbose, n_points, xi, n_jobs, model_queue_size,
                     dataset_name, hyperparameters_name, metric_name, maximize):
     res = None
     minimizer_stringa = "forest_minimize"

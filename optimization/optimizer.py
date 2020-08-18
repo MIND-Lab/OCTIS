@@ -12,7 +12,6 @@ import time
 import numpy as np
 from skopt import dump, load
 from skopt import callbacks
-from skopt.callbacks import CheckpointSaver
 import os
 from pathlib import Path  # Path(path).mkdir(parents=True, exist_ok=True)
 
@@ -251,7 +250,6 @@ class Optimizer():
                               early_stop=default_parameters["early_stop"],
                               early_step=default_parameters["early_step"],
                               plot_best_seen=default_parameters["plot_best_seen"],
-                              plot_model=default_parameters["plot_model"],
                               plot_prefix_name=default_parameters["plot_prefix_name"],
                               log_scale_plot=default_parameters["log_scale_plot"],
                               verbose=default_parameters["verbose"],
@@ -346,10 +344,6 @@ class Optimizer():
                     process, showing mean and standard deviation of the different
                     optimization runs. 
                     If save is True the plot is update every save_step evaluations.
-
-            plot_model: [boolean] Plot the mean and standard deviation of the different
-                    model runs. 
-                    If save is True the plot is update every save_step evaluations.
             
             plot_prefix_name : Prefix of the name of the .png file where the plots are saved.
             
@@ -390,7 +384,6 @@ class Optimizer():
             return None
 
         # dimensioni = len( bounds )
-        checkpoint_saver = None
 
         if default_parameters["minimizer"] == gp_minimize:
             minimizer_stringa = "gp_minimize"
@@ -432,12 +425,10 @@ class Optimizer():
                                     early_stop=early_stop,
                                     early_step=early_step,
                                     plot_best_seen=plot_best_seen,
-                                    plot_model=plot_model,
                                     plot_prefix_name=plot_prefix_name,
                                     log_scale_plot=log_scale_plot,
                                     verbose=verbose,
                                     model_queue_size=model_queue_size,
-                                    checkpoint_saver=checkpoint_saver,
                                     dataset_name=self.dataset.get_metadata()["info"]["name"],
                                     hyperparameters_name=self.hyperparameters,
                                     metric_name=self.metric.__class__.__name__,
@@ -462,7 +453,6 @@ class Optimizer():
                                     early_stop=early_stop,
                                     early_step=early_step,
                                     plot_best_seen=plot_best_seen,
-                                    plot_model=plot_model,
                                     plot_prefix_name=plot_prefix_name,
                                     log_scale_plot=log_scale_plot,
                                     verbose=verbose,
@@ -470,7 +460,6 @@ class Optimizer():
                                     xi=xi,
                                     n_jobs=n_jobs,
                                     model_queue_size=model_queue_size,
-                                    checkpoint_saver=checkpoint_saver,
                                     dataset_name=self.dataset.get_metadata()["info"]["name"],
                                     hyperparameters_name=self.hyperparameters,
                                     metric_name=self.metric.__class__.__name__,
@@ -496,12 +485,10 @@ class Optimizer():
                                 early_stop=early_stop,
                                 early_step=early_step,
                                 plot_best_seen=plot_best_seen,
-                                plot_model=plot_model,
                                 plot_prefix_name=plot_prefix_name,
                                 log_scale_plot=log_scale_plot,
                                 verbose=verbose,
                                 model_queue_size=model_queue_size,
-                                checkpoint_saver=checkpoint_saver,
                                 dataset_name=self.dataset.get_metadata()["info"]["name"],
                                 hyperparameters_name=self.hyperparameters,
                                 metric_name=self.metric.__class__.__name__,
@@ -559,7 +546,6 @@ class Optimizer():
             early_stop=default_parameters["early_stop"],
             early_step=default_parameters["early_step"],
             plot_best_seen=default_parameters["plot_best_seen"],
-            plot_model=default_parameters["plot_model"],
             plot_prefix_name=default_parameters["plot_prefix_name"],
             log_scale_plot=default_parameters["log_scale_plot"],
             verbose=default_parameters["verbose"],

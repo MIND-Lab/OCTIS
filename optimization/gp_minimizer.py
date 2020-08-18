@@ -10,8 +10,6 @@ from skopt import load
 from skopt.callbacks import CheckpointSaver
 import time
 
-#base_estimator='gp', n_initial_points=10,  acq_optimizer='auto', acq_func_kwargs=None, acq_optimizer_kwargs=None)
-#optimizer='fmin_l_bfgs_b', n_restarts_optimizer=0, normalize_y=False, copy_X_train=True, random_state=None, noise=None)
 
 #GP Minimize
 def gp_minimizer(f,
@@ -33,12 +31,10 @@ def gp_minimizer(f,
                 early_stop,
                 early_step,
                 plot_best_seen,
-                plot_model,
                 plot_prefix_name,
                 log_scale_plot,
                 verbose,
                 model_queue_size,
-                checkpoint_saver,
                 dataset_name,
                 hyperparameters_name,
                 metric_name,
