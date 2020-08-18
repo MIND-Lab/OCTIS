@@ -70,12 +70,13 @@ class Dataset:
                 test_corpus = []
                 for i in range(last_training_doc):
                     train_corpus.append(self.__corpus[i])
+
                 if last_validation_doc != 0:
                     for i in range(last_validation_doc, len(self.__corpus)):
                         test_corpus.append(self.__corpus[i])
-                    else:
-                        for i in range(last_training_doc, len(self.__corpus)):
-                            test_corpus.append(self.__corpus[i])
+                else:
+                    for i in range(last_training_doc, len(self.__corpus)):
+                        test_corpus.append(self.__corpus[i])
                 return train_corpus, test_corpus
 
 
