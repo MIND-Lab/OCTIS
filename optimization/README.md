@@ -27,7 +27,7 @@ Bayesian_optimization is the core function.
 Bayesian_optimization(f, bounds, minimizer, number_of_call, model_runs, kernel, acq_func,
                       base_estimator_forest, random_state, noise_level, alpha, kappa,
                       x0, y0, time_x0, n_random_starts, save, save_step, save_name,save_path, 
-                      early_stop, early_step plot_best_seen, plot_model,plot_prefix_name, 
+                      early_stop, early_step plot_best_seen, plot_prefix_name, 
                       log_scale_plot, verbose, n_points, xi, n_jobs, model_queue_size)
                      
 ```
@@ -61,6 +61,8 @@ def rosenbrock(x, a = 1, b = 100, noise_level = 0):
 `plot_best_seen` : [boolean] Plot the convergence of the Bayesian optimization process, showing mean and standard deviation of the different optimization runs. If save is True the plot is update every save_step evaluations.
 
 `plot_model` : [boolean] Plot the mean and standard deviation of the different model runs. If save is True the plot is update every save_step evaluations.
+
+`save_models` : [boolean] If True it will save the model in a `.npz` file named as `<n_calls>_<model_runs>.npz`. Where `<n_calls>` is the actual n_calls and `<model_runs>` is the actual model_runs.
             
 To know more you could see the [[Code]](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/tree/29f2ce28f7b03fa65f12933680eed61d2d6ee09b/optimization) or [[Skopt]](https://scikit-optimize.github.io/stable/index.html). 
 
