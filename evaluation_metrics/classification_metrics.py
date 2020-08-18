@@ -4,7 +4,8 @@ import configuration.defaults as defaults
 from sklearn.metrics import f1_score, confusion_matrix
 import numpy as np
 from sklearn import svm
-
+from sklearn.preprocessing import MinMaxScaler
+from libsvm.svmutil import *
 
 class F1Score(Abstract_Metric):
 
@@ -24,6 +25,10 @@ class F1Score(Abstract_Metric):
             self.use_log = metric_parameters['use_log']
         else:
             self.use_log = False
+        if 'scale' in metric_parameters:
+            self.scale = metric_parameters['scale']
+        else:
+            self.scale = True
 
         if 'kernel' in metric_parameters:
             self.kernel = metric_parameters['kernel']
@@ -50,21 +55,48 @@ class F1Score(Abstract_Metric):
         -------
         score : score
         """
+
         self.train_document_representations = model_output["topic-document-matrix"].T
         self.test_document_representations = model_output["test-topic-document-matrix"].T
+
         if self.use_log:
             self.train_document_representations = np.log(self.train_document_representations)
             self.test_document_representations = np.log(self.test_document_representations)
+        if self.scale:
+            scaler = MinMaxScaler()
+            X_train = scaler.fit_transform(self.train_document_representations)
+            X_test = scaler.transform(self.test_document_representations)
+        else:
+            X_train = self.train_document_representations
+            X_test = self.test_document_representations
+        train_labels = [l[0] for l in self.labels[:len(X_train)]]
+        test_labels = [l[0] for l in self.labels[-len(X_test):]]
 
-        train_labels = [l[0] for l in self.labels[:len(self.train_document_representations)]]
-        test_labels = [l[0] for l in self.labels[
-                                     -len(self.test_document_representations):]]
+        id2label = {}
+        label2id = {}
+        count = 0
+        for i in set(train_labels):
+            id2label[count] = i
+            label2id[i] = count
+            count = count + 1
+
+        train_labels = [label2id[l] for l in train_labels]
+        test_labels = [label2id[l] for l in test_labels]
+        '''
         if self.kernel == 'linear':
-            clf = svm.LinearSVC()
+            clf = svm.LinearSVC(verbose=True)
         else:
             clf = svm.SVC(kernel=self.kernel)
-        clf.fit(self.train_document_representations, train_labels)
-        predicted_test_labels = clf.predict(self.test_document_representations)
+        clf.fit(X_train, train_labels)
+        
+        predicted_test_labels = clf.predict(X_test)
 
         return f1_score(test_labels, predicted_test_labels, average=self.average)
-        #, confusion_matrix(test_labels, predicted_test_labels)
+        # , confusion_matrix(test_labels, predicted_test_labels)
+        '''
+        m = svm_train(train_labels, X_train, '-t 0')
+        p_label, p_acc, p_val = svm_predict(test_labels, X_test, m)
+        print(len(X_test))
+        print(X_test.shape)
+        return f1_score(test_labels, p_label, average=self.average)
+
