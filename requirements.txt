@@ -7,3 +7,4 @@ scikit-optimize
 matplotlib
 pytorch
 numpy
+libsvm
