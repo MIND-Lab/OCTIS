@@ -4,6 +4,7 @@ import os
 from collections import defaultdict
 import multiprocessing as mp
 import requests
+from models.early_stopping.pytorchtools import EarlyStopping
 
 import numpy as np
 import datetime
@@ -90,6 +91,7 @@ class AVITM(object):
         self.model = DecoderNetwork(
             input_size, num_topics, model_type, hidden_sizes, activation,
             dropout, learn_priors, topic_prior_mean, topic_prior_variance)
+        self.early_stopping = EarlyStopping(patience=5, verbose=True)
 
         # init optimizer
         if self.solver == 'adam':
@@ -233,15 +235,30 @@ class AVITM(object):
                 epoch+1, self.num_epochs, samples_processed,
                 len(self.train_data)*self.num_epochs, train_loss, e - s))
 
-            # save best
-            if train_loss < self.best_loss_train:
-                self.best_loss_train = train_loss
-                self.best_components = self.model.beta
+            self.early_stopping(train_loss, self.model)
+
+            self.best_components = self.model.beta
+            self.final_topic_word = topic_word
+            self.final_topic_document = topic_document
+            self.best_loss_train = train_loss
+
+            if self.early_stopping.early_stop:
+                print("Early stopping")
+
 
                 if save_dir is not None:
                     self.save(save_dir)
-        self.final_topic_word = topic_word
-        self.final_topic_document = topic_document
+                break
+
+            ## save best
+            #if train_loss < self.best_loss_train:
+            #    self.best_loss_train = train_loss
+            #    self.best_components = self.model.beta
+
+            #    if save_dir is not None:
+            #        self.save(save_dir)
+
+
         
     def predict(self, dataset):
         """Predict input."""
