@@ -292,7 +292,6 @@ class ETM_Wrapper(Abstract_Model):
         self.hyperparameters['bow_norm'] = hyperparameters.get(
             'bow_norm', self.hyperparameters.get('bow_norm', 1))
 
-
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
 
