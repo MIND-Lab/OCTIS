@@ -85,7 +85,7 @@ class AVITM(object):
         self.reduce_on_plateau = reduce_on_plateau
         self.topic_prior_mean = topic_prior_mean
         self.topic_prior_variance = topic_prior_variance
-        self.bool_t_w= topic_word_matrix
+        self.bool_t_w = topic_word_matrix
         self.bool_t_d = topic_document_matrix
         # init inference avitm network
         self.model = DecoderNetwork(
@@ -282,7 +282,7 @@ class AVITM(object):
         results = self.get_info()
         if self.bool_t_d:
             results['test-topic-document-matrix'] = np.vstack(
-                np.asarray([i.cpu().detach().numpy() for i in topic_document_mat]))
+                np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
         return results
         
     def get_topic_word_mat(self): 
@@ -320,18 +320,12 @@ class AVITM(object):
         topic_word = self.get_topics()
         topic_word_dist = self.get_topic_word_mat()
         topic_document_dist = self.get_topic_document_mat()
-        if self.bool_t_d and self.bool_t_w:
-            info['topics'] = topic_word
+        info['topics'] = topic_word
+
+        if self.bool_t_d:
+            info['topic-document-matrix'] = topic_document_dist.T
+        if self.bool_t_w:
             info['topic-word-matrix'] = topic_word_dist
-            info['topic-document-matrix'] = topic_document_dist
-        elif self.bool_t_d and not self.bool_t_w:
-            info['topics'] = topic_word
-            info['topic-document-matrix'] = topic_document_dist
-        elif not self.bool_t_d and self.bool_t_w:
-            info['topics'] = topic_word
-            info['topic-word-matrix'] = topic_word_dist
-        else:
-            info['topics'] = topic_word
         return info 
 
     def _format_file(self):
