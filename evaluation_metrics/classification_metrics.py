@@ -4,8 +4,9 @@ import configuration.defaults as defaults
 from sklearn.metrics import f1_score, confusion_matrix
 import numpy as np
 from sklearn import svm
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from libsvm.svmutil import *
+
 
 class F1Score(Abstract_Metric):
 
@@ -63,9 +64,10 @@ class F1Score(Abstract_Metric):
             self.train_document_representations = np.log(self.train_document_representations)
             self.test_document_representations = np.log(self.test_document_representations)
         if self.scale:
-            scaler = MinMaxScaler()
-            X_train = scaler.fit_transform(self.train_document_representations)
-            X_test = scaler.transform(self.test_document_representations)
+            #scaler = MinMaxScaler()
+            scaler2 = StandardScaler()
+            X_train = scaler2.fit_transform(self.train_document_representations)
+            X_test = scaler2.transform(self.test_document_representations)
         else:
             X_train = self.train_document_representations
             X_test = self.test_document_representations
@@ -94,9 +96,9 @@ class F1Score(Abstract_Metric):
         return f1_score(test_labels, predicted_test_labels, average=self.average)
         # , confusion_matrix(test_labels, predicted_test_labels)
         '''
-        m = svm_train(train_labels, X_train, '-t 0')
-        p_label, p_acc, p_val = svm_predict(test_labels, X_test, m)
-        print(len(X_test))
-        print(X_test.shape)
+        m = svm_train(train_labels, X_train, '-t 0')# -S 0 -K 2 -Z ')
+        p_label, _, _ = svm_predict(test_labels, X_test, m)
+        #print(len(X_test))
+        #print(X_test.shape)
         return f1_score(test_labels, p_label, average=self.average)
 
