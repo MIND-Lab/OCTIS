@@ -250,7 +250,6 @@ class LDA_Model(Abstract_Model):
             else:
                 test_document_topic_matrix = []
                 for document in new_corpus:
-
                     document_topics_tuples = self.trained_model[document]
                     document_topics = np.zeros(
                         self.hyperparameters["num_topics"])
@@ -258,10 +257,8 @@ class LDA_Model(Abstract_Model):
                         document_topics[single_tuple[0]] = single_tuple[1]
 
                     test_document_topic_matrix.append(document_topics)
-
                 result["test-topic-document-matrix"] = np.array(
                     test_document_topic_matrix).transpose()
-
         return result
 
     def _get_topics_words(self, topk):
