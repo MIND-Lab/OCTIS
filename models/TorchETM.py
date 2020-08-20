@@ -24,13 +24,11 @@ class ETM_Wrapper(Abstract_Model):
 
     def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True,
                     topic_document_matrix=True, embeddings=None, train_embeddings=True):
-        print(train_embeddings, "pre_set_model")
         self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
-        print(train_embeddings, "post_set_model")
         self.bool_topic_doc = topic_document_matrix
         self.bool_topic_word = topic_word_matrix
         self.top_word = top_words
-####################################
+
         for epoch in range(0, self.hyperparameters['num_epochs']):
             continue_training = self._train_epoch(epoch)
             if not continue_training:
@@ -86,16 +84,20 @@ class ETM_Wrapper(Abstract_Model):
 
     def set_optimizer(self):
         if self.hyperparameters['optimizer'] == 'adam':
-            optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparameters['lr'])
+            optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparameters['lr'],
+                                   weight_decay=self.hyperparameters['wdecay'])
         elif self.hyperparameters['optimizer'] == 'adagrad':
-            optimizer = optim.Adagrad(self.model.parameters(), lr=self.hyperparameters['lr'])
+            optimizer = optim.Adagrad(self.model.parameters(), lr=self.hyperparameters['lr'],
+                                      weight_decay=self.hyperparameters['wdecay'])
         elif self.hyperparameters['optimizer'] == 'adadelta':
-            optimizer = optim.Adadelta(self.model.parameters(), lr=self.hyperparameters['lr'])
+            optimizer = optim.Adadelta(self.model.parameters(), lr=self.hyperparameters['lr'],
+                                       weight_decay=self.hyperparameters['wdecay'])
         elif self.hyperparameters['optimizer'] == 'rmsprop':
-            optimizer = optim.RMSprop(self.model.parameters(), lr=self.hyperparameters['lr'])
+            optimizer = optim.RMSprop(self.model.parameters(), lr=self.hyperparameters['lr'],
+                                   weight_decay=self.hyperparameters['wdecay'])
         elif self.hyperparameters['optimizer'] == 'asgd':
             optimizer = optim.ASGD(self.model.parameters(), lr=self.hyperparameters['lr'],
-                                   t0=0, lambd=0.)
+                                   t0=0, lambd=0., weight_decay=self.hyperparameters['wdecay'])
         else:
             print('Defaulting to vanilla SGD')
             optimizer = optim.SGD(self.model.parameters(), lr=self.hyperparameters['lr'])
@@ -266,7 +268,7 @@ class ETM_Wrapper(Abstract_Model):
         self.hyperparameters['num_topics'] = hyperparameters.get(
             'num_topics', self.hyperparameters.get('num_topics', 10))
         self.hyperparameters['num_epochs'] = hyperparameters.get(
-            'num_epochs', self.hyperparameters.get('num_epochs', 20))
+            'num_epochs', self.hyperparameters.get('num_epochs', 100))
         self.hyperparameters['t_hidden_size'] = hyperparameters.get(
             't_hidden_size', self.hyperparameters.get('t_hidden_size', 800))
         self.hyperparameters['rho_size'] = hyperparameters.get(
@@ -287,8 +289,8 @@ class ETM_Wrapper(Abstract_Model):
             'clip', self.hyperparameters.get('clip', 0.0))
         self.hyperparameters['wdecay'] = hyperparameters.get(
             'wdecay', self.hyperparameters.get('wdecay', 1.2e-6))
-        self.hyperparameters['anneal_lr'] = hyperparameters.get(
-            'anneal_lr', self.hyperparameters.get('anneal_lr', 0))
+        #self.hyperparameters['anneal_lr'] = hyperparameters.get(
+        #    'anneal_lr', self.hyperparameters.get('anneal_lr', 0))
         self.hyperparameters['bow_norm'] = hyperparameters.get(
             'bow_norm', self.hyperparameters.get('bow_norm', 1))
 

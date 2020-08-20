@@ -34,10 +34,8 @@ class ETM(nn.Module):
     
         ## define variational distribution for \theta_{1:D} via amortizartion
         self.q_theta = nn.Sequential(
-                nn.Linear(vocab_size, t_hidden_size), 
-                self.theta_act,
-                nn.Linear(t_hidden_size, t_hidden_size),
-                self.theta_act,
+                nn.Linear(vocab_size, t_hidden_size),  self.theta_act,
+                nn.Linear(t_hidden_size, t_hidden_size), self.theta_act,
             )
         self.mu_q_theta = nn.Linear(t_hidden_size, num_topics, bias=True)
         self.logsigma_q_theta = nn.Linear(t_hidden_size, num_topics, bias=True)
