@@ -249,10 +249,10 @@ def remove_docs(corpus, min_doc=0, labels=[], partition=0,
     vocabulary = get_vocabulary(new_corpus)
 
     train, test, y_train, y_test = train_test_split(range(len(new_corpus)), new_labels,
-                                                    test_size=0.2,
+                                                    test_size=0.15,
                                                     random_state=1, stratify=new_labels)
 
-    train, validation = train_test_split(train, test_size=0.25,
+    train, validation = train_test_split(train, test_size=3/17,
                                          random_state=1,
                                          stratify=y_train)
 

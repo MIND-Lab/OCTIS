@@ -1,8 +1,6 @@
 from urllib.request import urlopen
 from sklearn.model_selection import train_test_split
-
 import re
-
 
 def _retrieve(corpus_path, labels_path, edges_path):
     """
@@ -49,7 +47,7 @@ def _retrieve(corpus_path, labels_path, edges_path):
             if edge in doc_ids:
                 tmp_element = tmp_element + edge + " "
         edges_list.append(tmp_element[0:len(tmp_element)-1])
-
+    '''
     train, test = train_test_split(range(len(corpus)),
                                    test_size=0.3,
                                    train_size=0.7,
@@ -68,11 +66,16 @@ def _retrieve(corpus_path, labels_path, edges_path):
         partitioned_corpus.append(corpus[doc])
         partitioned_labels.append(labels[doc])
         partitioned_edges.append(edges_list[doc])
-
+    
     result = {}
     result["corpus"] = partitioned_corpus
     result["edges"] = partitioned_edges
     result["partition"] = len(train)
     result["doc_labels"] = partitioned_labels
-
+    '''
+    result = {}
+    result["corpus"] = corpus
+    result["edges"] = edges
+    result["partition"] = len(corpus)
+    result["doc_labels"] = labels
     return result
