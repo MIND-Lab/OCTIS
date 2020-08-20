@@ -1,7 +1,6 @@
 from __future__ import print_function
 from models.early_stopping.pytorchtools import EarlyStopping
 
-import argparse
 import torch
 import pickle
 import numpy as np
@@ -19,7 +18,7 @@ class ETM_Wrapper(Abstract_Model):
         self.bool_topic_doc = True
         self.bool_topic_word = True
         self.top_word = 10
-        self.early_stopping = EarlyStopping(patience=5, verbose=True)
+        self.early_stopping = None
 
 
     def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True,
@@ -28,6 +27,7 @@ class ETM_Wrapper(Abstract_Model):
         self.bool_topic_doc = topic_document_matrix
         self.bool_topic_word = topic_word_matrix
         self.top_word = top_words
+        self.early_stopping = EarlyStopping(patience=5, verbose=True)
 
         for epoch in range(0, self.hyperparameters['num_epochs']):
             continue_training = self._train_epoch(epoch)
@@ -35,7 +35,7 @@ class ETM_Wrapper(Abstract_Model):
                 break
 
         # load the last checkpoint with the best model
-        self.model.load_state_dict(torch.load('checkpoint.pt'))
+        #self.model.load_state_dict(torch.load('etm_checkpoint.pt'))
 
         if self.use_partitions:
             result = self.inference()
@@ -74,7 +74,7 @@ class ETM_Wrapper(Abstract_Model):
                              vocab_size=self.vocab_size,
                              t_hidden_size=self.hyperparameters['t_hidden_size'],
                              rho_size=self.hyperparameters['rho_size'],
-                             emsize=self.hyperparameters['emb_size'],
+                             emb_size=self.hyperparameters['emb_size'],
                              theta_act=self.hyperparameters['theta_act'],
                              embeddings=embeddings, train_embeddings=train_embeddings,
                              enc_drop=self.hyperparameters['enc_drop']).to(self.device)
@@ -179,11 +179,19 @@ class ETM_Wrapper(Abstract_Model):
 
                 val_recon_loss, val_kld_theta = self.model(val_data_batch,
                                                            val_normalized_data_batch)
-                val_total_loss = val_recon_loss + val_kld_theta
 
                 val_acc_loss += torch.sum(val_recon_loss).item()
                 val_acc_kl_theta_loss += torch.sum(val_kld_theta).item()
                 val_cnt += 1
+                val_total_loss = val_recon_loss + val_kld_theta
+
+            self.early_stopping(val_total_loss, model)
+
+            if self.early_stopping.early_stop:
+                print("Early stopping")
+                return False
+            else:
+                return True
 
             val_cur_loss = round(val_acc_loss / cnt, 2)
             val_cur_kl_theta = round(val_acc_kl_theta_loss / cnt, 2)
@@ -194,13 +202,7 @@ class ETM_Wrapper(Abstract_Model):
                 val_cur_real_loss))
             print('*' * 100)
 
-            self.early_stopping(val_cur_real_loss, model)
 
-            if self.early_stopping.early_stop:
-                print("Early stopping")
-                return False
-            else:
-                return True
 
     def get_info(self):
         topic_w = []
@@ -218,10 +220,10 @@ class ETM_Wrapper(Abstract_Model):
         if self.bool_topic_doc and self.bool_topic_word:
             info['topics'] = topic_w
             info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
-            info['topic-document-matrix'] = theta.cpu().detach().numpy()
+            info['topic-document-matrix'] = theta.cpu().detach().numpy().T
         elif self.bool_topic_doc and not self.bool_topic_word:
             info['topics'] = topic_w
-            info['topic-document-matrix'] = theta.cpu().detach().numpy()
+            info['topic-document-matrix'] = theta.cpu().detach().numpy().T
         elif not self.bool_topic_doc and self.bool_topic_word:
             info['topics'] = topic_w
             info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
@@ -243,6 +245,8 @@ class ETM_Wrapper(Abstract_Model):
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
+            else:
+                normalized_data_batch = data_batch
             theta, _ = self.model.get_theta(normalized_data_batch)
             topic_d.append(theta.cpu().detach().numpy())
 
@@ -254,7 +258,7 @@ class ETM_Wrapper(Abstract_Model):
             # batch concatenation
             for i in range(length):
                 emp_array = np.concatenate([emp_array, topic_doc[i]])
-            info['test-topic-document-matrix'] = emp_array
+            info['test-topic-document-matrix'] = emp_array.T
 
         return info
 

@@ -6,8 +6,8 @@ import math
 from torch import nn
 
 class ETM(nn.Module):
-    def __init__(self, num_topics, vocab_size, t_hidden_size, rho_size, emsize, 
-                    theta_act, embeddings=None, train_embeddings=True, enc_drop=0.5):
+    def __init__(self, num_topics, vocab_size, t_hidden_size, rho_size, emb_size,
+                 theta_act, embeddings=None, train_embeddings=True, enc_drop=0.5):
         super(ETM, self).__init__()
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         ## define hyperparameters
@@ -16,7 +16,7 @@ class ETM(nn.Module):
         self.t_hidden_size = t_hidden_size
         self.rho_size = rho_size
         self.enc_drop = enc_drop
-        self.emsize = emsize
+        self.emb_size = emb_size
         self.t_drop = nn.Dropout(enc_drop)
 
         self.theta_act = self.get_activation(theta_act)
@@ -25,8 +25,8 @@ class ETM(nn.Module):
         if train_embeddings:
             self.rho = nn.Linear(rho_size, vocab_size, bias=False)
         else:
-            num_embeddings, emsize = embeddings.size()
-            rho = nn.Embedding(num_embeddings, emsize)
+            num_embeddings, emb_size = embeddings.size()
+            rho = nn.Embedding(num_embeddings, emb_size)
             self.rho = embeddings.clone().float().to(self.device)
 
         ## define the matrix containing the topic embeddings
@@ -56,7 +56,7 @@ class ETM(nn.Module):
         elif act == 'selu':
             act = nn.SELU()
         elif act == 'glu':
-            act = nn.GLU()
+            act = nn.GLU() #error using glu
         else:
             print('Defaulting to tanh activations...')
             act = nn.Tanh()
