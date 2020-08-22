@@ -103,16 +103,16 @@ def random_minimizer(f,
         time_eval.append(total_time)
 
         save_csv(name_csv=save_name + ".csv",
-                dataset_name=dataset_name,
-                hyperparameters_name=hyperparameters_name,
-                metric_name=metric_name,
-                Surrogate=minimizer_stringa,
-                Acquisition=acq_func,
-                Time=time_eval,
-                res=res,
-                Maximize=maximize,
-                time_x0=time_x0,
-                len_x0=lenx0)
+                 dataset_name=dataset_name,
+                 hyperparameters_name=hyperparameters_name,
+                 metric_name=metric_name,
+                 surrogate_model=minimizer_stringa,
+                 acquisition_function=acq_func,
+                 times=time_eval,
+                 res=res,
+                 maximize=maximize,
+                 time_x0=time_x0,
+                 len_x0=lenx0)
 
         if plot_best_seen:
             tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
@@ -151,16 +151,16 @@ def random_minimizer(f,
                 time_eval.append(total_time)
 
                 save_csv(name_csv=save_name + ".csv",
-                        dataset_name=dataset_name,
-                        hyperparameters_name=hyperparameters_name,
-                        metric_name=metric_name,
-                        Surrogate=minimizer_stringa,
-                        Acquisition=acq_func,
-                        Time=time_eval,
-                        res=res,
-                        Maximize=maximize,
-                        time_x0=time_x0,
-                        len_x0=lenx0)
+                         dataset_name=dataset_name,
+                         hyperparameters_name=hyperparameters_name,
+                         metric_name=metric_name,
+                         surrogate_model=minimizer_stringa,
+                         acquisition_function=acq_func,
+                         times=time_eval,
+                         res=res,
+                         maximize=maximize,
+                         time_x0=time_x0,
+                         len_x0=lenx0)
 
                 if plot_best_seen:
                     tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
@@ -188,15 +188,15 @@ def random_minimizer(f,
                 time_eval.append(total_time)
 
                 save_csv(name_csv=save_name + ".csv",
-                        dataset_name=dataset_name,
-                        hyperparameters_name=hyperparameters_name,
-                        metric_name=metric_name,
-                        Surrogate=minimizer_stringa,
-                        Acquisition=acq_func,
-                        Time=time_eval,
-                        res=res,
-                        Maximize=maximize,
-                        time_x0=time_x0)
+                         dataset_name=dataset_name,
+                         hyperparameters_name=hyperparameters_name,
+                         metric_name=metric_name,
+                         surrogate_model=minimizer_stringa,
+                         acquisition_function=acq_func,
+                         times=time_eval,
+                         res=res,
+                         maximize=maximize,
+                         time_x0=time_x0)
 
                 if plot_best_seen:
                     tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
@@ -243,16 +243,16 @@ def random_minimizer(f,
         time_eval.append(total_time)
 
         save_csv(name_csv=save_name + ".csv",
-                dataset_name=dataset_name,
-                hyperparameters_name=hyperparameters_name,
-                metric_name=metric_name,
-                Surrogate=minimizer_stringa,
-                Acquisition=acq_func,
-                Time=time_eval,
-                res=res,
-                Maximize=maximize,
-                time_x0=time_x0,
-                len_x0=lenx0)
+                 dataset_name=dataset_name,
+                 hyperparameters_name=hyperparameters_name,
+                 metric_name=metric_name,
+                 surrogate_model=minimizer_stringa,
+                 acquisition_function=acq_func,
+                 times=time_eval,
+                 res=res,
+                 maximize=maximize,
+                 time_x0=time_x0,
+                 len_x0=lenx0)
 
         if plot_best_seen:
             tool.plot_bayesian_optimization(res, plot_best_seen_name, log_scale_plot, path=save_path)
@@ -289,16 +289,16 @@ def random_minimizer(f,
                 time_eval.append(total_time)
 
                 save_csv(name_csv=save_name + ".csv",
-                        dataset_name=dataset_name,
-                        hyperparameters_name=hyperparameters_name,
-                        metric_name=metric_name,
-                        Surrogate=minimizer_stringa,
-                        Acquisition=acq_func,
-                        Time=time_eval,
-                        res=res,
-                        Maximize=maximize,
-                        time_x0=time_x0,
-                        len_x0=lenx0)
+                         dataset_name=dataset_name,
+                         hyperparameters_name=hyperparameters_name,
+                         metric_name=metric_name,
+                         surrogate_model=minimizer_stringa,
+                         acquisition_function=acq_func,
+                         times=time_eval,
+                         res=res,
+                         maximize=maximize,
+                         time_x0=time_x0,
+                         len_x0=lenx0)
 
                 checkpoint_saver = checkpoint_saver_t
 
@@ -330,15 +330,15 @@ def random_minimizer(f,
                 time_eval.append(total_time)
 
                 save_csv(name_csv=save_name + ".csv",
-                        dataset_name=dataset_name,
-                        hyperparameters_name=hyperparameters_name,
-                        metric_name=metric_name,
-                        Surrogate=minimizer_stringa,
-                        Acquisition=acq_func,
-                        Time=time_eval,
-                        res=res,
-                        Maximize=maximize,
-                        time_x0=time_x0)
+                         dataset_name=dataset_name,
+                         hyperparameters_name=hyperparameters_name,
+                         metric_name=metric_name,
+                         surrogate_model=minimizer_stringa,
+                         acquisition_function=acq_func,
+                         times=time_eval,
+                         res=res,
+                         maximize=maximize,
+                         time_x0=time_x0)
 
                 number_of_call_r = number_of_call_r - save_step
 
