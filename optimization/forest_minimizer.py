@@ -112,7 +112,7 @@ def forest_minimizer(f, bounds, number_of_call,
                 partial_res = load(save_name_t)  # restore
                 x0_restored = partial_res.x_iters
                 y0_restored = partial_res.func_vals
-                save_name_t = "./" + save_name + ".pkl"
+                save_name_t = save_name + ".pkl" #"./" + save_name + ".pkl"
                 checkpoint_saver_t = CheckpointSaver(save_name_t)  # save
 
                 start_time = time.time()
