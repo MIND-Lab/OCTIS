@@ -185,13 +185,6 @@ class ETM_Wrapper(Abstract_Model):
                 val_cnt += 1
                 val_total_loss = val_recon_loss + val_kld_theta
 
-            self.early_stopping(val_total_loss, model)
-
-            if self.early_stopping.early_stop:
-                print("Early stopping")
-                return False
-            else:
-                return True
 
             val_cur_loss = round(val_acc_loss / cnt, 2)
             val_cur_kl_theta = round(val_acc_kl_theta_loss / cnt, 2)
@@ -201,6 +194,14 @@ class ETM_Wrapper(Abstract_Model):
                 self.optimizer.param_groups[0]['lr'], val_cur_kl_theta, val_cur_loss,
                 val_cur_real_loss))
             print('*' * 100)
+
+            self.early_stopping(val_total_loss, model)
+
+            if self.early_stopping.early_stop:
+                print("Early stopping")
+                return False
+            else:
+                return True
 
 
 
