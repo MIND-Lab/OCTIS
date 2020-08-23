@@ -47,12 +47,12 @@ def embeddings_overlap(list1, list2, depth, index2word, word2vec):
     key_list = list(similarities.keys())
     for k in key_list:
         if k in similarities.keys():
-            print(k, similarities[k])
+            #print(k, similarities[k])
             e_ov = e_ov + similarities[k]
             similarities = {save_k: v for save_k, v in similarities.items()
                             if save_k[0] != k[0] and save_k[1] != k[1]}
-    e_ov = 1
-    print("****")
+    #e_ov = 1
+    #print("****")
     return e_ov, len(set1), len(set2)
 
 
@@ -60,7 +60,9 @@ def overlap(list1, list2, depth, index2word, word2vec):
     #return agreement(list1, list2, depth) * min(depth, len(list1), len(list2))
     # NOTE: comment the preceding and uncomment the following line if you want
     # to stick to the algorithm as defined by the paper
-    return embeddings_overlap(list1, list2, depth, index2word, word2vec)[0]
+    ov = embeddings_overlap(list1, list2, depth, index2word, word2vec)[0]
+    print("overlap", ov)
+    return ov
 
 
 def agreement(list1, list2, depth, index2word, word2vec):
