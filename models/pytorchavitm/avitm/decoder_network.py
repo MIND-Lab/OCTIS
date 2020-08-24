@@ -55,6 +55,8 @@ class DecoderNetwork(nn.Module):
 
         self.inf_net = InferenceNetwork(
             input_size, n_components, hidden_sizes, activation)
+        if torch.cuda.is_available():
+            self.inf_net = self.inf_net.cuda()
 
         # init prior parameters
         # \mu_1k = log \alpha_k + 1/K \sum_i log \alpha_i;
@@ -67,7 +69,6 @@ class DecoderNetwork(nn.Module):
             self.prior_mean = self.prior_mean.cuda()
         if self.learn_priors:
             self.prior_mean = nn.Parameter(self.prior_mean)
-
         # \Sigma_1kk = 1 / \alpha_k (1 - 2/K) + 1/K^2 \sum_i 1 / \alpha_k;
         # \alpha = 1 \forall \alpha
 
@@ -90,6 +91,7 @@ class DecoderNetwork(nn.Module):
 
         # dropout on theta
         self.drop_theta = nn.Dropout(p=self.dropout)
+
 
     @staticmethod
     def reparameterize(mu, logvar):

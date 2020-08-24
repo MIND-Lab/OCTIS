@@ -249,8 +249,6 @@ class AVITM(object):
 
             if self.early_stopping.early_stop:
                 print("Early stopping")
-
-
                 if save_dir is not None:
                     self.save(save_dir)
                 break
@@ -262,7 +260,6 @@ class AVITM(object):
 
             #    if save_dir is not None:
             #        self.save(save_dir)
-
 
         
     def predict(self, dataset):

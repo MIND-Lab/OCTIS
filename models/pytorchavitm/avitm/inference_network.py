@@ -56,7 +56,8 @@ class InferenceNetwork(nn.Module):
         elif activation == 'selu':
             self.activation = nn.SELU()
 
-        self.input_layer = nn.Linear(input_size, hidden_sizes[0])
+            self.input_layer = nn.Linear(input_size, hidden_sizes[0])
+
 
         self.hiddens = nn.Sequential(OrderedDict([
             ('l_{}'.format(i), nn.Sequential(nn.Linear(h_in, h_out), self.activation))
