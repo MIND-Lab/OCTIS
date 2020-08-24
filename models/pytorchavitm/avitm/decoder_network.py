@@ -34,8 +34,10 @@ class DecoderNetwork(nn.Module):
             "model type must be 'prodLDA' or 'LDA'"
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu', or 'tanh'."
+        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                              'rrelu', 'elu', 'selu'], \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            " 'rrelu', 'elu', 'selu' or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
         assert isinstance(topic_prior_mean, float), \
             "topic_prior_mean must be type float"

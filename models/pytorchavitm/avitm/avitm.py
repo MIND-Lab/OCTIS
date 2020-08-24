@@ -32,7 +32,7 @@ class AVITM(object):
             num_topics : int, number of topic components, (default 10)
             model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
             hidden_sizes : tuple, length = n_layers, (default (100, 100))
-            activation : string, 'softplus', 'relu', (default 'softplus')
+            activation : string, 'softplus', 'relu', and others (default 'softplus')
             dropout : float, dropout to use (default 0.2)
             learn_priors : bool, make priors a learnable parameter (default True)
             batch_size : int, size of batch to use for training (default 64)

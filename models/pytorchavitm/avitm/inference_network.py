@@ -26,8 +26,10 @@ class InferenceNetwork(nn.Module):
         assert isinstance(output_size, int), "output_size must be type int."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu', or 'tanh'."
+        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                              'rrelu', 'elu', 'selu'], \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            " 'rrelu', 'elu', 'selu' or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
 
         self.input_size = input_size
