@@ -110,7 +110,7 @@ class TorchAvitm(Abstract_Model):
         self.hyperparameters["prior_mean"] = hyperparameters.get(
             'prior_mean', self.hyperparameters.get('prior_mean', 0.0))
         self.hyperparameters["prior_variance"] = hyperparameters.get(
-            'prior_variance', self.hyperparameters.get('prior_variance', 0.0))
+            'prior_variance', self.hyperparameters.get('prior_variance', None))
 
         default_hidden_sizes = [100, 100, 0, 0, 0]
         hidden_sizes = [hyperparameters.get(
