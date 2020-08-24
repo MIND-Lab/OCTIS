@@ -12,7 +12,7 @@ class DecoderNetwork(nn.Module):
 
     def __init__(self, input_size, n_components=10, model_type='prodLDA',
                  hidden_sizes=(100,100), activation='softplus', dropout=0.2,
-                 learn_priors=True, topic_prior_mean=0.0, topic_prior_variance=0.0):
+                 learn_priors=True, topic_prior_mean=0.0, topic_prior_variance=None):
         """
         Initialize InferenceNetwork.
 
@@ -40,8 +40,8 @@ class DecoderNetwork(nn.Module):
         assert isinstance(topic_prior_mean, float), \
             "topic_prior_mean must be type float"
         # and topic_prior_variance >= 0, \
-        assert isinstance(topic_prior_variance, float), \
-            "topic prior_variance must be type float"
+        #assert isinstance(topic_prior_variance, float), \
+        #    "topic prior_variance must be type float"
 
         self.input_size = input_size
         self.n_components = n_components
@@ -69,7 +69,8 @@ class DecoderNetwork(nn.Module):
         # \Sigma_1kk = 1 / \alpha_k (1 - 2/K) + 1/K^2 \sum_i 1 / \alpha_k;
         # \alpha = 1 \forall \alpha
 
-        #topic_prior_variance = 1. - (1. / self.n_components)
+        if topic_prior_variance is None:
+            topic_prior_variance = 1. - (1. / self.n_components)
         self.prior_variance = torch.tensor(
             [topic_prior_variance] * n_components)
         if torch.cuda.is_available():

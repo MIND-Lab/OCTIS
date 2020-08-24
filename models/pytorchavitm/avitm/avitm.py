@@ -23,7 +23,7 @@ class AVITM(object):
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
                  learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False,
-                 topic_prior_mean=0.0, topic_prior_variance=0.0, topic_word_matrix=True, topic_document_matrix=True):
+                 topic_prior_mean=0.0, topic_prior_variance=None, topic_word_matrix=True, topic_document_matrix=True):
         """
         Initialize AVITM model.
 
@@ -51,24 +51,26 @@ class AVITM(object):
             "model must be 'LDA' or 'prodLDA'."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu', or 'tanh'."
+        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                              'rrelu', 'elu', 'selu'], \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            " 'rrelu', 'elu', 'selu' or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
-        assert isinstance(learn_priors, bool), "learn_priors must be boolean."
+        #assert isinstance(learn_priors, bool), "learn_priors must be boolean."
         assert isinstance(batch_size, int) and batch_size > 0,\
             "batch_size must be int > 0."
         assert lr > 0, "lr must be > 0."
         assert isinstance(momentum, float) and momentum > 0 and momentum <= 1,\
             "momentum must be 0 < float <= 1."
-        assert solver in ['adam', 'sgd', 'adadelta', 'adagrad'], \
-            "solver must be 'adam', 'adadelta', 'sgd' or 'adagrad'"
+        assert solver in ['adam', 'sgd', 'adadelta', 'adagrad', 'rmsprop'], \
+            "solver must be 'adam', 'adadelta', 'sgd', 'rmsprop' or 'adagrad'"
         assert isinstance(reduce_on_plateau, bool),\
             "reduce_on_plateau must be type bool."
         assert isinstance(topic_prior_mean, float), \
             "topic_prior_mean must be type float"
         # and topic_prior_variance >= 0, \
-        assert isinstance(topic_prior_variance, float), \
-            "topic prior_variance must be type float"
+        #assert isinstance(topic_prior_variance, float), \
+        #    "topic prior_variance must be type float"
 
         self.input_size = input_size
         self.num_topics = num_topics
@@ -102,6 +104,9 @@ class AVITM(object):
             self.optimizer = optim.Adagrad(self.model.parameters(), lr=lr)
         elif self.solver == 'adadelta':
             self.optimizer = optim.Adadelta(self.model.parameters(), lr=lr)
+
+        elif self.solver == 'rmsprop':
+            self.optimizer = optim.RMSprop(self.model.parameters(), lr=lr, momentum=self.momentum)
         # init lr scheduler
         if self.reduce_on_plateau:
             self.scheduler = ReduceLROnPlateau(self.optimizer, patience=10)

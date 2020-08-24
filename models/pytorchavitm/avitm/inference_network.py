@@ -47,6 +47,12 @@ class InferenceNetwork(nn.Module):
             self.activation = nn.LeakyReLU()
         elif activation == 'swish':
             self.activation = Swish()
+        elif activation == 'rrelu':
+            self.activation = nn.RReLU()
+        elif activation == 'elu':
+            self.activation = nn.ELU()
+        elif activation == 'selu':
+            self.activation = nn.SELU()
 
         self.input_layer = nn.Linear(input_size, hidden_sizes[0])
 
