@@ -83,7 +83,7 @@ class Optimizer:
         self.optimization_type = default_parameters['optimization_type']
 
         if default_parameters["save_path"] is not None:
-            Path(default_parameters["save_path"]).mkdir(exist_ok=True)      
+            Path(default_parameters["save_path"]).mkdir(parents=True, exist_ok=True)      
         
         if ((default_parameters["save_models"] == True) and (default_parameters["save_path"] is not None)):
             model_path = default_parameters["save_path"] + "models/"
