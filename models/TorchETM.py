@@ -141,7 +141,7 @@ class ETM_Wrapper(Abstract_Model):
                 cur_real_loss = round(cur_loss + cur_kl_theta, 2)
 
                 print('Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. Rec_loss: {}'
-                      ' .. NELBO: {}'.format(epoch, idx, len(indices),
+                      ' .. NELBO: {}'.format(epoch+1, idx, len(indices),
                                              self.optimizer.param_groups[0]['lr'],
                                              cur_kl_theta, cur_loss, cur_real_loss))
 
