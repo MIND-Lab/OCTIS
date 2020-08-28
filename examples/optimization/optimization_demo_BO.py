@@ -11,7 +11,6 @@ import multiprocessing as mp
 from optimization.optimizer import default_parameters as BO_parameters
 from evaluation_metrics.coherence_metrics import Coherence
 import time
-import resource
 
 
 def simple_optimization(minimizer):
@@ -102,10 +101,6 @@ def simple_optimization(minimizer):
     stringa_parameters = str(BO_parameters) + "\nTime: " + str(total_time) + " seconds"
 
     res.save(name ="Result", path = path_t, parameters = stringa_parameters)
-
-    print( resource.getrusage(resource.RUSAGE_SELF).ru_maxrss, "Kbytes" ) # RAM usage
-
-
 
 def optimization_demo_BO():
     """
