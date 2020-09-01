@@ -62,7 +62,7 @@ class AVITM(object):
         assert lr > 0, "lr must be > 0."
         assert isinstance(momentum, float) and momentum > 0 and momentum <= 1,\
             "momentum must be 0 < float <= 1."
-        assert solver in ['adam', 'sgd', 'adadelta', 'adagrad', 'rmsprop'], \
+        assert solver in ['adagrad','adam', 'sgd', 'adadelta', 'rmsprop'], \
             "solver must be 'adam', 'adadelta', 'sgd', 'rmsprop' or 'adagrad'"
         assert isinstance(reduce_on_plateau, bool),\
             "reduce_on_plateau must be type bool."
