@@ -107,7 +107,7 @@ class LSI_Model(Abstract_Model):
         """
         partition = []
         if self.use_partitions:
-            partition = dataset.get_partitioned_corpus()
+            partition = dataset.get_partitioned_corpus(use_validation=False)
         else:
             partition = [dataset.get_corpus(), []]
 
