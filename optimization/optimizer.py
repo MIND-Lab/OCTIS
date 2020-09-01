@@ -23,6 +23,7 @@ default_parameters = {'n_calls': 100,'model_runs': 10,'n_random_starts': 10,
                       'save': False,'save_models': False,'save_step': 1,'save_name': "result",'save_path': "results/",  
                       'early_stop': False, 'early_step': 10, 
                       'plot_best_seen': False,'plot_model': False,'plot_prefix_name': "B0_plot",'log_scale_plot': False,
+                      #'objective_function':np.median,
                       'extra_metrics': [], 
                       'random_state': None}
 
@@ -82,11 +83,9 @@ class Optimizer:
             model_path = default_parameters["save_path"] + "models/"
             Path(model_path).mkdir(parents=True, exist_ok=True)
 
-        # Store the different value of the metric for each model_runs
-        self.matrix_model_runs = np.zeros((default_parameters["n_calls"],default_parameters["model_runs"]))    
-        
-        # Store the different values of the extra metric for each model runs
-        self.matrix_model_runs_extra_metrics = np.zeros((len(default_parameters["extra_metrics"]),default_parameters["n_calls"],default_parameters["model_runs"]))
+        # Store the different value of the metric (optimized metric and extra metrics) for each model_runs
+        self.matrix_model_runs = np.zeros((1+len(default_parameters["extra_metrics"]),default_parameters["n_calls"],default_parameters["model_runs"]))
+
 
     def _objective_function(self, hyperparameters):
         """
@@ -119,12 +118,12 @@ class Optimizer:
             score = self.metric.score(model_output)
             
             different_model_runs.append(score)
-            self.matrix_model_runs[self.current_call, i] = score
+            self.matrix_model_runs[0,self.current_call, i] = score
             
             #Update of the extra metric values
-            j=0
+            j=1
             for extra_metric in self.extra_metrics:
-                self.matrix_model_runs_extra_metrics[j,self.current_call, i]= extra_metric.score(model_output)
+                self.matrix_model_runs[j,self.current_call, i]= extra_metric.score(model_output)
                 j=j+1
             
             # Save the model for each run
@@ -134,6 +133,7 @@ class Optimizer:
                 save_model_output(model_output, save_model_path)
                 
         #the output for BO is the median over different_model_runs 
+        #obj_fun=default_parameters["objective_function"]
         result = np.median(different_model_runs)
         
         # Save iteration data
@@ -149,13 +149,13 @@ class Optimizer:
 
         #Boxplot for matrix_model_runs
         if default_parameters["plot_model"]:
-            plot_boxplot(self.matrix_model_runs[:self.current_call,:], 
+            plot_boxplot(self.matrix_model_runs[0,:self.current_call,:], 
                          default_parameters["plot_prefix_name"].split(".")[0]+"_model_runs_"+self.metric.info()["name"], 
                          default_parameters["save_path"])
             #Boxplot of extrametrics (if any)
-            j=0
+            j=1
             for extra_metric in self.extra_metrics:
-                 plot_boxplot(self.matrix_model_runs_extra_metrics[j,:self.current_call,:], 
+                 plot_boxplot(self.matrix_model_runs[j,:self.current_call,:], 
                              default_parameters["plot_prefix_name"].split(".")[0]+"_model_runs_"+extra_metric.info()["name"], 
                              default_parameters["save_path"])  
                  j=j+1
@@ -272,19 +272,19 @@ class Optimizer:
         # Random forest
         if surrogate_model == "RF":
             estimator=RandomForestRegressor(n_estimators=100, min_samples_leaf=3)
-            surrogate_model_name = "Random forest regressor"
+            surrogate_model_name = "random_forest"
         # Extra Tree
         elif surrogate_model == "ET":
             estimator=ExtraTreesRegressor(n_estimators=100,min_samples_leaf=3)
-            surrogate_model_name = "Extra tree regressor"            
+            surrogate_model_name = "extra tree regressor"            
         # GP Minimize
         elif surrogate_model == "GP":
             estimator = GaussianProcessRegressor(kernel=kernel,random_state=random_state)
-            surrogate_model_name = "Gaussian process regressor" 
+            surrogate_model_name = "gaussian process" 
         # Random Search
         elif surrogate_model == "RS":
             estimator="dummy"
-            surrogate_model_name = "Random search (no surrogate model)" 
+            surrogate_model_name = "random_minimize" 
         else:
              print("Error: surrogate_model does not exist ")
              return None           
@@ -294,7 +294,6 @@ class Optimizer:
         #Creation of a general skopt optimizer
         opt = skopt_optimizer(bounds, base_estimator=estimator, 
                               acq_func=acq_func,
-                              n_random_starts=n_random_starts, 
                               n_initial_points=n_random_starts,
                               acq_optimizer="sampling", 
                               acq_optimizer_kwargs={"n_points": 10000, "n_restarts_optimizer": 5,"n_jobs": 1},
@@ -347,8 +346,7 @@ class Optimizer:
             if save and i % save_step == 0:
                 save_csv(name_csv=save_path+save_name,
                          res=res,
-                         matrix_model_runs=self.matrix_model_runs[:self.current_call,:], 
-                         matrix_model_runs_extra_metrics=self.matrix_model_runs_extra_metrics[:,:self.current_call,:],
+                         matrix_model_runs=self.matrix_model_runs[:,:self.current_call,:], 
                          extra_metrics=self.extra_metrics,
                          dataset_name=self.dataset.get_metadata()["info"]["name"],
                          hyperparameters_name=self.hyperparameters,
