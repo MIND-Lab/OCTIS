@@ -284,7 +284,6 @@ def plot_bayesian_optimization(res, name_plot,
 
 def save_csv(name_csv,res,
              matrix_model_runs,
-             matrix_model_runs_extra_metrics,
              extra_metrics,        
              dataset_name, 
              hyperparameters_name, 
@@ -302,10 +301,8 @@ def save_csv(name_csv,res,
 
         res                     :  results of BO 
 
-        matrix_model_runs       : The matrix of the different values of the model_runs
+        matrix_model_runs       : Tensor of metrics computed through BO (1+number of extra metrics,number of calls,number_of_runs)
 
-        matrix_model_runs_extra_metrics : The matrix of the different values of extra metrics of the model_runs
-        
         extra_metrics           : List of extra metrics names 
 
         dataset_name            : [string] name of the dataset
@@ -323,7 +320,7 @@ def save_csv(name_csv,res,
         """
 
     n_row = len(res.func_vals)
-    n_extra_metrics=matrix_model_runs_extra_metrics.shape[0]
+    n_extra_metrics=matrix_model_runs.shape[0]-1
     
     #creation of the Dataframe 
     df = pd.DataFrame()
@@ -334,11 +331,14 @@ def save_csv(name_csv,res,
     df['SURROGATE'] = [surrogate_model_name] * n_row
     df['ACQUISITION FUNC'] = [acquisition_function_name] * n_row
     df['NUM_ITERATION']=[i for i in range(n_row)] 
-    df[metric_name + '(optimized)']=np.median(matrix_model_runs,axis=1)  
+    df[metric_name + '(optimized)']=np.median(matrix_model_runs[0,:,:],axis=1)  
     df['TIME'] = [times[i] for i in range(n_row)]           
-    df['Mean(model_runs)'] = np.mean(matrix_model_runs,axis=1)
-    df['Standard_Deviation(model_runs)'] = np.std(matrix_model_runs,axis=1)
+    df['Mean(model_runs)'] = np.mean(matrix_model_runs[0,:,:],axis=1)
+    df['Standard_Deviation(model_runs)'] = np.std(matrix_model_runs[0,:,:],axis=1)
     for metric,i in zip(extra_metrics,range(n_extra_metrics)):
-        df[metric.info()["name"]+'(not optimized)']=np.median(matrix_model_runs_extra_metrics[i,:,:],axis=1)    
+        try:
+            df[metric.info()["name"]+'(not optimized)']=np.median(matrix_model_runs[i+1,:,:],axis=1)    
+        except:
+            df[metric.__class__.__name__+'(not optimized)']=np.median(matrix_model_runs[i+1,:,:],axis=1)   
     #save the Dataframe to a csv
     df.to_csv(name_csv.split(sep=".")[0]+".csv", index=False, na_rep='Unkown')
