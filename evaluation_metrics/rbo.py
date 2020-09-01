@@ -79,7 +79,9 @@ def overlap(list1, list2, depth):
     >>> overlap(["a", {"b", "c"}, "d"], ["a", {"b", "c"}, "d"], 3)
     3.0
     """
-    return agreement(list1, list2, depth) * min(depth, len(list1), len(list2))
+    ov = agreement(list1, list2, depth) * min(depth, len(list1), len(list2))
+    print("overlap", ov)
+    return ov
     # NOTE: comment the preceding and uncomment the following line if you want
     # to stick to the algorithm as defined by the paper
     # return raw_overlap(list1, list2, depth)[0]

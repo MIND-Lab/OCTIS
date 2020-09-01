@@ -1,71 +1,43 @@
 # Utils
-from skopt.space.space import Real, Integer
-from skopt.utils import dimensions_aslist
-from optimization.optimization_result import Best_evaluation
-from optimization.optimizer_tool import plot_bayesian_optimization
-from optimization.optimizer_tool import plot_boxplot
-from optimization.optimizer_tool import median_number
-from optimization.csv_creator import save_csv
-from models.model import save_model_output
-
-import time
-import numpy as np
-from skopt import dump, load
-from skopt import callbacks
-from skopt.callbacks import CheckpointSaver
 import os
 from pathlib import Path  # Path(path).mkdir(parents=True, exist_ok=True)
 
-# Models
-from optimization.gp_minimizer import gp_minimizer as gp_minimizer_function
-from optimization.forest_minimizer import forest_minimizer as forest_minimizer_function
-from optimization.random_minimizer import random_minimizer as random_minimizer_function
-from skopt import gp_minimize, forest_minimize, dummy_minimize
-
+import numpy as np
 # Kernel
 from sklearn.gaussian_process.kernels import Matern
+from skopt import gp_minimize, forest_minimize, dummy_minimize
+from skopt.utils import dimensions_aslist
+
+from models.model import save_model_output
+from optimization.csv_creator import save_matrix_csv
+from optimization.forest_minimizer import forest_minimizer as forest_minimizer_function
+# Models
+from optimization.gp_minimizer import gp_minimizer as gp_minimizer_function
+from optimization.optimization_result import Best_evaluation
+from optimization.optimizer_tool import median_number
+from optimization.optimizer_tool import plot_bayesian_optimization
+from optimization.optimizer_tool import plot_boxplot
+from optimization.random_minimizer import random_minimizer as random_minimizer_function
 
 Matern_kernel_3 = 1.0 * Matern(length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5)
 
 # Initialize default parameters
-default_parameters = {
-    'n_calls': 100,
-    'optimization_runs': 3,
-    'model_runs': 10,
-    'n_random_starts': 10,  # Should be one for dimension (at least)
-    'minimizer': gp_minimize,
-    'acq_func': "LCB",
-    'kernel': Matern_kernel_3,
-    'random_state': None,
-    'noise': None,
-    'verbose': False,
-    'n_points': 10000,
-    'base_estimator': 'RF',
-    'kappa': 1.96,
-    'alpha': 1e-10,
-    'x0': [None],
-    'y0': [None],
-    'time_x0': None,
-    'xi': 1.96,
-    'n_jobs': 1,
-    'model_queue_size': None,
-    'optimization_type': 'Maximize',
-    'extra_metrics': [],
-    'save_models': False,
-    'save': False,
-    'save_step': 1,
-    'save_name': "result",
-    'save_path': None,  # where to save all file (log, txt, plot, etc)
-    'early_stop': False,
-    'early_step': 10,
-    'plot_best_seen': False,
-    'plot_model': False,
-    'plot_prefix_name': "Bayesian optimization plot",
-    'log_scale_plot': False
-}
+default_parameters = {'n_calls': 100, 'model_runs': 10,
+                      'n_random_starts': 10,  # Should be one for dimension (at least)
+                      'minimizer': gp_minimize, 'acq_func': "LCB", 'kernel': Matern_kernel_3,
+                      'random_state': None, 'noise': None, 'verbose': False, 'n_points': 10000,
+                      'base_estimator': 'RF', 'kappa': 1.96, 'alpha': 1e-10, 'x0': None,
+                      'y0': None, 'time_x0': None, 'xi': 1.96, 'n_jobs': 1, 'model_queue_size': None,
+                      'optimization_type': 'Maximize', 'extra_metrics': [], 'save_models': False,
+                      'save': False, 'save_step': 1, 'save_name': "result",
+                      'save_path': None,  # where to save all file (log, txt, plot, etc)
+                      'early_stop': False, 'early_step': 10, 'plot_best_seen': False,
+                      'plot_model': False, 'plot_prefix_name': "Bayesian optimization plot",
+                      'log_scale_plot': False
+                      }
 
 
-class Optimizer():
+class Optimizer:
     """
     Optimizer optimize hyperparameters to build topic models
     """
@@ -95,7 +67,6 @@ class Optimizer():
         self.metric = metric
         self.search_space = search_space
         self.current_call = 0
-        self.current_optimization_run = 0
 
         if (optimization_parameters["save_path"][-1] != '/'):
             optimization_parameters["save_path"] = optimization_parameters["save_path"] + '/'
@@ -111,19 +82,21 @@ class Optimizer():
 
         self.optimization_type = default_parameters['optimization_type']
 
+        if default_parameters["save_path"] is not None:
+            Path(default_parameters["save_path"]).mkdir(parents=True, exist_ok=True)      
+        
         if ((default_parameters["save_models"] == True) and (default_parameters["save_path"] is not None)):
             model_path = default_parameters["save_path"] + "models/"
             Path(model_path).mkdir(parents=True, exist_ok=True)
 
         # Store the different value of the metric for each model_runs
 
-        if (default_parameters["minimizer"] != forest_minimize):
-            self.matrix_model_runs = np.zeros((default_parameters["n_calls"],
-                                               default_parameters["optimization_runs"],
-                                               default_parameters["model_runs"]))
-        else:
+        if (default_parameters["minimizer"] == forest_minimize):
             self.matrix_model_runs = np.zeros((default_parameters["n_calls"] + default_parameters["n_random_starts"],
-                                               default_parameters["optimization_runs"],
+                                               default_parameters["model_runs"]))
+            # print("X:",default_parameters["n_calls"] + default_parameters["n_random_starts"],"|Y:",default_parameters["model_runs"])
+        else:
+            self.matrix_model_runs = np.zeros((default_parameters["n_calls"],
                                                default_parameters["model_runs"]))
 
     def _objective_function(self, hyperparameters, path=None):
@@ -155,13 +128,14 @@ class Optimizer():
                                                   self.topic_word_matrix, self.topic_document_matrix)
 
             model_res = self.metric.score(model_output)
-            self.matrix_model_runs[self.current_call, self.current_optimization_run, i] = model_res
+            # print("x_r",self.current_call,"y_r",i)
+            self.matrix_model_runs[self.current_call, i] = model_res
             different_model_runs.append(model_res)
+            default_parameters["matrix_model_runs"] = self.matrix_model_runs
 
             # Save the models
             if (default_parameters["save_models"]):
-                nome_giusto = str(self.current_call) + "_" + str(self.current_optimization_run) + "_" + str(
-                    i)  # "<n_calls>_<optimization_runs>_<model_runs>"
+                nome_giusto = str(self.current_call) + "_" + str(i)  # "<n_calls>_<model_runs>"
                 if path is None:
                     save_model_path = default_parameters["save_path"] + "models/" + nome_giusto
                 if path is not None:
@@ -175,15 +149,9 @@ class Optimizer():
         result = median_number(different_model_runs)
 
         # Indici save
-        if self.current_optimization_run + 1 == default_parameters["optimization_runs"]:
-            # print( default_parameters["optimization_runs"] , "if" )
-            self.current_call = self.current_call + 1
-            self.current_optimization_run = 0
-        else:
-            # print( default_parameters["optimization_runs"] , "else" )
-            self.current_optimization_run = self.current_optimization_run + 1
+        self.current_call = self.current_call + 1
 
-        # print(self.current_call,"_",self.current_optimization_run,"->",self.metric.score(model_output) )
+        # print(self.current_call,"->",self.metric.score(model_output) )
 
         # Update metrics values for extra metrics
         metrics_values = {self.metric.__class__.__name__: result}
@@ -208,12 +176,14 @@ class Optimizer():
         if self.optimization_type == 'Maximize':
             result = - result
 
-        #print("Model_runs ->", different_model_runs)
-        #print("Mediana->", result)
-        #print("Matrix->", self.matrix_model_runs)
+        # print("Model_runs ->", different_model_runs)
+        # print("Mediana->", result)
+        # print("Matrix->", self.matrix_model_runs)
 
-        # Need to work only when optimization_runs is 1
-        if default_parameters["plot_model"] and (default_parameters["optimization_runs"] == 1):
+        sub_matrix = self.matrix_model_runs[:self.current_call]
+        # print("sub_matrix->",sub_matrix)s
+
+        if default_parameters["plot_model"]:
             default_parameters["plot_model"] = True
 
             if default_parameters["plot_prefix_name"].endswith(".png"):
@@ -226,10 +196,11 @@ class Optimizer():
             else:
                 name_model_plot = name[:-4] + "_model.png"
 
-            #print("name_model_plot->", name_model_plot)
+            # print("name_model_plot->", name_model_plot)
 
-            plot_boxplot(self.matrix_model_runs, name_model_plot, path=default_parameters["save_path"])
-        
+            plot_boxplot(sub_matrix, name_model_plot, path=default_parameters["save_path"])
+
+        save_matrix_csv(default_parameters["save_path"] + default_parameters["save_name"], sub_matrix)
 
         return result
 
@@ -237,7 +208,6 @@ class Optimizer():
                               bounds,  # = params_space_list,#
                               minimizer=default_parameters["minimizer"],
                               number_of_call=default_parameters["n_calls"],
-                              optimization_runs=default_parameters["optimization_runs"],
                               model_runs=default_parameters["model_runs"],
                               kernel=default_parameters["kernel"],
                               acq_func=default_parameters["acq_func"],
@@ -246,8 +216,8 @@ class Optimizer():
                               noise_level=default_parameters["noise"],
                               alpha=default_parameters["alpha"],
                               kappa=default_parameters["kappa"],
-                              X0=default_parameters["x0"],
-                              Y0=default_parameters["y0"],
+                              x0=default_parameters["x0"],
+                              y0=default_parameters["y0"],
                               time_x0=default_parameters["time_x0"],
                               n_random_starts=default_parameters["n_random_starts"],
                               save=default_parameters["save"],
@@ -257,7 +227,6 @@ class Optimizer():
                               early_stop=default_parameters["early_stop"],
                               early_step=default_parameters["early_step"],
                               plot_best_seen=default_parameters["plot_best_seen"],
-                              plot_model=default_parameters["plot_model"],
                               plot_prefix_name=default_parameters["plot_prefix_name"],
                               log_scale_plot=default_parameters["log_scale_plot"],
                               verbose=default_parameters["verbose"],
@@ -286,9 +255,6 @@ class Optimizer():
                         -forest_minimize
 
             number_of_call : Number of calls to f
-
-            optimization_runs : Number of different run of a single Bayesian Optimization
-                                [min = 3]
 
             model_runs: Number of different evaluation of the function in the same point
                         and with the same hyperparameters. Usefull with a lot of noise.
@@ -326,9 +292,9 @@ class Optimizer():
                     If set to be very high, then we are favouring exploration over exploitation and vice versa. 
                     Used when the acquisition is "LCB"
             
-            X0 : Initial input points.
+            x0 : Initial input points.
             
-            Y0 : Evaluation of initial input points.
+            y0 : Evaluation of initial input points.
 
             time_x0 : Time to evaluate x0 and y0
             
@@ -354,10 +320,6 @@ class Optimizer():
             plot_best_seen : [boolean] Plot the convergence of the Bayesian optimization 
                     process, showing mean and standard deviation of the different
                     optimization runs. 
-                    If save is True the plot is update every save_step evaluations.
-
-            plot_model: [boolean] Plot the mean and standard deviation of the different
-                    model runs. 
                     If save is True the plot is update every save_step evaluations.
             
             plot_prefix_name : Prefix of the name of the .png file where the plots are saved.
@@ -399,17 +361,6 @@ class Optimizer():
             return None
 
         # dimensioni = len( bounds )
-        checkpoint_saver = [None] * optimization_runs
-
-        if X0 == [None]:
-            x0 = [None] * optimization_runs
-        else:
-            x0 = X0
-
-        if Y0 == [None]:
-            y0 = [None] * optimization_runs
-        else:
-            y0 = Y0
 
         if default_parameters["minimizer"] == gp_minimize:
             minimizer_stringa = "gp_minimize"
@@ -426,7 +377,6 @@ class Optimizer():
         print("------------------------------------------")
         print("------------------------------------------")
         print("Bayesian optimization parameters:\n-n_calls: ", default_parameters["n_calls"],
-              "\n-optimization_runs: ", default_parameters["optimization_runs"],
               "\n-model_runs: ", default_parameters["model_runs"],
               "\n-n_random_starts: ", default_parameters["n_random_starts"],
               "\n-minimizer: ", minimizer_stringa)
@@ -438,97 +388,59 @@ class Optimizer():
 
         # Dummy Minimize
         if minimizer == dummy_minimize:
-            return random_minimizer_function(f=f, bounds=bounds,
-                                    number_of_call=number_of_call,
-                                    optimization_runs=optimization_runs,
-                                    random_state=random_state,
-                                    x0=x0,
-                                    y0=y0,
-                                    time_x0=time_x0,
-                                    n_random_starts=n_random_starts,
-                                    save=save,
-                                    save_step=save_step,
-                                    save_name=save_name,
-                                    save_path=save_path,
-                                    early_stop=early_stop,
-                                    early_step=early_step,
-                                    plot_best_seen=plot_best_seen,
-                                    plot_model=plot_model,
-                                    plot_prefix_name=plot_prefix_name,
-                                    log_scale_plot=log_scale_plot,
-                                    verbose=verbose,
-                                    model_queue_size=model_queue_size,
-                                    checkpoint_saver=checkpoint_saver,
-                                    dataset_name=self.dataset.get_metadata()["info"]["name"],
-                                    hyperparameters_name=self.hyperparameters,
-                                    metric_name=self.metric.__class__.__name__,
-                                    maximize=(self.optimization_type == 'Maximize'))
+            return random_minimizer_function(f=f, bounds=bounds, number_of_call=number_of_call,
+                                             random_state=random_state, x0=x0, y0=y0,
+                                             time_x0=time_x0, n_random_starts=n_random_starts,
+                                             save=save, save_step=save_step, save_name=save_name,
+                                             save_path=save_path, early_stop=early_stop,
+                                             early_step=early_step, plot_best_seen=plot_best_seen,
+                                             plot_prefix_name=plot_prefix_name,
+                                             log_scale_plot=log_scale_plot, verbose=verbose,
+                                             model_queue_size=model_queue_size,
+                                             dataset_name=self.dataset.get_metadata()[
+                                                 "info"]["name"],
+                                             hyperparameters_name=self.hyperparameters,
+                                             metric_name=self.metric.__class__.__name__,
+                                             maximize=(self.optimization_type == 'Maximize'))
 
         # Forest Minimize
         elif minimizer == forest_minimize:
-            return forest_minimizer_function(f=f, bounds=bounds,
-                                    number_of_call=number_of_call,
-                                    optimization_runs=optimization_runs,
-                                    acq_func=acq_func,
-                                    base_estimator_forest=base_estimator_forest,
-                                    random_state=random_state,
-                                    kappa=kappa,
-                                    x0=x0,
-                                    y0=y0,
-                                    time_x0=time_x0,
-                                    n_random_starts=n_random_starts,
-                                    save=save,
-                                    save_step=save_step,
-                                    save_name=save_name,
-                                    save_path=save_path,
-                                    early_stop=early_stop,
-                                    early_step=early_step,
-                                    plot_best_seen=plot_best_seen,
-                                    plot_model=plot_model,
-                                    plot_prefix_name=plot_prefix_name,
-                                    log_scale_plot=log_scale_plot,
-                                    verbose=verbose,
-                                    n_points=n_points,
-                                    xi=xi,
-                                    n_jobs=n_jobs,
-                                    model_queue_size=model_queue_size,
-                                    checkpoint_saver=checkpoint_saver,
-                                    dataset_name=self.dataset.get_metadata()["info"]["name"],
-                                    hyperparameters_name=self.hyperparameters,
-                                    metric_name=self.metric.__class__.__name__,
-                                    maximize=(self.optimization_type == 'Maximize'))
+            return forest_minimizer_function(f=f, bounds=bounds, number_of_call=number_of_call,
+                                             acq_func=acq_func,
+                                             base_estimator_forest=base_estimator_forest,
+                                             random_state=random_state, kappa=kappa,
+                                             x0=x0, y0=y0, time_x0=time_x0,
+                                             n_random_starts=n_random_starts, save=save,
+                                             save_step=save_step, save_name=save_name,
+                                             save_path=save_path, early_stop=early_stop,
+                                             early_step=early_step, plot_best_seen=plot_best_seen,
+                                             plot_prefix_name=plot_prefix_name,
+                                             log_scale_plot=log_scale_plot, verbose=verbose,
+                                             n_points=n_points, xi=xi, n_jobs=n_jobs,
+                                             model_queue_size=model_queue_size,
+                                             dataset_name=self.dataset.get_metadata()[
+                                                 "info"]["name"],
+                                             hyperparameters_name=self.hyperparameters,
+                                             metric_name=self.metric.__class__.__name__,
+                                             maximize=(self.optimization_type == 'Maximize'))
 
         # GP Minimize
         elif minimizer == gp_minimize:
-            return gp_minimizer_function(f=f, bounds=bounds,
-                                number_of_call=number_of_call,
-                                optimization_runs=optimization_runs,
-                                kernel=kernel,
-                                acq_func=acq_func,
-                                random_state=random_state,
-                                noise_level=noise_level,  # attenzione
-                                alpha=alpha,
-                                x0=x0,
-                                y0=y0,
-                                time_x0=time_x0,
-                                n_random_starts=n_random_starts,
-                                save=save,
-                                save_step=save_step,
-                                save_name=save_name,
-                                save_path=save_path,
-                                early_stop=early_stop,
-                                early_step=early_step,
-                                plot_best_seen=plot_best_seen,
-                                plot_model=plot_model,
-                                plot_prefix_name=plot_prefix_name,
-                                log_scale_plot=log_scale_plot,
-                                verbose=verbose,
-                                model_queue_size=model_queue_size,
-                                checkpoint_saver=checkpoint_saver,
-                                dataset_name=self.dataset.get_metadata()["info"]["name"],
-                                hyperparameters_name=self.hyperparameters,
-                                metric_name=self.metric.__class__.__name__,
-                                maximize=(self.optimization_type == 'Maximize'))
+            return gp_minimizer_function(f=f, bounds=bounds, number_of_call=number_of_call,
+                                         kernel=kernel, acq_func=acq_func, random_state=random_state,
+                                         noise_level=noise_level,  # attenzione
+                                         alpha=alpha, x0=x0, y0=y0, time_x0=time_x0,
+                                         n_random_starts=n_random_starts, save=save,
+                                         save_step=save_step, save_name=save_name,
+                                         save_path=save_path, early_stop=early_stop,
+                                         early_step=early_step, plot_best_seen=plot_best_seen,
+                                         plot_prefix_name=plot_prefix_name,
+                                         log_scale_plot=log_scale_plot, verbose=verbose,
+                                         model_queue_size=model_queue_size,
+                                         dataset_name=self.dataset.get_metadata()["info"]["name"],
+                                         hyperparameters_name=self.hyperparameters,
+                                         metric_name=self.metric.__class__.__name__,
+                                         maximize=(self.optimization_type == 'Maximize'))
 
         else:
             print("Error. Not such minimizer: ", minimizer)
@@ -559,58 +471,66 @@ class Optimizer():
         self.optimization_type = default_parameters['optimization_type']
 
         # Optimization call
-        optimize_result = self.Bayesian_optimization(
-            f=self._objective_function,
-            bounds=params_space_list,
-            minimizer=default_parameters["minimizer"],
-            number_of_call=default_parameters["n_calls"],
-            optimization_runs=default_parameters["optimization_runs"],
-            kernel=default_parameters["kernel"],
-            acq_func=default_parameters["acq_func"],
-            base_estimator_forest=default_parameters["base_estimator"],
-            random_state=default_parameters["random_state"],
-            noise_level=default_parameters["noise"],
-            alpha=default_parameters["alpha"],
-            kappa=default_parameters["kappa"],
-            X0=default_parameters["x0"],
-            Y0=default_parameters["y0"],
-            time_x0=default_parameters["time_x0"],
-            n_random_starts=default_parameters["n_random_starts"],
-            save=default_parameters["save"],
-            save_step=default_parameters["save_step"],
-            save_name=default_parameters["save_name"],
-            save_path=default_parameters["save_path"],
-            early_stop=default_parameters["early_stop"],
-            early_step=default_parameters["early_step"],
-            plot_best_seen=default_parameters["plot_best_seen"],
-            plot_model=default_parameters["plot_model"],
-            plot_prefix_name=default_parameters["plot_prefix_name"],
-            log_scale_plot=default_parameters["log_scale_plot"],
-            verbose=default_parameters["verbose"],
-            n_points=default_parameters["n_points"],
-            xi=default_parameters["xi"],
-            n_jobs=default_parameters["n_jobs"],
-            model_queue_size=default_parameters["model_queue_size"])
+        optimize_result = \
+            self.Bayesian_optimization(f=self._objective_function,
+                                       bounds=params_space_list,
+                                       minimizer=default_parameters["minimizer"],
+                                       number_of_call=default_parameters["n_calls"],
+                                       kernel=default_parameters["kernel"],
+                                       acq_func=default_parameters["acq_func"],
+                                       base_estimator_forest=default_parameters[
+                                           "base_estimator"],
+                                       random_state=default_parameters["random_state"],
+                                       noise_level=default_parameters["noise"],
+                                       alpha=default_parameters["alpha"],
+                                       kappa=default_parameters["kappa"],
+                                       x0=default_parameters["x0"], y0=default_parameters["y0"],
+                                       time_x0=default_parameters["time_x0"],
+                                       n_random_starts=default_parameters["n_random_starts"],
+                                       save=default_parameters["save"],
+                                       save_step=default_parameters["save_step"],
+                                       save_name=default_parameters["save_name"],
+                                       save_path=default_parameters["save_path"],
+                                       early_stop=default_parameters["early_stop"],
+                                       early_step=default_parameters["early_step"],
+                                       plot_best_seen=default_parameters["plot_best_seen"],
+                                       plot_prefix_name=default_parameters["plot_prefix_name"],
+                                       log_scale_plot=default_parameters["log_scale_plot"],
+                                       verbose=default_parameters["verbose"],
+                                       n_points=default_parameters["n_points"],
+                                       xi=default_parameters["xi"],
+                                       n_jobs=default_parameters["n_jobs"],
+                                       model_queue_size=default_parameters["model_queue_size"])
 
         # To have the right result
         if self.optimization_type == 'Maximize':
-            for i in range(len(optimize_result)):
-                optimize_result[i].fun = - optimize_result[i].fun
-                for j in range(len(optimize_result[i].func_vals)):
-                    optimize_result[i].func_vals[j] = - optimize_result[i].func_vals[j]
+            optimize_result.fun = - optimize_result.fun
+
+            for j in range(len(optimize_result.func_vals)):
+                optimize_result.func_vals[j] = - optimize_result.func_vals[j]
 
             if default_parameters["plot_best_seen"]:
                 name_plot = default_parameters["plot_prefix_name"]
-                if name_plot.endswith(".png") :
+                if name_plot.endswith(".png"):
                     name_plot = name_plot[:-4] + "_best_seen.png"
                 else:
                     name_plot = name_plot + "_best_seen.png"
 
-                plot_bayesian_optimization(list_of_res=optimize_result,
+                plot_bayesian_optimization(res=optimize_result,
                                            name_plot=name_plot,
                                            log_scale=default_parameters["log_scale_plot"],
                                            path=default_parameters["save_path"],
                                            conv_min=False)
+
+        # Remove matrix csv file
+        if not (default_parameters["save_name"].endswith(".csv")):
+            name_csv_matrix = default_parameters["save_name"] + "_matrix.csv"
+        else:
+            name_csv_matrix = default_parameters["save_name"][:-4] + "_matrix.csv"
+
+        name_csv_matrix = default_parameters["save_path"] + name_csv_matrix
+        if os.path.exists(name_csv_matrix):
+            os.remove(name_csv_matrix)
 
         # Create Best_evaluation object from optimization results
         result = Best_evaluation(self.hyperparameters,

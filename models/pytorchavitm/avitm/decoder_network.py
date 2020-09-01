@@ -12,7 +12,7 @@ class DecoderNetwork(nn.Module):
 
     def __init__(self, input_size, n_components=10, model_type='prodLDA',
                  hidden_sizes=(100,100), activation='softplus', dropout=0.2,
-                 learn_priors=True, topic_prior_mean=0.0, topic_prior_variance=0.0):
+                 learn_priors=True, topic_prior_mean=0.0, topic_prior_variance=None):
         """
         Initialize InferenceNetwork.
 
@@ -34,14 +34,16 @@ class DecoderNetwork(nn.Module):
             "model type must be 'prodLDA' or 'LDA'"
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu', or 'tanh'."
+        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                              'rrelu', 'elu', 'selu'], \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            " 'rrelu', 'elu', 'selu' or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
         assert isinstance(topic_prior_mean, float), \
             "topic_prior_mean must be type float"
         # and topic_prior_variance >= 0, \
-        assert isinstance(topic_prior_variance, float), \
-            "topic prior_variance must be type float"
+        #assert isinstance(topic_prior_variance, float), \
+        #    "topic prior_variance must be type float"
 
         self.input_size = input_size
         self.n_components = n_components
@@ -53,6 +55,8 @@ class DecoderNetwork(nn.Module):
 
         self.inf_net = InferenceNetwork(
             input_size, n_components, hidden_sizes, activation)
+        if torch.cuda.is_available():
+            self.inf_net = self.inf_net.cuda()
 
         # init prior parameters
         # \mu_1k = log \alpha_k + 1/K \sum_i log \alpha_i;
@@ -65,11 +69,11 @@ class DecoderNetwork(nn.Module):
             self.prior_mean = self.prior_mean.cuda()
         if self.learn_priors:
             self.prior_mean = nn.Parameter(self.prior_mean)
-
         # \Sigma_1kk = 1 / \alpha_k (1 - 2/K) + 1/K^2 \sum_i 1 / \alpha_k;
         # \alpha = 1 \forall \alpha
 
-        #topic_prior_variance = 1. - (1. / self.n_components)
+        if topic_prior_variance is None:
+            topic_prior_variance = 1. - (1. / self.n_components)
         self.prior_variance = torch.tensor(
             [topic_prior_variance] * n_components)
         if torch.cuda.is_available():
@@ -87,6 +91,7 @@ class DecoderNetwork(nn.Module):
 
         # dropout on theta
         self.drop_theta = nn.Dropout(p=self.dropout)
+
 
     @staticmethod
     def reparameterize(mu, logvar):

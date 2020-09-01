@@ -70,7 +70,7 @@ class NMF_gensim(Abstract_Model):
         self.hyperparameters["kappa"] = kappa
         self.hyperparameters["minimum_probability"] = minimum_probability
         self.hyperparameters["w_max_iter"] = w_max_iter
-        self.hyperparameters["w_stop_conditiom"] = w_stop_condition
+        self.hyperparameters["w_stop_condition"] = w_stop_condition
         self.hyperparameters["h_max_iter"] = h_max_iter
         self.hyperparameters["h_stop_condition"] = h_stop_condition
         self.hyperparameters["eval_every"] = eval_every
@@ -135,7 +135,7 @@ class NMF_gensim(Abstract_Model):
         """
         partition = []
         if self.use_partitions:
-            partition = dataset.get_partitioned_corpus()
+            partition = dataset.get_partitioned_corpus(use_validation=False)
         else:
             partition = [dataset.get_corpus(), []]
 

@@ -81,14 +81,8 @@ class Best_evaluation(Evaluation):
         self.optimized_metric = optimized_metric
         function_values = {}
 
-        key_min = lambda res: res.fun
-        if Maximize:
-            best_values = max( optimized_result, key = key_min )
-        else:
-            best_values = min( optimized_result, key = key_min )
-
-        function_values = best_values.fun
-        function_solution = best_values.x
+        function_values = optimized_result.fun #func_vals
+        function_solution = optimized_result.x
 
 
         iterations.append(

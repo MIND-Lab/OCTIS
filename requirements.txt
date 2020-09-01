@@ -6,3 +6,5 @@ scikit-learn
 scikit-optimize
 matplotlib
 pytorch
+numpy
+libsvm
