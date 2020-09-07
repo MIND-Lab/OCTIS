@@ -240,18 +240,20 @@ class AVITM(object):
                 epoch+1, self.num_epochs, samples_processed,
                 len(self.train_data)*self.num_epochs, train_loss, e - s))
 
-            self.early_stopping(train_loss, self.model)
-
             self.best_components = self.model.beta
             self.final_topic_word = topic_word
             self.final_topic_document = topic_document
             self.best_loss_train = train_loss
 
-            if self.early_stopping.early_stop:
-                print("Early stopping")
-                if save_dir is not None:
-                    self.save(save_dir)
+            if np.isnan(train_loss):
                 break
+            else:
+                self.early_stopping(train_loss, self.model)
+                if self.early_stopping.early_stop:
+                    print("Early stopping")
+                    if save_dir is not None:
+                        self.save(save_dir)
+                    break
 
             ## save best
             #if train_loss < self.best_loss_train:

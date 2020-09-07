@@ -39,16 +39,18 @@ class TorchAvitm(Abstract_Model):
         self.bool_topic_word = topic_word_matrix
 
         if self.use_partitions:
-            train, validation, test= dataset.get_partitioned_corpus(use_validation=True)
+            train, validation, test = dataset.get_partitioned_corpus(use_validation=True)
 
             data_corpus_train = [' '.join(i) for i in train]
             data_corpus_test = [' '.join(i) for i in test]
             data_corpus_validation = [' '.join(i) for i in validation]
+
+            self.vocab = dataset.get_vocabulary()
             self.X_train, self.X_test, self.X_valid, input_size = \
-                self.preprocess(data_corpus_train, data_corpus_test, data_corpus_validation)
+                self.preprocess(self.vocab, data_corpus_train, data_corpus_test, data_corpus_validation)
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            self.X_train, input_size = self.preprocess(data_corpus)
+            self.X_train, input_size = self.preprocess(self.vocab, data_corpus)
       
         self.model = avitm.AVITM(input_size=input_size,
                                  num_topics=self.hyperparameters['num_topics'],
@@ -137,8 +139,10 @@ class TorchAvitm(Abstract_Model):
             print('No partitioned dataset, please apply test_set method = True')
 
     @staticmethod
-    def preprocess(data, test=None, validation=None):
-        vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
+    def preprocess(vocab, data, test=None, validation=None):
+        vocab2id = {w: i for i, w in enumerate(vocab)}
+        vec = CountVectorizer(
+            vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
         dataset = data.copy()
         if test is not None:
             dataset.extend(test)

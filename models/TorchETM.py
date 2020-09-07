@@ -53,12 +53,15 @@ class ETM_Wrapper(Abstract_Model):
             data_corpus_test = [' '.join(i) for i in testing_data]
             data_corpus_val = [' '.join(i) for i in validation_data]
 
+            self.vocab = dataset.get_vocabulary()
+
             self.train_tokens, self.train_counts, self.test_tokens, \
-            self.test_counts, self.valid_tokens, self.valid_counts, self.vocab_size, \
-            self.vocab = self.preprocess(data_corpus_train, data_corpus_test, data_corpus_val)
+            self.test_counts, self.valid_tokens, self.valid_counts, self.vocab_size =\
+            self.preprocess(self.vocab, data_corpus_train, data_corpus_test, data_corpus_val)
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            self.train_tokens, self.train_counts, self.vocab_size, self.vocab = self.preprocess(data_corpus, None)
+            self.train_tokens, self.train_counts, self.vocab_size, \
+            self.vocab = self.preprocess(self.vocab, data_corpus, None)
 
         self.num_docs_train = self.train_tokens.shape[1]
         self.num_docs_valid = self.valid_tokens.shape[1]
@@ -185,7 +188,6 @@ class ETM_Wrapper(Abstract_Model):
                 val_cnt += 1
                 val_total_loss = val_recon_loss + val_kld_theta
 
-
             val_cur_loss = round(val_acc_loss / cnt, 2)
             val_cur_kl_theta = round(val_acc_kl_theta_loss / cnt, 2)
             val_cur_real_loss = round(val_cur_loss + val_cur_kl_theta, 2)
@@ -194,14 +196,16 @@ class ETM_Wrapper(Abstract_Model):
                 self.optimizer.param_groups[0]['lr'], val_cur_kl_theta, val_cur_loss,
                 val_cur_real_loss))
             print('*' * 100)
-
-            self.early_stopping(val_total_loss, model)
-
-            if self.early_stopping.early_stop:
-                print("Early stopping")
+            if np.isnan(val_cur_real_loss):
                 return False
             else:
-                return True
+                self.early_stopping(val_total_loss, model)
+
+                if self.early_stopping.early_stop:
+                    print("Early stopping")
+                    return False
+                else:
+                    return True
 
 
 
@@ -303,13 +307,14 @@ class ETM_Wrapper(Abstract_Model):
         self.use_partitions = use_partitions
 
     @staticmethod
-    def preprocess(train_corpus, test_corpus=None, validation_corpus=None):
+    def preprocess(vocab, train_corpus,test_corpus=None, validation_corpus=None):
         def split_bow(bow_in, n_docs):
             indices = np.asarray([np.asarray([w for w in bow_in[doc, :].indices]) for doc in range(n_docs)])
             counts = np.asarray([np.asarray([c for c in bow_in[doc, :].data]) for doc in range(n_docs)])
             return np.expand_dims(indices, axis=0), np.expand_dims(counts, axis=0)
-
-        vec = CountVectorizer(token_pattern=r'(?u)\b\w+\b')
+        vocab2id = {w: i for i, w in enumerate(vocab)}
+        vec = CountVectorizer(
+            vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
 
         dataset = train_corpus
         if test_corpus is not None:
@@ -320,7 +325,6 @@ class ETM_Wrapper(Abstract_Model):
         vec.fit(dataset)
         idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
         vocab_size = len(idx2token.keys())
-        vocab = vec.vocabulary_.keys()
 
         X_train = vec.transform(train_corpus)
         X_train_tokens, X_train_count = split_bow(X_train, X_train.shape[0])
@@ -334,13 +338,13 @@ class ETM_Wrapper(Abstract_Model):
             X_val_tokens, X_val_count = split_bow(X_validation, X_validation.shape[0])
 
         if test_corpus is not None and validation_corpus is not None:
-            return X_train_tokens, X_train_count, X_test_tokens, X_test_count, X_val_tokens, X_val_count, vocab_size, list(vocab)
+            return X_train_tokens, X_train_count, X_test_tokens, X_test_count, X_val_tokens, X_val_count, vocab_size
         elif test_corpus is not None and validation_corpus is None:
-            return X_train_tokens, X_train_count, X_test_tokens, X_test_count, vocab_size, list(vocab)
+            return X_train_tokens, X_train_count, X_test_tokens, X_test_count, vocab_size
         elif test_corpus is None and validation_corpus is not None:
-            return X_train_tokens, X_train_count, X_val_tokens, X_val_count, vocab_size, list(vocab)
+            return X_train_tokens, X_train_count, X_val_tokens, X_val_count, vocab_size
         elif test_corpus is None and validation_corpus is None:
-            return X_train_tokens, X_train_count, vocab_size, list(vocab)
+            return X_train_tokens, X_train_count, vocab_size
         else:
             print("something strange is happening?")
 
