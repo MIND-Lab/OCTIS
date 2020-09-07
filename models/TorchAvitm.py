@@ -39,7 +39,7 @@ class TorchAvitm(Abstract_Model):
         self.bool_topic_word = topic_word_matrix
 
         if self.use_partitions:
-            train, test, validation = dataset.get_partitioned_corpus(use_validation=True)
+            train, validation, test= dataset.get_partitioned_corpus(use_validation=True)
 
             data_corpus_train = [' '.join(i) for i in train]
             data_corpus_test = [' '.join(i) for i in test]
