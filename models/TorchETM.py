@@ -53,15 +53,21 @@ class ETM_Wrapper(Abstract_Model):
             data_corpus_test = [' '.join(i) for i in testing_data]
             data_corpus_val = [' '.join(i) for i in validation_data]
 
-            self.vocab = dataset.get_vocabulary()
+            vocab = dataset.get_vocabulary()
+            self.vocab = {i: w for i, w in enumerate(vocab)}
+            vocab2id = {w: i for i, w in enumerate(vocab)}
 
             self.train_tokens, self.train_counts, self.test_tokens, \
             self.test_counts, self.valid_tokens, self.valid_counts, self.vocab_size =\
-            self.preprocess(self.vocab, data_corpus_train, data_corpus_test, data_corpus_val)
+            self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
+            vocab = dataset.get_vocabulary()
+            self.vocab = {i: w for i, w in enumerate(vocab)}
+            vocab2id = {w: i for i, w in enumerate(vocab)}
+
             self.train_tokens, self.train_counts, self.vocab_size, \
-            self.vocab = self.preprocess(self.vocab, data_corpus, None)
+            self.vocab = self.preprocess(vocab2id, data_corpus, None)
 
         self.num_docs_train = self.train_tokens.shape[1]
         self.num_docs_valid = self.valid_tokens.shape[1]
@@ -234,6 +240,7 @@ class ETM_Wrapper(Abstract_Model):
             info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
         else:
             info['topics'] = topic_w
+        print(info['topics'])
         return info
 
     def inference(self):
@@ -307,12 +314,11 @@ class ETM_Wrapper(Abstract_Model):
         self.use_partitions = use_partitions
 
     @staticmethod
-    def preprocess(vocab, train_corpus,test_corpus=None, validation_corpus=None):
+    def preprocess(vocab2id, train_corpus,test_corpus=None, validation_corpus=None):
         def split_bow(bow_in, n_docs):
             indices = np.asarray([np.asarray([w for w in bow_in[doc, :].indices]) for doc in range(n_docs)])
             counts = np.asarray([np.asarray([c for c in bow_in[doc, :].data]) for doc in range(n_docs)])
             return np.expand_dims(indices, axis=0), np.expand_dims(counts, axis=0)
-        vocab2id = {w: i for i, w in enumerate(vocab)}
         vec = CountVectorizer(
             vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
 
