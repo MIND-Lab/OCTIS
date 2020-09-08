@@ -219,6 +219,7 @@ class BestEvaluation:
     
     def __init__(self,
                  resultsBO,
+                 search_space,
                  matrix_model_runs,
                  extra_metrics,
                  optimization_type):
@@ -243,7 +244,17 @@ class BestEvaluation:
         else:
             self.func_vals=[val for val in resultsBO.func_vals]
             self.y_best=resultsBO.fun                                          #Best value
-        self.x_iters=resultsBO.x_iters                                         #hyperparameter configurations
+        
+        self.x_iters=dict()
+        name_hyperparameters=list(search_space.keys())
+        
+        #dictionary of x_iters
+        i=0
+        lenList=len(resultsBO.x_iters)
+        for name in name_hyperparameters:
+            self.x_iters.update({name: [resultsBO.x_iters[j][i] for j in range(lenList)]}) 
+            i=i+1    
+
         self.x_best=resultsBO.x                                                #Best x
         self.models_runs= dict(("iteration_"+str(i), list(matrix_model_runs[0,1,:])) for i in range(10))
 
