@@ -2,6 +2,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pickle
 
 def convergence_res(res,optimization_type="minimize"):
     """
@@ -60,137 +61,7 @@ def early_condition(result, n_stop, n_random):
 
     return False
 
-class Evaluation():
-    """
-    Representation of a single optimization iteration result
-    """
-    hyperparameters = {}
-    function_values = {}
-
-    def __init__(self, hyperparameters_names, hyperparameters_values,
-                function_values):
-        """
-        Initialize class
-
-        Parameters
-        ----------
-        hyperparameters_names : list of hyperparameters names
-        hyperparameters_values : list of hyperparameters values
-        function_values : dictionary of computed metrics values
-                          key: metric name
-                          value: metric value
-        """
-
-        hyperparameters = self._make_params_dict(
-            hyperparameters_names,
-            hyperparameters_values
-        )
-
-        self.hyperparameters = hyperparameters
-        self.function_values = function_values
-
-    def _make_params_dict(self, hyperparameters_names,
-                        hyperparameters_values):
-        """
-        Create dictionary of hyperparameters
-        from the list of name and the list of values
-
-        Parameters
-        ----------
-        hyperparameters_names : list of hyperparameters names
-        hyperparameters_values : list of hyperparameters values
-
-        Returns
-        -------
-        params : dictionary of hyperparameters
-                 key: hyperparameter name
-                 value: hyperparameter value
-        """
-        params = {}
-        for i in range(len(hyperparameters_names)):
-            params[hyperparameters_names[i]] = hyperparameters_values[i]
-        return params
-
-
-class Best_evaluation(Evaluation):
-    """
-    Representation of the optimized values and each iteration
-    """
-    iterations = []
-    optimized_result = None
-    optimized_metric = None
-
-    def __init__(self, params_names, optimized_result, Maximize, iters, optimized_metric):
-        """
-        Initialize class
-
-        Parameters
-        ----------
-        params_names : list of hyperparameters names
-        optimized_result : OptimizeResult object
-        iters : list of params_values and funcction_values of each iteration
-        """
-        self.optimized_result = optimized_result
-        iterations = []
-        self.optimized_metric = optimized_metric
-        function_values = {}
-
-        function_values = optimized_result.fun #func_vals
-        function_solution = optimized_result.x
-
-
-        iterations.append(
-            Evaluation(params_names,
-                       function_solution,
-                       function_values
-                       )
-        )
-    
-        super().__init__(params_names, function_solution, function_values)
-
-        self.iterations = iterations 
-
-    def save(self, name="save", path=None, parameters = None):
-        """
-        Save the values in a txt file
-
-        Parameters
-        ----------
-        name : name of the txt file saved
-        path : path in wich a txt with best data will be saved
-        """
-
-        if( parameters != None ):
-            L  = [str(self.hyperparameters),
-                "\n"+str(self.function_values),
-                "\nOptimized metric: "+str(self.optimized_metric),
-                "\nParameters: "+str(parameters),
-                "\n------------------------------------------\n",
-                str(self.optimized_result)]
-        else:
-            L  = [str(self.hyperparameters),
-                "\n"+str(self.function_values),
-                "\nOptimized metric: "+str(self.optimized_metric),
-                "\n------------------------------------------\n",
-                str(self.optimized_result)]
-
-        name = name + ".txt"
-
-        if( path == None ):
-            file = open(name,"w") 
-        else:
-            if( path[-1] != '/' ):
-                path = path + "/"
-            current_dir = os.getcwd() #current working directory
-            os.chdir( path ) #change directory
-            file = open(name,"w") 
-            os.chdir( current_dir ) #reset directory to original 
-        
-        file.writelines(L) 
-        file.close() 
-        
-        
-def plot_boxplot(matrix, name_plot, path):
+def plot_model_runs(matrix, name_plot, path):
     """
         Save a boxplot of the data.
         Works only when optimization_runs is 1.
@@ -342,3 +213,60 @@ def save_csv(name_csv,res,
             df[metric.__class__.__name__+'(not optimized)']=np.median(matrix_model_runs[i+1,:,:],axis=1)   
     #save the Dataframe to a csv
     df.to_csv(name_csv.split(sep=".")[0]+".csv", index=False, na_rep='Unkown')
+
+##############################################################################
+class BestEvaluation:
+    
+    def __init__(self,
+                 resultsBO,
+                 matrix_model_runs,
+                 extra_metrics,
+                 optimization_type):
+        """
+        Create an object with all the information about Bayesian Optimization
+        
+        """
+        n_extra_metrics=matrix_model_runs.shape[0]-1
+        n_calls=matrix_model_runs.shape[1]
+        n_runs=matrix_model_runs.shape[2]        
+ 
+        #Info about optimization
+        self.info=dict()
+        self.info.update({"number of calls":n_calls})
+        self.info.update({"number of model runs":n_runs})
+        self.info.update({"type_of optimization":"Maximization" if optimization_type=="Maximize" else "Minimization"})
+
+        #Reverse the sign of minimization if the problem is a maximization    
+        if optimization_type=="Maximize":
+            self.func_vals=[-val for val in resultsBO.func_vals]     
+            self.y_best=-resultsBO.fun                                         #Best value
+        else:
+            self.func_vals=[val for val in resultsBO.func_vals]
+            self.y_best=resultsBO.fun                                          #Best value
+        self.x_iters=resultsBO.x_iters                                         #hyperparameter configurations
+        self.x_best=resultsBO.x                                                #Best x
+        self.models_runs= dict(("iteration_"+str(i), list(matrix_model_runs[0,1,:])) for i in range(10))
+
+        #extra metrics info
+        self.extra_metrics=dict()
+        j=1
+        for metric in range(n_extra_metrics):
+            d={metric.__class__.__name__:dict(("iteration_"+str(i), list(matrix_model_runs[j,i,:])) for i in range(n_runs))}
+            self.extra_metrics.update(d)
+            j=j+1
+            
+    def save(self,name_file):
+        """
+        Save results for Bayesian Optimization
+        """
+        with open(name_file, 'wb') as file:
+          pickle.dump(self, file)
+
+    def load(self,name):
+        """
+        Load results for Bayesian Optimization
+        """
+        with open(name, 'rb') as file:
+            result=pickle.load(file)    
+            
+        return result
