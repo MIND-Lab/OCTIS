@@ -24,7 +24,8 @@ class Optimizer:
     topic_word_matrix = True            # if False the matrix will not be computed
     topic_document_matrix = True        # if False the matrix will not be computed
 
-    def __init__(self, model, 
+    def __init__(self, 
+             model, 
              dataset, 
              metric,
              search_space,
@@ -49,11 +50,42 @@ class Optimizer:
              early_step=5,
              plot_best_seen=False,
              plot_model=False,
-             plot_prefix_name="B0_plot",
+             plot_name="B0_plot",
              log_scale_plot=False):
         
         """
-        blablabla
+        Inizialization of the optimizer for the model
+
+        Parameters
+        ----------
+        model          : model with hyperparameters to optimize
+        dataset        : dateset for the topic model
+        metric         : initialized metric to use for optimization
+        search_space   : a dictionary of hyperparameters to optimize
+                       (each parameter is defined as a skopt space)
+                       with the name of the hyperparameter given as key
+        extra_metrics: list of extra metric computed during BO
+        number_of_call : number of calls to f
+        n_random_starts: number of evaluations of f with random points before approximating it with minimizer   
+        optimization_type: maximization or minimization problem
+        model_runs     : number of different evaluation of the function using the same hyper-parameter configuration
+        surrogate_model: type of surrogate model (from sklearn)
+        Kernel         : type of kernel (from sklearn)
+        acq_func       : function to minimize over the minimizer prior (LCB,EI,PI)
+        random_state   : set random state to something other than None for reproducible results.
+        x0             : list of initial configurations to test
+        y0             : list of values for x0
+        save_csv       : name of .csv file
+        save_models    : if True, all the model (number_of_call*model_runs) are saved
+        save_step      : integer interval after which save the .pkl about BO file
+        save_name      : name of the .csv and .pkl files
+        save_path      : path where .pkl, plot and result will be saved.
+        early_stop     : if True, an early stop policy is applied fro BO.
+        early_step     : integer interval after which a current optimization run is stopped if it doesn't improve.
+        plot_best_seen : if True the plot of the best seen for BO is showed
+        plot_model     : if True the boxplot of all the model runs is done
+        plot_name      : name of the plots (both for model runs or best_seen)
+        log_scale_plot : if True the "y_axis" of the plot is set to log_scale
         """
         
         self.model = model                                                     #inizialize the model
@@ -81,7 +113,7 @@ class Optimizer:
         self.early_step=early_step
         self.plot_model=plot_model,
         self.plot_best_seen=plot_best_seen
-        self.plot_prefix_name=plot_prefix_name
+        self.plot_name=plot_name
         self.log_scale_plot=log_scale_plot
         self.save_models=save_models
         if (save_path[-1] != '/'):
@@ -159,13 +191,13 @@ class Optimizer:
         #Boxplot for matrix_model_runs
         if self.plot_model:
             plot_model_runs(self.matrix_model_runs[0,:self.current_call,:], 
-                        self.plot_prefix_name.split(".")[0]+"_model_runs_"+self.metric.__class__.__name__, 
+                        self.plot_name.split(".")[0]+"_model_runs_"+self.metric.__class__.__name__, 
                          self.save_path)
             #Boxplot of extrametrics (if any)
             j=1
             for extra_metric in self.extra_metrics:
                  plot_model_runs(self.matrix_model_runs[j,:self.current_call,:], 
-                        self.plot_prefix_name.split(".")[0]+"_model_runs_"+self.metric.__class__.__name__, 
+                        self.plot_name.split(".")[0]+"_model_runs_"+self.metric.__class__.__name__, 
                          self.save_path)
                  j=j+1
                  
@@ -175,12 +207,17 @@ class Optimizer:
         """
         Optimize the hyperparameters of the model
 
-        Parameters
-        ----------
-
         Returns
-        -------
-        result : Best_evaluation object
+        
+        ----------        
+        an object containing all the information about BO:
+            -func_vals    : function value for each optimization run 
+            -y_best       : function value at the optimum
+            -x_iters      : location of function evaluation for each optimization run
+            -x_best       : location of the optimum   
+            -models_runs  : dictionary about all the model runs 
+            -extra_metrics: dictionary about all the model runs for the extra metrics
+
         """
         
         # Save parameters labels to use
@@ -290,7 +327,7 @@ class Optimizer:
             
             #Plot best seen 
             if self.plot_best_seen:  
-                plot_bayesian_optimization(res, self.plot_prefix_name.split(".")[0]+"_best_seen", self.log_scale_plot,
+                plot_bayesian_optimization(res, self.plot_name.split(".")[0]+"_best_seen", self.log_scale_plot,
                                                 path=self.save_path,conv_max=self.optimization_type == 'Maximize')
 
             #Early stop condition
@@ -305,7 +342,7 @@ class Optimizer:
                                   optimization_type=self.optimization_type) 
             
             if i % self.save_step == 0:
-                Results.save(self.save_name)
-            #name_csv.split(sep=".")[0]+".csv"
+                name_pkl=self.save_name.split(sep=".")[0]+".pkl"
+                Results.save(name_pkl)
             
-            return Results    
+        return Results    
