@@ -43,19 +43,18 @@ optimizer = Optimizer(
     dataset,
     npmi,
     search_space,
-    save=True,
-    save_path="results/simple_RF/",
     plot_model=True,
+    save_path="results/simple_RF/",
+    save_csv=True,
     save_models=True,
     number_of_call=6, 
     n_random_starts=3,
     optimization_type='Maximize',
     model_runs=3,
-    #extra_metrics=[npmi2],
     surrogate_model="RF")
 
 # Optimize the function npmi using Bayesian Optimization
 start_time = time.time()
-BestObjecy = optimizer.optimize()
+BestObject = optimizer.optimize()
 end_time = time.time()
 total_time = end_time - start_time # Total time to optimize
