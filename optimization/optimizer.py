@@ -228,9 +228,6 @@ class Optimizer:
             print("Error: number_of_call can't be <= 0")
             return None
         
-        if self.save and self.save_path is not None:
-            Path(self.save_path).mkdir(parents=True, exist_ok=True)
-        
         #### Choice of the surrogate model
         # Random forest
         if self.surrogate_model == "RF":
@@ -337,6 +334,7 @@ class Optimizer:
 
             #Create an object related to the BO optimization
             Results= BestEvaluation(resultsBO=res,
+                                  search_space=self.search_space,
                                   matrix_model_runs=self.matrix_model_runs,
                                   extra_metrics=self.extra_metrics,
                                   optimization_type=self.optimization_type) 
