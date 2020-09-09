@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pickle
 
-def convergence_res(res,optimization_type="minimize"):
+def convergence_res(values,optimization_type="minimize"):
     """
         Given a single element of a
         Bayesian_optimization return the 
@@ -12,34 +12,32 @@ def convergence_res(res,optimization_type="minimize"):
 
         Parameters
         ----------
-        res : A single element of a 
-            Bayesian_optimization result
+        values : values obtained by BO
 
         Returns
         -------
         val : A list with the best min seen for 
             each evaluation
     """
-    val = res.func_vals
+
     if optimization_type=="minimize":
-        for i in range(1,len(val)):
-            if val[i] > val[i - 1]:
-                val[i] = val[i - 1]
+        for i in range(1,len(values)):
+            if values[i] > values[i - 1]:
+                values[i] = values[i - 1]
     else:
-        for i in range(1,len(val)):
-            if val[i] < val[i - 1]:
-                val[i] = val[i - 1]       
-    return val
+        for i in range(1,len(values)):
+            if values[i] < values[i - 1]:
+                values[i] = values[i - 1]       
+    return values
 
 
-def early_condition(result, n_stop, n_random):
+def early_condition(values, n_stop, n_random):
     """
         Compute the decision to stop or not.
 
         Parameters
         ----------
-        result : `OptimizeResult`, scipy object
-                The optimization as a OptimizeResult object.
+        values : values obtained by BO
         
         n_stop : Range of points without improvement
 
@@ -51,10 +49,10 @@ def early_condition(result, n_stop, n_random):
     """
     n_min_len = n_stop + n_random
     
-    if len(result.func_vals) >= n_min_len:
-        func_vals = convergence_res(result)
-        worst = func_vals[len(func_vals) - (n_stop)]
-        best = func_vals[-1]
+    if len(values) >= n_min_len:
+        values = convergence_res(values,optimization_type="minimize")
+        worst = values[len(values) - (n_stop)]
+        best = values[-1]
         diff = worst - best
         if diff == 0:
             return True
@@ -96,7 +94,7 @@ def plot_model_runs(matrix, name_plot, path):
     plt.close()
 
 
-def plot_bayesian_optimization(res, name_plot,
+def plot_bayesian_optimization(values, name_plot,
                                log_scale=False, path=None, conv_max=True):
     """
         Save a convergence plot of the result of a 
@@ -104,7 +102,7 @@ def plot_bayesian_optimization(res, name_plot,
 
         Parameters
         ----------
-        res : A Bayesian_optimization result
+        values : values obtained by BO
 
         name_plot : The name of the file you want to 
                     give to the plot
@@ -119,13 +117,13 @@ def plot_bayesian_optimization(res, name_plot,
     """
     if conv_max:
         #minimization problem -->maximization problem
-        for j in range(len(res.func_vals)):
-            res.func_vals[j] = - res.func_vals[j]
-        media = convergence_res(res,optimization_type="maximize")
+        for j in range(len(values)):
+            values[j] = - values[j]
+        media = convergence_res(values,optimization_type="maximize")
         xlabel='max f(x) after n calls'
     else:
         #minimization problem
-        media = convergence_res(res,optimization_type="minimize")
+        media = convergence_res(values,optimization_type="minimize")
         xlabel='min f(x) after n calls'
         
     array = [i for i in range(len(media))]

@@ -322,11 +322,11 @@ class Optimizer:
             
             #Plot best seen 
             if self.plot_best_seen:  
-                plot_bayesian_optimization(res, self.plot_name.split(".")[0]+"_best_seen", self.log_scale_plot,
+                plot_bayesian_optimization(res.func_vals, self.plot_name.split(".")[0]+"_best_seen", self.log_scale_plot,
                                                 path=self.save_path,conv_max=self.optimization_type == 'Maximize')
 
             #Early stop condition
-            if self.early_stop and  early_condition(res, self.early_step, self.n_random_starts):
+            if self.early_stop and  early_condition(res.func_vals, self.early_step, self.n_random_starts):
                 print("Stop because of early stopping condition")
                 break  
 
