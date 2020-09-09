@@ -245,14 +245,15 @@ class BestEvaluation:
             self.func_vals=[val for val in resultsBO.func_vals]
             self.y_best=resultsBO.fun                                          #Best value
         
-        self.x_iters=dict()
+        self.x_iters=resultsBO.x_iters
+        self.x_iters_as_dict=dict()
         name_hyperparameters=list(search_space.keys())
         
         #dictionary of x_iters
         i=0
         lenList=len(resultsBO.x_iters)
         for name in name_hyperparameters:
-            self.x_iters.update({name: [resultsBO.x_iters[j][i] for j in range(lenList)]}) 
+            self.x_iters_as_dict.update({name: [resultsBO.x_iters[j][i] for j in range(lenList)]}) 
             i=i+1    
 
         self.x_best=resultsBO.x                                                #Best x
