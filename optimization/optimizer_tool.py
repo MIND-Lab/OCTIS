@@ -241,8 +241,7 @@ class BestEvaluation:
         else:
             self.func_vals=[val for val in resultsBO.func_vals]
             self.y_best=resultsBO.fun                                          #Best value
-        
-        self.x_iters=resultsBO.x_iters
+
         self.x_iters_as_dict=dict()
         name_hyperparameters=list(search_space.keys())
         
