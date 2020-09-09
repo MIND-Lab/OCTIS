@@ -213,6 +213,10 @@ class Optimizer:
             -extra_metrics: dictionary about all the model runs for the extra metrics
 
         """
+        #control about the correctness of Bo parameters
+        if self.controls()==-1:
+            print("ERROR: wrong inizialitation of BO parameters")
+            return None    
         
         # Save parameters labels to use
         self.hyperparameters = list(sorted(self.search_space.keys()))
@@ -338,3 +342,38 @@ class Optimizer:
                 Results.save(name_pkl)
             
         return Results    
+    
+    def controls(self):
+        ###Controls about BO parameters
+        if self.optimization_type not in ['Maximize','Minimize']:
+            print("Error: optimization type must be Maximize or Minimize")
+            return -1       
+ 
+        if self.surrogate_model not in ['RF','RS','GP','ET']:
+            print("Error: surrogate model must be RF, ET, RS or GP")
+            return -1 
+        
+        if self.acq_func not in ['PI','EI','LCB']:
+            print("Error: acquisition function must be PI, EI or LCB")
+            return -1 
+        
+        if not isinstance(self.model_run, int):
+            print("Error: model_run must be an integer")
+            return -1 
+        
+        if not isinstance(self.number_of_call, int):
+            print("Error: number_of_call must be an integer")
+            return -1         
+
+        if not isinstance(self.n_random_starts, int):
+            print("Error: n_random_starts must be an integer")
+            return -1 
+
+        if not isinstance(self.save_step, int):
+            print("Error: save_step must be an integer")
+            return -1 
+
+        if not isinstance(self.save_step, int):
+            print("Error: save_step must be an integer")
+            return -1 
+    
