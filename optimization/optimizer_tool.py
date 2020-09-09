@@ -117,8 +117,7 @@ def plot_bayesian_optimization(values, name_plot,
     """
     if conv_max:
         #minimization problem -->maximization problem
-        for j in range(len(values)):
-            values[j] = - values[j]
+        values=[-val for val in values] 
         media = convergence_res(values,optimization_type="maximize")
         xlabel='max f(x) after n calls'
     else:

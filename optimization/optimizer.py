@@ -357,7 +357,7 @@ class Optimizer:
             print("Error: acquisition function must be PI, EI or LCB")
             return -1 
         
-        if not isinstance(self.model_run, int):
+        if not isinstance(self.model_runs, int):
             print("Error: model_run must be an integer")
             return -1 
         
