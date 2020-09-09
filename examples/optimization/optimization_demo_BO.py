@@ -44,7 +44,9 @@ optimizer = Optimizer(
     npmi,
     search_space,
     plot_model=True,
+    plot_best_seen=True,
     save_path="results/simple_RF/",
+    save_name="resultsBO",
     save_csv=True,
     save_models=True,
     number_of_call=6, 
@@ -58,3 +60,16 @@ start_time = time.time()
 BestObject = optimizer.optimize()
 end_time = time.time()
 total_time = end_time - start_time # Total time to optimize
+
+#The results of the optimization are saved in the object BestObject
+
+#To start a new optimization from the previous results we need to include x0 and y0 in the object optimizer...
+
+# optimizer.x0=BestObject.x_iters 
+# optimizer.y0=BestObject.func_vals
+
+# #..and launch again the optimize
+# start_time = time.time()
+# BestObject = optimizer.optimize()
+# end_time = time.time()
+# total_time = end_time - start_time # Total time to optimize
