@@ -47,10 +47,11 @@ class TorchAvitm(Abstract_Model):
 
             self.vocab = dataset.get_vocabulary()
             self.X_train, self.X_test, self.X_valid, input_size = \
-                self.preprocess(self.vocab, data_corpus_train, data_corpus_test, data_corpus_validation)
+                self.preprocess(self.vocab, data_corpus_train, test=data_corpus_test,
+                                validation=data_corpus_validation)
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            self.X_train, input_size = self.preprocess(self.vocab, data_corpus)
+            self.X_train, input_size = self.preprocess(self.vocab, train=data_corpus)
       
         self.model = avitm.AVITM(input_size=input_size,
                                  num_topics=self.hyperparameters['num_topics'],
@@ -70,10 +71,10 @@ class TorchAvitm(Abstract_Model):
                                  topic_prior_variance=self.hyperparameters[
                                            "prior_variance"],
                                  topic_word_matrix=self.bool_topic_word,
-                                 topic_document_matrix= self.bool_topic_doc
+                                 topic_document_matrix=self.bool_topic_doc
                                  )
     
-        self.model.fit(self.X_train)
+        self.model.fit(self.X_train, self.X_valid)
         
         if self.use_partitions:
             result = self.inference()
@@ -139,19 +140,19 @@ class TorchAvitm(Abstract_Model):
             print('No partitioned dataset, please apply test_set method = True')
 
     @staticmethod
-    def preprocess(vocab, data, test=None, validation=None):
+    def preprocess(vocab, train, test=None, validation=None):
         vocab2id = {w: i for i, w in enumerate(vocab)}
         vec = CountVectorizer(
             vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
-        dataset = data.copy()
+        entire_dataset = train.copy()
         if test is not None:
-            dataset.extend(test)
+            entire_dataset.extend(test)
         if validation is not None:
-            dataset.extend(validation)
+            entire_dataset.extend(validation)
 
-        vec.fit(dataset)
+        vec.fit(entire_dataset)
         idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-        X_train = vec.transform(data)
+        X_train = vec.transform(train)
         train_data = datasets.BOWDataset(X_train.toarray(), idx2token)
         input_size = len(idx2token.keys())
 
