@@ -15,7 +15,7 @@ from optimization.optimizer_tool import BestEvaluation
 
 class Optimizer:
     """
-    Optimizer optimize hyperparameters to build topic models
+    Class Optimizer to perform Bayesian Optimization on Topic Model
     """
 
     # Values of hyperparameters and metrics for each iteration
@@ -35,8 +35,7 @@ class Optimizer:
              optimization_type='Maximize',
              model_runs=5,
              surrogate_model="RF",
-             kernel=1.0 * Matern(length_scale=1.0, 
-                                 length_scale_bounds=(1e-1, 10.0), nu=1.5),
+             kernel=1.0 * Matern(length_scale=1.0,length_scale_bounds=(1e-1, 10.0), nu=1.5),
              acq_func="LCB",
              random_state=False,
              x0=[],
@@ -86,13 +85,14 @@ class Optimizer:
         plot_model     : if True the boxplot of all the model runs is done
         plot_name      : name of the plots (both for model runs or best_seen)
         log_scale_plot : if True the "y_axis" of the plot is set to log_scale
+
         """
         
-        self.model = model                                                     #inizialize the model
-        self.dataset = dataset                                                 #inizialize the dataset
-        self.metric = metric                                                   #metric
-        self.search_space = search_space                                       #inizialize the search space
-        self.current_call = 0                                                  #iteration of Optimization process
+        self.model = model                                                     
+        self.dataset = dataset                                                
+        self.metric = metric                                                   
+        self.search_space = search_space                                       
+        self.current_call = 0                                                  
         self.hyperparameters = list(sorted(self.search_space.keys()))
         self.extra_metrics = extra_metrics
         self.optimization_type = optimization_type
@@ -116,11 +116,7 @@ class Optimizer:
         self.plot_name=plot_name
         self.log_scale_plot=log_scale_plot
         self.save_models=save_models
-        if (save_path[-1] != '/'):
-            self.save_path = save_path + '/'
-        else:
-            self.save_path=save_path
-            
+        self.save_path = save_path.split(sep="/")[0] + '/' 
         #create the directory where the results are saved
         if any((self.save_csv,self.save_models,self.plot_best_seen,self.plot_model)):
             Path(save_path).mkdir(parents=True, exist_ok=True)
@@ -162,9 +158,7 @@ class Optimizer:
                                                   self.topic_document_matrix)
             #Score of the model 
             score = self.metric.score(model_output)            
-
             different_model_runs.append(score)
-
             self.matrix_model_runs[0,self.current_call, i] = score
             
             #Update of the extra metric values
@@ -281,11 +275,11 @@ class Optimizer:
 
             else:
                 #The values of y0 must be computed
-                for i in self.x0:
+                for current_x0 in self.x0:
                     print("Current call: ", self.current_call+1)
                     start_time = time.time()
-                    f_val = self._objective_function(i)                
-                    res=opt.tell(i, f_val)      
+                    f_val = self._objective_function(current_x0)                
+                    res=opt.tell(current_x0, f_val)      
                     end_time = time.time()
                     total_time = end_time - start_time
                     time_eval.append(total_time)                     
