@@ -19,16 +19,17 @@ def convergence_res(values,optimization_type="minimize"):
         val : A list with the best min seen for 
             each evaluation
     """
-
+    values2=values.copy()
+    
     if optimization_type=="minimize":
-        for i in range(1,len(values)):
-            if values[i] > values[i - 1]:
-                values[i] = values[i - 1]
+        for i in range(1,len(values2)):
+            if values2[i] > values2[i - 1]:
+                values2[i] = values2[i - 1]
     else:
-        for i in range(1,len(values)):
-            if values[i] < values[i - 1]:
-                values[i] = values[i - 1]       
-    return values
+        for i in range(1,len(values2)):
+            if values2[i] < values2[i - 1]:
+                values2[i] = values2[i - 1]       
+    return values2
 
 
 def early_condition(values, n_stop, n_random):

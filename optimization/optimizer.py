@@ -32,6 +32,7 @@ class Optimizer:
              extra_metrics=[],
              number_of_call=5, 
              n_random_starts=3,
+             initial_point_generator="lhs",  #work only for version skopt 8.0!!! 
              optimization_type='Maximize',
              model_runs=5,
              surrogate_model="RF",
@@ -65,7 +66,8 @@ class Optimizer:
                        with the name of the hyperparameter given as key
         extra_metrics: list of extra metric computed during BO
         number_of_call : number of calls to f
-        n_random_starts: number of evaluations of f with random points before approximating it with minimizer   
+        n_random_starts: number of evaluations of f with random points before approximating it with minimizer  
+        initial_point_generator: way to generate random points (lhs, random,sobol,halton,hammersly,grid,)
         optimization_type: maximization or minimization problem
         model_runs     : number of different evaluation of the function using the same hyper-parameter configuration
         surrogate_model: type of surrogate model (from sklearn)
@@ -99,6 +101,7 @@ class Optimizer:
         self.matrix_model_runs = np.zeros((1+len(extra_metrics),number_of_call,model_runs))
         self.number_of_call=number_of_call
         self.n_random_starts=n_random_starts
+        self.initial_point_generator=initial_point_generator
         self.model_runs=model_runs
         self.surrogate_model=surrogate_model
         self.kernel=kernel
@@ -252,7 +255,8 @@ class Optimizer:
         opt = skopt_optimizer(params_space_list, base_estimator=estimator, 
                               acq_func=self.acq_func,
                               n_initial_points=self.n_random_starts,
-                              acq_optimizer="sampling", 
+                              initial_point_generator=self.initial_point_generator,  #work only for version skopt 8.0!!! 
+                              #acq_optimizer="sampling", 
                               acq_optimizer_kwargs={"n_points": 10000, "n_restarts_optimizer": 5,"n_jobs": 1},
                               acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
                               random_state=self.random_state)
@@ -376,4 +380,7 @@ class Optimizer:
         if not isinstance(self.save_step, int):
             print("Error: save_step must be an integer")
             return -1 
-    
+        
+        if self.initial_point_generator not in ['lhs','sobol','halton','hammersly','grid','random']:
+            print("Error: wrong initial_point_generator")
+            return -1 

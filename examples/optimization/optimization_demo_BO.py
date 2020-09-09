@@ -48,11 +48,12 @@ optimizer = Optimizer(
     save_path="results/simple_RF/",
     save_name="resultsBO",
     save_csv=True,
-    save_models=True,
-    number_of_call=6, 
+    save_models=False,
+    number_of_call=10, 
     n_random_starts=3,
     optimization_type='Maximize',
-    model_runs=3,
+    model_runs=5,
+    initial_point_generator="random",   #work only for version skopt 8.0 
     surrogate_model="RF")
 
 # Optimize the function npmi using Bayesian Optimization
