@@ -9,8 +9,30 @@ from models.pytorchavitm import datasets
 
 class TorchAvitm(Abstract_Model):
 
-    def __init__(self):
-        self.hyperparameters={}
+    def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
+                 dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
+                 solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
+                 prior_variance=None, num_layers=2, num_neurons=100):
+
+        self.hyperparameters['num_topics'] = num_topics
+        self.hyperparameters['model_type'] = model_type
+        self.hyperparameters['activation'] = activation
+        self.hyperparameters['dropout'] = dropout
+        self.hyperparameters['learn_priors'] = learn_priors
+        self.hyperparameters['batch_size'] = batch_size
+        self.hyperparameters['lr'] = lr
+        self.hyperparameters['momentum'] = momentum
+        self.hyperparameters['solver'] = solver
+        self.hyperparameters['num_epochs'] = num_epochs
+        self.hyperparameters['reduce_on_plateau'] = reduce_on_plateau
+        self.hyperparameters["prior_mean"] = prior_mean
+        self.hyperparameters["prior_variance"] = prior_variance
+        self.hyperparameters["num_neurons"] = num_neurons
+        self.hyperparameters["num_layers"] = num_layers
+
+        hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
+
+        self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
     def train_model(self, dataset, hyperparameters, top_words=10,
                     topic_word_matrix=True, topic_document_matrix=True):
@@ -34,7 +56,8 @@ class TorchAvitm(Abstract_Model):
                 reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
             """
 
-        self.set_default_hyperparameters(hyperparameters)
+        self.set_params(hyperparameters)
+
         self.bool_topic_doc = topic_document_matrix
         self.bool_topic_word = topic_word_matrix
 
@@ -82,53 +105,45 @@ class TorchAvitm(Abstract_Model):
             result = self.model.get_info()
         return result
 
+    def set_params(self, hyperparameters):
+        self.hyperparameters['num_topics'] = \
+            hyperparameters.get('num_topics', self.hyperparameters['num_topics'])
+        self.hyperparameters['model_type'] = \
+            hyperparameters.get('model_type', self.hyperparameters['model_type'])
+        self.hyperparameters['activation'] = \
+            hyperparameters.get('activation', self.hyperparameters['activation'])
+        self.hyperparameters['dropout'] = hyperparameters.get('dropout', self.hyperparameters['dropout'])
+        self.hyperparameters['learn_priors'] = \
+            hyperparameters.get('learn_priors', self.hyperparameters['learn_priors'])
+        self.hyperparameters['batch_size'] = \
+            hyperparameters.get('batch_size', self.hyperparameters['batch_size'])
+        self.hyperparameters['lr'] = hyperparameters.get('lr', self.hyperparameters['lr'])
+        self.hyperparameters['momentum'] = \
+            hyperparameters.get('momentum', self.hyperparameters['momentum'])
+        self.hyperparameters['solver'] = hyperparameters.get('solver', self.hyperparameters['solver'])
+        self.hyperparameters['num_epochs'] = \
+            hyperparameters.get('num_epochs', self.hyperparameters['num_epochs'])
+        self.hyperparameters['reduce_on_plateau'] = \
+            hyperparameters.get('reduce_on_plateau', self.hyperparameters['reduce_on_plateau'])
+        self.hyperparameters["prior_mean"] = \
+            hyperparameters.get('prior_mean', self.hyperparameters['prior_mean'])
+        self.hyperparameters["prior_variance"] = \
+            hyperparameters.get('prior_variance', self.hyperparameters['prior_variance'])
+
+        self.hyperparameters["num_layers"] = \
+            hyperparameters.get('num_layers', self.hyperparameters['num_layers'])
+        self.hyperparameters["num_neurons"] = \
+            hyperparameters.get('num_neurons', self.hyperparameters['num_neurons'])
+
+        self.hyperparameters['hidden_sizes'] = tuple(
+            [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])
+
+
     def inference(self):
         assert isinstance(self.use_partitions, bool) and self.use_partitions
         results = self.model.predict(self.X_test)
         return results
 
-    def set_default_hyperparameters(self, hyperparameters):
-        self.hyperparameters['num_topics'] = hyperparameters.get(
-            'num_topics', self.hyperparameters.get('num_topics', 10))
-        self.hyperparameters['model_type'] = hyperparameters.get(
-            'model_type', self.hyperparameters.get('model_type', 'prodLDA'))
-        self.hyperparameters['activation'] = hyperparameters.get(
-            'activation', self.hyperparameters.get('activation', 'softplus'))
-        self.hyperparameters['dropout'] = hyperparameters.get(
-            'dropout', self.hyperparameters.get('dropout', 0.2))
-        self.hyperparameters['learn_priors'] = hyperparameters.get(
-            'learn_priors', self.hyperparameters.get('learn_priors', True))
-        self.hyperparameters['batch_size'] = hyperparameters.get(
-            'batch_size', self.hyperparameters.get('batch_size', 64))
-        self.hyperparameters['lr'] = hyperparameters.get(
-            'lr', self.hyperparameters.get('lr', 2e-3))
-        self.hyperparameters['momentum'] = hyperparameters.get(
-            'momentum', self.hyperparameters.get('momentum', 0.99))
-        self.hyperparameters['solver'] = hyperparameters.get(
-            'solver', self.hyperparameters.get('solver', 'adam'))
-        self.hyperparameters['num_epochs'] = hyperparameters.get(
-            'num_epochs', self.hyperparameters.get('num_epochs', 100))
-        self.hyperparameters['reduce_on_plateau'] = hyperparameters.get(
-            'reduce_on_plateau', self.hyperparameters.get('reduce_on_plateau', False))
-        self.hyperparameters["prior_mean"] = hyperparameters.get(
-            'prior_mean', self.hyperparameters.get('prior_mean', 0.0))
-        self.hyperparameters["prior_variance"] = hyperparameters.get(
-            'prior_variance', self.hyperparameters.get('prior_variance', None))
-
-        default_hidden_sizes = [100, 100, 0, 0, 0]
-        hidden_sizes = [hyperparameters.get(
-            'layer_' + str(0), self.hyperparameters.get(
-                'layer_' + str(0), default_hidden_sizes[0]))]
-        for i in range(1, 5):
-            curr_layer = hyperparameters.get(
-                'layer_' + str(i), self.hyperparameters.get(
-                    'layer_' + str(i), default_hidden_sizes[i]))
-            if curr_layer > 0:
-                hidden_sizes.append(curr_layer)
-            else:
-                break
-
-        self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
