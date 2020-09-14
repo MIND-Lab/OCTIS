@@ -56,6 +56,8 @@ def save_model_output(model_output, path=os.curdir, appr_order=7):
         if single_output != "topics" and single_output != "test-topics":
             to_save[single_output] = (
                 model_output[single_output].round(appr_order))
+        else:
+            to_save[single_output] = (model_output[single_output])
     np.savez_compressed(
         path,
         **to_save)

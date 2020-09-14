@@ -162,7 +162,6 @@ class AVITM(object):
 
             if self.USE_CUDA:
                 X = X.cuda()
-
             # forward pass
             self.model.zero_grad()
             prior_mean, prior_variance, \
@@ -173,8 +172,7 @@ class AVITM(object):
             # append here topic document batch
 
             # backward pass
-            loss = self._loss(
-                X, word_dists, prior_mean, prior_variance,
+            loss = self._loss(X, word_dists, prior_mean, prior_variance,
                 posterior_mean, posterior_variance, posterior_log_variance)
             loss.backward()
             self.optimizer.step()
@@ -187,7 +185,37 @@ class AVITM(object):
 
         return samples_processed, train_loss, topic_word, topic_doc_list
 
-    def fit(self, train_dataset, save_dir=None):
+
+    def _validation(self, loader):
+        """Train epoch."""
+        self.model.eval()
+        val_loss = 0
+        samples_processed = 0
+        topic_doc_list = []
+        for batch_samples in loader:
+            # batch_size x vocab_size
+            X = batch_samples['X']
+
+            if self.USE_CUDA:
+                X = X.cuda()
+            # forward pass
+            self.model.zero_grad()
+            prior_mean, prior_variance, \
+                posterior_mean, posterior_variance, posterior_log_variance, \
+                word_dists, topic_word, topic_document = self.model(X)
+
+            loss = self._loss(X, word_dists, prior_mean, prior_variance,
+                posterior_mean, posterior_variance, posterior_log_variance)
+
+            # compute train loss
+            samples_processed += X.size()[0]
+            val_loss += loss.item()
+
+        val_loss /= samples_processed
+
+        return samples_processed, val_loss
+
+    def fit(self, train_dataset, validation_dataset, save_dir=None):
         """
         Train the AVITM model.
 
@@ -217,7 +245,7 @@ class AVITM(object):
 
         self.model_dir = save_dir
         self.train_data = train_dataset
-
+        self.validation_data = validation_dataset
         train_loader = DataLoader(
             self.train_data, batch_size=self.batch_size, shuffle=True,
             num_workers=0)
@@ -240,18 +268,33 @@ class AVITM(object):
                 epoch+1, self.num_epochs, samples_processed,
                 len(self.train_data)*self.num_epochs, train_loss, e - s))
 
-            self.early_stopping(train_loss, self.model)
-
             self.best_components = self.model.beta
             self.final_topic_word = topic_word
             self.final_topic_document = topic_document
             self.best_loss_train = train_loss
 
-            if self.early_stopping.early_stop:
-                print("Early stopping")
-                if save_dir is not None:
-                    self.save(save_dir)
+            validation_loader = DataLoader(
+                self.validation_data, batch_size=self.batch_size, shuffle=True,
+                num_workers=0)
+            # train epoch
+            s = datetime.datetime.now()
+            val_samples_processed, val_loss = self._validation(validation_loader)
+            e = datetime.datetime.now()
+
+            # report
+            print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
+                epoch + 1, self.num_epochs, val_samples_processed,
+                len(self.validation_data) * self.num_epochs, val_loss, e - s))
+
+            if np.isnan(val_loss) or np.isnan(train_loss):
                 break
+            else:
+                self.early_stopping(val_loss, self.model)
+                if self.early_stopping.early_stop:
+                    print("Early stopping")
+                    if save_dir is not None:
+                        self.save(save_dir)
+                    break
 
             ## save best
             #if train_loss < self.best_loss_train:
@@ -283,8 +326,10 @@ class AVITM(object):
 
         results = self.get_info()
         if self.bool_t_d:
-            results['test-topic-document-matrix'] = np.vstack(
+            results['test-topic-document-matrix2'] = np.vstack(
                 np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
+            results['test-topic-document-matrix'] = np.asarray(self.get_thetas(dataset)).T
+
         return results
         
     def get_topic_word_mat(self): 
@@ -325,7 +370,9 @@ class AVITM(object):
         info['topics'] = topic_word
 
         if self.bool_t_d:
-            info['topic-document-matrix'] = topic_document_dist.T
+            info['topic-document-matrix2'] = topic_document_dist.T
+            info['topic-document-matrix'] = np.asarray(self.get_thetas(self.train_data)).T
+
         if self.bool_t_w:
             info['topic-word-matrix'] = topic_word_dist
         return info 
@@ -375,3 +422,21 @@ class AVITM(object):
 
         self._init_nn()
         self.model.load_state_dict(checkpoint['state_dict'])
+
+    def get_thetas(self, dataset):
+        """Predict input."""
+        self.model.eval()
+        loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False,
+                            num_workers=0)
+        with torch.no_grad():
+            collect_theta = []
+            for batch_samples in loader:
+                # batch_size x vocab_size
+                X = batch_samples['X']
+                X = X.reshape(X.shape[0], -1)
+                if self.USE_CUDA:
+                    X = X.cuda()
+                # forward pass
+                self.model.zero_grad()
+                collect_theta.extend(self.model.get_theta(X).cpu().numpy().tolist())
+            return collect_theta

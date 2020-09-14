@@ -3,7 +3,7 @@ nltk
 pandas
 spacy
 scikit-learn
-scikit-optimize
+scikit-optimize>=0.8.1
 matplotlib
 pytorch
 numpy

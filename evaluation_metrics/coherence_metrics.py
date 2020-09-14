@@ -195,7 +195,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
                 # Perform cosine similarity between E rows
                 distances = np.sum(pairwise_distances(E, metric='cosine'))
-                topic_coherence = (distances)/(2*self.topk*(self.topk-1))
+                topic_coherence = distances/(2*self.topk*(self.topk-1))
 
                 # Update result with the computed coherence of the topic
                 result += topic_coherence

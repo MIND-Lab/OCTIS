@@ -128,3 +128,15 @@ class DecoderNetwork(nn.Module):
 
         return self.prior_mean, self.prior_variance, \
             posterior_mu, posterior_sigma, posterior_log_sigma, word_dist, topic_word,topic_doc
+
+    def get_theta(self, x):
+        with torch.no_grad():
+            # batch_size x n_components
+            posterior_mu, posterior_log_sigma = self.inf_net(x)
+            posterior_sigma = torch.exp(posterior_log_sigma)
+
+            # generate samples from theta
+            theta = F.softmax(
+                self.reparameterize(posterior_mu, posterior_log_sigma), dim=1)
+
+            return theta

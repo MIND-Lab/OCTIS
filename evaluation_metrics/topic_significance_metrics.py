@@ -174,7 +174,6 @@ class KL_background(Abstract_Metric):
 
         divergences = []
         for topic in range(len(self.theta)):
-
             # normalize theta, sum up to 1
             P = self.theta[topic] / self.theta[topic].sum()
 
@@ -184,4 +183,6 @@ class KL_background(Abstract_Metric):
         # KL-background = mean of the divergences
         # between topic-doc distributions and uniform distribution
         result = np.array(divergences).mean()
+        if np.isnan(result):
+            return 0
         return result
