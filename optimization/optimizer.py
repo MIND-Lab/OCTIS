@@ -269,7 +269,7 @@ class Optimizer:
 
             else:
                 # The values of y0 must be computed
-                for current_x0 in self.x0:
+                for current_x0,i in zip(self.x0,len(self.x0)):
                     print("Current call: ", self.current_call + 1)
                     start_time = time.time()
                     f_val = self._objective_function(current_x0)
@@ -315,7 +315,7 @@ class Optimizer:
             return None
 
         ####for loop to perform Bayesian Optimization        
-        for i in range(number_of_call_r):
+        for i in range(len(self.x0),self.number_of_call):
             print("Current call: ", self.current_call + 1)
             start_time = time.time()
             next_x = opt.ask()  # next point proposed by BO
