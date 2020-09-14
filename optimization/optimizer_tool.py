@@ -60,7 +60,7 @@ def early_condition(values, n_stop, n_random):
 
     return False
 
-def plot_model_runs(matrix, name_plot, path):
+def plot_model_runs(matrix, name_plot):
     """
         Save a boxplot of the data.
         Works only when optimization_runs is 1.
@@ -73,7 +73,6 @@ def plot_model_runs(matrix, name_plot, path):
         name_plot : The name of the file you want to 
                     give to the plot
 
-        path : path where the plot file is saved
     """
 
     plt.ioff()
@@ -81,22 +80,13 @@ def plot_model_runs(matrix, name_plot, path):
     plt.grid(True)
     plt.boxplot(matrix.transpose())
 
-    if path is None:
-        name_plot.split(sep=".")[0]+".png"
-        plt.savefig(name_plot.split(sep=".")[0]+".png")  # save in the current working directory
-    else:
-        if path[-1] != '/':
-            path = path + "/"
-        current_dir = os.getcwd()  # current working directory
-        os.chdir(path)  # change directory
-        plt.savefig(name_plot)
-        os.chdir(current_dir)  # reset directory to original
+    plt.savefig( name_plot+".png")  
 
     plt.close()
 
 
 def plot_bayesian_optimization(values, name_plot,
-                               log_scale=False, path=None, conv_max=True):
+                               log_scale=False,  conv_max=True):
     """
         Save a convergence plot of the result of a 
         Bayesian_optimization.
@@ -109,8 +99,6 @@ def plot_bayesian_optimization(values, name_plot,
                     give to the plot
 
         log_scale : y log scale if True
-
-        path : path where the plot file is saved
 
         conv_min : If True the convergence is for the min,
                     If False is for the max
@@ -139,15 +127,8 @@ def plot_bayesian_optimization(values, name_plot,
     plt.legend(loc='best')
     plt.tight_layout()
     plt.grid(True)
-    if path is None:
-        plt.savefig(name_plot.split(sep=".")[0]+".png")  # save in the current working directory
-    else:
-        if path[-1] != '/':
-            path = path + "/"
-        current_dir = os.getcwd()  # current working directory
-        os.chdir(path)  # change directory
-        plt.savefig(name_plot.split(sep=".")[0]+".png")
-        os.chdir(current_dir)  # reset directory to original
+    
+    plt.savefig(name_plot+".png")  
 
     plt.close()
 
@@ -210,7 +191,7 @@ def save_csv(name_csv,res,
         except:
             df[metric.__class__.__name__+'(not optimized)']=np.median(matrix_model_runs[i+1,:,:],axis=1)   
     #save the Dataframe to a csv
-    df.to_csv(name_csv.split(sep=".")[0]+".csv", index=False, na_rep='Unkown')
+    df.to_csv(name_csv+".csv", index=False, na_rep='Unkown')
 
 ##############################################################################
 class BestEvaluation:
