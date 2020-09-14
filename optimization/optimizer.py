@@ -92,20 +92,25 @@ class Optimizer:
         self.random_state = random_state
         self.x0 = x0
         self.y0 = y0
+        
+        self.save_path = save_path
         self.save_csv = save_csv
         self.save_step = save_step
-        self.save_name = save_name
+        self.save_name = save_name                
+        self.save_models = save_models
+               
         self.early_stop = early_stop
         self.early_step = early_step
-        self.plot_model = plot_model,
+        self.plot_model = plot_model
         self.plot_best_seen = plot_best_seen
         self.plot_name = plot_name
         self.log_scale_plot = log_scale_plot
-        self.save_models = save_models
-        self.save_path = save_path.split(sep="/")[0] + '/'
+
+        if (self.save_path[-1] != '/'):
+            self.save_path = self.save_path + '/'
+
         # create the directory where the results are saved
-        if any((self.save_csv, self.save_models, self.plot_best_seen, self.plot_model)):
-            Path(save_path).mkdir(parents=True, exist_ok=True)
+        Path(save_path).mkdir(parents=True, exist_ok=True)
 
         # create of the sub-directory where the models are saved
         if self.save_models:
@@ -170,16 +175,13 @@ class Optimizer:
 
         # Boxplot for matrix_model_runs
         if self.plot_model:
-            plot_model_runs(self.matrix_model_runs[0, :self.current_call, :],
-                            self.plot_name.split(".")[0] + "_model_runs_" + self.metric.__class__.__name__,
-                            self.save_path)
+            name_plot=self.save_path+self.plot_name + "_model_runs_" + self.metric.__class__.__name__
+            plot_model_runs(self.matrix_model_runs[0, :self.current_call, :],name_plot )
             # Boxplot of extrametrics (if any)
             j = 1
             for extra_metric in self.extra_metrics:
-                plot_model_runs(self.matrix_model_runs[j, :self.current_call, :],
-                                self.plot_name.split(".")[0] +
-                                "_model_runs_" + self.metric.__class__.__name__,
-                                self.save_path)
+                name_plot=self.save_path+ self.plot_name + "_model_runs_" + self.metric.__class__.__name__
+                plot_model_runs(self.matrix_model_runs[j, :self.current_call, :],name_plot )
                 j = j + 1
 
         return result
@@ -276,7 +278,36 @@ class Optimizer:
                     total_time = end_time - start_time
                     time_eval.append(total_time)
 
-                    # Update of number of calls
+                    # save the results on a csv file
+                    if self.save_csv:
+                        save_csv(name_csv=self.save_path + self.save_name,
+                                 res=res,
+                                 matrix_model_runs=self.matrix_model_runs[:, :self.current_call, :],
+                                 extra_metrics=self.extra_metrics,
+                                 dataset_name=self.dataset.get_metadata()["info"]["name"],
+                                 hyperparameters_name=self.hyperparameters,
+                                 metric_name=self.metric.__class__.__name__,
+                                 surrogate_model_name=surrogate_model_name,
+                                 acquisition_function_name=self.acq_func,
+                                 times=time_eval)
+
+                    # Plot best seen
+                    if self.plot_best_seen:
+                        plot_bayesian_optimization(res.func_vals, self.save_path+self.plot_name + "_best_seen",
+                                                   self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
+
+                    # Create an object related to the BO optimization
+                    results = BestEvaluation(resultsBO=res,
+                                             search_space=self.search_space,
+                                             matrix_model_runs=self.matrix_model_runs,
+                                             extra_metrics=self.extra_metrics,
+                                             optimization_type=self.optimization_type)
+        
+                    if i % self.save_step == 0:
+                        name_pkl =self.save_path+ self.save_name + ".pkl"
+                        results.save(name_pkl)
+
+        # Update of number of calls
         number_of_call_r = self.number_of_call - len(self.x0)
 
         if number_of_call_r <= 0:
@@ -308,18 +339,17 @@ class Optimizer:
                          acquisition_function_name=self.acq_func,
                          times=time_eval)
 
-                # Plot best seen
+            # Plot best seen
             if self.plot_best_seen:
-                plot_bayesian_optimization(res.func_vals, self.plot_name.split(".")[0] + "_best_seen",
-                                           self.log_scale_plot,
-                                           path=self.save_path, conv_max=self.optimization_type == 'Maximize')
+                plot_bayesian_optimization(res.func_vals, self.save_path+self.plot_name + "_best_seen",
+                                           self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
 
             # Early stop condition
             if self.early_stop and early_condition(res.func_vals, self.early_step, self.n_random_starts):
                 print("Stop because of early stopping condition")
                 break
 
-                # Create an object related to the BO optimization
+            # Create an object related to the BO optimization
             results = BestEvaluation(resultsBO=res,
                                      search_space=self.search_space,
                                      matrix_model_runs=self.matrix_model_runs,
@@ -327,7 +357,7 @@ class Optimizer:
                                      optimization_type=self.optimization_type)
 
             if i % self.save_step == 0:
-                name_pkl = self.save_name.split(sep=".")[0] + ".pkl"
+                name_pkl =self.save_path+ self.save_name + ".pkl"
                 results.save(name_pkl)
 
         return results
@@ -369,3 +399,11 @@ class Optimizer:
         if self.initial_point_generator not in ['lhs', 'sobol', 'halton', 'hammersly', 'grid', 'random']:
             print("Error: wrong initial_point_generator")
             return -1
+
+        if self.plot_name.endswith(".png"):
+            self.plot_name=self.plot_name[:-4]
+            return 1
+        
+        if self.save_name.endswith(".pkl") or self.save_name.endswith(".csv"):
+            self.save_name=self.save_name[:-4]
+            return 1
