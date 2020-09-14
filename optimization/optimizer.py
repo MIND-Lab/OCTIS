@@ -110,11 +110,11 @@ class Optimizer:
             self.save_path = self.save_path + '/'
 
         # create the directory where the results are saved
-        Path(save_path).mkdir(parents=True, exist_ok=True)
+        Path(self.save_path ).mkdir(parents=True, exist_ok=True)
 
         # create of the sub-directory where the models are saved
         if self.save_models:
-            self.model_path_models = save_path + "models/"
+            self.model_path_models = self.save_path  + "models/"
             Path(self.model_path_models).mkdir(parents=True, exist_ok=True)
 
     def _objective_function(self, hyperparameters):
