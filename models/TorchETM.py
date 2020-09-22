@@ -228,7 +228,7 @@ class ETM_Wrapper(Abstract_Model):
                     #to deal with nan matrices
                     top_words =list(range(self.top_word))
                 else:
-                    top_words = list(gamma.cpu().numpy().argsort()[-self.top_word:][::-1])
+                    top_words = list(gamma.argsort()[-self.top_word:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
                 # print('Topic {}: {}'.format(k, topic_words))
                 topic_w.append(topic_words)
