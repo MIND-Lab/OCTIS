@@ -224,7 +224,7 @@ class ETM_Wrapper(Abstract_Model):
             gammas = self.model.get_beta()
             for k in range(self.hyperparameters['num_topics']):
                 gamma = gammas[k].cpu().numpy()
-                if numpy.isnan(gamma).any():
+                if np.isnan(gamma).any():
                     #to deal with nan matrices
                     top_words =list(range(self.top_word))
                 else:
