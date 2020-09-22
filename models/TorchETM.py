@@ -223,8 +223,12 @@ class ETM_Wrapper(Abstract_Model):
             theta, _ = self.model.get_theta(torch.cat(self.data_list))
             gammas = self.model.get_beta()
             for k in range(self.hyperparameters['num_topics']):
-                gamma = gammas[k]
-                top_words = list(gamma.cpu().numpy().argsort()[-self.top_word:][::-1])
+                gamma = gammas[k].cpu().numpy()
+                if numpy.isnan(gamma).any():
+                    #to deal with nan matrices
+                    top_words =list(range(self.top_word))
+                else:
+                    top_words = list(gamma.cpu().numpy().argsort()[-self.top_word:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
                 # print('Topic {}: {}'.format(k, topic_words))
                 topic_w.append(topic_words)
