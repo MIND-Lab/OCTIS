@@ -80,7 +80,6 @@ def overlap(list1, list2, depth):
     3.0
     """
     ov = agreement(list1, list2, depth) * min(depth, len(list1), len(list2))
-    print("overlap", ov)
     return ov
     # NOTE: comment the preceding and uncomment the following line if you want
     # to stick to the algorithm as defined by the paper
