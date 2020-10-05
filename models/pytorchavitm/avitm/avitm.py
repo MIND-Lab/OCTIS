@@ -296,15 +296,6 @@ class AVITM(object):
                         self.save(save_dir)
                     break
 
-            ## save best
-            #if train_loss < self.best_loss_train:
-            #    self.best_loss_train = train_loss
-            #    self.best_components = self.model.beta
-
-            #    if save_dir is not None:
-            #        self.save(save_dir)
-
-        
     def predict(self, dataset):
         """Predict input."""
         self.model.eval()
