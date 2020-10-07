@@ -5,6 +5,6 @@ spacy
 scikit-learn
 scikit-optimize>=0.8.1
 matplotlib
-pytorch
+torch
 numpy
 libsvm
