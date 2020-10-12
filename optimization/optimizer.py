@@ -263,6 +263,70 @@ class Optimizer:
 
         return results
 
+    def restart_optimize(self,BestObject):    
+
+        
+        #### control about the correctness of BO parameters
+        if self.check_BO_parameters() == -1:
+            print("ERROR: wrong inizialitation of BO parameters")
+            return None
+        
+        #### Choice of the optimizer
+        opt=choose_optimizer(self);
+
+        # update of the model through x0,y0
+        time_eval = BestObject["time"]
+        self.current_call=0
+
+        #### update number_of_call for restarting
+        self.number_of_call=len(time_eval)+self.number_of_call 
+        self.matrix_model_runs=np.zeros((1 + len(self.extra_metrics), self.number_of_call, self.model_runs))
+        
+        ####for loop to perform Bayesian Optimization        
+        for i in range(self.number_of_call):
+            
+            ### next point proposed by BO and evaluation of the objective function
+            if i<len(time_eval):
+                next_x=[BestObject["xvals"][key][i] for key in self.hyperparameters]
+                self.matrix_model_runs[0, self.current_call, :] =BestObject["model runs"]["iteration_"+str(i)]                
+                f_val=-BestObject["function evaluations"][i] if self.optimization_type == 'Maximize' else BestObject["function evaluations"][i]
+                res = opt.tell(next_x, f_val)  
+            else:
+                ### next point proposed by BO and evaluation of the objective function
+                start_time = time.time()
+                next_x = opt.ask()  
+                f_val = self._objective_function(next_x)
+                
+                #update the opt using (next_x,f_val)
+                res = opt.tell(next_x, f_val)      
+                
+                ### update the computational time for next_x (BO+Function evaluation)
+                end_time = time.time()
+                total_time_function = end_time - start_time 
+                time_eval.append(total_time_function)            
+            print(self.matrix_model_runs[0,:,:])        
+            #### Plot best seen
+            if self.plot_best_seen:
+                plot_bayesian_optimization(res.func_vals, self.save_path+self.plot_name + "_best_seen",
+                                           self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
+
+            ### Create an object related to the BO optimization
+            results = BestEvaluation(self,resultsBO=res,times=time_eval)
+
+            if i % self.save_step == 0:
+                name_pkl =self.save_path+ self.save_name + ".json"
+                results.save(name_pkl)
+
+            # Early stop condition
+            if i>=len(self.x0) and self.early_stop and early_condition(res.func_vals, self.early_step, self.n_random_starts):
+                print("Stop because of early stopping condition")
+                break
+
+            ###update current_call
+            self.current_call=self.current_call+1
+            
+        return results
+
     def check_BO_parameters(self):
         ###Controls about BO parameters
         if self.optimization_type not in ['Maximize', 'Minimize']:
