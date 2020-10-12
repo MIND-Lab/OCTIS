@@ -1,8 +1,47 @@
+import json
 import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pickle
+from skopt.learning import GaussianProcessRegressor, RandomForestRegressor, ExtraTreesRegressor
+from skopt import Optimizer as skopt_optimizer
+from skopt.utils import dimensions_aslist
+
+def choose_optimizer(params):
+
+    params_space_list=dimensions_aslist(params.search_space)
+
+    #### Choice of the surrogate model
+    # Random forest
+    if params.surrogate_model == "RF":
+        estimator = RandomForestRegressor(n_estimators=100, min_samples_leaf=3,random_state=params.random_state)
+        #surrogate_model_name = "random_forest"
+    # Extra Tree
+    elif params.surrogate_model == "ET":
+        estimator = ExtraTreesRegressor(n_estimators=100, min_samples_leaf=3,random_state=params.random_state)
+        #surrogate_model_name = "extra tree regressor"
+        # GP Minimize
+    elif params.surrogate_model == "GP":
+        estimator = GaussianProcessRegressor(kernel=params.kernel, random_state=params.random_state)
+        #surrogate_model_name = "gaussian process"
+        # Random Search
+    elif params.surrogate_model == "RS":
+        estimator = "dummy"
+        #surrogate_model_name = "random_minimize"
+
+    opt = skopt_optimizer(params_space_list, base_estimator=estimator,
+                          acq_func=params.acq_func,
+                          n_initial_points=params.n_random_starts,
+                          initial_point_generator=params.initial_point_generator,
+                          # work only for version skopt 8.0!!!
+                          # acq_optimizer="sampling",
+                          acq_optimizer_kwargs={"n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
+                          acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
+                          random_state=params.random_state)
+
+
+    return opt
 
 def convergence_res(values,optimization_type="minimize"):
     """
