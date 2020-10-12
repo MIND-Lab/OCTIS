@@ -235,27 +235,32 @@ def save_csv(name_csv,res,
 ##############################################################################
 class BestEvaluation:
     
-    def __init__(self,
-                 resultsBO,
-                 search_space,
-                 matrix_model_runs,
-                 extra_metrics,
-                 optimization_type):
+    def __init__(self,params,resultsBO,times):
         """
         Create an object with all the information about Bayesian Optimization
         
         """
-        n_extra_metrics=matrix_model_runs.shape[0]-1
+        search_space=params.search_space
+        matrix_model_runs=params.matrix_model_runs
+        extra_metrics=params.extra_metrics
+        optimization_type=params.optimization_type
+
         n_calls=matrix_model_runs.shape[1]
         n_runs=matrix_model_runs.shape[2]        
  
         #Info about optimization
         self.info=dict()
+        self.info.update({"dataset name":params.dataset.get_metadata()["info"]["name"]})
+        self.info.update({"metric name":params.metric.__class__.__name__})
+        self.info.update({"surrogate model":params.surrogate_model})
+        self.info.update({"kernel":params.kernel})
+        self.info.update({"acquisition function":params.acq_func})
         self.info.update({"number of calls":n_calls})
         self.info.update({"number of model runs":n_runs})
-        self.info.update({"type_of optimization":"Maximization" if optimization_type=="Maximize" else "Minimization"})
+        self.info.update({"type_of optimization":"Maximize" if optimization_type=="Maximize" else "Minimize"})
 
         #Reverse the sign of minimization if the problem is a maximization    
+        self.x_iters=resultsBO.x_iters
         if optimization_type=="Maximize":
             self.func_vals=[-val for val in resultsBO.func_vals]     
             self.y_best=-resultsBO.fun                                         #Best value
@@ -274,28 +279,79 @@ class BestEvaluation:
             i=i+1    
 
         self.x_best=resultsBO.x                                                #Best x
-        self.models_runs= dict(("iteration_"+str(i), list(matrix_model_runs[0,1,:])) for i in range(10))
+        self.models_runs= dict(("iteration_"+str(i), list(matrix_model_runs[0,i,:])) for i in range(n_calls))
 
         #extra metrics info
         self.extra_metrics=dict()
         j=1
-        for metric in range(n_extra_metrics):
-            d={metric.__class__.__name__:dict(("iteration_"+str(i), list(matrix_model_runs[j,i,:])) for i in range(n_runs))}
+        for metric in extra_metrics:
+            d={metric.__class__.__name__:dict(("iteration_"+str(i), list(matrix_model_runs[j,i,:])) for i in range(n_calls))}
             self.extra_metrics.update(d)
             j=j+1
+
+        self.times= times 
             
     def save(self,name_file):
         """
         Save results for Bayesian Optimization
         """
-        with open(name_file, 'wb') as file:
-          pickle.dump(self, file)
+        
+        Results=dict()
+        Results.update({"dataset name":self.info["dataset name"]})
+        Results.update({"metric name":self.info["metric name"]})
+        Results.update({"surrogate model":self.info["surrogate model"]})
+        Results.update({"acquisition function":self.info["acquisition function"]})
+        Results.update({"number of calls":self.info["number of calls"]})
+        Results.update({"number of model runs":self.info["number of model runs"]})
+        Results.update({"type_of optimization":self.info["type_of optimization"]})
+        Results.update({"function evaluations":self.func_vals})
+        Results.update({"best function value":self.y_best})
+        Results.update({"xvals":self.x_iters_as_dict})
+        Results.update({"best point":self.x_best})
+        Results.update({"time":self.times})
+        Results.update({"model runs":self.models_runs})
+        Results.update({"extra_metrics":self.extra_metrics})
+        
+        with open(name_file, 'w') as fp:
+            json.dump(Results, fp)
+
+
+    def save_to_csv(self,name_file):
+ 
+        n_row = len(self.func_vals)
+        n_extra_metrics=len(self.extra_metrics)
+        
+        #creation of the Dataframe 
+        df = pd.DataFrame()       
+        df['DATASET'] = [self.info["dataset name"]] * n_row
+        df['SURROGATE'] = [self.info["surrogate model"]] * n_row
+        df['ACQUISITION FUNC'] = [self.info["acquisition function"]] * n_row
+        df['NUM_ITERATION']=[i for i in range(n_row)] 
+        df['TIME'] = [self.times[i] for i in range(n_row)]  
+        df['Mean(model_runs)'] = [np.mean(self.models_runs['iteration_'+str(i)]) for i in range(n_row)]    
+        df['Standard_Deviation(model_runs)'] = [np.std(self.models_runs['iteration_'+str(i)]) for i in range(n_row)]    
+
+        for hyperparameter in list(self.x_iters_as_dict.keys()):
+            df[hyperparameter] = self.x_iters_as_dict[hyperparameter]  
+            
+        for metric,i in zip(self.extra_metrics_names,range(n_extra_metrics)):
+            try:
+                df[metric.info()["name"]+'(not optimized)']=[np.median(self.extra_metrics['iteration_'+str(i)]) for i in range(n_row)]    
+            except:
+                df[metric.__class__.__name__+'(not optimized)']=[np.median(self.extra_metrics['iteration_'+str(i)]) for i in range(n_row)]    
+
+        if not self.name_file.endswith(".csv"):
+            name_file=name_file+".csv"
+
+        #save the Dataframe to a csv        
+        df.to_csv(name_file, index=False, na_rep='Unkown')
+
 
     def load(self,name):
         """
         Load results for Bayesian Optimization
         """
         with open(name, 'rb') as file:
-            result=pickle.load(file)    
+            result=json.load(file)    
             
         return result
