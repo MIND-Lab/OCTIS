@@ -277,6 +277,14 @@ class Optimizer:
             print("Error: acquisition function must be PI, EI or LCB")
             return -1
 
+        if self.number_of_call <= 0:
+            print("Error: number_of_call can't be <= 0")
+            return -1
+
+        if self.number_of_call - len(self.x0) <= 0:
+            print("Error: number_of_call is less then len(x0)")
+            return None
+
         if not isinstance(self.model_runs, int):
             print("Error: model_run must be an integer")
             return -1
@@ -303,8 +311,8 @@ class Optimizer:
 
         if self.plot_name.endswith(".png"):
             self.plot_name=self.plot_name[:-4]
-            return 1
-        
-        if self.save_name.endswith(".pkl") or self.save_name.endswith(".csv"):
+
+        if self.save_name.endswith(".json"):
             self.save_name=self.save_name[:-4]
-            return 1
+            
+        return 0
