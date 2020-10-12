@@ -5,16 +5,13 @@ from pathlib import Path
 import numpy as np
 # utils from skopt and sklearn
 from sklearn.gaussian_process.kernels import Matern
-from skopt import Optimizer as skopt_optimizer
-from skopt.learning import GaussianProcessRegressor, RandomForestRegressor, ExtraTreesRegressor
-from skopt.utils import dimensions_aslist
 
 # utils from other files of the framework
 from models.model import save_model_output
 from optimization.optimizer_tool import BestEvaluation
 from optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
 from optimization.optimizer_tool import save_csv, early_condition
-
+from optimization.optimizer_tool import choose_optimizer;
 
 class Optimizer:
     """
@@ -32,7 +29,7 @@ class Optimizer:
                  initial_point_generator="lhs",  # work only for version skopt 8.0!!!
                  optimization_type='Maximize', model_runs=5, surrogate_model="RF",
                  kernel=1.0 * Matern(length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5),
-                 acq_func="LCB", random_state=False, x0=[], y0=[], save_csv=False, save_models=False,
+                 acq_func="LCB", random_state=False, x0=[], y0=[], save_models=False,
                  save_step=1, save_name="result", save_path="results/", early_stop=False, early_step=5,
                  plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False):
 
@@ -59,13 +56,15 @@ class Optimizer:
         random_state   : set random state to something other than None for reproducible results.
         x0             : list of initial configurations to test
         y0             : list of values for x0
-        save_csv       : name of .csv file
+
         save_models    : if True, all the model (number_of_call*model_runs) are saved
         save_step      : integer interval after which save the .pkl about BO file
         save_name      : name of the .csv and .pkl files
         save_path      : path where .pkl, plot and result will be saved.
+
         early_stop     : if True, an early stop policy is applied fro BO.
         early_step     : integer interval after which a current optimization run is stopped if it doesn't improve.
+
         plot_best_seen : if True the plot of the best seen for BO is showed
         plot_model     : if True the boxplot of all the model runs is done
         plot_name      : name of the plots (both for model runs or best_seen)
@@ -207,158 +206,60 @@ class Optimizer:
             print("ERROR: wrong inizialitation of BO parameters")
             return None
 
-            # Save parameters labels to use
-        self.hyperparameters = list(sorted(self.search_space.keys()))
-        params_space_list = dimensions_aslist(self.search_space)
-
-        if self.number_of_call <= 0:
-            print("Error: number_of_call can't be <= 0")
-            return None
-
-        #### Choice of the surrogate model
-        # Random forest
-        if self.surrogate_model == "RF":
-            estimator = RandomForestRegressor(n_estimators=100, min_samples_leaf=3)
-            surrogate_model_name = "random_forest"
-        # Extra Tree
-        elif self.surrogate_model == "ET":
-            estimator = ExtraTreesRegressor(n_estimators=100, min_samples_leaf=3)
-            surrogate_model_name = "extra tree regressor"
-            # GP Minimize
-        elif self.surrogate_model == "GP":
-            estimator = GaussianProcessRegressor(kernel=self.kernel, random_state=self.random_state)
-            surrogate_model_name = "gaussian process"
-            # Random Search
-        elif self.surrogate_model == "RS":
-            estimator = "dummy"
-            surrogate_model_name = "random_minimize"
-        else:
-            print("Error: surrogate_model does not exist ")
-            return None
-            # print of information about the optimization
-
-        # Creation of a general skopt optimizer
-        opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                              acq_func=self.acq_func,
-                              n_initial_points=self.n_random_starts,
-                              initial_point_generator=self.initial_point_generator,
-                              # work only for version skopt 8.0!!!
-                              # acq_optimizer="sampling",
-                              acq_optimizer_kwargs={"n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
-                              acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
-                              random_state=self.random_state)
+        #### Choice of the optimizer
+        opt=choose_optimizer(self);
 
         time_eval = []
-
-        if len(self.x0) != 0:
-            if len(self.y0) != 0:
-                # Update of matrix_model_runs and current_call
-                for i in range(len(self.y0)):
-                    self.matrix_model_runs[0, self.current_call, :] = self.y0[i]
-                    self.current_call = self.current_call + 1
-
-                # If the problem is a maximization problem, the values are multiplied by -1
-                if self.optimization_type == 'Maximize':
-                    self.y0 = [- self.y0[i] for i in range(len(self.y0))]
-
-                    # update of the model through x0,y0
-                res = opt.tell(self.x0, self.y0, fit=True)
-
-                # the computational time is 0 for x0,y0
-                time_eval.extend([0] * len(self.y0))
-
-            else:
-                # The values of y0 must be computed
-                for current_x0,i in zip(self.x0,len(self.x0)):
-                    print("Current call: ", self.current_call + 1)
-                    start_time = time.time()
-                    f_val = self._objective_function(current_x0)
-                    res = opt.tell(current_x0, f_val)
-                    end_time = time.time()
-                    total_time = end_time - start_time
-                    time_eval.append(total_time)
-
-                    # save the results on a csv file
-                    if self.save_csv:
-                        save_csv(name_csv=self.save_path + self.save_name,
-                                 res=res,
-                                 matrix_model_runs=self.matrix_model_runs[:, :self.current_call, :],
-                                 extra_metrics=self.extra_metrics,
-                                 dataset_name=self.dataset.get_metadata()["info"]["name"],
-                                 hyperparameters_name=self.hyperparameters,
-                                 metric_name=self.metric.__class__.__name__,
-                                 surrogate_model_name=surrogate_model_name,
-                                 acquisition_function_name=self.acq_func,
-                                 times=time_eval)
-
-                    # Plot best seen
-                    if self.plot_best_seen:
-                        plot_bayesian_optimization(res.func_vals, self.save_path+self.plot_name + "_best_seen",
-                                                   self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
-
-                    # Create an object related to the BO optimization
-                    results = BestEvaluation(resultsBO=res,
-                                             search_space=self.search_space,
-                                             matrix_model_runs=self.matrix_model_runs,
-                                             extra_metrics=self.extra_metrics,
-                                             optimization_type=self.optimization_type)
         
-                    if i % self.save_step == 0:
-                        name_pkl =self.save_path+ self.save_name + ".pkl"
-                        results.save(name_pkl)
-
-        # Update of number of calls
-        number_of_call_r = self.number_of_call - len(self.x0)
-
-        if number_of_call_r <= 0:
-            print("Error: number_of_call is less then len(x0)")
-            return None
-
         ####for loop to perform Bayesian Optimization        
-        for i in range(len(self.x0),self.number_of_call):
-            print("Current call: ", self.current_call + 1)
-            start_time = time.time()
-            next_x = opt.ask()  # next point proposed by BO
-            f_val = self._objective_function(next_x)  # evaluation of the objective function for next_x
-            res = opt.tell(next_x, f_val)  # update of the opt using (next_x,f_val)
+        for i in range(self.number_of_call):
 
+            print("Current call: ", self.current_call+1)            
+            start_time = time.time()
+            
+            ### next point proposed by BO and evaluation of the objective function
+            if i<len(self.x0):
+                next_x=self.x0[i]
+                
+                if len(self.y0)==0:
+                    self.matrix_model_runs[0, self.current_call, :] = self.y0[i]
+                    
+                    f_val=self._objective_function(next_x)
+                else:
+                    f_val=-self.y0[i] if self.optimization_type == 'Maximize' else self.y0[i]
+     
+            else:
+                next_x = opt.ask()  
+                f_val = self._objective_function(next_x)  
+
+            ###update the opt using (next_x,f_val)
+            res = opt.tell(next_x, f_val) 
+
+            ### update the computational time for next_x (BO+Function evaluation)
             end_time = time.time()
-            total_time_function = end_time - start_time  # computational time for next_x (BO+Function evaluation)
+            total_time_function = end_time - start_time 
             time_eval.append(total_time_function)
 
-            # save the results on a csv file
-            if self.save_csv:
-                save_csv(name_csv=self.save_path + self.save_name,
-                         res=res,
-                         matrix_model_runs=self.matrix_model_runs[:, :self.current_call, :],
-                         extra_metrics=self.extra_metrics,
-                         dataset_name=self.dataset.get_metadata()["info"]["name"],
-                         hyperparameters_name=self.hyperparameters,
-                         metric_name=self.metric.__class__.__name__,
-                         surrogate_model_name=surrogate_model_name,
-                         acquisition_function_name=self.acq_func,
-                         times=time_eval)
-
-            # Plot best seen
+            ### Plot best seen
             if self.plot_best_seen:
                 plot_bayesian_optimization(res.func_vals, self.save_path+self.plot_name + "_best_seen",
                                            self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
 
-            # Early stop condition
-            if self.early_stop and early_condition(res.func_vals, self.early_step, self.n_random_starts):
+            ### Create an object related to the BO optimization
+            results = BestEvaluation(self,resultsBO=res,times=time_eval)
+            
+            ### Save the object
+            if i % self.save_step == 0:
+                name_pkl =self.save_path+ self.save_name + ".json"
+                results.save(name_pkl)
+
+            ### Early stop condition
+            if i>=len(self.x0) and self.early_stop and early_condition(res.func_vals, self.early_step, self.n_random_starts):
                 print("Stop because of early stopping condition")
                 break
 
-            # Create an object related to the BO optimization
-            results = BestEvaluation(resultsBO=res,
-                                     search_space=self.search_space,
-                                     matrix_model_runs=self.matrix_model_runs,
-                                     extra_metrics=self.extra_metrics,
-                                     optimization_type=self.optimization_type)
-
-            if i % self.save_step == 0:
-                name_pkl =self.save_path+ self.save_name + ".pkl"
-                results.save(name_pkl)
+            ###update current_call
+            self.current_call=self.current_call+1
 
         return results
 
