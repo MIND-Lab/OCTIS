@@ -1,8 +1,48 @@
-import os
+import json
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pickle
+from skopt.learning import GaussianProcessRegressor, RandomForestRegressor, ExtraTreesRegressor
+from skopt import Optimizer as skopt_optimizer
+from skopt.utils import dimensions_aslist
+
+def choose_optimizer(params,restart=False):
+
+    params_space_list=dimensions_aslist(params.search_space)
+
+    #### Choice of the surrogate model
+    # Random forest
+    if params.surrogate_model == "RF":
+        estimator = RandomForestRegressor(n_estimators=100, min_samples_leaf=3,random_state=params.random_state)
+    # Extra Tree
+    elif params.surrogate_model == "ET":
+        estimator = ExtraTreesRegressor(n_estimators=100, min_samples_leaf=3,random_state=params.random_state)
+        # GP Minimize
+    elif params.surrogate_model == "GP":
+        estimator = GaussianProcessRegressor(kernel=params.kernel, random_state=params.random_state)
+        # Random Search
+    elif params.surrogate_model == "RS":
+        estimator = "dummy"
+
+    if restart==False:
+        opt = skopt_optimizer(params_space_list, base_estimator=estimator,
+                              acq_func=params.acq_func,
+                              acq_optimizer='sampling',
+                              n_initial_points=params.n_random_starts,
+                              initial_point_generator=params.initial_point_generator,
+                              # work only for version skopt 8.0!!!
+                              acq_optimizer_kwargs={"n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
+                              acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
+                              random_state=params.random_state)
+    else:
+        opt = skopt_optimizer(params_space_list, base_estimator=estimator,
+                              acq_func=params.acq_func,
+                              acq_optimizer='sampling',
+                              acq_optimizer_kwargs={"n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
+                              acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
+                              random_state=params.random_state)            
+
+    return opt
 
 def convergence_res(values,optimization_type="minimize"):
     """
@@ -60,7 +100,7 @@ def early_condition(values, n_stop, n_random):
 
     return False
 
-def plot_model_runs(matrix, name_plot):
+def plot_model_runs(model_runs,current_call, name_plot):
     """
         Save a boxplot of the data.
         Works only when optimization_runs is 1.
@@ -75,10 +115,12 @@ def plot_model_runs(matrix, name_plot):
 
     """
 
+    values=[model_runs["iteration_"+str(i)] for i in range(current_call+1)]
+
     plt.ioff()
     plt.xlabel('number of calls')
     plt.grid(True)
-    plt.boxplot(matrix.transpose())
+    plt.boxplot(values)
 
     plt.savefig( name_plot+".png")  
 
@@ -196,25 +238,25 @@ def save_csv(name_csv,res,
 ##############################################################################
 class BestEvaluation:
     
-    def __init__(self,
-                 resultsBO,
-                 search_space,
-                 matrix_model_runs,
-                 extra_metrics,
-                 optimization_type):
+    def __init__(self,params,resultsBO,times):
         """
         Create an object with all the information about Bayesian Optimization
         
         """
-        n_extra_metrics=matrix_model_runs.shape[0]-1
-        n_calls=matrix_model_runs.shape[1]
-        n_runs=matrix_model_runs.shape[2]        
+        search_space=params.search_space
+        optimization_type=params.optimization_type
+
+        n_calls=len(resultsBO.func_vals)
  
         #Info about optimization
         self.info=dict()
+        self.info.update({"dataset name":params.dataset.get_metadata()["info"]["name"]})
+        self.info.update({"metric name":params.metric.__class__.__name__})
+        self.info.update({"surrogate model":params.surrogate_model})
+        self.info.update({"kernel":params.kernel})
+        self.info.update({"acquisition function":params.acq_func})
         self.info.update({"number of calls":n_calls})
-        self.info.update({"number of model runs":n_runs})
-        self.info.update({"type_of optimization":"Maximization" if optimization_type=="Maximize" else "Minimization"})
+        self.info.update({"type_of optimization":"Maximize" if optimization_type=="Maximize" else "Minimize"})
 
         #Reverse the sign of minimization if the problem is a maximization    
         if optimization_type=="Maximize":
@@ -224,39 +266,79 @@ class BestEvaluation:
             self.func_vals=[val for val in resultsBO.func_vals]
             self.y_best=resultsBO.fun                                          #Best value
 
-        self.x_iters_as_dict=dict()
+        self.x_iters=dict()
         name_hyperparameters=list(search_space.keys())
         
         #dictionary of x_iters
-        i=0
         lenList=len(resultsBO.x_iters)
-        for name in name_hyperparameters:
-            self.x_iters_as_dict.update({name: [resultsBO.x_iters[j][i] for j in range(lenList)]}) 
-            i=i+1    
+        for i,name in enumerate(name_hyperparameters):
+            self.x_iters.update({name: [resultsBO.x_iters[j][i] for j in range(lenList)]})   
 
-        self.x_best=resultsBO.x                                                #Best x
-        self.models_runs= dict(("iteration_"+str(i), list(matrix_model_runs[0,1,:])) for i in range(10))
-
-        #extra metrics info
-        self.extra_metrics=dict()
-        j=1
-        for metric in range(n_extra_metrics):
-            d={metric.__class__.__name__:dict(("iteration_"+str(i), list(matrix_model_runs[j,i,:])) for i in range(n_runs))}
-            self.extra_metrics.update(d)
-            j=j+1
+        self.x_best=resultsBO.x    
+        self.dict_model_runs= params.dict_model_runs
+        self.times= times 
+        self.metric=params.metric
+        self.extra_metrics=params.extra_metrics
             
     def save(self,name_file):
         """
         Save results for Bayesian Optimization
         """
-        with open(name_file, 'wb') as file:
-          pickle.dump(self, file)
+        
+        Results=dict()
+        Results.update({"dataset name":self.info["dataset name"]})
+        Results.update({"metric name":self.info["metric name"]})
+        Results.update({"surrogate model":self.info["surrogate model"]})
+        Results.update({"acquisition function":self.info["acquisition function"]})
+        Results.update({"number of calls":self.info["number of calls"]})
+        Results.update({"type_of optimization":self.info["type_of optimization"]})
+        Results.update({"function evaluations":self.func_vals})
+        Results.update({"best function value":self.y_best})
+        Results.update({"xvals":self.x_iters})
+        Results.update({"best point":self.x_best})
+        Results.update({"time":self.times})
+        Results.update({"dict_model_runs":self.dict_model_runs})
+        
+        with open(name_file, 'w') as fp:
+            json.dump(Results, fp)
+
+
+    def save_to_csv(self,name_file):     
+
+        n_row = len(self.func_vals)
+        n_extra_metrics=len(self.extra_metrics)
+        
+        #creation of the Dataframe 
+        df = pd.DataFrame()       
+        df['dataset'] = [self.info["dataset name"]] * n_row
+        df['surrogate model'] = [self.info["surrogate model"]] * n_row
+        df['acquisition function'] = [self.info["acquisition function"]] * n_row
+        df['num_iteration']=[i for i in range(n_row)] 
+        df['time'] = [self.times[i] for i in range(n_row)]  
+        df['Mean(model_runs)'] = [np.mean(self.dict_model_runs[self.metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]    
+        df['Standard_Deviation(model_runs)'] = [np.std(self.dict_model_runs[self.metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]    
+
+        for hyperparameter in list(self.x_iters.keys()):
+            df[hyperparameter] = self.x_iters[hyperparameter]  
+            
+        for metric,i in zip(self.extra_metrics,range(n_extra_metrics)):
+            try:
+                df[metric.info()["name"]+'(not optimized)']=[np.median(self.dict_model_runs[metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]    
+            except:
+                df[metric.__class__.__name__+'(not optimized)']=[np.median(self.dict_model_runs[metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]    
+
+        if not name_file.endswith(".csv"):
+            name_file=name_file+".csv"
+
+        #save the Dataframe to a csv        
+        df.to_csv(name_file, index=False, na_rep='Unkown')
+
 
     def load(self,name):
         """
         Load results for Bayesian Optimization
         """
         with open(name, 'rb') as file:
-            result=pickle.load(file)    
+            result=json.load(file)    
             
         return result
