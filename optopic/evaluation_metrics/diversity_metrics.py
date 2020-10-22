@@ -1,10 +1,10 @@
-from evaluation_metrics.metrics import Abstract_Metric
-import configuration.citations as citations
-import configuration.defaults as defaults
+from optopic.evaluation_metrics.metrics import Abstract_Metric
+import optopic.configuration.citations as citations
+import optopic.configuration.defaults as defaults
 import itertools
 import numpy as np
-from evaluation_metrics.rbo import rbo
-from evaluation_metrics.word_embeddings_rbo import word_embeddings_rbo
+from optopic.evaluation_metrics.rbo import rbo
+from optopic.evaluation_metrics.word_embeddings_rbo import word_embeddings_rbo
 
 
 class Topic_diversity(Abstract_Metric):

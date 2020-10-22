@@ -1,6 +1,6 @@
 import numpy as np
-import configuration.citations as citations
-from evaluation_metrics.metrics import Abstract_Metric
+import optopic.configuration.citations as citations
+from optopic.evaluation_metrics.metrics import Abstract_Metric
 
 
 def _KL(P, Q):

@@ -1,4 +1,4 @@
-from models.model import Abstract_Model
+from optopic.models.model import Abstract_Model
 import pandas as pd
 import numpy as np
 import tomotopy as tp
@@ -94,7 +94,6 @@ class FastLDA(Abstract_Model):
             self.hyperparameters.get('rm_top', 0))
         
         
-                                                          
                                                           
                                                           
                                                           

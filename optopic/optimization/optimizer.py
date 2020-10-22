@@ -10,10 +10,10 @@ from skopt.learning import GaussianProcessRegressor, RandomForestRegressor, Extr
 from skopt.utils import dimensions_aslist
 
 # utils from other files of the framework
-from models.model import save_model_output
-from optimization.optimizer_tool import BestEvaluation
-from optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
-from optimization.optimizer_tool import save_csv, early_condition
+from optopic.models.model import save_model_output
+from optopic.optimization.optimizer_tool import BestEvaluation
+from optopic.optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
+from optopic.optimization.optimizer_tool import save_csv, early_condition
 
 
 class Optimizer:

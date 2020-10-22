@@ -1,8 +1,8 @@
-from models.model import Abstract_Model
+from optopic.models.model import Abstract_Model
 from gensim.models import lsimodel
 import numpy as np
 import gensim.corpora as corpora
-import configuration.defaults as defaults
+import optopic.configuration.defaults as defaults
 
 
 class LSI_Model(Abstract_Model):

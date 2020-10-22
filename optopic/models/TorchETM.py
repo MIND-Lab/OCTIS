@@ -1,14 +1,14 @@
 from __future__ import print_function
-from models.early_stopping.pytorchtools import EarlyStopping
+from optopic.models.early_stopping.pytorchtools import EarlyStopping
 
 import torch
 import pickle
 import numpy as np
-from models.ETM import data
+from optopic.models.ETM import data
 from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
-from models.ETM import etm
-from models.model import Abstract_Model
+from optopic.models.ETM import etm
+from optopic.models.model import Abstract_Model
 
 
 class ETM_Wrapper(Abstract_Model):

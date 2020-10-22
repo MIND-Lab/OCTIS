@@ -1,10 +1,10 @@
-from evaluation_metrics.metrics import Abstract_Metric
+from optopic.evaluation_metrics.metrics import Abstract_Metric
 from gensim.corpora.dictionary import Dictionary
 from gensim.models import CoherenceModel
 from gensim.models import KeyedVectors
 import gensim.downloader as api
-import configuration.citations as citations
-import configuration.defaults as defaults
+import optopic.configuration.citations as citations
+import optopic.configuration.defaults as defaults
 import numpy as np
 import itertools
 from scipy import spatial

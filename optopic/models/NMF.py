@@ -1,12 +1,12 @@
-from models.model import Abstract_Model
+from optopic.models.model import Abstract_Model
 import numpy as np
 from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import DictionaryLearning
 from gensim.models import nmf
 import gensim.corpora as corpora
-import configuration.citations as citations
-import configuration.defaults as defaults
+import optopic.configuration.citations as citations
+import optopic.configuration.defaults as defaults
 import scipy.sparse
 
 

@@ -1,4 +1,4 @@
-from models.model import Abstract_Model
+from optopic.models.model import Abstract_Model
 import numpy as np
 from gensim.models import ldamodel
 import gensim.corpora as corpora

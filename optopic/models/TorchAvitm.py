@@ -1,10 +1,10 @@
 
-from models.model import Abstract_Model
+from optopic.models.model import Abstract_Model
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 
-from models.pytorchavitm.avitm import avitm
-from models.pytorchavitm import datasets
+from optopic.models.pytorchavitm.avitm import avitm
+from optopic.models.pytorchavitm import datasets
 
 
 class TorchAvitm(Abstract_Model):
