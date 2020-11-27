@@ -3,14 +3,14 @@ from optopic.models.early_stopping.pytorchtools import EarlyStopping
 
 import torch
 import numpy as np
-from optopic.models.ETM import data
+from optopic.models.ETM_model import data
 from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
-from optopic.models.ETM import etm
+from optopic.models.ETM_model import etm
 from optopic.models.model import Abstract_Model
 
 
-class ETM_Wrapper(Abstract_Model):
+class ETM(Abstract_Model):
 
     def __init__(self):
         self.hyperparameters = {}

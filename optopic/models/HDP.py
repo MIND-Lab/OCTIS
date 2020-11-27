@@ -6,7 +6,7 @@ import optopic.configuration.citations as citations
 import optopic.configuration.defaults as defaults
 
 
-class HDP_Model(Abstract_Model):
+class HDP(Abstract_Model):
 
     id2word = None
     id_corpus = None

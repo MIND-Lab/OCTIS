@@ -1,13 +1,11 @@
+from sklearn.feature_extraction.text import CountVectorizer
 
 from optopic.models.model import Abstract_Model
-from sklearn.feature_extraction.text import CountVectorizer
-import numpy as np
 from optopic.models.pytorchavitm import datasets
+from optopic.models.pytorchavitm.avitm import avitm_model
 
-from optopic.models.pytorchavitm.avitm import avitm
 
-
-class TorchAvitm(Abstract_Model):
+class AVITM(Abstract_Model):
 
     def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
@@ -75,30 +73,30 @@ class TorchAvitm(Abstract_Model):
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             self.X_train, input_size = self.preprocess(self.vocab, train=data_corpus)
-      
-        self.model = avitm.AVITM(input_size=input_size,
-                                 num_topics=self.hyperparameters['num_topics'],
-                                 model_type=self.hyperparameters['model_type'],
-                                 hidden_sizes=self.hyperparameters['hidden_sizes'],
-                                 activation=self.hyperparameters['activation'],
-                                 dropout=self.hyperparameters['dropout'],
-                                 learn_priors=self.hyperparameters['learn_priors'],
-                                 batch_size=self.hyperparameters['batch_size'],
-                                 lr=self.hyperparameters['lr'],
-                                 momentum=self.hyperparameters['momentum'],
-                                 solver=self.hyperparameters['solver'],
-                                 num_epochs=self.hyperparameters['num_epochs'],
-                                 reduce_on_plateau=self.hyperparameters[
-                                           'reduce_on_plateau'],
-                                 topic_prior_mean=self.hyperparameters["prior_mean"],
-                                 topic_prior_variance=self.hyperparameters[
-                                           "prior_variance"],
-                                 topic_word_matrix=self.bool_topic_word,
-                                 topic_document_matrix=self.bool_topic_doc
-                                 )
-    
+
+        self.model = avitm_model.AVITM_model(input_size=input_size,
+                                             num_topics=self.hyperparameters['num_topics'],
+                                             model_type=self.hyperparameters['model_type'],
+                                             hidden_sizes=self.hyperparameters['hidden_sizes'],
+                                             activation=self.hyperparameters['activation'],
+                                             dropout=self.hyperparameters['dropout'],
+                                             learn_priors=self.hyperparameters['learn_priors'],
+                                             batch_size=self.hyperparameters['batch_size'],
+                                             lr=self.hyperparameters['lr'],
+                                             momentum=self.hyperparameters['momentum'],
+                                             solver=self.hyperparameters['solver'],
+                                             num_epochs=self.hyperparameters['num_epochs'],
+                                             reduce_on_plateau=self.hyperparameters[
+                                                 'reduce_on_plateau'],
+                                             topic_prior_mean=self.hyperparameters["prior_mean"],
+                                             topic_prior_variance=self.hyperparameters[
+                                                 "prior_variance"],
+                                             topic_word_matrix=self.bool_topic_word,
+                                             topic_document_matrix=self.bool_topic_doc
+                                             )
+
         self.model.fit(self.X_train, self.X_valid)
-        
+
         if self.use_partitions:
             result = self.inference()
         else:
@@ -138,12 +136,10 @@ class TorchAvitm(Abstract_Model):
         self.hyperparameters['hidden_sizes'] = tuple(
             [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])
 
-
     def inference(self):
         assert isinstance(self.use_partitions, bool) and self.use_partitions
         results = self.model.predict(self.X_test)
         return results
-
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
@@ -187,6 +183,3 @@ class TorchAvitm(Abstract_Model):
             return train_data, test_data, input_size
         if test is None and validation is None:
             return train_data, input_size
-
-
-

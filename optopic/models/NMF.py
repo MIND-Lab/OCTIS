@@ -10,7 +10,7 @@ import optopic.configuration.defaults as defaults
 import scipy.sparse
 
 
-class NMF_gensim(Abstract_Model):
+class NMF(Abstract_Model):
 
     id2word = None
     id_corpus = None
@@ -419,6 +419,6 @@ def NMF_Model(implementation="gensim"):
     model: an initialized model of the choosen implementation
     """
     if implementation == "gensim":
-        return NMF_gensim()
+        return NMF()
     if implementation == "scikit":
         return NMF_scikit()

@@ -17,7 +17,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from optopic.models.pytorchavitm.avitm.decoder_network import DecoderNetwork
 
 
-class AVITM(object):
+class AVITM_model(object):
 
     def __init__(self, input_size, num_topics=10, model_type='prodLDA',
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2,

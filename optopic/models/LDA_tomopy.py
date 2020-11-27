@@ -1,9 +1,9 @@
 from optopic.models.model import Abstract_Model
-import pandas as pd
 import numpy as np
 import tomotopy as tp
 
-class FastLDA(Abstract_Model):
+
+class LDA_tomopy(Abstract_Model):
 
     def __init__(self):
         self.hyperparameters = {}

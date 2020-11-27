@@ -5,7 +5,7 @@ import gensim.corpora as corpora
 import optopic.configuration.defaults as defaults
 
 
-class LSI_Model(Abstract_Model):
+class LSI(Abstract_Model):
 
     id2word = None
     id_corpus = None

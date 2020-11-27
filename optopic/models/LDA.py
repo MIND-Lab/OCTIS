@@ -6,7 +6,7 @@ import optopic.configuration.citations as citations
 import optopic.configuration.defaults as defaults
 
 
-class LDA_Model(Abstract_Model):
+class LDA(Abstract_Model):
 
     id2word = None
     id_corpus = None
