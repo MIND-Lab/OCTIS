@@ -8,3 +8,4 @@ matplotlib
 torch
 numpy
 libsvm
+flask
