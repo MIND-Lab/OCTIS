@@ -1,3 +1,3 @@
 """Init package"""
 
-from models.pytorchavitm.avitm.avitm import AVITM
+from optopic.models.pytorchavitm.avitm.avitm import AVITM

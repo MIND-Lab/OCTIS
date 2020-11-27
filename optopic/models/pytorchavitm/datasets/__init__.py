@@ -1,3 +1,3 @@
 """Init datasets."""
 
-from models.pytorchavitm.datasets.bow import BOWDataset
+from optopic.models.pytorchavitm.datasets.bow import BOWDataset

@@ -2,7 +2,6 @@ from __future__ import print_function
 from optopic.models.early_stopping.pytorchtools import EarlyStopping
 
 import torch
-import pickle
 import numpy as np
 from optopic.models.ETM import data
 from sklearn.feature_extraction.text import CountVectorizer
