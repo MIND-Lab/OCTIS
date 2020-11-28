@@ -133,12 +133,23 @@
                                         </div> <!-- end of row -->
                                     </div> <!-- end of container -->
                                 </div> <!-- end of basic-2 -->
-                                <!-- end of team -->
 
 
-                                <div id="modelForm" class="form-group">
-                                    <h3>Choose model:</h3>
-                                </div>
+                                <div class="basic-2">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2>Choose Model</h2>
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                        <div class="row">
+                                            <div id="modelForm" class="col-lg-12">
+
+
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                    </div> <!-- end of container -->
+                                </div> <!-- end of basic-2 -->
 
                                 <div id="optimizedMetric" class="form-group">
                                     <h3>Choose metric to optimize:</h3>
@@ -241,92 +252,141 @@
         $(document).ready(function () {
 
             //Get dataset names
-            var dataset = document.getElementById("datasetSelector");
-            data = getParams({{ datasets| tojson}});
-            
-
-        dataLength = data.length;
-        for (i = 0; i < dataLength; i++) {
-
-            var slide = document.createElement("div");
-            slide.classList.add("team-member");
-
-            var card = document.createElement("div");
-            card.classList.add("image-wrapper");
-
-            var img = document.createElement("img");
-            img.classList.add("img-fluid");
-            img.classList.add("dataset-element")
-            img.id = data[i]
-            img.src = "{{ url_for('static', filename='images/dataset.png') }}";
-            img.alt = "alternative";
-            img.addEventListener("click", updateSelectionDataset);
-            img.style.borderRadius = "50%";
+            dataset = getParams({{ datasets| tojson}});
+        imgPath = "{{ url_for('static', filename='images/dataset.png') }}";
+        rBtnName = "dataset"
+        father = document.getElementById("datasetSelector");
+        createCoolSelection(dataset, imgPath, rBtnName, father)
 
 
-            var radioBtn = document.createElement("input");
-            radioBtn.type = "radio"
-            radioBtn.value = data[i];
-            radioBtn.id = data[i].concat("rBtn")
-            radioBtn.style.visibility = "hidden";
-            radioBtn.name = "dataset"
+        model = getParams({{ models| tojson}});
+        father = document.getElementById("modelForm");
 
-            var DataName = document.createElement("p");
-            DataName.classList.add("job-title");
-            DataName.innerHTML = data[i];
-
-            slide.appendChild(card)
-            card.appendChild(img)
-            card.appendChild(DataName)
-            card.appendChild(radioBtn)
-
-            dataset.appendChild(slide);
-
+        modelNames = []
+        for (const [key, value] of Object.entries(model)) {
+            modelNames.push(key)
         }
+        rBtnName = "model"
+        imgPath = "{{ url_for('static', filename='images/model.png') }}";
+        createCoolSelection(modelNames, imgPath, rBtnName, father)
 
 
 
-        function updateSelectionDataset() {
-            elementImage = this.src;
-            n = elementImage.indexOf("static") - 1
-            totlen = elementImage.length
-            elImg = elementImage.substring(n, totlen)
 
-            if (elImg == "{{ url_for('static', filename='images/dataset_selected.png') }}") {
-                this.src = "{{ url_for('static', filename='images/dataset.png') }}";
 
-                rbtnId = this.id.concat("rBtn");
-                rbtn = document.getElementById(rbtnId)
-                rbtn.checked = false;
 
-            } else {
 
-                $('.dataset-element').each(function (i, obj) {
-                    DisplayedImage = obj.src;
-                    n = DisplayedImage.indexOf("static") - 1
-                    totlen = DisplayedImage.length
-                    pathImg = DisplayedImage.substring(n, totlen)
 
-                    if (pathImg == "{{ url_for('static', filename='images/dataset_selected.png') }}") {
-                        obj.src = "{{ url_for('static', filename='images/dataset.png') }}";
+        function createCoolSelection(data, imagePath, rBtnName, father) {
 
-                        rbtnId = obj.id.concat("rBtn");
+            dataLength = data.length;
+            for (i = 0; i < dataLength; i++) {
+
+                var slide = document.createElement("div");
+                slide.classList.add("team-member");
+
+                var card = document.createElement("div");
+                card.classList.add("image-wrapper");
+
+                var img = document.createElement("img");
+                img.classList.add("img-fluid");
+                img.classList.add(rBtnName)
+                img.id = data[i]
+                img.src = imagePath;
+                img.alt = "alternative";
+                img.addEventListener("click", function () {
+
+                    elementImage = this.src;
+                    n = elementImage.indexOf("static") - 1
+                    totlen = elementImage.length
+                    elImg = elementImage.substring(n, totlen)
+
+                    if (elImg.includes("selected")) {
+                        n = elImg.indexOf("_selected")
+                        this.src = elImg.substring(0, n).concat(".png")
+
+                        rbtnId = this.id.concat("rBtn");
                         rbtn = document.getElementById(rbtnId)
                         rbtn.checked = false;
+
+                    } else {
+
+                        $(".".concat(rBtnName)).each(function (i, obj) {
+                            DisplayedImage = obj.src;
+                            n = DisplayedImage.indexOf("static") - 1
+                            totlen = DisplayedImage.length
+                            pathImg = DisplayedImage.substring(n, totlen)
+
+                            if (pathImg.includes("selected")) {
+                                n = pathImg.indexOf("_selected")
+                                obj.src = pathImg.substring(0, n).concat(".png")
+
+                                rbtnId = obj.id.concat("rBtn");
+                                rbtn = document.getElementById(rbtnId)
+                                rbtn.checked = false;
+                            }
+
+                        })
+
+                        n = elImg.length - 4
+                        this.src = pathImg.substring(0, n).concat("_selected.png")
+                        rbtnId = this.id.concat("rBtn");
+                        rbtn = document.getElementById(rbtnId)
+                        rbtn.checked = true;
                     }
 
-                })
+                    gestoreContenutiExtra(rBtnName, rbtnId);
+                    //if (document.querySelector('input[name="dataset"]:checked') != null) {
+                    //   alert(document.querySelector('input[name="dataset"]:checked').value)
+                    //}
+                });
+                img.style.borderRadius = "50%";
 
-                this.src = "{{ url_for('static', filename='images/dataset_selected.png') }}";
-                rbtnId = this.id.concat("rBtn");
-                rbtn = document.getElementById(rbtnId)
-                rbtn.checked = true;
+
+                var radioBtn = document.createElement("input");
+                radioBtn.type = "radio"
+                radioBtn.value = data[i];
+                radioBtn.id = data[i].concat("rBtn")
+                radioBtn.style.visibility = "hidden";
+                radioBtn.name = rBtnName
+
+                var DataName = document.createElement("p");
+                DataName.classList.add("job-title");
+                DataName.innerHTML = data[i];
+
+                slide.appendChild(card)
+                card.appendChild(img)
+                card.appendChild(DataName)
+                card.appendChild(radioBtn)
+
+                father.appendChild(slide);
+
             }
 
-            //if (document.querySelector('input[name="dataset"]:checked') != null) {
-             //   alert(document.querySelector('input[name="dataset"]:checked').value)
-            //}
         }
+
+
+        function gestoreContenutiExtra(nomi, id) {
+            if (nomi == "model") {
+
+                $(".".concat(nomi)).each(function () {
+
+                    if (this.id == id.substring(0, id.length - 4)) {
+                        toShow = modesl[this.id];
+                        // HIDE IF IT WAS CLICKED, OTHERWISE SHOW IT
+                    }
+                    else {
+
+                        //HIDE THE COMPILATION MASK
+                    }
+
+                });
+
+            }
+
+
+        }
+
 
 
 
