@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from multiprocessing import Process, Pool
 import frameworkScanner as fs
 
@@ -9,6 +9,12 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
+
+@app.route('/startExperiment', methods=['POST'])
+def startExperiment():
+    data = request.form
+    print(data)
+    return CreateExperiments()
 
 @app.route('/CreateExperiments')
 def CreateExperiments():

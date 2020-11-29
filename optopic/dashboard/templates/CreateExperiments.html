@@ -98,21 +98,22 @@
 
                         <!-- Privacy Form -->
                         <div class="form-container">
-                            <form id="experimentForm" data-focus="false">
+                            <form id="experimentForm" data-focus="false" method="post"
+                                action="{{ url_for('startExperiment') }}">
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control-input" id="path" required>
+                                    <input type="text" class="form-control-input" id="path" name="path" required>
                                     <label class="label-control" for="pname">select a path to save the
                                         experiment</label>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control-input" id="batchId" required>
+                                    <input type="text" class="form-control-input" id="batchId" name="batchId" required>
                                     <label class="label-control" for="pname">Id of the batch</label>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control-input" id="expId" required>
+                                    <input type="text" class="form-control-input" id="expId" name="expId" required>
                                     <label class="label-control" for="pname">Id of the experiment</label>
                                 </div>
 
@@ -147,6 +148,9 @@
 
 
                                             </div> <!-- end of col -->
+                                            <div id="modelParameters" class="col-lg-12">
+
+                                            </div>
                                         </div> <!-- end of row -->
                                     </div> <!-- end of container -->
                                 </div> <!-- end of basic-2 -->
@@ -372,12 +376,258 @@
                 $(".".concat(nomi)).each(function () {
 
                     if (this.id == id.substring(0, id.length - 4)) {
-                        toShow = modesl[this.id];
-                        // HIDE IF IT WAS CLICKED, OTHERWISE SHOW IT
-                    }
-                    else {
+                        toShow = model[this.id];
+                        parametersDiv = document.getElementById("modelParameters")
+                        parametersDiv.innerHTML = ""
+                        parametersDiv.name = this.id + "pd"
 
-                        //HIDE THE COMPILATION MASK
+                        if (document.getElementById(id).checked == true) {
+
+                            for (const [key, value] of Object.entries(toShow)) {
+                                modelNames.push(key)
+
+                                divInput = document.createElement("div");
+                                divInput.classList.add("form-group")
+
+                                checkbox = document.createElement("input")
+                                checkbox.setAttribute("type", "checkbox");
+                                checkbox.id = key + "_check"
+                                checkbox.name = key + "_check"
+                                divInput.appendChild(checkbox)
+                                $(document).off('change', '#'.concat(checkbox.id));
+                                $(document).on('change', '#'.concat(checkbox.id), function () {
+
+                                    mdl = parametersDiv.name.substring(0, parametersDiv.name.length - 2)
+                                    param = model[mdl]
+                                    param = param[this.id.substring(0, this.name.length - 6)]
+
+                                    fat = this.parentElement
+                                    check = this.cloneNode(true);
+                                    fat.innerHTML = ""
+                                    fat.appendChild(check)
+                                    fat.appendChild(document.createTextNode("Optimize parameter"))
+
+                                    if (this.checked == true) {
+
+                                        switch (param["type"]) {
+                                            case "categorical":
+                                                newInput = document.createElement("select")
+                                                newInput.setAttribute("multiple", "");
+                                                newInput.classList.add("form-control-select");
+                                                newInput.name = key;
+                                                newInput.id = key
+
+                                                for (const val of param["possible_values"]) {
+                                                    var option = document.createElement("option");
+                                                    option.text = val;
+                                                    newInput.appendChild(option)
+                                                }
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>" + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+
+                                                break;
+                                            case "real":
+                                                newInput = document.createElement("input")
+                                                newInput.classList.add("form-control-number");
+                                                newInput.setAttribute("type", "number");
+                                                newInput.setAttribute("step", "any");
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = key + "_min";
+
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>min " + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+                                                newInput = document.createElement("input")
+                                                newInput.classList.add("form-control-number");
+                                                newInput.setAttribute("type", "number");
+                                                newInput.setAttribute("step", "any");
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = key + "_max";
+
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>max " + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+                                                break;
+
+                                            case "integer":
+
+                                                newInput = document.createElement("input")
+                                                newInput.classList.add("form-control-number");
+                                                newInput.setAttribute("type", "number");
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = key + "_min";
+
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>min " + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+                                                newInput = document.createElement("input")
+                                                newInput.classList.add("form-control-number");
+                                                newInput.setAttribute("type", "number");
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = key + "_max";
+
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>max " + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+                                                break;
+                                        }
+
+
+                                    } else {
+
+                                        switch (param["type"]) {
+                                            case "categorical":
+                                                newInput = document.createElement("select")
+                                                newInput.classList.add("form-control-select");
+                                                newInput.name = key;
+                                                newInput.id = key
+
+                                                for (const val of param["possible_values"]) {
+                                                    var option = document.createElement("option");
+                                                    option.text = val;
+                                                    newInput.appendChild(option)
+                                                }
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>" + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+
+                                                break;
+                                            case "real":
+                                                newInput = document.createElement("input")
+                                                newInput.classList.add("form-control-number");
+                                                newInput.setAttribute("type", "number");
+                                                newInput.setAttribute("step", "any");
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = key;
+                                                newInput.id = key
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>" + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+
+
+
+                                                break;
+
+                                            case "integer":
+
+                                                newInput = document.createElement("input")
+                                                newInput.classList.add("form-control-number");
+                                                newInput.setAttribute("type", "number");
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = key;
+                                                newInput.id = key
+
+                                                var label = document.createElement("p");
+                                                label.innerHTML = "<b>" + key + "</b>";
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+                                                break;
+                                        }
+                                    }
+                                });
+
+                                divInput.appendChild(document.createTextNode("Optimize parameter"));
+                                parametersDiv.appendChild(divInput);
+
+
+                                switch (value["type"]) {
+                                    case "categorical":
+                                        newInput = document.createElement("select")
+                                        newInput.classList.add("form-control-select");
+                                        newInput.name = key;
+                                        newInput.id = key
+
+                                        for (const val of value["possible_values"]) {
+                                            var option = document.createElement("option");
+                                            option.text = val;
+                                            newInput.appendChild(option)
+                                        }
+
+                                        var label = document.createElement("p");
+                                        label.innerHTML = "<b>" + key + "</b>";
+
+                                        divInput.appendChild(label);
+                                        divInput.appendChild(newInput);
+
+
+                                        break;
+                                    case "real":
+                                        newInput = document.createElement("input")
+                                        newInput.classList.add("form-control-number");
+                                        newInput.setAttribute("type", "number");
+                                        newInput.setAttribute("step", "any");
+                                        newInput.setAttribute("min", value["min_value"]);
+                                        newInput.setAttribute("max", value["max_value"]);
+                                        newInput.name = key;
+                                        newInput.id = key
+
+                                        var label = document.createElement("p");
+                                        label.innerHTML = "<b>" + key + "</b>";
+
+                                        divInput.appendChild(label);
+                                        divInput.appendChild(newInput);
+
+
+
+
+                                        break;
+
+                                    case "integer":
+
+                                        newInput = document.createElement("input")
+                                        newInput.classList.add("form-control-number");
+                                        newInput.setAttribute("type", "number");
+                                        newInput.setAttribute("min", value["min_value"]);
+                                        newInput.setAttribute("max", value["max_value"]);
+                                        newInput.name = key;
+                                        newInput.id = key
+
+                                        var label = document.createElement("p");
+                                        label.innerHTML = "<b>" + key + "</b>";
+
+                                        divInput.appendChild(label);
+                                        divInput.appendChild(newInput);
+
+                                        break;
+                                }
+                            }
+                        }
                     }
 
                 });
