@@ -20,22 +20,14 @@ def _load_default_texts():
     return False
 
 
-em_coherence = {
-    'texts': _load_default_texts(),
-    'topk': 10,
-    'measure': 'c_npmi'
-}
+'''
+# METRICS PARAMETERS #
+'''
+em_coherence = { 'texts': _load_default_texts(), 'topk': 10, 'measure': 'c_npmi'}
 
-em_coherence_we = {
-    'topk': 10,
-    'word2vec_path': None,
-    'binary': False
-}
+em_coherence_we = { 'topk': 10, 'word2vec_path': None, 'binary': False}
 
-em_coherence_we_pc = {
-    'topk': 10,
-    'w2v_model': None
-}
+em_coherence_we_pc = {'topk': 10, 'w2v_model': None}
 
 em_topic_diversity = {'topk': 10}
 
@@ -45,6 +37,28 @@ em_word_embeddings_invertedRBO = {'topk': 10, 'weight': 0.9}
 em_f1_score = {'average': 'micro'}
 
 
+'''
+# MODELS PARAMETERS #
+'''
+model_hyperparameters = {
+    'LDA': {
+        'alpha': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20},
+        'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20},
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
+                        'max_value': 100},
+        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10},
+        'iterations': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
+                       'max_value': 2000}},
+    'ETM': {},
+    'LSI': {},
+    'NMF': {},
+    '...': {}}
+
+
+
+'''
+# PARAMETERS INFO #
+'''
 HDP_hyperparameters_info = """
 max_chunks (int, optional) – Upper bound on how many chunks to process. It wraps around corpus beginning in another corpus pass, if there are not enough chunks in the corpus. \n
 
