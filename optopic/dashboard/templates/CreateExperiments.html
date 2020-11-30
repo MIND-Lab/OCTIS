@@ -36,6 +36,51 @@
     </div>
     <!-- end of preloader -->
 
+    <script>
+
+        function destroy() {
+            li = this.parentElement
+            li.parentElement.removeChild(li);
+        }
+        function newListElement(listToUpdate, identifier, content) {
+            if (listToUpdate == "optimizeMetrics") {
+                content.type = "optimize";
+            } else {
+                content.type = "track";
+            }
+            content = JSON.stringify(content);
+
+            var li = document.createElement("li");
+            li.classList.add("media")
+
+            var t = document.createElement("div")
+            t.classList.add("media-body")
+            t.innerHTML = "<b>" + identifier + "</b> " + content
+
+            var data = document.createElement("inpupt")
+
+            data.setAttribute("type", "hidden");
+            data.setAttribute("name", "metric/" + identifier)
+            data.setAttribute("value", content);
+
+
+            document.getElementById(listToUpdate).appendChild(li);
+
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+
+
+            li.appendChild(t);
+            li.appendChild(data);
+            li.appendChild(span);
+
+            span.addEventListener("click", destroy)
+
+        }
+    </script>
+
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
@@ -155,12 +200,59 @@
                                     </div> <!-- end of container -->
                                 </div> <!-- end of basic-2 -->
 
-                                <div id="optimizedMetric" class="form-group">
-                                    <h3>Choose metric to optimize:</h3>
+
+                                <!-- Services -->
+                                <div id="services" class="cards-2">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="section-title">Metrics</div>
+                                                <h2>Choose Metric to optimize</h2>
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                        <div class="row">
+                                            <div class="col-lg-12" id="optimizeMetrics">
+
+
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                    </div> <!-- end of container -->
+                                </div> <!-- end of cards-2 -->
+                                <!-- end of services -->
+
+                                <div id="Metrics" class="form-group">
+                                    <ul class="list-unstyled li-space-lg" id="metricsList">
+
+                                    </ul>
                                 </div>
 
-                                <div id="trackedMetrics" class="form-group">
-                                    <h3>Other metrics to track:</h3>
+
+
+
+
+
+                                <div id="services-2" class="cards-2">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="section-title"></div>
+                                                <h2>Choose Metric to track</h2>
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                        <div class="row">
+                                            <div class="col-lg-12" id="trackMetrics">
+
+
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                    </div> <!-- end of container -->
+                                </div> <!-- end of cards-2 -->
+                                <!-- end of services -->
+
+                                <div id="trackMetrics" class="form-group">
+                                    <ul class="list-unstyled li-space-lg" id="trackmetricsList">
+
+                                    </ul>
                                 </div>
 
 
@@ -276,7 +368,160 @@
 
 
 
+        metrics = getParams({{ metrics| tojson}});
 
+        for (const [key, value] of Object.entries(metrics)) {
+            addMetricCard(key, value, "optimizeMetrics")
+            addMetricCard(key, value, "trackMetrics")
+        }
+
+
+
+
+
+        function addMetricCard(name, info, where) {
+
+            fat = document.getElementById(where)
+
+            card = document.createElement("div")
+            card.classList.add("card")
+            fat.appendChild(card)
+
+            card_body = document.createElement("div")
+            card_body.classList.add("card-body")
+            card.appendChild(card_body)
+
+            card_title = document.createElement("h3")
+            card_title.classList.add("card-title")
+            card_title.innerHTML = info["name"]
+            card_body.appendChild(card_title)
+
+            for (const [key, value] of Object.entries(info)) {
+                if (key != "name") {
+
+                    switch (value["type"]) {
+
+                        case "Categorical":
+                            newInput = document.createElement("select")
+                            newInput.classList.add("form-control-select")
+
+                            for (const val of value["possible_values"]) {
+                                var option = document.createElement("option");
+                                option.text = val;
+                                newInput.appendChild(option)
+                            }
+
+                            label = document.createElement("p")
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            card_body.appendChild(information)
+
+                            break;
+                        case "Real":
+                            newInput = document.createElement("input")
+                            newInput.classList.add("form-control-number");
+                            newInput.setAttribute("type", "number");
+                            newInput.setAttribute("step", "any");
+
+                            var label = document.createElement("p");
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            card_body.appendChild(information)
+
+
+                            break;
+                        case "Integer":
+                            newInput = document.createElement("input")
+                            newInput.classList.add("form-control-number");
+                            newInput.setAttribute("type", "number");
+
+                            var label = document.createElement("p");
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            card_body.appendChild(information)
+                            break;
+
+                        case "String":
+                            newInput = document.createElement("input")
+                            newInput.classList.add("form-control-number");
+                            newInput.setAttribute("type", "text");
+
+                            var label = document.createElement("p");
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            card_body.appendChild(information)
+                            break;
+
+                    }
+
+
+                }
+            }
+
+            button_container = document.createElement("div")
+            button_container.classList.add("button-container")
+            card.appendChild(button_container)
+
+            button = document.createElement("div")
+            button.classList.add("btn-solid-reg")
+            button.classList.add("page-scroll")
+            button.innerHTML = "ADD"
+
+            button.addEventListener("click", function () {
+
+                theCard = this.parentElement.parentElement
+
+                content = {}
+                name = ""
+
+
+                for (var i = 0; i < theCard.childNodes.length; i++) {
+                    if (theCard.childNodes[i].className == "card-body") {
+                        TheBody = theCard.childNodes[i];
+
+                        for (var j = 0; j < TheBody.childNodes.length; j++) {
+                            if (TheBody.childNodes[j].className == "information") {
+                                theDiv = TheBody.childNodes[j];
+
+                                if (theDiv.childNodes[0].nodeName == "P") {
+                                    content[theDiv.childNodes[0].innerHTML] = theDiv.childNodes[1].value
+                                } else {
+                                    content[theDiv.childNodes[1].innerHTML] = theDiv.childNodes[0].value
+                                }
+                            } else {
+                                content.metric = TheBody.childNodes[j].innerHTML
+                                name = TheBody.childNodes[j].innerHTML
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                //newListElement(where, name, JSON.stringify(content))
+                newListElement(where, name, content)
+
+            })
+
+            button_container.appendChild(button)
+
+
+        }
 
 
 
@@ -340,9 +585,7 @@
                     }
 
                     gestoreContenutiExtra(rBtnName, rbtnId);
-                    //if (document.querySelector('input[name="dataset"]:checked') != null) {
-                    //   alert(document.querySelector('input[name="dataset"]:checked').value)
-                    //}
+
                 });
                 img.style.borderRadius = "50%";
 
@@ -410,7 +653,7 @@
                                     if (this.checked == true) {
 
                                         switch (param["type"]) {
-                                            case "categorical":
+                                            case "Categorical":
                                                 newInput = document.createElement("select")
                                                 newInput.setAttribute("multiple", "");
                                                 newInput.classList.add("form-control-select");
@@ -431,7 +674,7 @@
 
 
                                                 break;
-                                            case "real":
+                                            case "Real":
                                                 newInput = document.createElement("input")
                                                 newInput.classList.add("form-control-number");
                                                 newInput.setAttribute("type", "number");
@@ -463,7 +706,7 @@
                                                 fat.appendChild(newInput);
                                                 break;
 
-                                            case "integer":
+                                            case "Integer":
 
                                                 newInput = document.createElement("input")
                                                 newInput.classList.add("form-control-number");
@@ -500,7 +743,7 @@
                                     } else {
 
                                         switch (param["type"]) {
-                                            case "categorical":
+                                            case "Categorical":
                                                 newInput = document.createElement("select")
                                                 newInput.classList.add("form-control-select");
                                                 newInput.name = key;
@@ -517,10 +760,11 @@
 
                                                 fat.appendChild(label);
                                                 fat.appendChild(newInput);
+                                                updateDropdownIndex(newInput.id, param["default_value"]);
 
 
                                                 break;
-                                            case "real":
+                                            case "Real":
                                                 newInput = document.createElement("input")
                                                 newInput.classList.add("form-control-number");
                                                 newInput.setAttribute("type", "number");
@@ -529,6 +773,7 @@
                                                 newInput.setAttribute("max", param["max_value"]);
                                                 newInput.name = key;
                                                 newInput.id = key
+                                                newInput.defaultValue = param["default_value"]
 
                                                 var label = document.createElement("p");
                                                 label.innerHTML = "<b>" + key + "</b>";
@@ -541,7 +786,7 @@
 
                                                 break;
 
-                                            case "integer":
+                                            case "Integer":
 
                                                 newInput = document.createElement("input")
                                                 newInput.classList.add("form-control-number");
@@ -550,6 +795,7 @@
                                                 newInput.setAttribute("max", param["max_value"]);
                                                 newInput.name = key;
                                                 newInput.id = key
+                                                newInput.defaultValue = param["default_value"]
 
                                                 var label = document.createElement("p");
                                                 label.innerHTML = "<b>" + key + "</b>";
@@ -567,7 +813,7 @@
 
 
                                 switch (value["type"]) {
-                                    case "categorical":
+                                    case "Categorical":
                                         newInput = document.createElement("select")
                                         newInput.classList.add("form-control-select");
                                         newInput.name = key;
@@ -579,15 +825,17 @@
                                             newInput.appendChild(option)
                                         }
 
+
                                         var label = document.createElement("p");
                                         label.innerHTML = "<b>" + key + "</b>";
 
                                         divInput.appendChild(label);
                                         divInput.appendChild(newInput);
+                                        updateDropdownIndex(newInput.id, value["default_value"]);
 
 
                                         break;
-                                    case "real":
+                                    case "Real":
                                         newInput = document.createElement("input")
                                         newInput.classList.add("form-control-number");
                                         newInput.setAttribute("type", "number");
@@ -596,6 +844,7 @@
                                         newInput.setAttribute("max", value["max_value"]);
                                         newInput.name = key;
                                         newInput.id = key
+                                        newInput.defaultValue = value["default_value"]
 
                                         var label = document.createElement("p");
                                         label.innerHTML = "<b>" + key + "</b>";
@@ -608,7 +857,7 @@
 
                                         break;
 
-                                    case "integer":
+                                    case "Integer":
 
                                         newInput = document.createElement("input")
                                         newInput.classList.add("form-control-number");
@@ -617,6 +866,7 @@
                                         newInput.setAttribute("max", value["max_value"]);
                                         newInput.name = key;
                                         newInput.id = key
+                                        newInput.defaultValue = value["default_value"]
 
                                         var label = document.createElement("p");
                                         label.innerHTML = "<b>" + key + "</b>";
@@ -637,8 +887,15 @@
 
         }
 
-
-
+        function updateDropdownIndex(dropdownId, value) {
+            dropDown = document.getElementById(dropdownId)
+            for (var i, j = 0; i = dropDown.options[j]; j++) {
+                if (i.value == value) {
+                    dropDown.selectedIndex = j;
+                    break;
+                }
+            }
+        }
 
         });
     </script>

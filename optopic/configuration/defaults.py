@@ -23,17 +23,13 @@ def _load_default_texts():
 '''
 # METRICS PARAMETERS #
 '''
-em_coherence = { 'texts': _load_default_texts(), 'topk': 10, 'measure': 'c_npmi'}
-
-em_coherence_we = { 'topk': 10, 'word2vec_path': None, 'binary': False}
-
+em_coherence = {'texts': _load_default_texts(), 'topk': 10,
+                'measure': 'c_npmi'}
+em_coherence_we = {'topk': 10, 'word2vec_path': None, 'binary': False}
 em_coherence_we_pc = {'topk': 10, 'w2v_model': None}
-
 em_topic_diversity = {'topk': 10}
-
 em_invertedRBO = {'topk': 10, 'weight': 0.9}
 em_word_embeddings_invertedRBO = {'topk': 10, 'weight': 0.9}
-
 em_f1_score = {'average': 'micro'}
 
 
@@ -53,7 +49,6 @@ model_hyperparameters = {
     'LSI': {},
     'NMF': {},
     '...': {}}
-
 
 
 '''

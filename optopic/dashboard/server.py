@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from multiprocessing import Process, Pool
+import optopic.configuration.defaults as defaults
 import frameworkScanner as fs
 
 app = Flask(__name__)
@@ -16,42 +17,52 @@ def startExperiment():
     print(data)
     return CreateExperiments()
 
+
 @app.route('/CreateExperiments')
 def CreateExperiments():
-    models = {
-        "LDA": {"alpha": {
-            "type": "real",
-            "default_value": 0.1,
-            "min_value": 1e-4,
-            "max_value": 20},
-            "beta": {
-            "type": "real",
-            "default_value": 0.1,
-            "min_value": 1e-4,
-            "max_value": 20}},
-        "NMF": {"pizza": {
-            "type": "categorical",
-            "default_value": "margherita",
-            "possible_values": ["kebab", "zola e noci", "4 formaggi"]
-        }},
-        "HDP": {"alpha": {
-            "type": "integer",
-            "default_value": 0,
-            "min_value": 0,
-            "max_value": 20},
-            "beta": {
-            "type": "real",
-            "default_value": 0.1,
-            "min_value": 1e-4,
-            "max_value": 20},
-            "pizza": {
-            "type": "categorical",
-            "default_value": "margherita",
-            "possible_values": ["kebab", "zola e noci", "4 formaggi"]
-        }}
-    }
+    models = defaults.model_hyperparameters
     datasets = fs.scanDatasets()
-    return render_template("CreateExperiments.html", datasets=datasets, models=models)
+    metrics = {
+        "metric_class_name": {
+            "name": "metric 1",
+            "texts": {
+                "type": "String"
+            },
+            "topk": {
+                "type": "Integer",
+                "default_value": 10
+            },
+            "weight": {
+                "type": "Real",
+                "default_value": 3.1415
+            },
+            "aCategoricalThing": {
+                "type": "Categorical",
+                "default_value": "A",
+                "possible_values": ["A", "B", "C"]
+            }
+        },
+        "metric_class_name2": {
+            "name": "metric 2",
+            "texts": {
+                "type": "String"
+            },
+            "topk": {
+                "type": "Integer",
+                "default_value": 23
+            },
+            "weight": {
+                "type": "Real",
+                "default_value": 2.7172
+            },
+            "aCategoricalThing": {
+                "type": "Categorical",
+                "default_value": "C",
+                "possible_values": ["A", "B", "C"]
+            }
+        }
+    }
+    return render_template("CreateExperiments.html", datasets=datasets, models=models, metrics=metrics)
 
 
 @ app.route('/VisualizeExperiments')
