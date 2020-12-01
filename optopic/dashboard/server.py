@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-from multiprocessing import Process, Pool
 import optopic.frameworkScanner as fs
 
 app = Flask(__name__)
