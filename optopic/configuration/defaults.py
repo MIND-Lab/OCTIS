@@ -36,23 +36,38 @@ em_word_embeddings_invertedRBO = {'topk': 10, 'weight': 0.9}
 
 em_f1_score = {'average': 'micro'}
 
-
-'''
-# MODELS PARAMETERS #
-'''
 model_hyperparameters = {
     'LDA': {
         'alpha': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20},
         'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20},
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 100},
+                        'max_value': 200},
         'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10},
         'iterations': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
                        'max_value': 2000}},
     'ETM': {},
-    'LSI': {},
-    'NMF': {},
+    'LSI': {
+        'decay': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.0, 'max_value': 1.0},
+        'onepass': {'type': 'Categorical', 'default_value': True, 'possible_values': set([True, False])},
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
+                        'max_value': 200},
+        'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5},
+        'extra_samples': {'type': 'Integer', 'default_value': 100, 'min_value': 0, 'max_value': 500}},
+    'NMF': {
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200},
+        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10},
+        'normalize': {'type': 'Categorical', 'default_value': True, 'possible_values': set([True, False])},
+        'eval_every': {'type': 'Integer', 'default_value': 10, 'min_value': 1, 'max_value': 50},
+        'kappa': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.1, 'max_value': 5.0},
+        'w_max_iters': {'type': 'Integer', 'default_value': 200, 'min_value': 10, 'max_value': 1000},
+        'h_max_iters': {'type': 'Integer', 'default_value': 50, 'min_value': 10, 'max_value': 1000},
+        'w_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1},
+        'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1}},
     '...': {}}
+
+'''
+# MODELS PARAMETERS #
+'''
 
 
 '''
