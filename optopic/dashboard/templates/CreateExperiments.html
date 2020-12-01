@@ -57,10 +57,10 @@
             t.classList.add("media-body")
             t.innerHTML = "<b>" + identifier + "</b> " + content
 
-            var data = document.createElement("inpupt")
+            var data = document.createElement("input")
 
             data.setAttribute("type", "hidden");
-            data.setAttribute("name", "metric/" + identifier)
+            data.setAttribute("name", "metric." + identifier)
             data.setAttribute("value", content);
 
 
@@ -256,23 +256,35 @@
                                 </div>
 
 
+                                <div class="basic-2">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2>Optimization parameters</h2>
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                        <div class="row">
+                                            <div id="boSelector" class="col-lg-12">
+
+                                                <div class="form-group">
+                                                    <p><b>Number of iterations</b></p>
+                                                    <input type="number" class="form-control-input" value="1"
+                                                        id="iterations" name="iterations" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <p><b>Model runs</b></p>
+                                                    <input type="number" class="form-control-input" value="1" id="runs"
+                                                        name="runs" required>
+                                                </div>
 
 
-                                <div class="form-group">
-                                    <select class="form-control-select" id="pselect" required>
-                                        <option class="select-option" value="" disabled selected>Select Option</option>
-                                        <option class="select-option" value="Delete data">Delete my data</option>
-                                        <option class="select-option" value="Show me data">Show me my data</option>
-                                    </select>
-                                    <div class="help-block with-errors"></div>
-                                </div>
+                                            </div> <!-- end of col -->
+                                        </div> <!-- end of row -->
+                                    </div> <!-- end of container -->
+                                </div> <!-- end of basic-2 -->
 
-                                <div class="form-group checkbox">
-                                    <input type="checkbox" id="pterms" value="Agreed-to-Terms" required>I have read and
-                                    agree to Aria's <a href="privacy-policy.html">Privacy Policy</a> and <a
-                                        href="terms-conditions.html">Terms Conditions</a>
-                                    <div class="help-block with-errors"></div>
-                                </div>
+
 
                                 <div class="form-group">
                                     <button type="submit" class="form-control-submit-button">Start Experiment</button>
@@ -376,6 +388,54 @@
         }
 
 
+        BO = getParams({{ optimization| tojson}});
+
+        boSelector = document.getElementById("boSelector");
+
+        surrogateModelInput = document.createElement("select")
+        surrogateModelInput.classList.add("form-control-select")
+        surrogateModelInput.name = "surrogateModel"
+
+        for (const val of BO["surrogate_models"]) {
+            var option = document.createElement("option");
+            option.text = val["name"];
+            option.value = val["id"]
+            surrogateModelInput.appendChild(option)
+        }
+
+        label = document.createElement("p")
+        label.innerHTML = "<b>Surrogate model</b>";
+
+        div = document.createElement("div")
+        div.classList.add("form-group")
+        div.appendChild(label)
+        div.appendChild(surrogateModelInput)
+
+        boSelector.appendChild(div)
+
+
+        AcqFuncInput = document.createElement("select")
+        AcqFuncInput.classList.add("form-control-select")
+        AcqFuncInput.name = "AcquisitionFunction"
+
+        for (const val of BO["acquisition_functions"]) {
+            var option = document.createElement("option");
+            option.text = val["name"];
+            option.value = val["id"]
+            AcqFuncInput.appendChild(option)
+        }
+
+        label = document.createElement("p")
+        label.innerHTML = "<b>Acquisition function</b>";
+
+        div = document.createElement("div")
+        div.classList.add("form-group")
+        div.appendChild(label)
+        div.appendChild(AcqFuncInput)
+
+        boSelector.appendChild(div)
+
+
 
 
 
@@ -404,6 +464,7 @@
                         case "Categorical":
                             newInput = document.createElement("select")
                             newInput.classList.add("form-control-select")
+                            newInput.id = key + "input"
 
                             for (const val of value["possible_values"]) {
                                 var option = document.createElement("option");
@@ -419,6 +480,7 @@
                             information.appendChild(label)
                             information.appendChild(newInput)
                             card_body.appendChild(information)
+                            updateDropdownIndex(newInput.id, value["default_value"]);
 
                             break;
                         case "Real":
@@ -426,6 +488,7 @@
                             newInput.classList.add("form-control-number");
                             newInput.setAttribute("type", "number");
                             newInput.setAttribute("step", "any");
+                            newInput.defaultValue = value["default_value"];
 
                             var label = document.createElement("p");
                             label.innerHTML = key;
@@ -442,6 +505,7 @@
                             newInput = document.createElement("input")
                             newInput.classList.add("form-control-number");
                             newInput.setAttribute("type", "number");
+                            newInput.defaultValue = value["default_value"];
 
                             var label = document.createElement("p");
                             label.innerHTML = key;
@@ -457,6 +521,7 @@
                             newInput = document.createElement("input")
                             newInput.classList.add("form-control-number");
                             newInput.setAttribute("type", "text");
+                            newInput.defaultValue = value["default_value"];
 
                             var label = document.createElement("p");
                             label.innerHTML = key;
@@ -657,7 +722,7 @@
                                                 newInput = document.createElement("select")
                                                 newInput.setAttribute("multiple", "");
                                                 newInput.classList.add("form-control-select");
-                                                newInput.name = key;
+                                                newInput.name = this.id + "." + key;
                                                 newInput.id = key
 
                                                 for (const val of param["possible_values"]) {
@@ -681,7 +746,7 @@
                                                 newInput.setAttribute("step", "any");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = key + "_min";
+                                                newInput.name = this.id + "." + key + "_min";
 
 
                                                 var label = document.createElement("p");
@@ -696,7 +761,7 @@
                                                 newInput.setAttribute("step", "any");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = key + "_max";
+                                                newInput.name = this.id + "." + key + "_max";
 
 
                                                 var label = document.createElement("p");
@@ -713,7 +778,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = key + "_min";
+                                                newInput.name = this.id + "." + key + "_min";
 
 
                                                 var label = document.createElement("p");
@@ -727,7 +792,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = key + "_max";
+                                                newInput.name = this.id + "." + key + "_max";
 
 
                                                 var label = document.createElement("p");
@@ -746,7 +811,7 @@
                                             case "Categorical":
                                                 newInput = document.createElement("select")
                                                 newInput.classList.add("form-control-select");
-                                                newInput.name = key;
+                                                newInput.name = this.id + "." + key;
                                                 newInput.id = key
 
                                                 for (const val of param["possible_values"]) {
@@ -771,7 +836,7 @@
                                                 newInput.setAttribute("step", "any");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = key;
+                                                newInput.name = this.id + "." + key;
                                                 newInput.id = key
                                                 newInput.defaultValue = param["default_value"]
 
@@ -793,7 +858,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = key;
+                                                newInput.name = this.id + "." + key;
                                                 newInput.id = key
                                                 newInput.defaultValue = param["default_value"]
 
@@ -816,7 +881,7 @@
                                     case "Categorical":
                                         newInput = document.createElement("select")
                                         newInput.classList.add("form-control-select");
-                                        newInput.name = key;
+                                        newInput.name = this.id + "." + key;
                                         newInput.id = key
 
                                         for (const val of value["possible_values"]) {
@@ -842,7 +907,7 @@
                                         newInput.setAttribute("step", "any");
                                         newInput.setAttribute("min", value["min_value"]);
                                         newInput.setAttribute("max", value["max_value"]);
-                                        newInput.name = key;
+                                        newInput.name = this.id + "." + key;
                                         newInput.id = key
                                         newInput.defaultValue = value["default_value"]
 
@@ -864,7 +929,7 @@
                                         newInput.setAttribute("type", "number");
                                         newInput.setAttribute("min", value["min_value"]);
                                         newInput.setAttribute("max", value["max_value"]);
-                                        newInput.name = key;
+                                        newInput.name = this.id + "." + key;
                                         newInput.id = key
                                         newInput.defaultValue = value["default_value"]
 

@@ -23,7 +23,17 @@ def CreateExperiments():
     models = defaults.model_hyperparameters
     datasets = fs.scanDatasets()
     metrics = defaults.metric_parameters
-    return render_template("CreateExperiments.html", datasets=datasets, models=models, metrics=metrics)
+    optimization = {
+        "surrogate_models": [{"name": "Gaussian proccess", "id": "GP"},
+                             {"name": "Random forest", "id": "RF"}],
+        "acquisition_functions": [{"name": "Upper confidence bound", "id": "UCB"},
+                                  {"name": "Expected improvement", "id": "EI"}]
+    }
+    return render_template("CreateExperiments.html",
+                           datasets=datasets,
+                           models=models,
+                           metrics=metrics,
+                           optimization=optimization)
 
 
 @ app.route('/VisualizeExperiments')

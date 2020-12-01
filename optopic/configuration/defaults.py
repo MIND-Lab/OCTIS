@@ -73,7 +73,7 @@ metric_parameters = {
     # coherence
     "Coherence": {
         "name": "Coherence",
-        "texts": {"type": "String", "default_value": "default value"},
+        "texts": {"type": "String", "default_value": "use dataset texts"},
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5, "max_value": 30},
         "measure": {"type": "Categorical", "default_value": "c_npmi",
                     "possible_values": ['u_mass', 'c_v', 'c_uci', 'c_npmi']}},
