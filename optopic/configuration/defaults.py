@@ -55,6 +55,40 @@ model_hyperparameters = {
     '...': {}}
 
 
+'''
+# METRIC PARAMETERS #
+'''
+metric_parameters = {
+    #coherence
+    "Coherence": {
+        "name": "Coherence",
+        "texts": {"type": "...", "default_value": "default value"},
+        "topk": {"type": "Integer", "default_value": 10, "min_value": 5, "max_value": 30},
+        "measure": {"type": "Categorical", "default_value": "c_npmi",
+                    "common_values": set(['u_mass', 'c_v', 'c_uci', 'c_npmi'])}},
+    #diversity
+    "Topic_diversity": {
+        "name": "% Unique words",
+        "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
+                 "max_value": 30}},
+
+    "InvertedRBO": {
+        "name": "IRBO",
+        "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
+                 "max_value": 30},
+        "weight": {"type": "Real", "default_value": 0.9, "min_value": 0.0,
+                   "max_value": 1.0}},
+    #divergences
+    "KL_uniform": {
+        "name": "KL-U"},
+    "KL_background": {
+        "name": "KL-B"},
+    "KL_vacuous": {
+        "name": "KL-V"}
+}
+
+
+
 
 '''
 # PARAMETERS INFO #
