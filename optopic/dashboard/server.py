@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, request
 from multiprocessing import Process, Pool
 import optopic.configuration.defaults as defaults
 import frameworkScanner as fs
+=======
+from flask import Flask, render_template
+import optopic.frameworkScanner as fs
+>>>>>>> 51ef64b7149081839cb7a169e650736f4f3a1484
 
 app = Flask(__name__)
 
