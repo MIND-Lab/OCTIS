@@ -44,7 +44,7 @@ model_hyperparameters = {
     'ETM': {},
     'LSI': {
         'decay': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.0, 'max_value': 1.0},
-        'onepass': {'type': 'Categorical', 'default_value': True, 'possible_values': set([True, False])},
+        'onepass': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False]},
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
                         'max_value': 200},
         'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5},
@@ -52,7 +52,7 @@ model_hyperparameters = {
     'NMF': {
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200},
         'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10},
-        'normalize': {'type': 'Categorical', 'default_value': True, 'possible_values': set([True, False])},
+        'normalize': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False]},
         'eval_every': {'type': 'Integer', 'default_value': 10, 'min_value': 1, 'max_value': 50},
         'kappa': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.1, 'max_value': 5.0},
         'w_max_iters': {'type': 'Integer', 'default_value': 200, 'min_value': 10, 'max_value': 1000},
@@ -70,14 +70,14 @@ model_hyperparameters = {
 # METRIC PARAMETERS #
 '''
 metric_parameters = {
-    #coherence
+    # coherence
     "Coherence": {
         "name": "Coherence",
-        "texts": {"type": "...", "default_value": "default value"},
+        "texts": {"type": "String", "default_value": "default value"},
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5, "max_value": 30},
         "measure": {"type": "Categorical", "default_value": "c_npmi",
-                    "common_values": set(['u_mass', 'c_v', 'c_uci', 'c_npmi'])}},
-    #diversity
+                    "possible_values": ['u_mass', 'c_v', 'c_uci', 'c_npmi']}},
+    # diversity
     "Topic_diversity": {
         "name": "% Unique words",
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
@@ -89,7 +89,7 @@ metric_parameters = {
                  "max_value": 30},
         "weight": {"type": "Real", "default_value": 0.9, "min_value": 0.0,
                    "max_value": 1.0}},
-    #divergences
+    # divergences
     "KL_uniform": {
         "name": "KL-U"},
     "KL_background": {
@@ -97,7 +97,6 @@ metric_parameters = {
     "KL_vacuous": {
         "name": "KL-V"}
 }
-
 
 
 '''
