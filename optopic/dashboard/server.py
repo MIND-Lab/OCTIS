@@ -1,9 +1,15 @@
 from flask import Flask, render_template, request
 from multiprocessing import Process, Pool
 import optopic.configuration.defaults as defaults
-import frameworkScanner as fs
+import optopic.dashboard.frameworkScanner as fs
+import webbrowser
+import argparse
+
 
 app = Flask(__name__)
+parser = argparse.ArgumentParser()
+parser.add_argument("--port", type=int, help="port", default=5000)
+parser.add_argument("--host", type=str, help="host", default='localhost')
 
 
 @app.route('/')
@@ -44,3 +50,11 @@ def VisualizeExperiments():
 @ app.route('/ManageExperiments')
 def ManageExperiments():
     return render_template("ManageExperiments.html")
+
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+
+    url = 'http://' + str(args.host) + ':' + str(args.port)
+    webbrowser.open_new(url)
+    app.run(port=args.port)
