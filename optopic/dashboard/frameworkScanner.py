@@ -1,8 +1,9 @@
 import os
+from pathlib import Path
 
 # get the path to the framework folder
-path = str(os.path.dirname(os.path.realpath(__file__)))
-path = path[:path.rfind("/")]
+path = Path(os.path.dirname(os.path.realpath(__file__)))
+path = str(path.parent)
 
 def scanDatasets():
     """
