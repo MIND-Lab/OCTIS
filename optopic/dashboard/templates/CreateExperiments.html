@@ -416,7 +416,7 @@
 
         AcqFuncInput = document.createElement("select")
         AcqFuncInput.classList.add("form-control-select")
-        AcqFuncInput.name = "AcquisitionFunction"
+        AcqFuncInput.name = "acquisitionFunction"
 
         for (const val of BO["acquisition_functions"]) {
             var option = document.createElement("option");
@@ -454,6 +454,7 @@
             card_title = document.createElement("h3")
             card_title.classList.add("card-title")
             card_title.innerHTML = info["name"]
+            card_title.id = name
             card_body.appendChild(card_title)
 
             for (const [key, value] of Object.entries(info)) {
@@ -571,7 +572,7 @@
                                 }
                             } else {
                                 content.metric = TheBody.childNodes[j].innerHTML
-                                name = TheBody.childNodes[j].innerHTML
+                                name = TheBody.childNodes[j].id
                             }
                         }
                         break;
@@ -593,6 +594,13 @@
 
         function createCoolSelection(data, imagePath, rBtnName, father) {
 
+            var model = document.createElement("div")
+            model.setAttribute("visibility", "hidden")
+            model.id = "selected_model"
+            model.innerHTML = ""
+
+            father.appendChild(model)
+
             dataLength = data.length;
             for (i = 0; i < dataLength; i++) {
 
@@ -602,6 +610,7 @@
                 var card = document.createElement("div");
                 card.classList.add("image-wrapper");
 
+
                 var img = document.createElement("img");
                 img.classList.add("img-fluid");
                 img.classList.add(rBtnName)
@@ -609,6 +618,7 @@
                 img.src = imagePath;
                 img.alt = "alternative";
                 img.addEventListener("click", function () {
+                    document.getElementById("selected_model").innerHTML = this.id
 
                     elementImage = this.src;
                     n = elementImage.indexOf("static") - 1
@@ -700,14 +710,14 @@
                                 checkbox = document.createElement("input")
                                 checkbox.setAttribute("type", "checkbox");
                                 checkbox.id = key + "_check"
-                                checkbox.name = key + "_check"
+                                checkbox.name = "model." + key + "_check"
                                 divInput.appendChild(checkbox)
                                 $(document).off('change', '#'.concat(checkbox.id));
                                 $(document).on('change', '#'.concat(checkbox.id), function () {
 
                                     mdl = parametersDiv.name.substring(0, parametersDiv.name.length - 2)
                                     param = model[mdl]
-                                    param = param[this.id.substring(0, this.name.length - 6)]
+                                    param = param[this.id.substring(0, this.id.length - 6)]
 
                                     fat = this.parentElement
                                     check = this.cloneNode(true);
@@ -722,7 +732,7 @@
                                                 newInput = document.createElement("select")
                                                 newInput.setAttribute("multiple", "");
                                                 newInput.classList.add("form-control-select");
-                                                newInput.name = this.id + "." + key;
+                                                newInput.name = "model." + key;
                                                 newInput.id = key
 
                                                 for (const val of param["possible_values"]) {
@@ -746,7 +756,7 @@
                                                 newInput.setAttribute("step", "any");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = this.id + "." + key + "_min";
+                                                newInput.name = "model." + key + "_min";
 
 
                                                 var label = document.createElement("p");
@@ -761,7 +771,7 @@
                                                 newInput.setAttribute("step", "any");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = this.id + "." + key + "_max";
+                                                newInput.name = "model." + key + "_max";
 
 
                                                 var label = document.createElement("p");
@@ -778,7 +788,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = this.id + "." + key + "_min";
+                                                newInput.name = "model." + key + "_min";
 
 
                                                 var label = document.createElement("p");
@@ -792,7 +802,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = this.id + "." + key + "_max";
+                                                newInput.name = "model." + key + "_max";
 
 
                                                 var label = document.createElement("p");
@@ -811,7 +821,7 @@
                                             case "Categorical":
                                                 newInput = document.createElement("select")
                                                 newInput.classList.add("form-control-select");
-                                                newInput.name = this.id + "." + key;
+                                                newInput.name = "model." + key;
                                                 newInput.id = key
 
                                                 for (const val of param["possible_values"]) {
@@ -836,7 +846,7 @@
                                                 newInput.setAttribute("step", "any");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = this.id + "." + key;
+                                                newInput.name = "model." + key;
                                                 newInput.id = key
                                                 newInput.defaultValue = param["default_value"]
 
@@ -858,7 +868,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
-                                                newInput.name = this.id + "." + key;
+                                                newInput.name = "model." + key;
                                                 newInput.id = key
                                                 newInput.defaultValue = param["default_value"]
 
@@ -881,7 +891,7 @@
                                     case "Categorical":
                                         newInput = document.createElement("select")
                                         newInput.classList.add("form-control-select");
-                                        newInput.name = this.id + "." + key;
+                                        newInput.name = "model." + key;
                                         newInput.id = key
 
                                         for (const val of value["possible_values"]) {
@@ -907,7 +917,7 @@
                                         newInput.setAttribute("step", "any");
                                         newInput.setAttribute("min", value["min_value"]);
                                         newInput.setAttribute("max", value["max_value"]);
-                                        newInput.name = this.id + "." + key;
+                                        newInput.name = "model." + key;
                                         newInput.id = key
                                         newInput.defaultValue = value["default_value"]
 
@@ -929,7 +939,7 @@
                                         newInput.setAttribute("type", "number");
                                         newInput.setAttribute("min", value["min_value"]);
                                         newInput.setAttribute("max", value["max_value"]);
-                                        newInput.name = this.id + "." + key;
+                                        newInput.name = "model." + key;
                                         newInput.id = key
                                         newInput.defaultValue = value["default_value"]
 

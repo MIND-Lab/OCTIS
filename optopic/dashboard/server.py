@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request
+import json
 from multiprocessing import Process, Pool
 import optopic.configuration.defaults as defaults
 import optopic.dashboard.frameworkScanner as fs
+from optopic.dashboard.queueManager import QueueManager
 import webbrowser
 import argparse
 
+queueManager = QueueManager()
 
 app = Flask(__name__)
 parser = argparse.ArgumentParser()
@@ -19,8 +22,50 @@ def home():
 
 @app.route('/startExperiment', methods=['POST'])
 def startExperiment():
-    data = request.form
-    print(data)
+    data = request.form.to_dict(flat=False)
+
+    batch = data["batchId"][0]
+    experimentId = data["expId"][0]
+    expParams = {}
+    expParams["path"] = data["path"][0]
+    expParams["dataset"] = data["dataset"][0]
+    expParams["model"] = {"name": data["model"][0]}
+    expParams["optimization"] = {
+        "iterations": data["iterations"][0],
+        "model_runs": data["runs"][0],
+        "surrogate_model": data["surrogateModel"][0],
+        "acquisition_function": data["acquisitionFunction"][0]
+    }
+    expParams["optimize_metrics"] = []
+    expParams["track_metrics"] = []
+
+    for key, value in data.items():
+        if "model." in key:
+            expParams["model"][key.replace("model.", '')] = value[0]
+
+        if "metric." in key:
+            optimize = True
+            metric = {"name": key.replace("metric.", '')}
+            for key, content in json.loads(value[0]).items():
+                if key != "metric" and key != "type":
+                    metric[key] = content
+                if key == "type" and content == "track":
+                    optimize = False
+            if optimize:
+                expParams["optimize_metrics"].append(metric)
+            else:
+                expParams["track_metrics"].append(metric)
+    
+    # DA TERMINARE FORMATTAZIONE DATI: gestire spazi ricerca, tipo dato (string, numerico)
+    print(batch)
+    print()
+    print(experimentId)
+    print()
+    print(expParams)
+    print()
+
+    queueManager.add_experiment(batch, experimentId, expParams)
+    queueManager.save_state()
     return CreateExperiments()
 
 
