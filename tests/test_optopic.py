@@ -6,7 +6,10 @@ import pytest
 
 from click.testing import CliRunner
 
-from optopic import optopic
+from optopic.evaluation_metrics.coherence_metrics import *
+from optopic.dataset.dataset import Dataset
+from optopic.models.LDA import LDA
+
 from optopic import cli
 
 
@@ -35,3 +38,15 @@ def test_command_line_interface():
     help_result = runner.invoke(cli.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output
+
+
+def test_coherence_measures():
+    dataset = Dataset()
+    dataset.load('../optopic/preprocessed_datasets/m10_validation')
+    model = LDA(num_topics=3, iterations=5)
+    output = model.train_model(dataset)
+    metrics_parameters = {'topk': 10, "texts": dataset.get_corpus()}
+    metric = Coherence(metrics_parameters)
+    score = metric.score(output)
+    assert type(score) == np.float64
+
