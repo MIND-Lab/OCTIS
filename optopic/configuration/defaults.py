@@ -111,7 +111,8 @@ metric_parameters = {
 
 optimization_parameters = {
     "surrogate_models": [{"name": "Gaussian proccess", "id": "GP"},
-                         {"name": "Random forest", "id": "RF"}],
+                         {"name": "Random forest", "id": "RF"},
+                         {"name": "Random search", "id": "RS"}],
     "acquisition_functions": [{"name": "Upper confidence bound", "id": "LCB"},
                               {"name": "Expected improvement", "id": "EI"}]
 }

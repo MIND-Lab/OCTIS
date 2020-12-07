@@ -88,7 +88,8 @@ def startExperiment():
                 expParams["track_metrics"].append(metric)
 
     queueManager.add_experiment(batch, experimentId, expParams)
-    queueManager.save_state()
+    #To update with real logic
+    queueManager.next()
     return CreateExperiments()
 
 

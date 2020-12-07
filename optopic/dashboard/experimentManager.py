@@ -116,6 +116,7 @@ def startExperiment(parameters):
                           dataset,
                           metric,
                           search_space,
+                          random_state=True,
                           initial_point_generator="random",
                           surrogate_model=parameters["optimization"]["surrogate_model"],
                           model_runs=parameters["optimization"]["model_runs"],
