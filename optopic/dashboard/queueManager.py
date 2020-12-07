@@ -2,6 +2,8 @@ import os
 import json
 from pathlib import Path
 from collections import namedtuple
+from optopic.dashboard.experimentManager import startExperiment
+import multiprocessing as mp
 
 
 class QueueManager:
@@ -9,6 +11,7 @@ class QueueManager:
     toRun = {}
     order = []
     completed = {}
+    process = mp.Pool(processes=1)
 
     def __init__(self):
         """
@@ -54,6 +57,7 @@ class QueueManager:
         """
         if self.running == None:
             self.running = self.order.pop(0)
+            self.start()
         return self.running
 
     def add_experiment(self, batch, id, parameters):
@@ -103,7 +107,15 @@ class QueueManager:
         output : a tuple containing id of the batch and id of the
                  paused experiment
         """
-        paused = self.running
-        self.order.insert(0, paused)
-        self.running = None
-        return paused
+        if self.process != None:
+            paused = self.running
+            self.process.terminate()
+            self.order.insert(0, paused)
+            self.running = None
+            return paused
+        return False
+
+    def start(self):
+        if self.process == None:
+            self.process.apply_async(
+                startExperiment, args=(self.toRun[self.running],), callback=self.finished)

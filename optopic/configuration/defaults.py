@@ -73,6 +73,7 @@ metric_parameters = {
     # coherence
     "Coherence": {
         "name": "Coherence",
+        "module": "coherence_metrics",
         "texts": {"type": "String", "default_value": "use dataset texts"},
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5, "max_value": 30},
         "measure": {"type": "Categorical", "default_value": "c_npmi",
@@ -80,22 +81,39 @@ metric_parameters = {
     # diversity
     "Topic_diversity": {
         "name": "% Unique words",
+        "module": "diversity_metrics",
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
                  "max_value": 30}},
 
     "InvertedRBO": {
         "name": "IRBO",
+        "module": "diversity_metrics",
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
                  "max_value": 30},
         "weight": {"type": "Real", "default_value": 0.9, "min_value": 0.0,
                    "max_value": 1.0}},
     # divergences
     "KL_uniform": {
-        "name": "KL-U"},
+        "name": "KL-U",
+        "module": "topic_significance_metrics"},
     "KL_background": {
-        "name": "KL-B"},
+        "name": "KL-B",
+        "module": "topic_significance_metrics"},
     "KL_vacuous": {
-        "name": "KL-V"}
+        "name": "KL-V",
+        "module": "topic_significance_metrics"}
+}
+
+
+'''
+# OPTIMIZATION PARAMETERS #
+'''
+
+optimization_parameters = {
+    "surrogate_models": [{"name": "Gaussian proccess", "id": "GP"},
+                         {"name": "Random forest", "id": "RF"}],
+    "acquisition_functions": [{"name": "Upper confidence bound", "id": "LCB"},
+                              {"name": "Expected improvement", "id": "EI"}]
 }
 
 

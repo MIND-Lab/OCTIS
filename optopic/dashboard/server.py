@@ -22,6 +22,7 @@ def home():
 
 @app.route('/startExperiment', methods=['POST'])
 def startExperiment():
+
     data = request.form.to_dict(flat=False)
 
     batch = data["batchId"][0]
@@ -31,38 +32,60 @@ def startExperiment():
     expParams["dataset"] = data["dataset"][0]
     expParams["model"] = {"name": data["model"][0]}
     expParams["optimization"] = {
-        "iterations": data["iterations"][0],
-        "model_runs": data["runs"][0],
+        "iterations": typed(data["iterations"][0]),
+        "model_runs": typed(data["runs"][0]),
         "surrogate_model": data["surrogateModel"][0],
-        "acquisition_function": data["acquisitionFunction"][0]
+        "acquisition_function": data["acquisitionFunction"][0],
+        "search_spaces": {}
     }
     expParams["optimize_metrics"] = []
     expParams["track_metrics"] = []
 
+    model_parameters_to_optimize = []
+
+    for key, value in data.items():
+        if "_check" in key:
+            model_parameters_to_optimize.append(key.replace("_check", ''))
+
     for key, value in data.items():
         if "model." in key:
-            expParams["model"][key.replace("model.", '')] = value[0]
+            if any(par in key for par in model_parameters_to_optimize):
+                if("_min" in key):
+                    name = key.replace("_min", '').replace("model.", '')
+                    if name not in expParams["optimization"]["search_spaces"]:
+                        expParams["optimization"]["search_spaces"][name] = {}
+                    expParams["optimization"]["search_spaces"][name]["low"] = typed(
+                        value[0])
+                elif("_max" in key):
+                    name = key.replace("_max", '').replace("model.", '')
+                    if name not in expParams["optimization"]["search_spaces"]:
+                        expParams["optimization"]["search_spaces"][name] = {}
+                    expParams["optimization"]["search_spaces"][name]["high"] = typed(
+                        value[0])
+                elif("_check" not in key):
+                    expParams["optimization"]["search_spaces"][key.replace(
+                        "model.", '')] = request.form.getlist(key)
+            else:
+                if "name" in key:
+                    expParams["model"][key.replace("model.", '')] = value[0]
+                else:
+                    if "parameters" not in expParams["model"]:
+                        expParams["model"]["parameters"] = {}
+                    expParams["model"]["parameters"][key.replace(
+                        "model.", '')] = typed(value[0])
 
         if "metric." in key:
             optimize = True
-            metric = {"name": key.replace("metric.", '')}
+            metric = {"name": key.replace("metric.", ''), "parameters": {}}
             for key, content in json.loads(value[0]).items():
                 if key != "metric" and key != "type":
-                    metric[key] = content
+                    metric["parameters"][key] = typed(content)
                 if key == "type" and content == "track":
                     optimize = False
             if optimize:
                 expParams["optimize_metrics"].append(metric)
             else:
                 expParams["track_metrics"].append(metric)
-    
-    # DA TERMINARE FORMATTAZIONE DATI: gestire spazi ricerca, tipo dato (string, numerico)
-    print(batch)
-    print()
-    print(experimentId)
-    print()
-    print(expParams)
-    print()
 
     queueManager.add_experiment(batch, experimentId, expParams)
     queueManager.save_state()
@@ -74,12 +97,7 @@ def CreateExperiments():
     models = defaults.model_hyperparameters
     datasets = fs.scanDatasets()
     metrics = defaults.metric_parameters
-    optimization = {
-        "surrogate_models": [{"name": "Gaussian proccess", "id": "GP"},
-                             {"name": "Random forest", "id": "RF"}],
-        "acquisition_functions": [{"name": "Upper confidence bound", "id": "UCB"},
-                                  {"name": "Expected improvement", "id": "EI"}]
-    }
+    optimization = defaults.optimization_parameters
     return render_template("CreateExperiments.html",
                            datasets=datasets,
                            models=models,
@@ -103,3 +121,15 @@ if __name__ == '__main__':
     url = 'http://' + str(args.host) + ':' + str(args.port)
     webbrowser.open_new(url)
     app.run(port=args.port)
+
+
+def typed(value):
+    try:
+        typed = int(value)
+        return typed
+    except ValueError:
+        try:
+            typed = float(value)
+            return typed
+        except ValueError:
+            return value

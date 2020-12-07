@@ -6,6 +6,9 @@ import inspect
 import importlib
 from pathlib import Path
 from importlib import util
+import optopic.configuration.defaults as defaults
+from skopt.space.space import Real, Categorical, Integer
+
 
 path = Path(os.path.dirname(os.path.realpath(__file__)))
 path = str(path.parent)
@@ -70,22 +73,56 @@ def importOptimizer():
     return optimizerClass
 
 
-#OK IT IS WORKING, WOW I'M AMAZED
-datasetClass = importDataset()
-dataset = datasetClass()
-dataset.load("optopic/preprocessed_datasets/m10_validation")
+# TO UPDATE
+def startExperiment(parameters):
+    """
+    Starts an experiment with the given parameters
+    """
+    # Import dataset class and initialize an instance with the choosen dataset
+    datasetClass = importDataset()
+    dataset = datasetClass()
+    datasetPath = path+"/preprocessed_datasets/"+parameters["dataset"]
+    dataset.load(datasetPath)
 
-modelClass = importModel("LDA")
-model = modelClass()
+    modelClass = importModel(parameters["model"]["name"])
+    model = modelClass()
 
-model.hyperparameters.update({"num_topics":10})
-model.partitioning(False)
+    model.hyperparameters.update(parameters["model"]["parameters"])
+    model.partitioning(False)
 
+    search_space = {}
 
-metric_parameters = {"topk":10}
+    for key, value in parameters["optimization"]["search_spaces"].items():
+        if "low" in value:
+            if isinstance(value["low"], float) or isinstance(value["high"], float):
+                search_space[key] = Real(low=value["low"], high=value["high"])
+            else:
+                search_space[key] = Integer(
+                    low=value["low"], high=value["high"])
+        else:
+            search_space[key]: Categorical(value)
 
-metricClass = importMetric("Topic_diversity","diversity_metrics")
-topicDiversity = metricClass(metric_parameters)
+    print(search_space)
 
-output = model.train_model(dataset)
-print(topicDiversity.score(output))
+    metric_parameters = parameters["optimize_metrics"][0]["parameters"]
+
+    metricClass = importMetric(
+        parameters["optimize_metrics"][0]["name"],
+        defaults.metric_parameters[parameters["optimize_metrics"][0]["name"]]["module"])
+    metric = metricClass(metric_parameters)
+
+    Optimizer = importOptimizer()
+    optimizer = Optimizer(model,
+                          dataset,
+                          metric,
+                          search_space,
+                          initial_point_generator="random",
+                          surrogate_model=parameters["optimization"]["surrogate_model"],
+                          model_runs=parameters["optimization"]["model_runs"],
+                          acq_func=parameters["optimization"]["acquisition_function"],
+                          number_of_call=parameters["optimization"]["iterations"],
+                          save_csv=True,
+                          save_name=parameters["experimentId"],
+                          save_path=parameters["path"])
+
+    optimizer.optimize()
