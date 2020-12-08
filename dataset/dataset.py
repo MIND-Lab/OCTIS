@@ -375,6 +375,9 @@ class Dataset:
         -------
         True if the data is saved, False otherwise
         """
+        self.path=path
+        
+        
         corpus_readed = self._load_corpus(path+"/corpus.txt")
         vocabulary_readed = self._load_vocabulary(path+"/vocabulary.txt")
         self._load_labels(path+"/labels.txt")
