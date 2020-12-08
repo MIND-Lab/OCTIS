@@ -52,8 +52,9 @@ def importModel(modelName):
     return model
 
 
-def importMetric(metricName, moduleName):
+def importMetric(metricName):
     modulePath = os.path.join(path, "evaluation_metrics")
+    moduleName = defaults.metric_parameters[metricName]["module"]
     modulePath = os.path.join(modulePath, moduleName+".py")
     metric = importClass(metricName, metricName, modulePath)
     return metric
@@ -102,20 +103,30 @@ def startExperiment(parameters):
         else:
             search_space[key]: Categorical(value)
 
-    print(search_space)
-
     metric_parameters = parameters["optimize_metrics"][0]["parameters"]
+    for key in metric_parameters:
+        if metric_parameters[key] == "use dataset texts":
+            metric_parameters[key] = dataset.get_corpus()
 
-    metricClass = importMetric(
-        parameters["optimize_metrics"][0]["name"],
-        defaults.metric_parameters[parameters["optimize_metrics"][0]["name"]]["module"])
+    metricClass = importMetric(parameters["optimize_metrics"][0]["name"])
     metric = metricClass(metric_parameters)
+
+    metrics_to_track = []
+    for single_metric in parameters["track_metrics"]:
+        metricClass = importMetric(single_metric["name"])
+        single_metric_parameters = single_metric["parameters"]
+        for key in single_metric_parameters:
+            if single_metric_parameters[key] == "use dataset texts":
+                single_metric_parameters[key] = dataset.get_corpus()
+        new_metric = metricClass(single_metric_parameters)
+        metrics_to_track.append(new_metric)
 
     Optimizer = importOptimizer()
     optimizer = Optimizer(model,
                           dataset,
                           metric,
                           search_space,
+                          metrics_to_track,
                           random_state=True,
                           initial_point_generator="random",
                           surrogate_model=parameters["optimization"]["surrogate_model"],

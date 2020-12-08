@@ -24,7 +24,6 @@ def home():
 def startExperiment():
 
     data = request.form.to_dict(flat=False)
-
     batch = data["batchId"][0]
     experimentId = data["expId"][0]
     expParams = {}
@@ -77,19 +76,19 @@ def startExperiment():
         if "metric." in key:
             optimize = True
             metric = {"name": key.replace("metric.", ''), "parameters": {}}
-            for key, content in json.loads(value[0]).items():
-                if key != "metric" and key != "type":
-                    metric["parameters"][key] = typed(content)
-                if key == "type" and content == "track":
-                    optimize = False
-            if optimize:
-                expParams["optimize_metrics"].append(metric)
-            else:
-                expParams["track_metrics"].append(metric)
+            for singleValue in value:
+
+                for key, content in json.loads(singleValue).items():
+                    if key != "metric" and key != "type":
+                        metric["parameters"][key] = typed(content)
+                    if key == "type" and content == "track":
+                        optimize = False
+                if optimize:
+                    expParams["optimize_metrics"].append(metric)
+                else:
+                    expParams["track_metrics"].append(metric)
 
     queueManager.add_experiment(batch, experimentId, expParams)
-    #To update with real logic
-    queueManager.next()
     return CreateExperiments()
 
 

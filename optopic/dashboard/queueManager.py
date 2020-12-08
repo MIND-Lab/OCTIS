@@ -12,11 +12,12 @@ class QueueManager:
     running = mp.Manager().list()
     running.append(None)
     toRun = mp.Manager().dict()
-    order = []
+    order = mp.Manager().list()
     completed = mp.Manager().dict()
     process = None
     busy = mp.Manager().list()
     busy.append(False)
+    idle
 
     def __init__(self):
         """
@@ -24,8 +25,8 @@ class QueueManager:
         Loads old queues
         """
         self.load_state()
-        idle = mp.Process(target=self._finished)
-        idle.start()
+        self.idle = mp.Process(target=self._run)
+        self.idle.start()
 
     def save_state(self):
         """
@@ -50,7 +51,7 @@ class QueueManager:
             data = json.load(fp)
             self.running[0] = data["running"]
             self.toRun.update(data["toRun"])
-            self.order = data["order"]
+            self.order.extend(data["order"])
             self.completed.update(data["completed"])
 
     def next(self):
@@ -90,7 +91,7 @@ class QueueManager:
             return True
         return False
 
-    def _finished(self):
+    def _run(self):
         """
         Put the current experiment in the finished queue
 
@@ -101,11 +102,15 @@ class QueueManager:
         """
         while(True):
             time.sleep(7)
-            if not self.busy[0] and self.running[0] != None:
-                finished = self.running[0]
-                self.completed[finished] = self.toRun[finished]
-                del self.toRun[finished]
-                self.running[0] = None
+            if not self.busy[0]:
+                if self.running[0] != None:
+                    finished = self.running[0]
+                    self.completed[finished] = self.toRun[finished]
+                    del self.toRun[finished]
+                    self.running[0] = None
+                if len(self.order) > 0 and self.running[0] == None:
+                    self.running[0] = self.order.pop(0)
+                    self.start()
 
     def pause(self):
         """
@@ -127,9 +132,14 @@ class QueueManager:
     def start(self):
         if not self.busy[0]:
             self.busy[0] = True
-            self.process = mp.Process(target=self.execute_and_update)
+            self.process = mp.Process(target=self._execute_and_update)
             self.process.start()
 
-    def execute_and_update(self):
+    def stop(self):
+        self.idle.terminate()
+        self.pause()
+        self.save_state()
+
+    def _execute_and_update(self):
         startExperiment(self.toRun[self.running[0]])
         self.busy[0] = False
