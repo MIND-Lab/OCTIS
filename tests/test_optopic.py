@@ -54,6 +54,8 @@ def test_coherence_measures():
     print(os.path.exists(parent_path + '/optopic/preprocessed_datasets/m10_validation'))
     print(os.path.exists(parent_path + '/optopic/'))
     print(os.path.exists(parent_path))
+    print(parent_path)
+    print(path)
 
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)
