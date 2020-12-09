@@ -51,6 +51,10 @@ def test_coherence_measures():
 
     dataset = Dataset()
     dataset.load(parent_path + '/optopic/preprocessed_datasets/m10_validation')
+    print(os.path.exists(parent_path + '/optopic/preprocessed_datasets/m10_validation'))
+    print(os.path.exists(parent_path + '/optopic/'))
+    print(os.path.exists(parent_path))
+
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)
     metrics_parameters = {'topk': 10, "texts": dataset.get_corpus()}
