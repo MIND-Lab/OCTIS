@@ -16,6 +16,14 @@ import os
 
 
 @pytest.fixture
+def root_dir():
+    return os.path.dirname(os.path.abspath(__file__))
+
+@pytest.fixture
+def data_dir(root_dir):
+    return root_dir + "/../optopic/preprocessed_datasets/"
+
+@pytest.fixture
 def response():
     """Sample pytest fixture.
 
@@ -43,19 +51,8 @@ def test_command_line_interface():
 
 
 def test_coherence_measures():
-
-    # get current directory
-    path = os.getcwd()
-    # prints parent directory
-    parent_path = str(os.path.abspath(os.path.join(path, os.pardir)))
-
     dataset = Dataset()
-    dataset.load(parent_path + '/optopic/preprocessed_datasets/m10_validation')
-    print(os.path.exists(parent_path + '/optopic/preprocessed_datasets/m10_validation'))
-    print(os.path.exists(parent_path + '/optopic/'))
-    print(os.path.exists(parent_path))
-    print(parent_path)
-    print(path)
+    dataset.load(data_dir() + '/m10_validation')
 
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)
