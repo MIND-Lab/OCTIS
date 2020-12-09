@@ -23,8 +23,7 @@ def root_dir():
 def data_dir(root_dir):
     return root_dir + "/../optopic/preprocessed_datasets/"
 
-
-def test_coherence_measures():
+def test_coherence_measures(data_dir):
     dataset = Dataset()
     dataset.load(data_dir + '/m10_validation')
 
