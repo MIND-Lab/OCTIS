@@ -12,6 +12,8 @@ from optopic.models.LDA import LDA
 
 from optopic import cli
 
+import os
+
 
 @pytest.fixture
 def response():
@@ -41,8 +43,14 @@ def test_command_line_interface():
 
 
 def test_coherence_measures():
+
+    # get current directory
+    path = os.getcwd()
+    # prints parent directory
+    parent_path = str(os.path.abspath(os.path.join(path, os.pardir)))
+
     dataset = Dataset()
-    dataset.load('../optopic/preprocessed_datasets/m10_validation')
+    dataset.load(parent_path + '/optopic/preprocessed_datasets/m10_validation')
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)
     metrics_parameters = {'topk': 10, "texts": dataset.get_corpus()}
