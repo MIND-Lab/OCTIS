@@ -1,5 +1,5 @@
-import preprocessing.sources.source_tools as nu
-import configuration.citations as citations
+import optopic.preprocessing.sources.source_tools as nu
+import optopic.configuration.citations as citations
 
 
 def retrieve_dblp():

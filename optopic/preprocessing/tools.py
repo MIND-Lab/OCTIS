@@ -1,7 +1,7 @@
 import gensim
 from sklearn.model_selection import train_test_split
 from gensim.utils import simple_preprocess
-from dataset.dataset import Dataset
+from optopic.dataset.dataset import Dataset
 import multiprocessing as mp
 import spacy
 import string
@@ -123,8 +123,6 @@ def lemmatization(corpus, pos):
     """
 
     nlp = spacy.load("en_core_web_sm")
-    #doc = nlp('i really would like a cup of coffee please. thanks. oh my goshes')
-    #print([token.lemma_ for token in doc if token.pos_ in pos])
 
     result = []
     for document in corpus:

@@ -1,9 +1,8 @@
-import preprocessing.tools as tools
-import spacy
+import optopic.preprocessing.tools as tools
 from nltk.corpus import stopwords as nltk_stopwords
 
 
-class Pipeline_handler:
+class PipelineHandler:
     """
     Pipeline_handler is a class used to describe a
     preprocessing pipeline and execute it with the
@@ -82,7 +81,7 @@ class Pipeline_handler:
             parameters += "  removed words with less than " + str(self.words_min_freq) +\
                           " or more than " + str(self.words_max_freq) + \
                           " documents with an occurrence of the word in corpus\n"
-            
+
             parameters += "  removed documents with less than " + str(self.min_words_for_doc) + " words"
 
         corpus = self.dataset["corpus"]
@@ -149,7 +148,7 @@ class Pipeline_handler:
 
             if self.display_progress:
                 print("  step: "+step.__name__+" executed")
-        
+
         extra_data += "  remove_docs\n"
         extra_data += parameters
 
