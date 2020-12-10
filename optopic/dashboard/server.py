@@ -92,6 +92,16 @@ def startExperiment():
     return CreateExperiments()
 
 
+@app.route("/getBatchExperiments", methods=['POST'])
+def getBatchExperiments():
+    data = request.json['data']
+    experiments = []
+    for key in data:
+        batchExperiments = queueManager.getBatchExperiments(key)
+        experiments = experiments + batchExperiments
+    return json.dumps(experiments)
+
+
 @app.route('/CreateExperiments')
 def CreateExperiments():
     models = defaults.model_hyperparameters
@@ -105,7 +115,7 @@ def CreateExperiments():
                            optimization=optimization)
 
 
-@ app.route('/VisualizeExperiments')
+@app.route('/VisualizeExperiments')
 def VisualizeExperiments():
     batchNames = queueManager.getBatchNames()
     return render_template("VisualizeExperiments.html",

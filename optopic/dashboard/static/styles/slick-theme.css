@@ -59,7 +59,7 @@
 .slick-prev.slick-disabled:before,
 .slick-next.slick-disabled:before
 {
-    opacity: .25;
+    opacity: 1;
 }
 
 .slick-prev:before,
@@ -69,7 +69,7 @@
     font-size: 20px;
     line-height: 1;
 
-    opacity: .75;
+    opacity: 1;
     color: white;
 
     -webkit-font-smoothing: antialiased;
@@ -190,7 +190,7 @@
     content: '•';
     text-align: center;
 
-    opacity: .25;
+    opacity: 1;
     color: black;
 
     -webkit-font-smoothing: antialiased;
@@ -198,6 +198,6 @@
 }
 .slick-dots li.slick-active button:before
 {
-    opacity: .75;
+    opacity: 1;
     color: black;
 }

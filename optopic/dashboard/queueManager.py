@@ -140,6 +140,16 @@ class QueueManager:
                 batchNames.append(value["batchId"])
         return batchNames
 
+    def getBatchExperiments(self, batchName):
+        experiments = []
+        for key, value in self.completed.items():
+            if value["batchId"] == batchName:
+                experiments.append(value)
+        for key, value in self.toRun.items():
+            if value["batchId"] == batchName:
+                experiments.append(value)
+        return experiments
+
     def start(self):
         if not self.busy[0]:
             self.busy[0] = True
