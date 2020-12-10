@@ -107,7 +107,9 @@ def CreateExperiments():
 
 @ app.route('/VisualizeExperiments')
 def VisualizeExperiments():
-    return render_template("VisualizeExperiments.html")
+    batchNames = queueManager.getBatchNames()
+    return render_template("VisualizeExperiments.html",
+                           batchNames=batchNames)
 
 
 @ app.route('/ManageExperiments')

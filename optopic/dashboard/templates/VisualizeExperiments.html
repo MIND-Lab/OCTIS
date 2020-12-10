@@ -18,7 +18,51 @@
     <link href="{{ url_for('static', filename='styles/swiper.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/magnific-popup.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/slick.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/slick-theme.css') }}" rel="stylesheet">
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        .slider {
+            width: 50%;
+            margin: 100px auto;
+        }
+
+        .slick-slide {
+            margin: 0px 20px;
+        }
+
+        .slick-slide img {
+            width: 100%;
+        }
+
+        .slick-prev:before,
+        .slick-next:before {
+            color: black;
+        }
+
+
+        .slick-slide {
+            transition: all ease-in-out .3s;
+            opacity: .2;
+        }
+
+        .slick-active {
+            opacity: .5;
+        }
+
+        .slick-current {
+            opacity: 1;
+        }
+    </style>
     <!-- Favicon  -->
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
@@ -86,6 +130,10 @@
     <!-- end of header -->
 
 
+    <section id="batchSelector" class="regular slider"></section>
+
+
+
     <!-- Footer -->
     <div class="footer">
         <div class="container">
@@ -127,6 +175,63 @@
     <script type="text/javascript" src="{{ url_for('static', filename='isotope.pkgd.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='validator.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='slick.js') }}"></script>
+
+
+    <script>
+        function getParams(vars) {
+            return vars;
+        }
+
+
+        $(document).ready(function () {
+            //Get batchIds
+            batchIds = getParams({{ batchNames| tojson}});
+
+        batchIds.forEach(batchId => {
+            batchDiv = document.createElement("div")
+            img = document.createElement("img");
+            img.classList.add("img-fluid");
+            img.id = batchId;
+            img.src = "{{ url_for('static', filename='images/batch.png') }}";
+            img.alt = "alternative";
+            img.addEventListener("click", function () {
+
+                if (this.src.includes("selected")) {
+                    n = this.src.indexOf("_selected")
+                    this.src = this.src.substring(0, n).concat(".png")
+                } else {
+                    n = this.src.length - 4
+                    this.src = this.src.substring(0, n).concat("_selected.png")
+                }
+                console.log(this.id)
+            });
+
+            batchname = document.createElement("p")
+            batchname.innerHTML = batchId
+            batchDiv.appendChild(img)
+            batchDiv.appendChild(batchname)
+            document.getElementById("batchSelector").appendChild(batchDiv)
+        });
+
+
+        $(".regular").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 3
+        });
+
+
+        });
+
+
+
+
+
+
+
+    </script>
 
 </body>
 

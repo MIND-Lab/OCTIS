@@ -17,7 +17,7 @@ class QueueManager:
     process = None
     busy = mp.Manager().list()
     busy.append(False)
-    idle
+    idle = None
 
     def __init__(self):
         """
@@ -36,9 +36,9 @@ class QueueManager:
         path = os.path.join(path, "queueManagerState.json")
         with open(path, "w") as fp:
             json.dump({"running": self.running[0],
-                       "toRun": self.toRun,
-                       "order": self.order,
-                       "completed": self.completed},
+                       "toRun": dict(self.toRun),
+                       "order": list(self.order),
+                       "completed": dict(self.completed)},
                       fp)
 
     def load_state(self):
@@ -108,6 +108,7 @@ class QueueManager:
                     self.completed[finished] = self.toRun[finished]
                     del self.toRun[finished]
                     self.running[0] = None
+                    self.save_state()
                 if len(self.order) > 0 and self.running[0] == None:
                     self.running[0] = self.order.pop(0)
                     self.start()
@@ -128,6 +129,16 @@ class QueueManager:
             self.running[0] = None
             return paused
         return False
+
+    def getBatchNames(self):
+        batchNames = []
+        for key, value in self.completed.items():
+            if value["batchId"] not in batchNames:
+                batchNames.append(value["batchId"])
+        for key, value in self.toRun.items():
+            if value["batchId"] not in batchNames:
+                batchNames.append(value["batchId"])
+        return batchNames
 
     def start(self):
         if not self.busy[0]:
