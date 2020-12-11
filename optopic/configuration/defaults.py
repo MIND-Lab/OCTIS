@@ -3,13 +3,13 @@ from pathlib import Path
 
 def _load_default_texts():
     """
-    Loads default wikipedia texts
+    Loads default general texts
 
     Returns
     -------
     result : default wikipedia texts
     """
-    file_name = "preprocessed_datasets/wikipedia/wikipedia_not_lemmatized_5/corpus.txt"
+    file_name = "preprocessed_datasets/20newsgroup_validation/corpus.txt"
     result = []
     file = Path(file_name)
     if file.is_file():
@@ -31,6 +31,10 @@ em_topic_diversity = {'topk': 10}
 em_invertedRBO = {'topk': 10, 'weight': 0.9}
 em_word_embeddings_invertedRBO = {'topk': 10, 'weight': 0.9}
 em_f1_score = {'average': 'micro'}
+
+'''
+# MODELS PARAMETERS #
+'''
 
 model_hyperparameters = {
     'LDA': {
@@ -61,9 +65,6 @@ model_hyperparameters = {
         'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1}},
     '...': {}}
 
-'''
-# MODELS PARAMETERS #
-'''
 
 
 '''
@@ -72,8 +73,7 @@ model_hyperparameters = {
 metric_parameters = {
     # coherence
     "Coherence": {
-        "name": "Coherence",
-        "module": "coherence_metrics",
+        "name": "Coherence", "module": "coherence_metrics",
         "texts": {"type": "String", "default_value": "use dataset texts"},
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5, "max_value": 30},
         "measure": {"type": "Categorical", "default_value": "c_npmi",
@@ -85,23 +85,15 @@ metric_parameters = {
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
                  "max_value": 30}},
 
-    "InvertedRBO": {
-        "name": "IRBO",
-        "module": "diversity_metrics",
-        "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
-                 "max_value": 30},
-        "weight": {"type": "Real", "default_value": 0.9, "min_value": 0.0,
-                   "max_value": 1.0}},
+    "InvertedRBO": {"name": "IRBO", "module": "diversity_metrics",
+                    "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
+                             "max_value": 30},
+                    "weight": {"type": "Real", "default_value": 0.9, "min_value": 0.0,
+                               "max_value": 1.0}},
     # divergences
-    "KL_uniform": {
-        "name": "KL-U",
-        "module": "topic_significance_metrics"},
-    "KL_background": {
-        "name": "KL-B",
-        "module": "topic_significance_metrics"},
-    "KL_vacuous": {
-        "name": "KL-V",
-        "module": "topic_significance_metrics"}
+    "KL_uniform": {"name": "KL-U", "module": "topic_significance_metrics"},
+    "KL_background": {"name": "KL-B", "module": "topic_significance_metrics"},
+    "KL_vacuous": {"name": "KL-V", "module": "topic_significance_metrics"}
 }
 
 
@@ -160,17 +152,17 @@ update_every (int, optional) – Number of documents to be iterated through for 
 
 alpha ({numpy.ndarray, str}, optional) – Can be set to an 1D array of length equal to the number of expected topics that expresses our a-priori belief for the each topics’ probability. Alternatively default prior selecting strategies can be employed by supplying a string:
 
-’asymmetric’: Uses a fixed normalized asymmetric prior of 1.0 / topicno.    
+’asymmetric’: Uses a fixed normalized asymmetric prior of 1.0 / topicno.
 
 ’auto’: Learns an asymmetric prior from the corpus (not available if distributed==True). \n
 
 eta ({float, np.array, str}, optional) – A-priori belief on word probability, this can be:
 
-scalar for a symmetric prior over topic/word probability,   
+scalar for a symmetric prior over topic/word probability,
 
-vector of length num_words to denote an asymmetric user defined probability for each word,  
+vector of length num_words to denote an asymmetric user defined probability for each word,
 
-matrix of shape (num_topics, num_words) to assign a probability for each word-topic combination,    
+matrix of shape (num_topics, num_words) to assign a probability for each word-topic combination,
 
 the string ‘auto’ to learn the asymmetric prior from the data. \n
 
@@ -237,7 +229,7 @@ normalize (bool or None, optional) – Whether to normalize the result. \n
 random_state ({np.random.RandomState, int}, optional) – Seed for random generator. Needed for reproducibility. \n
 """
 
-NMF_scikit_hyperparameters_info = """ 
+NMF_scikit_hyperparameters_info = """
 num_topics (int) – Number of topics to extract. \n
 
 init (string, optional) – Method used to initialize the procedure. Default: None. Valid options:
