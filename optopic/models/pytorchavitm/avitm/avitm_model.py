@@ -23,7 +23,7 @@ class AVITM_model(object):
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
                  learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False,
-                 topic_prior_mean=0.0, topic_prior_variance=None, topic_word_matrix=True, topic_document_matrix=True):
+                 topic_prior_mean=0.0, topic_prior_variance=None):
         """
         Initialize AVITM model.
 
@@ -42,7 +42,7 @@ class AVITM_model(object):
             num_epochs : int, number of epochs to train for, (default 100)
             reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
         """
-        
+
         assert isinstance(input_size, int) and input_size > 0,\
             "input_size must by type int > 0."
         assert isinstance(num_topics, int) and input_size > 0,\
@@ -87,8 +87,6 @@ class AVITM_model(object):
         self.reduce_on_plateau = reduce_on_plateau
         self.topic_prior_mean = topic_prior_mean
         self.topic_prior_variance = topic_prior_variance
-        self.bool_t_w = topic_word_matrix
-        self.bool_t_d = topic_document_matrix
         # init inference avitm network
         self.model = DecoderNetwork(
             input_size, num_topics, model_type, hidden_sizes, activation,
@@ -316,22 +314,21 @@ class AVITM_model(object):
                 topic_document_mat.append(topic_document)
 
         results = self.get_info()
-        if self.bool_t_d:
-            results['test-topic-document-matrix2'] = np.vstack(
-                np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
-            results['test-topic-document-matrix'] = np.asarray(self.get_thetas(dataset)).T
+        results['test-topic-document-matrix2'] = np.vstack(
+            np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
+        results['test-topic-document-matrix'] = np.asarray(self.get_thetas(dataset)).T
 
         return results
-        
-    def get_topic_word_mat(self): 
+
+    def get_topic_word_mat(self):
         top_wor = self.final_topic_word.cpu().detach().numpy()
-        return top_wor 
-        
-    def get_topic_document_mat(self): 
+        return top_wor
+
+    def get_topic_document_mat(self):
         top_doc = self.final_topic_document
         top_doc_arr = np.array([i.cpu().detach().numpy() for i in top_doc])
-        return top_doc_arr        
-    
+        return top_doc_arr
+
     def get_topics(self, k=10):
         """
         Retrieve topic words.
@@ -352,7 +349,7 @@ class AVITM_model(object):
                 topics_list.append(component_words)
 
         return topics_list
-    
+
     def get_info(self):
         info = {}
         topic_word = self.get_topics()
@@ -360,13 +357,11 @@ class AVITM_model(object):
         topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
 
-        if self.bool_t_d:
-            info['topic-document-matrix2'] = topic_document_dist.T
-            info['topic-document-matrix'] = np.asarray(self.get_thetas(self.train_data)).T
+        info['topic-document-matrix2'] = topic_document_dist.T
+        info['topic-document-matrix'] = np.asarray(self.get_thetas(self.train_data)).T
 
-        if self.bool_t_w:
-            info['topic-word-matrix'] = topic_word_dist
-        return info 
+        info['topic-word-matrix'] = topic_word_dist
+        return info
 
     def _format_file(self):
         model_dir = "AVITM_nc_{}_tpm_{}_tpv_{}_hs_{}_ac_{}_do_{}_lr_{}_mo_{}_rp_{}".\
@@ -384,7 +379,7 @@ class AVITM_model(object):
             models_dir: path to directory for saving NN models.
         """
         if (self.model is not None) and (models_dir is not None):
-  
+
             model_dir = self._format_file()
             if not os.path.isdir(os.path.join(models_dir, model_dir)):
                 os.makedirs(os.path.join(models_dir, model_dir))
