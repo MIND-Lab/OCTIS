@@ -2,6 +2,7 @@ import os
 import ast
 import sys
 import json
+import numpy as np
 import inspect
 import importlib
 from pathlib import Path
@@ -121,6 +122,8 @@ def startExperiment(parameters):
         new_metric = metricClass(single_metric_parameters)
         metrics_to_track.append(new_metric)
 
+    print(parameters)
+    
     Optimizer = importOptimizer()
     optimizer = Optimizer(model,
                           dataset,
@@ -133,8 +136,8 @@ def startExperiment(parameters):
                           model_runs=parameters["optimization"]["model_runs"],
                           acq_func=parameters["optimization"]["acquisition_function"],
                           number_of_call=parameters["optimization"]["iterations"],
-                          save_csv=True,
+                          save_models=True,
                           save_name=parameters["experimentId"],
-                          save_path=parameters["path"])
+                          save_path=str(os.path.join(parameters["path"], parameters["experimentId"])))
 
     optimizer.optimize()
