@@ -63,7 +63,12 @@ model_hyperparameters = {
         'h_max_iter': {'type': 'Integer', 'default_value': 50, 'min_value': 10, 'max_value': 1000},
         'w_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1},
         'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1}},
-    '...': {}}
+    'NMF_scikit': {
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200},
+        'init': {'type': 'Categorical', 'default_value': None, 'possible_values':
+            [None, 'random', 'nndsvd', 'nndsvda', 'nndsvdar']},
+        'alpha': {'type': 'Real', 'default_value': 0.0, 'min_value': 0.0, 'max_value': 1.0},
+        'l1_ratio': {'type': 'Real', 'default_value': 0.0, 'min_value': 0, 'max_value': 1}}}
 
 
 
