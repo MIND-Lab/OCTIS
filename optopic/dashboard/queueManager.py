@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from collections import namedtuple
 from optopic.dashboard.experimentManager import startExperiment
+import optopic.dashboard.experimentManager as expManager
 import multiprocessing as mp
 from subprocess import Popen
 
@@ -149,6 +150,11 @@ class QueueManager:
             if value["batchId"] == batchName:
                 experiments.append(value)
         return experiments
+
+    def getExperimentInfo(self, experiment):
+        path = str(os.path.join(
+            experiment["path"], experiment["experimentId"], experiment["experimentId"]+".json"))
+        return expManager.retrieveBoResults(path)
 
     def start(self):
         if not self.busy[0]:

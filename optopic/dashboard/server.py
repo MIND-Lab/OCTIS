@@ -34,6 +34,7 @@ def startExperiment():
         "iterations": typed(data["iterations"][0]),
         "model_runs": typed(data["runs"][0]),
         "surrogate_model": data["surrogateModel"][0],
+        "n_random_starts": typed(data["n_random_starts"][0]),
         "acquisition_function": data["acquisitionFunction"][0],
         "search_spaces": {}
     }
@@ -98,11 +99,15 @@ def getBatchExperiments():
     experiments = []
     for key in data:
         batchExperiments = queueManager.getBatchExperiments(key)
-        experiments = experiments + batchExperiments
+        for experiment in batchExperiments:
+            newExp = experiment
+            newExp["optimization_data"] = queueManager.getExperimentInfo(
+                experiment)
+            experiments = experiments + newExp
     return json.dumps(experiments)
 
 
-@app.route('/CreateExperiments')
+@ app.route('/CreateExperiments')
 def CreateExperiments():
     models = defaults.model_hyperparameters
     datasets = fs.scanDatasets()
@@ -115,7 +120,7 @@ def CreateExperiments():
                            optimization=optimization)
 
 
-@app.route('/VisualizeExperiments')
+@ app.route('/VisualizeExperiments')
 def VisualizeExperiments():
     batchNames = queueManager.getBatchNames()
     return render_template("VisualizeExperiments.html",

@@ -122,8 +122,6 @@ def startExperiment(parameters):
         new_metric = metricClass(single_metric_parameters)
         metrics_to_track.append(new_metric)
 
-    print(parameters)
-    
     Optimizer = importOptimizer()
     optimizer = Optimizer(model,
                           dataset,
@@ -134,6 +132,7 @@ def startExperiment(parameters):
                           initial_point_generator="random",
                           surrogate_model=parameters["optimization"]["surrogate_model"],
                           model_runs=parameters["optimization"]["model_runs"],
+                          n_random_starts=parameters["optimization"]["n_random_starts"],
                           acq_func=parameters["optimization"]["acquisition_function"],
                           number_of_call=parameters["optimization"]["iterations"],
                           save_models=True,
@@ -141,3 +140,86 @@ def startExperiment(parameters):
                           save_path=str(os.path.join(parameters["path"], parameters["experimentId"])))
 
     optimizer.optimize()
+
+
+def retrieveBoResults(path):
+    """
+    Function to load the results of BO
+    Parameters
+    ----------
+    path : path where the results are saved (json file).
+    Returns
+    -------
+    dict_return :dictionary 
+    """
+    # open json file
+    with open(path, 'rb') as file:
+        result = json.load(file)
+    f_val = result['f_val']
+    # output dictionart
+    dict_return = dict()
+    dict_return.update({"f_val": f_val})
+    return dict_return
+
+
+def retrieveIterationBoResults(path, iteration):
+    """
+    Function to load the results of BO until iteration
+    Parameters
+    ----------
+    path : path where the results are saved (json file).
+    iteration : considered iteration.
+    Returns
+    -------
+    dict_return :dictionary 
+    """
+    # open json file
+    path = "results/simple_GP/resultsBO.json"
+    with open(path, 'rb') as file:
+        result = json.load(file)
+    values = result['f_val'][0:iteration]
+    type_of_problem = result['optimization_type']
+    if type_of_problem == 'Maximize':
+        best_seen = max(values)
+        worse_seen = min(values)
+    else:
+        best_seen = min(values)
+        worse_seen = max(values)
+    median_seen = np.median(values)
+    mean_seen = np.mean(values)
+    hyperparameters = result['x_iters']
+    name_hyp = list(hyperparameters.keys())
+    hyperparameters_iter = list()
+    for name in name_hyp:
+        hyperparameters_iter.append(hyperparameters[name][iteration])
+    # dizionaro di output
+    dict_return = dict()
+    dict_return.update({"best_seen": best_seen})
+    dict_return.update({"worse_seen": worse_seen})
+    dict_return.update({"median_seen": median_seen})
+    dict_return.update({"mean_seen": mean_seen})
+    dict_return.update({"hyperparameter_names": name_hyp})
+    dict_return.update({"hyperparameter_configuration": hyperparameters_iter})
+    return dict_return
+
+# Manca retrieve di Iperparametri iteerazione e topic-word-matrix e document-topic matrix
+
+
+def prior3(path):
+    """
+    Metodo per calcolare media, mediana, best e worse della valutazioni delle funzioni obiettivo
+    """
+    with open(path, 'rb') as file:
+        result = json.load(file)
+    values = result['f_val']
+    best_seen = max(values)
+    worse_seen = min(values)
+    median_seen = np.median(values)
+    mean_seen = np.mean(values)
+    # dizionaro di output
+    dict_return = dict()
+    dict_return.update({"best_seen": best_seen})
+    dict_return.update({"worse_seen": worse_seen})
+    dict_return.update({"median_seen": median_seen})
+    dict_return.update({"mean_seen": mean_seen})
+    return dict_return
