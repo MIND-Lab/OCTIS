@@ -14,7 +14,6 @@ class Dataset:
         Initialize a dataset, parameters are optional
         if you want to load a dataset, initialize this
         class with default values and use the load method
-
         Parameters
         ----------
         corpus : corpus of the dataset
@@ -134,11 +133,9 @@ class Dataset:
     def _save_metadata(self, file_name):
         """
         Saves metadata in json serialized format
-
         Parameters
         ----------
         file_name : name of the file to write
-
         Returns
         -------
         True if the data is saved, False otherwise
@@ -153,11 +150,9 @@ class Dataset:
     def _load_metadata(self, file_name):
         """
         Loads metadata from json serialized format
-
         Parameters
         ----------
         file_name : name of the file to read
-
         Returns
         -------
         True if the data is updated, False otherwise
@@ -174,11 +169,9 @@ class Dataset:
     def _save_corpus(self, file_name):
         """
         Saves corpus in a file, a line for each document
-
         Parameters
         ----------
         file_name : name of the file to write
-
         Returns
         -------
         True if the data is saved, False otherwise
@@ -194,11 +187,9 @@ class Dataset:
     def _load_corpus(self, file_name):
         """
         Loads corpus from a file
-
         Parameters
         ----------
         file_name : name of the file to read
-
         Returns
         -------
         True if the data is updated, False otherwise
@@ -216,11 +207,9 @@ class Dataset:
     def _save_edges(self, file_name):
         """
         Saves edges in a file, a line for each document
-
         Parameters
         ----------
         file_name : name of the file to write
-
         Returns
         -------
         True if the data is saved, False otherwise
@@ -236,11 +225,9 @@ class Dataset:
     def _load_edges(self, file_name):
         """
         Loads edges from a file
-
         Parameters
         ----------
         file_name : name of the file to read
-
         Returns
         -------
         True if the data is updated, False otherwise
@@ -259,11 +246,9 @@ class Dataset:
         """
         Saves the labels in a file, each line contains
         the labels of a single document
-
         Parameters
         ----------
         file_name : name of the file to write
-
         Returns
         -------
         True if the data is saved, False otherwise
@@ -279,11 +264,9 @@ class Dataset:
     def _load_labels(self, file_name):
         """
         Loads labels from a file
-
         Parameters
         ----------
         file_name : name of the file to read
-
         Returns
         -------
         True if the data is updated, False otherwise
@@ -301,11 +284,9 @@ class Dataset:
     def _save_vocabulary(self, file_name):
         """
         Saves vocabulary dictionary in a file
-
         Parameters
         ----------
         file_name : name of the file to write
-
         Returns
         -------
         True if the data is saved, False otherwise
@@ -322,11 +303,9 @@ class Dataset:
     def _load_vocabulary(self, file_name):
         """
         Loads vocabulary from a file
-
         Parameters
         ----------
         file_name : name of the file to read
-
         Returns
         -------
         True if the data is updated, False otherwise
@@ -345,12 +324,10 @@ class Dataset:
     def save(self, path):
         """
         Saves all the dataset info in a folder
-
         Parameters
         ----------
         path : path to the folder in wich files are saved.
                If the folder doesn't exist it will be created
-
         Returns
         -------
         True if the data is saved, False otherwise
@@ -366,15 +343,16 @@ class Dataset:
     def load(self, path):
         """
         Loads all the dataset from a folder
-
         Parameters
         ----------
         path : path of the folder to read
-
         Returns
         -------
         True if the data is saved, False otherwise
         """
+        self.path=path
+        
+        
         corpus_readed = self._load_corpus(path+"/corpus.txt")
         vocabulary_readed = self._load_vocabulary(path+"/vocabulary.txt")
         self._load_labels(path+"/labels.txt")

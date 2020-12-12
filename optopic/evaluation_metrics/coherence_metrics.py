@@ -35,6 +35,7 @@ class Coherence(Abstract_Metric):
         self.dictionary = Dictionary(self.texts)
         self.topk = parameters['topk']
         self.measure = parameters['measure']
+        self.parameters=parameters
 
     def info(self):
         return {
@@ -88,6 +89,7 @@ class Coherence_word_embeddings(Abstract_Metric):
         super().__init__()
         parameters = defaults.em_coherence_we.copy()
         parameters.update(metric_parameters)
+        self.parameters=parameters
 
         self.binary = parameters['binary']
         self.topk = parameters['topk']
@@ -148,6 +150,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
         super().__init__()
         parameters = defaults.em_coherence_we_pc.copy()
         parameters.update(metric_parameters)
+        self.parameters=parameters
 
         self.topk = parameters['topk']
         if parameters['w2v_model'] is None:
@@ -218,6 +221,7 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
         super().__init__()
         parameters = defaults.em_coherence_we_pc.copy()
         parameters.update(metric_parameters)
+        self.parameters=parameters
 
         self.topk = parameters['topk']
         if parameters['w2v_model'] is None:

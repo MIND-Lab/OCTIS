@@ -16,6 +16,7 @@ class F1Score(Abstract_Metric):
         self.test_document_representations = None
         parameters = defaults.em_f1_score.copy()
         parameters.update(metric_parameters)
+        self.parameters=parameters
         if 'dataset' not in metric_parameters.keys():
             raise Exception('A dataset is required to extract the labels')
         else:
