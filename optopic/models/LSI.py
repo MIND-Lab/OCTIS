@@ -24,23 +24,23 @@ class LSI(Abstract_Model):
         num_topics (int, optional) – Number of requested factors
 
         chunksize (int, optional) – Number of documents to be used in each
-        training chunk. 
+        training chunk.
 
         decay (float, optional) – Weight of existing observations relatively
-        to new ones. 
+        to new ones.
 
         distributed (bool, optional) – If True - distributed mode (parallel
-        execution on several machines) will be used. 
+        execution on several machines) will be used.
 
         onepass (bool, optional) – Whether the one-pass algorithm should be
-        used for training. Pass False to force a multi-pass stochastic algorithm. 
+        used for training. Pass False to force a multi-pass stochastic algorithm.
 
         power_iters (int, optional) – Number of power iteration steps to be used.
         Increasing the number of power iterations improves accuracy, but lowers
-        performance 
+        performance
 
         extra_samples (int, optional) – Extra samples to be used besides the rank
-        k. Can improve accuracy. 
+        k. Can improve accuracy.
         """
         self.hyperparameters["num_topics"] = num_topics
         self.hyperparameters["chunksize"] = chunksize
@@ -81,8 +81,7 @@ class LSI(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, top_words=10,
-                    topic_word_matrix=True, topic_document_matrix=True):
+    def train_model(self, dataset, hyperparameters={}, top_words=10):
         """
         Train the model and return output
 
@@ -93,11 +92,6 @@ class LSI(Abstract_Model):
         top_words : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
-        topic_word_matrix : if True returns the topic word matrix in the output
-                            Default True
-        topic_document_matrix : if True returns the topic document
-                                matrix in the output
-                                Default True
 
         Returns
         -------
@@ -126,8 +120,7 @@ class LSI(Abstract_Model):
 
         result = {}
 
-        if topic_word_matrix:
-            result["topic-word-matrix"] = self._get_topic_word_matrix()
+        result["topic-word-matrix"] = self._get_topic_word_matrix()
 
         if top_words > 0:
             topics_output = []
@@ -137,8 +130,8 @@ class LSI(Abstract_Model):
                 topics_output.append(top_k_words)
             result["topics"] = topics_output
 
-        if topic_document_matrix:
-            result["topic-document-matrix"] = self._get_topic_document_matrix()
+
+        result["topic-document-matrix"] = self._get_topic_document_matrix()
 
         if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
@@ -147,8 +140,7 @@ class LSI(Abstract_Model):
                 self.trained_model.add_documents(new_corpus)
                 self.id_corpus.extend(new_corpus)
 
-                if topic_word_matrix:
-                    result["test-topic-word-matrix"] = self._get_topic_word_matrix()
+                result["test-topic-word-matrix"] = self._get_topic_word_matrix()
 
                 if top_words > 0:
                     topics_output = []
@@ -159,8 +151,7 @@ class LSI(Abstract_Model):
                         topics_output.append(top_k_words)
                     result["test-topics"] = topics_output
 
-                if topic_document_matrix:
-                    result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+                result["test-topic-document-matrix"] = self._get_topic_document_matrix()
 
             else:
                 test_document_topic_matrix = []

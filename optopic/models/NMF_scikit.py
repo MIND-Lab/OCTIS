@@ -77,8 +77,7 @@ class NMF_scikit(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, topics=10,
-                    topic_word_matrix=True, topic_document_matrix=True):
+    def train_model(self, dataset, hyperparameters={}, topics=10):
         """
         Train the model and return output
 
@@ -89,11 +88,7 @@ class NMF_scikit(Abstract_Model):
         topics : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
-        topic_word_matrix : if True returns the topic word matrix in the output
-                            Default True
-        topic_document_matrix : if True returns the topic document
-                                matrix in the output
-                                Default True
+
 
         Returns
         -------
@@ -136,27 +131,23 @@ class NMF_scikit(Abstract_Model):
 
         result = {}
 
-        if topic_word_matrix:
-            result["topic-word-matrix"] = H
+        result["topic-word-matrix"] = H
 
         if topics > 0:
             result["topics"] = self.get_topics(H, topics)
 
-        if topic_document_matrix:
-            result["topic-document-matrix"] = np.array(W).transpose()
+        result["topic-document-matrix"] = np.array(W).transpose()
 
         if self.use_partitions:
             if self.update_with_test:
                # NOT IMPLEMENTED YET
 
-                if topic_word_matrix:
-                    result["test-topic-word-matrix"] = W
+                result["test-topic-word-matrix"] = W
 
                 if topics > 0:
                     result["test-topics"] = self.get_topics(W, topics)
 
-                if topic_document_matrix:
-                    result["test-topic-document-matrix"] = H
+                result["test-topic-document-matrix"] = H
 
             else:
                 result["test-document-topic-matrix"] = model.transform(

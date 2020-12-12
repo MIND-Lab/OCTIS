@@ -42,27 +42,27 @@ class LDA(Abstract_Model):
         online iterative learning.
 
         alpha ({numpy.ndarray, str}, optional) – Can be set to an 1D array of
-        length equal to the number of expected topics that expresses our 
+        length equal to the number of expected topics that expresses our
         a-priori belief for the each topics’ probability. Alternatively
         default prior selecting strategies can be employed by supplying
         a string:
 
             ’asymmetric’: Uses a fixed normalized asymmetric prior of
-            1.0 / topicno.    
+            1.0 / topicno.
 
-            ’auto’: Learns an asymmetric prior from the corpus 
+            ’auto’: Learns an asymmetric prior from the corpus
             (not available if distributed==True).
 
         eta ({float, np.array, str}, optional) – A-priori belief on word
         probability, this can be:
 
-            scalar for a symmetric prior over topic/word probability,   
+            scalar for a symmetric prior over topic/word probability,
 
-            vector of length num_words to denote an asymmetric user defined 
-            probability for each word,  
+            vector of length num_words to denote an asymmetric user defined
+            probability for each word,
 
             matrix of shape (num_topics, num_words) to assign a probability
-            for each word-topic combination,    
+            for each word-topic combination,
 
             the string ‘auto’ to learn the asymmetric prior from the data.
 
@@ -157,8 +157,7 @@ class LDA(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, top_words=10,
-                    topic_word_matrix=True, topic_document_matrix=True):
+    def train_model(self, dataset, hyperparameters={}, top_words=10):
         """
         Train the model and return output
 
@@ -169,16 +168,10 @@ class LDA(Abstract_Model):
         top_words : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
-        topic_word_matrix : if True returns the topic word matrix in the output
-                            Default True
-        topic_document_matrix : if True returns the topic document
-                                matrix in the output
-                                Default True
-
         Returns
         -------
         result : dictionary with up to 3 entries,
-                 'topics', 'topic-word-matrix' and 
+                 'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
         if self.use_partitions:
@@ -211,8 +204,7 @@ class LDA(Abstract_Model):
 
         result = {}
 
-        if topic_word_matrix:
-            result["topic-word-matrix"] = self.trained_model.get_topics()
+        result["topic-word-matrix"] = self.trained_model.get_topics()
 
         if top_words > 0:
             topics_output = []
@@ -222,8 +214,7 @@ class LDA(Abstract_Model):
                 topics_output.append(top_k_words)
             result["topics"] = topics_output
 
-        if topic_document_matrix:
-            result["topic-document-matrix"] = self._get_topic_document_matrix()
+        result["topic-document-matrix"] = self._get_topic_document_matrix()
 
         if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
@@ -232,8 +223,7 @@ class LDA(Abstract_Model):
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)
 
-                if topic_word_matrix:
-                    result["test-topic-word-matrix"] = self.trained_model.get_topics()
+                result["test-topic-word-matrix"] = self.trained_model.get_topics()
 
                 if top_words > 0:
                     topics_output = []
@@ -244,8 +234,7 @@ class LDA(Abstract_Model):
                         topics_output.append(top_k_words)
                     result["test-topics"] = topics_output
 
-                if topic_document_matrix:
-                    result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+                result["test-topic-document-matrix"] = self._get_topic_document_matrix()
 
             else:
                 test_document_topic_matrix = []

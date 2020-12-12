@@ -98,8 +98,7 @@ class HDP(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, topics=10,
-                    topic_word_matrix=True, topic_document_matrix=True):
+    def train_model(self, dataset, hyperparameters={}, topics=10):
         """
         Train the model and return output
 
@@ -110,16 +109,11 @@ class HDP(Abstract_Model):
         topics : if greather than 0 returns the top k most significant
                  words for each topic in the output
                  Default True
-        topic_word_matrix : if True returns the topic word matrix in the output
-                            Default True
-        topic_document_matrix : if True returns the topic document
-                                matrix in the output
-                                Default True
 
         Returns
         -------
         result : dictionary with up to 3 entries,
-                 'topics', 'topic-word-matrix' and 
+                 'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
         partition = []
@@ -143,8 +137,7 @@ class HDP(Abstract_Model):
 
         result = {}
 
-        if topic_word_matrix:
-            result["topic-word-matrix"] = self.trained_model.get_topics()
+        result["topic-word-matrix"] = self.trained_model.get_topics()
 
         if topics > 0:
             topics_output = []
@@ -154,8 +147,7 @@ class HDP(Abstract_Model):
                 topics_output.append(top_k_words)
             result["topics"] = topics_output
 
-        if topic_document_matrix:
-            result["topic-document-matrix"] = self._get_topic_document_matrix()
+        result["topic-document-matrix"] = self._get_topic_document_matrix()
 
         if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
@@ -164,8 +156,7 @@ class HDP(Abstract_Model):
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)
 
-                if topic_word_matrix:
-                    result["test-topic-word-matrix"] = self.trained_model.get_topics()
+                result["test-topic-word-matrix"] = self.trained_model.get_topics()
 
                 if topics > 0:
                     topics_output = []
@@ -176,8 +167,7 @@ class HDP(Abstract_Model):
                         topics_output.append(top_k_words)
                     result["test-topics"] = topics_output
 
-                if topic_document_matrix:
-                    result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+                result["test-topic-document-matrix"] = self._get_topic_document_matrix()
 
             else:
                 test_document_topic_matrix = []

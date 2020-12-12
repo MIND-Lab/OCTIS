@@ -14,17 +14,12 @@ class ETM(Abstract_Model):
 
     def __init__(self):
         self.hyperparameters = {}
-        self.bool_topic_doc = True
-        self.bool_topic_word = True
         self.top_word = 10
         self.early_stopping = None
 
 
-    def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True,
-                    topic_document_matrix=True, embeddings=None, train_embeddings=True):
+    def train_model(self, dataset, hyperparameters, top_words=10, embeddings=None, train_embeddings=True):
         self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
-        self.bool_topic_doc = topic_document_matrix
-        self.bool_topic_word = topic_word_matrix
         self.top_word = top_words
         self.early_stopping = EarlyStopping(patience=5, verbose=True)
 
@@ -231,18 +226,9 @@ class ETM(Abstract_Model):
                 topic_words = [self.vocab[a] for a in top_words]
                 # print('Topic {}: {}'.format(k, topic_words))
                 topic_w.append(topic_words)
-        if self.bool_topic_doc and self.bool_topic_word:
-            info['topics'] = topic_w
-            info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
-            info['topic-document-matrix'] = theta.cpu().detach().numpy().T
-        elif self.bool_topic_doc and not self.bool_topic_word:
-            info['topics'] = topic_w
-            info['topic-document-matrix'] = theta.cpu().detach().numpy().T
-        elif not self.bool_topic_doc and self.bool_topic_word:
-            info['topics'] = topic_w
-            info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
-        else:
-            info['topics'] = topic_w
+        info['topics'] = topic_w
+        info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
+        info['topic-document-matrix'] = theta.cpu().detach().numpy().T
         print(info['topics'])
         return info
 
@@ -269,19 +255,13 @@ class ETM(Abstract_Model):
         emp_array = np.empty((0, self.hyperparameters['num_topics']))
         topic_doc = np.asarray(topic_d)
         length = topic_doc.shape[0]
-        if self.bool_topic_doc:
-            # batch concatenation
-            for i in range(length):
-                emp_array = np.concatenate([emp_array, topic_doc[i]])
-            info['test-topic-document-matrix'] = emp_array.T
+        # batch concatenation
+        for i in range(length):
+            emp_array = np.concatenate([emp_array, topic_doc[i]])
+        info['test-topic-document-matrix'] = emp_array.T
 
         return info
 
-
-    #def get_test(self):
-    #    tok = self.test_tokens
-    #    cou = self.test_counts
-    #    return tok, cou
 
     def set_default_hyperparameters(self, hyperparameters):
         self.hyperparameters['num_topics'] = hyperparameters.get(
@@ -335,26 +315,25 @@ class ETM(Abstract_Model):
         idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
         vocab_size = len(idx2token.keys())
 
-        X_train = vec.transform(train_corpus)
-        X_train_tokens, X_train_count = split_bow(X_train, X_train.shape[0])
+        x_train = vec.transform(train_corpus)
+        x_train_tokens, x_train_count = split_bow(x_train, x_train.shape[0])
 
         if test_corpus is not None:
             X_test = vec.transform(test_corpus)
-            X_test_tokens, X_test_count = split_bow(X_test, X_test.shape[0])
+            x_test_tokens, x_test_count = split_bow(X_test, X_test.shape[0])
 
-        if validation_corpus is not None:
-            X_validation = vec.transform(validation_corpus)
-            X_val_tokens, X_val_count = split_bow(X_validation, X_validation.shape[0])
+            if validation_corpus is not None:
+                x_validation = vec.transform(validation_corpus)
+                x_val_tokens, x_val_count = split_bow(x_validation, x_validation.shape[0])
 
-        if test_corpus is not None and validation_corpus is not None:
-            return X_train_tokens, X_train_count, X_test_tokens, X_test_count, X_val_tokens, X_val_count, vocab_size
-        elif test_corpus is not None and validation_corpus is None:
-            return X_train_tokens, X_train_count, X_test_tokens, X_test_count, vocab_size
-        elif test_corpus is None and validation_corpus is not None:
-            return X_train_tokens, X_train_count, X_val_tokens, X_val_count, vocab_size
-        elif test_corpus is None and validation_corpus is None:
-            return X_train_tokens, X_train_count, vocab_size
+                return x_train_tokens, x_train_count, x_test_tokens, x_test_count, x_val_tokens, x_val_count, vocab_size
+            else:
+                return x_train_tokens, x_train_count, x_test_tokens, x_test_count, vocab_size
         else:
-            print("something strange is happening?")
-
+            if validation_corpus is not None:
+                x_validation = vec.transform(validation_corpus)
+                x_val_tokens, x_val_count = split_bow(x_validation, x_validation.shape[0])
+                return x_train_tokens, x_train_count, x_val_tokens, x_val_count, vocab_size
+            else:
+                return x_train_tokens, x_train_count, vocab_size
 

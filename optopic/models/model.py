@@ -24,18 +24,13 @@ class Abstract_Model(ABC):
             self.hyperparameters[key] = value
 
     @abstractmethod
-    def train_model(self, dataset, hyperparameters, top_words=10, topic_word_matrix=True, topic_document_matrix=True):
+    def train_model(self, dataset, hyperparameters, top_words=10):
         """
         Train the model.
         Return a dictionary with up to 3 entries,
         'topics', 'topic-word-matrix' and 'topic-document-matrix'.
         'topics' is the list of the most significative words for
         each topic (list of lists of strings).
-        'topic-word-matrix' is an NxV matrix of weights where N is the number
-        of topics and V is the vocabulary length.
-        'topic-document-matrix' is an NxD matrix of weights where N is the number
-        of topics and D is the number of documents in the corpus.
-
         """
         pass
 
