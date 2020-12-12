@@ -35,6 +35,8 @@ class Coherence(Abstract_Metric):
         self.dictionary = Dictionary(self.texts)
         self.topk = parameters['topk']
         self.measure = parameters['measure']
+        self.parameters=parameters
+
 
     def info(self):
         return {

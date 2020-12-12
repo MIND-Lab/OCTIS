@@ -2,16 +2,21 @@
 import time
 from pathlib import Path
 
+# utils from numpy
 import numpy as np
-# utils from skopt and sklearn
-from sklearn.gaussian_process.kernels import Matern
 
+# utils from skopt and sklearn
+from sklearn.gaussian_process.kernels import *
+from skopt.space.space import *
+
+from dataset.dataset import Dataset
 # utils from other files of the framework
 from models.model import save_model_output
 from optimization.optimizer_tool import BestEvaluation
 from optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
-from optimization.optimizer_tool import save_csv, early_condition
+from optimization.optimizer_tool import early_condition
 from optimization.optimizer_tool import choose_optimizer
+
 
 class Optimizer:
     """
@@ -29,8 +34,8 @@ class Optimizer:
                  initial_point_generator="lhs",  # work only for version skopt 8.0!!!
                  optimization_type='Maximize', model_runs=5, surrogate_model="RF",
                  kernel=1.0 * Matern(length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5),
-                 acq_func="LCB", random_state=False, x0=[], y0=[], save_models=False,
-                 save_step=1, save_name="result", save_path="results/", early_stop=False, early_step=5,
+                 acq_func="LCB", random_state=False, x0=[], y0=[], 
+                 save_models=False,save_step=1, save_name="result", save_path="results/", early_stop=False, early_step=5,
                  plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False):
 
         """
@@ -89,7 +94,6 @@ class Optimizer:
         self.x0 = x0
         self.y0 = y0
         self.save_path = save_path
-        self.save_csv = save_csv
         self.save_step = save_step
         self.save_name = save_name                
         self.save_models = save_models
@@ -103,11 +107,6 @@ class Optimizer:
         # create the directory where the results are saved
         Path(self.save_path ).mkdir(parents=True, exist_ok=True)
 
-        # create of the sub-directory where the models are saved
-        if self.save_models:
-            self.model_path_models = self.save_path  + "models/"
-            Path(self.model_path_models).mkdir(parents=True, exist_ok=True)
-
         #inizialize the dictories about model_runs
         self.dict_model_runs[metric.__class__.__name__]=dict()
         for extra_metric in extra_metrics:
@@ -117,7 +116,6 @@ class Optimizer:
         if self.check_BO_parameters() == -1:
             print("ERROR: wrong inizialitation of BO parameters")
             return None
-
 
     def _objective_function(self, hyperparameters):
         """
@@ -260,18 +258,73 @@ class Optimizer:
 
         return results
 
-    def restart_optimize(self,BestObject):    
- 
+    def restart_optimize(self,
+                         BestObject,
+                         number_of_call,
+                         model,
+                         metric=None,
+                         extra_metrics=[],
+                         acq_func=None,
+                         surrogate_model=None,
+                         kernel=None,
+                         optimization_type=None,
+                         model_runs=None,
+                         save_models=None,
+                         save_step=None,
+                         save_name=None,
+                         save_path=None,                         
+                         early_stop=None,
+                         early_step=None,                         
+                         plot_model=None,
+                         plot_best_seen=None,
+                         plot_name=None,
+                         log_scale_plot=None,
+                         search_space=None):    
+
+        self.model=model
+        
+        ###re-inizialization of the parameters
+        self.extra_metrics=extra_metrics 
+        self.search_space=search_space if search_space else eval(BestObject["search_space"])
+        self.acq_func =acq_func if acq_func else BestObject["acq_func"]
+        self.surrogate_model =surrogate_model if surrogate_model else BestObject["surrogate_model"]       
+        self.kernel =kernel if kernel else eval(BestObject["kernel"])            
+        self.optimization_type = optimization_type if optimization_type else BestObject["optimization_type"]          
+        self.model_runs = model_runs if model_runs else BestObject["model_runs"]
+        self.save_models = save_models if save_models else BestObject["save_models"]     
+        self.save_step = save_step if save_step else BestObject["save_step"]             
+        self.save_models = save_models if save_models else BestObject["save_models"] 
+        self.save_path = save_path if save_path else BestObject["save_path"]                       
+        self.early_stop = early_stop if early_stop else BestObject["early_stop"]         
+        self.early_step = early_step if early_step else BestObject["early_step"]   
+        self.plot_model = plot_model if plot_model else BestObject["plot_model"]         
+        self.plot_best_seen = plot_best_seen if plot_best_seen else BestObject["plot_best_seen"]         
+        self.plot_name = plot_name if plot_name else BestObject["plot_name"]       
+        self.log_scale_plot = log_scale_plot if log_scale_plot else BestObject["log_scale_plot"]    
+        
+        if metric is None:
+            import evaluation_metrics.coherence_metrics as metrics
+            metric_attributes=BestObject["metric_attributes"]
+            self.metric=getattr(metrics,BestObject["metric_name"])(metric_attributes)
+        else:
+            self.metric=metric
+           
+        ###Load of the dataset
+        dataset = Dataset()
+        dataset.load(BestObject["dataset_path"])
+        self.dataset=dataset
+        
         #### Choice of the optimizer
         opt=choose_optimizer(self,restart=True);
 
         ####update of the model through x0,y0
-        time_eval = BestObject["time"].copy()
+        time_eval = BestObject["time"]
 
         #### update number_of_call for restarting
         number_of_previous_calls=len(time_eval)
-        self.number_of_call=len(time_eval)+self.number_of_call 
-        
+        self.number_of_call=number_of_previous_calls+number_of_call
+        self.current_call=number_of_previous_calls
+
         self.dict_model_runs=BestObject['dict_model_runs']
         
         for metric in self.extra_metrics:
@@ -281,11 +334,9 @@ class Optimizer:
                     self.dict_model_runs[metric.__class__.__name__]["iteration_"+str(i)]=0
         
         for i in range(number_of_previous_calls):
-            next_x=[BestObject["xvals"][key][i] for key in self.hyperparameters]
-            f_val=-BestObject["function evaluations"][i] if self.optimization_type == 'Maximize' else BestObject["function evaluations"][i]
+            next_x=[BestObject["x_iters"][key][i] for key in self.hyperparameters]
+            f_val=-BestObject["f_val"][i] if self.optimization_type == 'Maximize' else BestObject["f_val"][i]
             res = opt.tell(next_x, f_val)          
-  
-        self.current_call=self.current_call+number_of_previous_calls
  
         ####for loop to perform Bayesian Optimization        
         for i in range(number_of_previous_calls,self.number_of_call):
@@ -379,5 +430,9 @@ class Optimizer:
 
         if (self.save_path[-1] != '/'):
             self.save_path = self.save_path + '/'
-            
+          
+        if self.save_models:
+            self.model_path_models = self.save_path  + "models/"
+            Path(self.model_path_models).mkdir(parents=True, exist_ok=True)
+
         return 0

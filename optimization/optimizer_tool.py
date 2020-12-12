@@ -174,67 +174,6 @@ def plot_bayesian_optimization(values, name_plot,
 
     plt.close()
 
-def save_csv(name_csv,res,
-             matrix_model_runs,
-             extra_metrics,        
-             dataset_name, 
-             hyperparameters_name, 
-             metric_name, 
-             surrogate_model_name, 
-             acquisition_function_name, 
-             times, 
-             ):
-    """
-        Create a csv file to describe the topic model optimization.
-
-        Input parameters
-        ----------
-        name_csv                : [string] name of the .csv file
-
-        res                     :  results of BO 
-
-        matrix_model_runs       : Tensor of metrics computed through BO (1+number of extra metrics,number of calls,number_of_runs)
-
-        extra_metrics           : List of extra metrics names 
-
-        dataset_name            : [string] name of the dataset
-
-        hyperparameters_name    : [list of string] name of the hyperparameters
-
-        metric_name             : [string] name of the metric optimized
-
-        surrogate_model_name    : [string] surrogate model used
-
-        acquisition_function_name : [string] acquisition function used
-
-        times                   : list of time for each point evaluated by Bayesian_optimization
-        
-        """
-
-    n_row = len(res.func_vals)
-    n_extra_metrics=matrix_model_runs.shape[0]-1
-    
-    #creation of the Dataframe 
-    df = pd.DataFrame()
-
-    df['DATASET'] = [dataset_name] * n_row
-    for hyperparameter,j in zip(hyperparameters_name,range(len(hyperparameters_name))):
-        df[hyperparameter] = [res.x_iters[i][j] for i in range(n_row)]  
-    df['SURROGATE'] = [surrogate_model_name] * n_row
-    df['ACQUISITION FUNC'] = [acquisition_function_name] * n_row
-    df['NUM_ITERATION']=[i for i in range(n_row)] 
-    df[metric_name + '(optimized)']=np.median(matrix_model_runs[0,:,:],axis=1)  
-    df['TIME'] = [times[i] for i in range(n_row)]           
-    df['Mean(model_runs)'] = np.mean(matrix_model_runs[0,:,:],axis=1)
-    df['Standard_Deviation(model_runs)'] = np.std(matrix_model_runs[0,:,:],axis=1)
-    for metric,i in zip(extra_metrics,range(n_extra_metrics)):
-        try:
-            df[metric.info()["name"]+'(not optimized)']=np.median(matrix_model_runs[i+1,:,:],axis=1)    
-        except:
-            df[metric.__class__.__name__+'(not optimized)']=np.median(matrix_model_runs[i+1,:,:],axis=1)   
-    #save the Dataframe to a csv
-    df.to_csv(name_csv+".csv", index=False, na_rep='Unkown')
-
 ##############################################################################
 class BestEvaluation:
     
@@ -245,26 +184,40 @@ class BestEvaluation:
         """
         search_space=params.search_space
         optimization_type=params.optimization_type
-
         n_calls=len(resultsBO.func_vals)
- 
+                
         #Info about optimization
         self.info=dict()
-        self.info.update({"dataset name":params.dataset.get_metadata()["info"]["name"]})
-        self.info.update({"metric name":params.metric.__class__.__name__})
-        self.info.update({"surrogate model":params.surrogate_model})
-        self.info.update({"kernel":params.kernel})
-        self.info.update({"acquisition function":params.acq_func})
-        self.info.update({"number of calls":n_calls})
-        self.info.update({"type_of optimization":"Maximize" if optimization_type=="Maximize" else "Minimize"})
+        self.info.update({"dataset_name":params.dataset.get_metadata()["info"]["name"]})
+        self.info.update({"dataset_path":params.dataset.path})  
+        self.info.update({"metric_name":params.metric.__class__.__name__})      
+        self.info.update({"kernel":str(params.kernel)})
+        self.info.update({"number of calls":n_calls}) 
+        self.info.update({"acq_func":params.acq_func})
+        self.info.update({"surrogate_model":params.surrogate_model})
+        self.info.update({"optimization_type":"Maximize" if optimization_type=="Maximize" else "Minimize"})
+        self.info.update({"model_runs":params.model_runs})
+        self.info.update({"save_models":params.save_models})
+        self.info.update({"save_step":params.save_step})
+        self.info.update({"save_name":params.save_name})
+        self.info.update({"save_path":params.save_path})
+        self.info.update({"early_stop":params.early_stop})
+        self.info.update({"early_step":params.early_step})        
+        self.info.update({"plot_model":params.plot_model})
+        self.info.update({"plot_best_seen":params.plot_best_seen})
+        self.info.update({"plot_name":params.plot_name})
+        self.info.update({"log_scale_plot":params.log_scale_plot})  
+        self.info.update({"search_space":str(params.search_space)})
+        self.info.update({"metric_name":params.metric.__class__.__name__})
+        self.info.update({"metric_attributes":params.metric.parameters})
 
         #Reverse the sign of minimization if the problem is a maximization    
         if optimization_type=="Maximize":
-            self.func_vals=[-val for val in resultsBO.func_vals]     
-            self.y_best=-resultsBO.fun                                         #Best value
+            self.func_vals=[-val for val in resultsBO.func_vals]
+            self.y_best=resultsBO.fun
         else:
             self.func_vals=[val for val in resultsBO.func_vals]
-            self.y_best=resultsBO.fun                                          #Best value
+            self.y_best=resultsBO.fun
 
         self.x_iters=dict()
         name_hyperparameters=list(search_space.keys())
@@ -274,34 +227,27 @@ class BestEvaluation:
         for i,name in enumerate(name_hyperparameters):
             self.x_iters.update({name: [resultsBO.x_iters[j][i] for j in range(lenList)]})   
 
-        self.x_best=resultsBO.x    
+        self.times=times
         self.dict_model_runs= params.dict_model_runs
-        self.times= times 
         self.metric=params.metric
-        self.extra_metrics=params.extra_metrics
-            
+        self.extra_metrics=params.extra_metrics    
+        self.search_space=params.search_space
+        
     def save(self,name_file):
         """
         Save results for Bayesian Optimization
         """
         
         Results=dict()
-        Results.update({"dataset name":self.info["dataset name"]})
-        Results.update({"metric name":self.info["metric name"]})
-        Results.update({"surrogate model":self.info["surrogate model"]})
-        Results.update({"acquisition function":self.info["acquisition function"]})
-        Results.update({"number of calls":self.info["number of calls"]})
-        Results.update({"type_of optimization":self.info["type_of optimization"]})
-        Results.update({"function evaluations":self.func_vals})
-        Results.update({"best function value":self.y_best})
-        Results.update({"xvals":self.x_iters})
-        Results.update({"best point":self.x_best})
+        Results.update(self.info)
+                
         Results.update({"time":self.times})
         Results.update({"dict_model_runs":self.dict_model_runs})
+        Results.update({"x_iters":self.x_iters})
+        Results.update({"f_val":self.func_vals})
         
         with open(name_file, 'w') as fp:
             json.dump(Results, fp)
-
 
     def save_to_csv(self,name_file):     
 
@@ -310,9 +256,9 @@ class BestEvaluation:
         
         #creation of the Dataframe 
         df = pd.DataFrame()       
-        df['dataset'] = [self.info["dataset name"]] * n_row
-        df['surrogate model'] = [self.info["surrogate model"]] * n_row
-        df['acquisition function'] = [self.info["acquisition function"]] * n_row
+        df['dataset'] = [self.info["dataset_name"]] * n_row
+        df['surrogate model'] = [self.info["surrogate_model"]] * n_row
+        df['acquisition function'] = [self.info["acq_func"]] * n_row
         df['num_iteration']=[i for i in range(n_row)] 
         df['time'] = [self.times[i] for i in range(n_row)]  
         df['Mean(model_runs)'] = [np.mean(self.dict_model_runs[self.metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]    
