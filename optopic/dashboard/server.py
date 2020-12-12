@@ -103,7 +103,7 @@ def getBatchExperiments():
             newExp = experiment
             newExp["optimization_data"] = queueManager.getExperimentInfo(
                 experiment)
-            experiments = experiments + newExp
+            experiments.append(newExp)
     return json.dumps(experiments)
 
 

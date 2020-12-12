@@ -22,6 +22,7 @@ class Topic_diversity(Abstract_Metric):
         parameters = defaults.em_topic_diversity.copy()
         parameters.update(metric_parameters)
         self.topk = parameters["topk"]
+        self.parameters = parameters
 
     def info(self):
         return {
@@ -71,6 +72,7 @@ class InvertedRBO(Abstract_Metric):
         super().__init__()
         parameters = defaults.em_invertedRBO.copy()
         parameters.update(metric_parameters)
+        self.parameters = parameters
 
         self. topk = parameters["topk"]
         self.weight = parameters["weight"]
@@ -111,10 +113,12 @@ class InvertedRBO(Abstract_Metric):
         return word2index
 
 
-
 class WordEmbeddingsInvertedRBO(Abstract_Metric):
-    def __init__(self,metric_parameters=defaults.em_word_embeddings_invertedRBO.copy()):
+    def __init__(self, metric_parameters={}):
         super().__init__()
+        parameters = defaults.em_word_embeddings_invertedRBO.copy()
+        parameters.update(metric_parameters)
+        self.parameters = parameters
         self.topk = metric_parameters["topk"]
         self.weight = metric_parameters["weight"]
         self.word_embedding_model = metric_parameters['embedding_model']

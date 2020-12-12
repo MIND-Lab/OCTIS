@@ -40,6 +40,7 @@ class KL_uniform(Abstract_Metric):
         Initialize metric
         """
         super().__init__()
+        self.parameters=metric_parameters
 
     def info(self):
         return {
@@ -88,6 +89,7 @@ class KL_vacuous(Abstract_Metric):
         Initialize metric
         """
         super().__init__()
+        self.parameters=metric_parameters
 
     def info(self):
         return {
@@ -145,6 +147,7 @@ class KL_background(Abstract_Metric):
         Initialize metric
         """
         super().__init__()
+        self.parameters=metric_parameters
 
     def info(self):
         return {
