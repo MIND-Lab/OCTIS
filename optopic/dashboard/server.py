@@ -134,6 +134,12 @@ def ManageExperiments():
     return render_template("ManageExperiments.html")
 
 
+@ app.route('/SingleExperiment/<batch>/<id>')
+def SingleExperiment(batch="", id=""):
+    output = queueManager.getModel(batch, id, 0, 0)
+    return render_template("SingleExperiment.html", batchName=batch, experimentName=id, output=output)
+
+
 if __name__ == '__main__':
     args = parser.parse_args()
 

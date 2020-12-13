@@ -170,3 +170,9 @@ class QueueManager:
     def _execute_and_update(self):
         startExperiment(self.toRun[self.running[0]])
         self.busy[0] = False
+
+    def getModel(self, batch, experimentId, iteration, model_run):
+        experiment = self.completed[batch+experimentId]
+        path = str(os.path.join(
+            experiment["path"], experiment["experimentId"]))
+        return expManager.getModelInfo(path, iteration, model_run)

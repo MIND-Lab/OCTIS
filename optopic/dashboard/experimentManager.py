@@ -7,8 +7,10 @@ import inspect
 import importlib
 from pathlib import Path
 from importlib import util
+import gensim.corpora as corpora
 import optopic.configuration.defaults as defaults
 from skopt.space.space import Real, Categorical, Integer
+from optopic.models.model import load_model_output
 
 
 path = Path(os.path.dirname(os.path.realpath(__file__)))
@@ -126,6 +128,17 @@ def startExperiment(parameters):
         new_metric = metricClass(single_metric_parameters)
         metrics_to_track.append(new_metric)
 
+    vocabularyPath = str(os.path.join(
+        parameters["path"], parameters["experimentId"], "models"))
+
+    Path(vocabularyPath).mkdir(parents=True, exist_ok=True)
+
+    vocabularyPath = str(os.path.join(vocabularyPath, "vocabulary.json"))
+
+    file = open(vocabularyPath, "w")
+    json.dump(dict(corpora.Dictionary(dataset.get_corpus())), file)
+    file.close()
+
     Optimizer = importOptimizer()
     optimizer = Optimizer(model,
                           dataset,
@@ -209,7 +222,7 @@ def retrieveIterationBoResults(path, iteration):
 # Manca retrieve di Iperparametri iteerazione e topic-word-matrix e document-topic matrix
 
 
-def prior3(path):
+def singleInfo(path):
     """
     Metodo per calcolare media, mediana, best e worse della valutazioni delle funzioni obiettivo
     """
@@ -226,4 +239,11 @@ def prior3(path):
     dict_return.update({"worse_seen": worse_seen})
     dict_return.update({"median_seen": median_seen})
     dict_return.update({"mean_seen": mean_seen})
+
     return dict_return
+
+
+def getModelInfo(path, iteration, modelRun):
+    output = load_model_output(
+        path+"/models/"+str(iteration)+"_"+str(modelRun)+".npz", path+"/models/vocabulary.json", 20)
+    return output

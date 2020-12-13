@@ -467,6 +467,11 @@
 
                     ExpName = document.createElement("div")
                     ExpName.innerHTML = "<span>" + item["batchId"] + " " + item["experimentId"] + "</span>";
+                    ExpName.dataset.expName = item["experimentId"]
+                    ExpName.dataset.batchName = item["batchId"]
+                    ExpName.addEventListener('click', function () {
+                        location.href = "SingleExperiment/" + this.dataset.batchName + "/" + this.dataset.expName
+                    });
 
                     innerDiv.appendChild(a);
                     a.appendChild(ExpName)
