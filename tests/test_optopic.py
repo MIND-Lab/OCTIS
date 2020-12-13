@@ -25,7 +25,7 @@ def data_dir(root_dir):
 
 def test_coherence_measures(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/m10_validation')
+    dataset.load(data_dir + '/m10')
 
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)

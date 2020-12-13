@@ -209,9 +209,15 @@
 
     <div id="projects" class="filter">
         <div class="container">
-            <div class="row"><div id="datasetfilters" class="button-group filters-button-group"></div></div> 
-            <div class="row"><div id="modelfilters" class="button-group filters-button-group"></div></div> 
-            <div class="row"><div id="metricfilters" class="button-group filters-button-group"></div></div> 
+            <div class="row">
+                <div id="datasetfilters" class="button-group filters-button-group"></div>
+            </div>
+            <div class="row">
+                <div id="modelfilters" class="button-group filters-button-group"></div>
+            </div>
+            <div class="row">
+                <div id="metricfilters" class="button-group filters-button-group"></div>
+            </div>
 
             <div class="row">
                 <div class="col-lg-12">
@@ -334,6 +340,8 @@
             refreshCanvas(batchToShow)
         });
 
+        allData = ''
+
         function refreshCanvas(batchIds) {
             $.ajax(
                 {
@@ -343,124 +351,58 @@
                     dataType: 'json',
                     data: JSON.stringify({ "data": Object.keys(batchIds) }),
                     success: function (data) {
+                        allData = data;
 
-                        if (data != null) {
-                            cont = document.getElementById("theCanvas");
-                            cont.innerHTML = '';
+                        modelsSet = new Set();
+                        datasetsSet = new Set();
+                        metricsSet = new Set();
 
-                            modelsSet = new Set();
-                            datasetsSet = new Set();
-                            metricsSet = new Set();
+                        data.forEach(function (item, index) {
+                            modelsSet.add(item["model"]["name"])
+                            datasetsSet.add(item["dataset"])
+                            metricsSet.add(item["optimize_metrics"][0]["name"])
+                        });
 
-                            data.forEach(function (item, index) {
-                                console.log(item)
+                        modelfilterButtons = document.getElementById("modelfilters")
+                        modelfilterButtons.innerHTML = '';
 
-                                innerDiv = document.createElement("div")
-                                innerDiv.classList.add("element-item")
-                                innerDiv.classList.add(item["model"]["name"])
-                                modelsSet.add(item["model"]["name"])
-                                datasetsSet.add(item["dataset"])
-                                metricsSet.add(item["optimize_metrics"][0]["name"])
-
-                                a = document.createElement("a")
-                                a.classList.add("popup-with-move-anim");
-
-                                graph = document.createElement("div")
-                                graph.id = item["experimentId"]
-
-                                best_seen = [item["optimization_data"]["f_val"][0]]
-                                second_axe = [0]
-
-                                for (i = 1; i < item["optimization_data"]["f_val"].length; i++) {
-                                    if (best_seen[i - 1] < item["optimization_data"]["f_val"][i]) {
-                                        best_seen.push(item["optimization_data"]["f_val"][i]);
-                                    } else {
-                                        best_seen.push(best_seen[i - 1]);
-                                    }
-                                    second_axe.push(i);
-                                }
-
-                                var layout = {
-                                    width: 500,
-                                    height: 500,
-                                    margin: {
-                                        l: 50,
-                                        r: 50,
-                                        b: 40,
-                                        t: 40,
-                                        pad: 4
-                                    },
-                                    paper_bgcolor: 'rgba(256,256,256,1)'
-                                };
-
-                                ExpName = document.createElement("div")
-                                ExpName.innerHTML = "<span>" + item["batchId"] + " " + item["experimentId"] + "</span>";
-
-                                innerDiv.appendChild(a);
-                                a.appendChild(ExpName)
-                                a.appendChild(graph);
+                        modelsSet.forEach(function (item, index) {
+                            newFilter = document.createElement("a")
+                            newFilter.classList.add("button")
+                            newFilter.dataset.filter = item
+                            newFilter.dataset.what = "model"
+                            newFilter.innerHTML = "<span>" + item + "</span>"
+                            modelfilterButtons.appendChild(newFilter);
+                        });
 
 
-                                cont.appendChild(innerDiv);
+                        datasetfilterButtons = document.getElementById("datasetfilters")
+                        datasetfilterButtons.innerHTML = '';
 
-                                if (document.getElementById("graphType").checked) {
-                                    var trace = {
-                                        y: item["optimization_data"]["f_val"],
-                                        type: 'box'
-                                    }
-                                    Plotly.newPlot(item["experimentId"], [trace], layout);
-                                }
-                                else {
-
-                                    var trace = {
-                                        x: second_axe,
-                                        y: best_seen,
-                                        type: 'scatter'
-                                    }
-                                    Plotly.newPlot(item["experimentId"], [trace], layout);
-                                }
+                        datasetsSet.forEach(function (item, index) {
+                            newFilter = document.createElement("a")
+                            newFilter.classList.add("button")
+                            newFilter.dataset.filter = item
+                            newFilter.dataset.what = "dataset"
+                            newFilter.innerHTML = "<span>" + item + "</span>"
+                            datasetfilterButtons.appendChild(newFilter);
+                        });
 
 
-                                console.log(item, index);
-                            });
+                        metricfilterButtons = document.getElementById("metricfilters")
+                        metricfilterButtons.innerHTML = '';
 
-                            modelfilterButtons = document.getElementById("modelfilters")
-                            modelfilterButtons.innerHTML = '';
-
-                            modelsSet.forEach(function (item, index) {
-                                newFilter = document.createElement("a")
-                                newFilter.classList.add("button")
-                                newFilter.dataset.filter = "." + item
-                                newFilter.innerHTML = "<span>" + item + "</span>"
-                                modelfilterButtons.appendChild(newFilter);
-                            });
+                        metricsSet.forEach(function (item, index) {
+                            newFilter = document.createElement("a")
+                            newFilter.classList.add("button")
+                            newFilter.dataset.filter = item
+                            newFilter.dataset.what = "metric"
+                            newFilter.innerHTML = "<span>" + item + "</span>"
+                            metricfilterButtons.appendChild(newFilter);
+                        });
 
 
-                            datasetfilterButtons = document.getElementById("datasetfilters")
-                            datasetfilterButtons.innerHTML = '';
-
-                            datasetsSet.forEach(function (item, index) {
-                                newFilter = document.createElement("a")
-                                newFilter.classList.add("button")
-                                newFilter.dataset.filter = "." + item
-                                newFilter.innerHTML = "<span>" + item + "</span>"
-                                datasetfilterButtons.appendChild(newFilter);
-                            });
-
-
-                            metricfilterButtons = document.getElementById("metricfilters")
-                            metricfilterButtons.innerHTML = '';
-
-                            metricsSet.forEach(function (item, index) {
-                                newFilter = document.createElement("a")
-                                newFilter.classList.add("button")
-                                newFilter.dataset.filter = "." + item
-                                newFilter.innerHTML = "<span>" + item + "</span>"
-                                metricfilterButtons.appendChild(newFilter);
-                            });
-
-
-                        }
+                        redraw(data)
                     }/*success : function() {}*/
                 });
 
@@ -475,12 +417,154 @@
         });
 
 
+
+
+        function redraw(data) {
+
+            if (data != null) {
+                cont = document.getElementById("theCanvas");
+                cont.innerHTML = '';
+
+
+
+                data.forEach(function (item, index) {
+                    console.log(item)
+
+                    innerDiv = document.createElement("div")
+                    innerDiv.classList.add("element-item")
+                    innerDiv.classList.add(item["model"]["name"])
+
+                    a = document.createElement("a")
+                    a.classList.add("popup-with-move-anim");
+
+                    graph = document.createElement("div")
+                    graph.id = item["experimentId"]
+
+                    best_seen = [item["optimization_data"]["f_val"][0]]
+                    second_axe = [0]
+
+                    for (i = 1; i < item["optimization_data"]["f_val"].length; i++) {
+                        if (best_seen[i - 1] < item["optimization_data"]["f_val"][i]) {
+                            best_seen.push(item["optimization_data"]["f_val"][i]);
+                        } else {
+                            best_seen.push(best_seen[i - 1]);
+                        }
+                        second_axe.push(i);
+                    }
+
+                    var layout = {
+                        width: 500,
+                        height: 500,
+                        margin: {
+                            l: 50,
+                            r: 50,
+                            b: 40,
+                            t: 40,
+                            pad: 4
+                        },
+                        paper_bgcolor: 'rgba(256,256,256,1)'
+                    };
+
+                    ExpName = document.createElement("div")
+                    ExpName.innerHTML = "<span>" + item["batchId"] + " " + item["experimentId"] + "</span>";
+
+                    innerDiv.appendChild(a);
+                    a.appendChild(ExpName)
+                    a.appendChild(graph);
+
+
+                    cont.appendChild(innerDiv);
+
+                    if (document.getElementById("graphType").checked) {
+                        var trace = {
+                            y: item["optimization_data"]["f_val"],
+                            type: 'box'
+                        }
+                        Plotly.newPlot(item["experimentId"], [trace], layout);
+                    }
+                    else {
+
+                        var trace = {
+                            x: second_axe,
+                            y: best_seen,
+                            type: 'scatter'
+                        }
+                        Plotly.newPlot(item["experimentId"], [trace], layout);
+                    }
+
+
+                    console.log(item, index);
+                });
+
+
+
+
+            }
+        }
+
+
+
+
+
+
+        $('.button-group').each(function (i, buttonGroup) {
+            var $buttonGroup = $(buttonGroup);
+            $buttonGroup.on('click', 'a', function () {
+                if (this.classList.contains("is-checked")) {
+                    $(this).removeClass('is-checked');
+                } else {
+                    $(this).addClass('is-checked');
+                }
+
+                var buttons = $(".button.is-checked");
+                if (buttons.length == 0) {
+                    redraw(allData)
+                } else {
+                    to_remove = [];
+                    buttons.each(function () {
+                        currentFilter = this.dataset.filter
+                        if (this.dataset.what == "model") {
+                            for (i in allData) {
+                                if (allData[i]["model"]["name"] != currentFilter) {
+                                    to_remove.push(allData[i]["experimentId"])
+                                }
+                            }
+                        }
+                        if (this.dataset.what == "dataset") {
+                            for (i in allData) {
+                                if (allData[i]["dataset"] != currentFilter) {
+                                    to_remove.push(allData[i]["experimentId"])
+                                }
+                            }
+                        }
+                        if (this.dataset.what == "metric") {
+                            for (i in allData) {
+                                if (allData[i]["optimize_metrics"][0]["name"] != currentFilter) {
+                                    to_remove.push(allData[i]["experimentId"])
+                                }
+                            }
+                        }
+
+
+                    });
+
+                    toshow = []
+                    for (i in allData) {
+                        if (to_remove.indexOf(allData[i]["experimentId"]) >= 0) {
+
+                        } else {
+                            toshow.push(allData[i])
+                        }
+                    }
+
+                    redraw(toshow)
+                }
+
+            });
         });
 
 
-
-
-
+        });
 
 
     </script>
