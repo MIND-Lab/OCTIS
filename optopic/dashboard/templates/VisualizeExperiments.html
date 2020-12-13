@@ -196,6 +196,7 @@
 
     <section id="batchSelector" class="regular slider"></section>
 
+
     <div style="padding-left: 70%;">
         <p id="labelGraphType"><b>Line chart</b></p>
         <label class="switch">
@@ -206,21 +207,27 @@
 
 
 
-
-
-
-    <!-- Projects -->
     <div id="projects" class="filter">
         <div class="container">
+            <div class="row"><div id="datasetfilters" class="button-group filters-button-group"></div></div> 
+            <div class="row"><div id="modelfilters" class="button-group filters-button-group"></div></div> 
+            <div class="row"><div id="metricfilters" class="button-group filters-button-group"></div></div> 
+
             <div class="row">
                 <div class="col-lg-12">
-                    <div id="filters" class="button-group filters-button-group">
-                        <a class="button is-checked" data-filter="*"><span>SHOW ALL</span></a>
-                    </div>
-                    <div class="grid" id="theCanvas"></div>
+                    <div id="theCanvas"></div>
 
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="theCanvas"></div>
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+
         </div> <!-- end of container -->
     </div> <!-- end of filter -->
     <!-- end of projects -->
@@ -342,6 +349,8 @@
                             cont.innerHTML = '';
 
                             modelsSet = new Set();
+                            datasetsSet = new Set();
+                            metricsSet = new Set();
 
                             data.forEach(function (item, index) {
                                 console.log(item)
@@ -350,6 +359,8 @@
                                 innerDiv.classList.add("element-item")
                                 innerDiv.classList.add(item["model"]["name"])
                                 modelsSet.add(item["model"]["name"])
+                                datasetsSet.add(item["dataset"])
+                                metricsSet.add(item["optimize_metrics"][0]["name"])
 
                                 a = document.createElement("a")
                                 a.classList.add("popup-with-move-anim");
@@ -413,15 +424,39 @@
                                 console.log(item, index);
                             });
 
-                            filterButtons = document.getElementById("filters")
-                            filterButtons.innerHTML = '<a class="button is-checked" data-filter="*"><span>SHOW ALL</span></a>';
+                            modelfilterButtons = document.getElementById("modelfilters")
+                            modelfilterButtons.innerHTML = '';
 
                             modelsSet.forEach(function (item, index) {
                                 newFilter = document.createElement("a")
                                 newFilter.classList.add("button")
                                 newFilter.dataset.filter = "." + item
                                 newFilter.innerHTML = "<span>" + item + "</span>"
-                                filterButtons.appendChild(newFilter);
+                                modelfilterButtons.appendChild(newFilter);
+                            });
+
+
+                            datasetfilterButtons = document.getElementById("datasetfilters")
+                            datasetfilterButtons.innerHTML = '';
+
+                            datasetsSet.forEach(function (item, index) {
+                                newFilter = document.createElement("a")
+                                newFilter.classList.add("button")
+                                newFilter.dataset.filter = "." + item
+                                newFilter.innerHTML = "<span>" + item + "</span>"
+                                datasetfilterButtons.appendChild(newFilter);
+                            });
+
+
+                            metricfilterButtons = document.getElementById("metricfilters")
+                            metricfilterButtons.innerHTML = '';
+
+                            metricsSet.forEach(function (item, index) {
+                                newFilter = document.createElement("a")
+                                newFilter.classList.add("button")
+                                newFilter.dataset.filter = "." + item
+                                newFilter.innerHTML = "<span>" + item + "</span>"
+                                metricfilterButtons.appendChild(newFilter);
                             });
 
 

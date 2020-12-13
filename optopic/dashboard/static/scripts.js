@@ -107,8 +107,11 @@
     $('.button-group').each( function( i, buttonGroup ) {
         var $buttonGroup = $( buttonGroup );
         $buttonGroup.on( 'click', 'a', function() {
-            $buttonGroup.find('.is-checked').removeClass('is-checked');
+            if (this.classList.contains("is-checked")){
+            $(this).removeClass('is-checked');
+            }else{
             $( this ).addClass('is-checked');
+            }
         });	
     });
     

@@ -89,6 +89,8 @@ def startExperiment():
                 else:
                     expParams["track_metrics"].append(metric)
 
+    print(expParams)
+
     queueManager.add_experiment(batch, experimentId, expParams)
     return CreateExperiments()
 
