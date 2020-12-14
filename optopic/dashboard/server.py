@@ -50,19 +50,19 @@ def startExperiment():
     for key, value in data.items():
         if "model." in key:
             if any(par in key for par in model_parameters_to_optimize):
-                if("_min" in key):
+                if "_min" in key:
                     name = key.replace("_min", '').replace("model.", '')
                     if name not in expParams["optimization"]["search_spaces"]:
                         expParams["optimization"]["search_spaces"][name] = {}
                     expParams["optimization"]["search_spaces"][name]["low"] = typed(
                         value[0])
-                elif("_max" in key):
+                elif "_max" in key:
                     name = key.replace("_max", '').replace("model.", '')
                     if name not in expParams["optimization"]["search_spaces"]:
                         expParams["optimization"]["search_spaces"][name] = {}
                     expParams["optimization"]["search_spaces"][name]["high"] = typed(
                         value[0])
-                elif("_check" not in key):
+                elif "_check" not in key:
                     expParams["optimization"]["search_spaces"][key.replace(
                         "model.", '')] = request.form.getlist(key)
             else:
@@ -140,21 +140,21 @@ def SingleExperiment(batch="", id=""):
     return render_template("SingleExperiment.html", batchName=batch, experimentName=id, output=output)
 
 
+def typed(value):
+    try:
+        t = int(value)
+        return t
+    except ValueError:
+        try:
+            t = float(value)
+            return t
+        except ValueError:
+            return value
+
+
 if __name__ == '__main__':
     args = parser.parse_args()
 
     url = 'http://' + str(args.host) + ':' + str(args.port)
     webbrowser.open_new(url)
     app.run(port=args.port)
-
-
-def typed(value):
-    try:
-        typed = int(value)
-        return typed
-    except ValueError:
-        try:
-            typed = float(value)
-            return typed
-        except ValueError:
-            return value
