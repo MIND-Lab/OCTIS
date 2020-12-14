@@ -64,7 +64,7 @@ class QueueManager:
         output : a tuple containing id of the batch and id of
                  the next experiment to run
         """
-        if self.running[0] == None:
+        if self.running[0] is None:
             self.running[0] = self.order.pop(0)
             self.start()
         return self.running[0]
@@ -104,13 +104,13 @@ class QueueManager:
         while(True):
             time.sleep(7)
             if not self.busy[0]:
-                if self.running[0] != None:
+                if self.running[0] is not None:
                     finished = self.running[0]
                     self.completed[finished] = self.toRun[finished]
                     del self.toRun[finished]
                     self.running[0] = None
                     self.save_state()
-                if len(self.order) > 0 and self.running[0] == None:
+                if len(self.order) > 0 and self.running[0] is None:
                     self.running[0] = self.order.pop(0)
                     self.start()
 
