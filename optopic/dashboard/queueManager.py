@@ -151,10 +151,15 @@ class QueueManager:
                 experiments.append(value)
         return experiments
 
-    def getExperimentInfo(self, experiment):
+    def getExperimentInfo(self, batch, experimentId):
+        experiment = ""
+        if batch+experimentId in self.completed:
+            experiment = self.completed[batch+experimentId]
+        if batch+experimentId in self.toRun:
+            experiment = self.toRun[batch+experimentId]
         path = str(os.path.join(
             experiment["path"], experiment["experimentId"], experiment["experimentId"]+".json"))
-        return expManager.retrieveBoResults(path)
+        return expManager.singleInfo(path)
 
     def start(self):
         if not self.busy[0]:
@@ -171,8 +176,50 @@ class QueueManager:
         startExperiment(self.toRun[self.running[0]])
         self.busy[0] = False
 
-    def getModel(self, batch, experimentId, iteration, model_run):
-        experiment = self.completed[batch+experimentId]
+    def getModel(self, batch, experimentId, iteration, modelRun):
+        experiment = ""
+        if batch+experimentId in self.completed:
+            experiment = self.completed[batch+experimentId]
+        if batch+experimentId in self.toRun:
+            experiment = self.toRun[batch+experimentId]
         path = str(os.path.join(
             experiment["path"], experiment["experimentId"]))
-        return expManager.getModelInfo(path, iteration, model_run)
+        return expManager.getModelInfo(path, iteration, modelRun)
+
+    def getModelInfo(self, batch, experimentId, iteration):
+        experiment = ""
+        if batch+experimentId in self.completed:
+            experiment = self.completed[batch+experimentId]
+        if batch+experimentId in self.toRun:
+            experiment = self.toRun[batch+experimentId]
+        path = str(os.path.join(
+            experiment["path"], experiment["experimentId"]))
+        return expManager.retrieveIterationBoResults(path, iteration)
+
+    def getExperimentIterationInfo(self, batch, experimentId, iteration=0):
+        experiment = ""
+        if batch+experimentId in self.completed:
+            experiment = self.completed[batch+experimentId]
+        if batch+experimentId in self.toRun:
+            experiment = self.toRun[batch+experimentId]
+        path = str(os.path.join(
+            experiment["path"], experiment["experimentId"], experiment["experimentId"]+".json"))
+        return expManager.retrieveIterationBoResults(path, iteration)
+
+    def getExperiment(self, batch, experimentId):
+        experiment = ""
+        if batch+experimentId in self.completed:
+            experiment = self.completed[batch+experimentId]
+        if batch+experimentId in self.toRun:
+            experiment = self.toRun[batch+experimentId]
+        return experiment
+
+    def getAllExpIds(self):
+        expIds = []
+        for key, exp in self.completed.items():
+            expIds.append([exp["experimentId"],
+                           [exp["batchId"], exp["experimentId"]]])
+        for key, exp in self.toRun.items():
+            expIds.append([exp["experimentId"],
+                           [exp["batchId"], exp["experimentId"]]])
+        return expIds

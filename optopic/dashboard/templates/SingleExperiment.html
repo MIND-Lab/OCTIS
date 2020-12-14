@@ -95,7 +95,20 @@
     </header> <!-- end of ex-header -->
     <!-- end of header -->
 
-    <div id="container"></div>
+
+    <div id="projects" class="accordion">
+        <div style="float: left; width: 50%; height: 100%;">
+            <div style="height: 15%;" id="expSelector"></div>
+            <div style="height: 35%;" id="optInfo"></div>
+            <div style="height: 15%;" id="iterationSelector"></div>
+            <div style="height: 35%;" id="expInfo"></div>
+        </div> <!-- end of col -->
+        <div style="float: left; width: 50%; height: 100%;">
+            <div style="height: 85%;" id="container"></div>
+            <div style="height: 15%;" id="topicSelector"></div>
+        </div>
+
+    </div> <!-- end of col -->
 
 
     <!-- Footer -->
@@ -149,15 +162,156 @@
     }
 
 
-    output = getParams({{ output| tojson}});
+    function updateDropdownIndex(dropdownId, value) {
+        dropDown = document.getElementById(dropdownId)
+        for (var i, j = 0; i = dropDown.options[j]; j++) {
+            if (i.text == value) {
+                dropDown.selectedIndex = j;
+                break;
+            }
+        }
+    }
+
+
+    var output = getParams({{ output| tojson}});
+    globalInfo = getParams({{ globalInfo| tojson}});
+    iterationInfo = getParams({{ iterationInfo| tojson}});
+    var expInfo = getParams({{ expInfo| tojson}});
+    expIds = getParams({{ expIds| tojson}});
+    expName = getParams({{ experimentName| tojson}});
+
+
+    function writeInfo(elementId, info) {
+        ele = document.getElementById(elementId)
+        ele.innerHTML = ''
+        node = document.createElement("p")
+        node.innerHTML = "<b>Best seen:</b> " + info["best_seen"] +
+            "<br><b>Mean:</b> " + info["mean_seen"] +
+            "<br><b>Median:</b> " + info["median_seen"] +
+            "<br><b>Worst seen:</b> " + info["worse_seen"];
+
+        ele.appendChild(node)
+    }
+
+
+
+
+    selectExp = document.createElement("select")
+    selectExp.classList.add("form-control-select")
+    selectExp.id = "selecExp"
+    selectExp.addEventListener("click", function () {
+        infoSelector = JSON.parse(this.value)
+        location.href = "../../SingleExperiment/" + infoSelector["batchId"] + "/" + infoSelector["expId"]
+    })
+
+    for (const val of expIds) {
+        var option = document.createElement("option");
+        option.text = val[0];
+        option.value = JSON.stringify({ "expId": val[1][1], "batchId": val[1][0] })
+        selectExp.appendChild(option)
+    }
+
+    document.getElementById("expSelector").appendChild(selectExp)
+    updateDropdownIndex(selectExp.id, expName)
+
+
+    sel = document.getElementById("iterationSelector")
+
+    iterSelect = document.createElement("input")
+    iterSelect.classList.add("form-control-number");
+    iterSelect.id = "iterselect"
+    iterSelect.setAttribute("type", "number");
+    iterSelect.setAttribute("min", 0);
+    iterSelect.setAttribute("max", expInfo["optimization"]["iterations"] - 1);
+
+    sel.appendChild(document.createTextNode("Iteration: "))
+
+    sel.appendChild(iterSelect)
+
+
+
+
+
+
+    function updateTopicSelector() {
+        topicSelector = document.getElementById("topicSelector")
+        topicSelector.innerHTML = ''
+
+        topicSelect = document.createElement("select")
+        topicSelect.classList.add("form-control-select")
+        topicSelect.id = "selecTopic"
+        topicSelect.addEventListener("click", function () {
+            draw(this.value)
+        })
+
+        for (i = 0; i < output["topic-word-matrix"].length; i++) {
+            var option = document.createElement("option");
+            option.text = i;
+            option.value = i;
+            topicSelect.appendChild(option)
+        }
+
+        topicSelector.appendChild(topicSelect)
+    }
+
+    updateTopicSelector()
+
+
+    but = document.createElement("BUTTON")
+    but.innerHTML = "ok"
+    but.addEventListener("click", function () {
+        $.ajax(
+            {
+                type: 'POST',
+                url: "/getIterationData",
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    "data": {
+                        "batchId": expInfo["batchId"],
+                        "experimentId": expInfo["experimentId"],
+                        "iteration": document.getElementById("iterselect").value,
+                        "model_run": 0
+                    }
+                }),
+                success: function (data) {
+                    writeInfo("expInfo", data["iterInfo"])
+                    output = data["output"]
+                    updateTopicSelector()
+                    draw(0)
+                }
+            })
+
+    })
+
+    sel.appendChild(but)
+
+
+
+
+    writeInfo("optInfo", globalInfo)
+    writeInfo("expInfo", iterationInfo)
+
+
+
+
 
 
 
     anychart.onDocumentReady(function () {
+        draw(0)
+    });
+
+
+
+    function draw(topic) {
+
+        document.getElementById("container").innerHTML = ''
+
         var data = []
 
-        for (i = 0; i< output["topics"][0].length; i++){
-            data.push({"x": output["topics"][0][i][0], "value": output["topics"][0][i][1], category: "0"})
+        for (i = 0; i < output["topics"][topic].length; i++) {
+            data.push({ "x": output["topics"][topic][i][0], "value": output["topics"][topic][i][1], category: topic })
         }
 
         // create a tag (word) cloud chart
@@ -173,7 +327,7 @@
         // display the word cloud chart
         chart.container("container");
         chart.draw();
-    });
+    }
 
 </script>
 

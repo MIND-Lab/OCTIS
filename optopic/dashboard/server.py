@@ -104,7 +104,8 @@ def getBatchExperiments():
         for experiment in batchExperiments:
             newExp = experiment
             newExp["optimization_data"] = queueManager.getExperimentInfo(
-                experiment)
+                experiment["batchId"],
+                experiment["experimentId"])
             experiments.append(newExp)
     return json.dumps(experiments)
 
@@ -137,7 +138,31 @@ def ManageExperiments():
 @ app.route('/SingleExperiment/<batch>/<id>')
 def SingleExperiment(batch="", id=""):
     output = queueManager.getModel(batch, id, 0, 0)
-    return render_template("SingleExperiment.html", batchName=batch, experimentName=id, output=output)
+    globalInfo = queueManager.getExperimentInfo(batch, id)
+    iterInfo = queueManager.getExperimentIterationInfo(batch, id, 0)
+    expInfo = queueManager.getExperiment(batch, id)
+    expIds = queueManager.getAllExpIds()
+    return render_template("SingleExperiment.html",
+                           batchName=batch,
+                           experimentName=id,
+                           output=output,
+                           globalInfo=globalInfo,
+                           iterationInfo=iterInfo,
+                           expInfo=expInfo,
+                           expIds=expIds)
+
+
+@app.route("/getIterationData", methods=["POST"])
+def getIterationData():
+    data = request.json['data']
+    output = queueManager.getModel(data["batchId"],
+                                   data["experimentId"],
+                                   int(data["iteration"]),
+                                   data["model_run"])
+    iterInfo = queueManager.getExperimentIterationInfo(data["batchId"],
+                                                       data["experimentId"],
+                                                       int(data["iteration"]))
+    return {"iterInfo": iterInfo, "output": output}
 
 
 if __name__ == '__main__':

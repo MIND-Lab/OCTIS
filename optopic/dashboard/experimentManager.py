@@ -191,10 +191,12 @@ def retrieveIterationBoResults(path, iteration):
     dict_return :dictionary 
     """
     # open json file
-    path = "results/simple_GP/resultsBO.json"
     with open(path, 'rb') as file:
         result = json.load(file)
-    values = result['f_val'][0:iteration]
+        values = [result["f_val"][0]]
+    if iteration > 0:
+        values = result['f_val'][0:iteration]
+    print(values)
     type_of_problem = result['optimization_type']
     if type_of_problem == 'Maximize':
         best_seen = max(values)
@@ -209,14 +211,16 @@ def retrieveIterationBoResults(path, iteration):
     hyperparameters_iter = list()
     for name in name_hyp:
         hyperparameters_iter.append(hyperparameters[name][iteration])
+
+    hyperparameters_config = dict(zip(name_hyp, hyperparameters_iter))
     # dizionaro di output
     dict_return = dict()
     dict_return.update({"best_seen": best_seen})
     dict_return.update({"worse_seen": worse_seen})
     dict_return.update({"median_seen": median_seen})
     dict_return.update({"mean_seen": mean_seen})
-    dict_return.update({"hyperparameter_names": name_hyp})
-    dict_return.update({"hyperparameter_configuration": hyperparameters_iter})
+    dict_return.update(
+        {"hyperparameter_configuration": hyperparameters_config})
     return dict_return
 
 # Manca retrieve di Iperparametri iteerazione e topic-word-matrix e document-topic matrix
@@ -235,6 +239,7 @@ def singleInfo(path):
     mean_seen = np.mean(values)
     # dizionaro di output
     dict_return = dict()
+    dict_return.update({"f_val": values})
     dict_return.update({"best_seen": best_seen})
     dict_return.update({"worse_seen": worse_seen})
     dict_return.update({"median_seen": median_seen})
