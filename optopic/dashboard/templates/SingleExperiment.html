@@ -112,9 +112,9 @@
 
 
     <div class="accordion">
-        <div style="float: left; width: 30%; height: 100%;"></div>   
-        <div style="float: left; width: 30%; height: 100%;"></div>   
-        <div style="float: left; width: 30%; height: 100%;"></div>        
+        <div style="float: left; width: 30%; height: 100%;"></div>
+        <div style="float: left; width: 30%; height: 100%;"></div>
+        <div style="float: left; width: 30%; height: 100%;"></div>
     </div>
 
 
@@ -196,7 +196,7 @@
             hyperparams = "<br><b>Hyperparameters configuration:</b>"
 
             $.each(info["hyperparameter_configuration"], function (key, value) {
-                hyperparams = hyperparams + "<br><b>" + key + ":</b> " +value
+                hyperparams = hyperparams + "<br><b>" + key + ":</b> " + value
             });
         }
 
@@ -240,10 +240,22 @@
     iterSelect.setAttribute("type", "number");
     iterSelect.setAttribute("min", 0);
     iterSelect.setAttribute("max", expInfo["optimization"]["iterations"] - 1);
+    iterSelect.defaultValue = 0
 
     sel.appendChild(document.createTextNode("Iteration: "))
-
     sel.appendChild(iterSelect)
+
+
+    runSelect = document.createElement("input")
+    runSelect.classList.add("form-control-number");
+    runSelect.id = "runselect"
+    runSelect.setAttribute("type", "number");
+    runSelect.setAttribute("min", 0);
+    runSelect.setAttribute("max", expInfo["optimization"]["model_runs"] - 1);
+    runSelect.defaultValue = 0
+
+    sel.appendChild(document.createTextNode("Model run: "))
+    sel.appendChild(runSelect)
 
 
 
@@ -288,7 +300,7 @@
                         "batchId": expInfo["batchId"],
                         "experimentId": expInfo["experimentId"],
                         "iteration": document.getElementById("iterselect").value,
-                        "model_run": 0
+                        "model_run": document.getElementById("runselect").value,
                     }
                 }),
                 success: function (data) {

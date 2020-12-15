@@ -1,10 +1,18 @@
-from flask import Flask, render_template, request
-import json
-from multiprocessing import Process, Pool
-import optopic.configuration.defaults as defaults
-import optopic.dashboard.frameworkScanner as fs
-import webbrowser
+import os
+import sys
+sys.path.insert(0,os.getcwd())
+
 import argparse
+import webbrowser
+import optopic.dashboard.frameworkScanner as fs
+import optopic.configuration.defaults as defaults
+from multiprocessing import Process, Pool
+import json
+from flask import Flask, render_template, request
+import os
+import sys
+sys.path.insert(0, os.getcwd())
+
 
 app = Flask(__name__)
 queueManager = ""
@@ -21,6 +29,9 @@ def startExperiment():
     data = request.form.to_dict(flat=False)
     batch = data["batchId"][0]
     experimentId = data["expId"][0]
+    if queueManager.getExperiment(batch, experimentId) != "":
+        return VisualizeExperiments()
+
     expParams = {}
     expParams["path"] = data["path"][0]
     expParams["dataset"] = data["dataset"][0]
@@ -45,14 +56,14 @@ def startExperiment():
     for key, value in data.items():
         if "model." in key:
             if any(par in key for par in model_parameters_to_optimize):
-                if "_min" in key:
-                    name = key.replace("_min", '').replace("model.", '')
+                if "_xminx" in key:
+                    name = key.replace("_xminx", '').replace("model.", '')
                     if name not in expParams["optimization"]["search_spaces"]:
                         expParams["optimization"]["search_spaces"][name] = {}
                     expParams["optimization"]["search_spaces"][name]["low"] = typed(
                         value[0])
-                elif "_max" in key:
-                    name = key.replace("_max", '').replace("model.", '')
+                elif "_xmaxx" in key:
+                    name = key.replace("_xmaxx", '').replace("model.", '')
                     if name not in expParams["optimization"]["search_spaces"]:
                         expParams["optimization"]["search_spaces"][name] = {}
                     expParams["optimization"]["search_spaces"][name]["high"] = typed(
