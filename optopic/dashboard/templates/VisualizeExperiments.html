@@ -361,6 +361,9 @@
                             modelsSet.add(item["model"]["name"])
                             datasetsSet.add(item["dataset"])
                             metricsSet.add(item["optimize_metrics"][0]["name"])
+                            item["track_metrics"].forEach(function (metric, i) {
+                                metricsSet.add(metric["name"])
+                            });
                         });
 
                         modelfilterButtons = document.getElementById("modelfilters")
@@ -544,7 +547,13 @@
                         }
                         if (this.dataset.what == "metric") {
                             for (i in allData) {
-                                if (allData[i]["optimize_metrics"][0]["name"] != currentFilter) {
+
+                                ver = false;
+                                allData[i]["track_metrics"].forEach(function (item, index) {
+                                    if (item["name"] == currentFilter) ver = true;
+                                })
+
+                                if (!ver && allData[i]["optimize_metrics"][0]["name"] != currentFilter) {
                                     to_remove.push(allData[i]["experimentId"])
                                 }
                             }

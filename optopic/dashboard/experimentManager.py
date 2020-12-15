@@ -18,7 +18,7 @@ path = str(path.parent)
 
 # Import optopic module
 spec = importlib.util.spec_from_file_location(
-    "optopic", path+"/__init__.py", submodule_search_locations=[])
+    "optopic",  str(os.path.join(path, "__init__.py")), submodule_search_locations=[])
 module = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = module
 spec.loader.exec_module(module)
@@ -85,7 +85,8 @@ def startExperiment(parameters):
     # Import dataset class and initialize an instance with the choosen dataset
     datasetClass = importDataset()
     dataset = datasetClass()
-    datasetPath = path+"/preprocessed_datasets/"+parameters["dataset"]
+    datasetPath = str(os.path.join(
+        path, "preprocessed_datasets", parameters["dataset"]))
     dataset.load(datasetPath)
 
     modelClass = importModel(parameters["model"]["name"])
@@ -250,5 +251,5 @@ def singleInfo(path):
 
 def getModelInfo(path, iteration, modelRun):
     output = load_model_output(
-        path+"/models/"+str(iteration)+"_"+str(modelRun)+".npz", path+"/models/vocabulary.json", 20)
+        str(os.path.join(path, "models", str(iteration)+"_"+str(modelRun)+".npz")),  str(os.path.join(path,"models", "vocabulary.json")), 20)
     return output

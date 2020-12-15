@@ -14,6 +14,6 @@ def scanDatasets():
     res : list with name of each dataset as element
     """
 
-    datasets = os.listdir(path+"/preprocessed_datasets")
+    datasets = os.listdir(str(os.path.join(path,"preprocessed_datasets")))
     datasets.remove("README.txt")
     return datasets

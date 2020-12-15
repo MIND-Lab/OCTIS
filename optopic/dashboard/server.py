@@ -7,6 +7,8 @@ import webbrowser
 import argparse
 
 app = Flask(__name__)
+queueManager = ""
+
 
 @app.route('/')
 def home():
@@ -128,16 +130,16 @@ def ManageExperiments():
     return render_template("ManageExperiments.html")
 
 
-@ app.route('/SingleExperiment/<batch>/<id>')
-def SingleExperiment(batch="", batch_id=""):
-    output = queueManager.getModel(batch, batch_id, 0, 0)
-    global_info = queueManager.getExperimentInfo(batch, batch_id)
-    iter_info = queueManager.getExperimentIterationInfo(batch, batch_id, 0)
-    exp_info = queueManager.getExperiment(batch, batch_id)
+@ app.route('/SingleExperiment/<batch>/<exp_id>')
+def SingleExperiment(batch="", exp_id=""):
+    output = queueManager.getModel(batch, exp_id, 0, 0)
+    global_info = queueManager.getExperimentInfo(batch, exp_id)
+    iter_info = queueManager.getExperimentIterationInfo(batch, exp_id, 0)
+    exp_info = queueManager.getExperiment(batch, exp_id)
     exp_ids = queueManager.getAllExpIds()
     return render_template("SingleExperiment.html",
                            batchName=batch,
-                           experimentName=batch_id,
+                           experimentName=exp_id,
                            output=output,
                            globalInfo=global_info,
                            iterationInfo=iter_info,
@@ -153,8 +155,8 @@ def getIterationData():
                                    int(data["iteration"]),
                                    data["model_run"])
     iter_info = queueManager.getExperimentIterationInfo(data["batchId"],
-                                                       data["experimentId"],
-                                                       int(data["iteration"]))
+                                                        data["experimentId"],
+                                                        int(data["iteration"]))
     return {"iterInfo": iter_info, "output": output}
 
 
