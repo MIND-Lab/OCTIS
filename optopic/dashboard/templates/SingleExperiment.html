@@ -98,10 +98,10 @@
 
     <div id="projects" class="accordion">
         <div style="float: left; width: 50%; height: 100%;">
-            <div style="height: 15%;" id="expSelector"></div>
-            <div style="height: 35%;" id="optInfo"></div>
-            <div style="height: 15%;" id="iterationSelector"></div>
-            <div style="height: 35%;" id="expInfo"></div>
+            <div style="height: 10%;" id="expSelector"></div>
+            <div style="height: 40%;" id="optInfo"></div>
+            <div style="height: 10%;" id="iterationSelector"></div>
+            <div style="height: 40%;" id="expInfo"></div>
         </div> <!-- end of col -->
         <div style="float: left; width: 50%; height: 100%;">
             <div style="height: 85%;" id="container"></div>
@@ -109,6 +109,13 @@
         </div>
 
     </div> <!-- end of col -->
+
+
+    <div class="accordion">
+        <div style="float: left; width: 30%; height: 100%;"></div>   
+        <div style="float: left; width: 30%; height: 100%;"></div>   
+        <div style="float: left; width: 30%; height: 100%;"></div>        
+    </div>
 
 
     <!-- Footer -->
@@ -184,11 +191,21 @@
     function writeInfo(elementId, info) {
         ele = document.getElementById(elementId)
         ele.innerHTML = ''
+        hyperparams = ''
+        if ("hyperparameter_configuration" in info) {
+            hyperparams = "<br><b>Hyperparameters configuration:</b>"
+
+            $.each(info["hyperparameter_configuration"], function (key, value) {
+                hyperparams = hyperparams + "<br><b>" + key + ":</b> " +value
+            });
+        }
+
         node = document.createElement("p")
         node.innerHTML = "<b>Best seen:</b> " + info["best_seen"] +
             "<br><b>Mean:</b> " + info["mean_seen"] +
             "<br><b>Median:</b> " + info["median_seen"] +
-            "<br><b>Worst seen:</b> " + info["worse_seen"];
+            "<br><b>Worst seen:</b> " + info["worse_seen"] +
+            hyperparams;
 
         ele.appendChild(node)
     }

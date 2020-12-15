@@ -10,14 +10,12 @@ from subprocess import Popen
 
 
 class QueueManager:
-    running = mp.Manager().list()
-    running.append(None)
-    toRun = mp.Manager().dict()
-    order = mp.Manager().list()
-    completed = mp.Manager().dict()
+    running = None
+    toRun = None
+    order = None
+    completed = None
     process = None
-    busy = mp.Manager().list()
-    busy.append(False)
+    busy = None
     idle = None
 
     def __init__(self):
@@ -25,6 +23,15 @@ class QueueManager:
         Initialize the queue manager.
         Loads old queues
         """
+        manager = mp.Manager()
+        self.running = manager.list()
+        self.running.append(None)
+        self.toRun = manager.dict()
+        self.order = manager.list()
+        self.completed = manager.dict()
+        self.busy = manager.list()
+        self.busy.append(False)
+
         self.load_state()
         self.idle = mp.Process(target=self._run)
         self.idle.start()
