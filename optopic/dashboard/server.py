@@ -3,17 +3,10 @@ import json
 from multiprocessing import Process, Pool
 import optopic.configuration.defaults as defaults
 import optopic.dashboard.frameworkScanner as fs
-from optopic.dashboard.queueManager import QueueManager
 import webbrowser
 import argparse
 
-queueManager = QueueManager()
-
 app = Flask(__name__)
-parser = argparse.ArgumentParser()
-parser.add_argument("--port", type=int, help="port", default=5000)
-parser.add_argument("--host", type=str, help="host", default='localhost')
-
 
 @app.route('/')
 def home():
@@ -100,13 +93,13 @@ def getBatchExperiments():
     data = request.json['data']
     experiments = []
     for key in data:
-        batchExperiments = queueManager.getBatchExperiments(key)
-        for experiment in batchExperiments:
-            newExp = experiment
-            newExp["optimization_data"] = queueManager.getExperimentInfo(
+        batch_experiments = queueManager.getBatchExperiments(key)
+        for experiment in batch_experiments:
+            new_exp = experiment
+            new_exp["optimization_data"] = queueManager.getExperimentInfo(
                 experiment["batchId"],
                 experiment["experimentId"])
-            experiments.append(newExp)
+            experiments.append(new_exp)
     return json.dumps(experiments)
 
 
@@ -125,9 +118,9 @@ def CreateExperiments():
 
 @ app.route('/VisualizeExperiments')
 def VisualizeExperiments():
-    batchNames = queueManager.getBatchNames()
+    batch_names = queueManager.getBatchNames()
     return render_template("VisualizeExperiments.html",
-                           batchNames=batchNames)
+                           batchNames=batch_names)
 
 
 @ app.route('/ManageExperiments')
@@ -136,20 +129,20 @@ def ManageExperiments():
 
 
 @ app.route('/SingleExperiment/<batch>/<id>')
-def SingleExperiment(batch="", id=""):
-    output = queueManager.getModel(batch, id, 0, 0)
-    globalInfo = queueManager.getExperimentInfo(batch, id)
-    iterInfo = queueManager.getExperimentIterationInfo(batch, id, 0)
-    expInfo = queueManager.getExperiment(batch, id)
-    expIds = queueManager.getAllExpIds()
+def SingleExperiment(batch="", batch_id=""):
+    output = queueManager.getModel(batch, batch_id, 0, 0)
+    global_info = queueManager.getExperimentInfo(batch, batch_id)
+    iter_info = queueManager.getExperimentIterationInfo(batch, batch_id, 0)
+    exp_info = queueManager.getExperiment(batch, batch_id)
+    exp_ids = queueManager.getAllExpIds()
     return render_template("SingleExperiment.html",
                            batchName=batch,
-                           experimentName=id,
+                           experimentName=batch_id,
                            output=output,
-                           globalInfo=globalInfo,
-                           iterationInfo=iterInfo,
-                           expInfo=expInfo,
-                           expIds=expIds)
+                           globalInfo=global_info,
+                           iterationInfo=iter_info,
+                           expInfo=exp_info,
+                           expIds=exp_ids)
 
 
 @app.route("/getIterationData", methods=["POST"])
@@ -159,10 +152,10 @@ def getIterationData():
                                    data["experimentId"],
                                    int(data["iteration"]),
                                    data["model_run"])
-    iterInfo = queueManager.getExperimentIterationInfo(data["batchId"],
+    iter_info = queueManager.getExperimentIterationInfo(data["batchId"],
                                                        data["experimentId"],
                                                        int(data["iteration"]))
-    return {"iterInfo": iterInfo, "output": output}
+    return {"iterInfo": iter_info, "output": output}
 
 
 def typed(value):
@@ -178,6 +171,12 @@ def typed(value):
 
 
 if __name__ == '__main__':
+    from optopic.dashboard.queueManager import QueueManager
+    queueManager = QueueManager()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=int, help="port", default=5000)
+    parser.add_argument("--host", type=str, help="host", default='localhost')
+
     args = parser.parse_args()
 
     url = 'http://' + str(args.host) + ':' + str(args.port)
