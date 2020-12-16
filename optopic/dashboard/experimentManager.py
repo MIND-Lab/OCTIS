@@ -196,7 +196,7 @@ def retrieveIterationBoResults(path, iteration):
         result = json.load(file)
         values = [result["f_val"][0]]
     if iteration > 0:
-        values = result['f_val'][0:iteration]
+        values = result['f_val'][0:iteration+1]
     print(values)
     type_of_problem = result['optimization_type']
     if type_of_problem == 'Maximize':

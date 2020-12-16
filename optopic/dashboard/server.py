@@ -1,16 +1,18 @@
-import os
-import sys
-sys.path.insert(0,os.getcwd())
-
-import argparse
-import webbrowser
-import optopic.dashboard.frameworkScanner as fs
-import optopic.configuration.defaults as defaults
-from multiprocessing import Process, Pool
-import json
 from flask import Flask, render_template, request
+import json
+from multiprocessing import Process, Pool
+import optopic.configuration.defaults as defaults
+import optopic.dashboard.frameworkScanner as fs
+import webbrowser
+import argparse
 import os
 import sys
+sys.path.insert(0, os.getcwd())
+
+sys.path.insert(0, os.getcwd())
+
+sys.path.insert(0, os.getcwd())
+
 sys.path.insert(0, os.getcwd())
 
 
@@ -141,6 +143,13 @@ def ManageExperiments():
     return render_template("ManageExperiments.html")
 
 
+@app.route("/getDocPreview", methods=["POST"])
+def getDocPreview():
+    data = request.json['data']
+    print(data)
+    return json.dumps({"doc": fs.getDocPreview(data["dataset"], int(data["document"]))})
+
+
 @ app.route('/SingleExperiment/<batch>/<exp_id>')
 def SingleExperiment(batch="", exp_id=""):
     output = queueManager.getModel(batch, exp_id, 0, 0)
@@ -148,6 +157,11 @@ def SingleExperiment(batch="", exp_id=""):
     iter_info = queueManager.getExperimentIterationInfo(batch, exp_id, 0)
     exp_info = queueManager.getExperiment(batch, exp_id)
     exp_ids = queueManager.getAllExpIds()
+    vocabulary_path = os.path.join(exp_info["path"],
+                                   exp_info["experimentId"],
+                                   "models",
+                                   "vocabulary.json")
+    vocabulary = fs.getVocabulary(vocabulary_path)
     return render_template("SingleExperiment.html",
                            batchName=batch,
                            experimentName=exp_id,
@@ -155,7 +169,10 @@ def SingleExperiment(batch="", exp_id=""):
                            globalInfo=global_info,
                            iterationInfo=iter_info,
                            expInfo=exp_info,
-                           expIds=exp_ids)
+                           expIds=exp_ids,
+                           datasetMetadata=fs.getDatasetMetadata(
+                               exp_info["dataset"]),
+                           vocabulary=vocabulary)
 
 
 @app.route("/getIterationData", methods=["POST"])
