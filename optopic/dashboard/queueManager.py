@@ -139,6 +139,10 @@ class QueueManager:
         return False
 
     def getBatchNames(self):
+        """
+        Get the name of each batch with experiment in the completed list or
+        in the list of experiments to run
+        """
         batchNames = []
         for key, value in self.completed.items():
             if value["batchId"] not in batchNames:
@@ -149,6 +153,17 @@ class QueueManager:
         return batchNames
 
     def getBatchExperiments(self, batchName):
+        """
+        Retrieves all the experiments of the selected batch
+
+        Parameters
+        ----------
+        batchName : name of the batch
+
+        Returns
+        -------
+        experiments : list of experiments metadata
+        """
         experiments = []
         for key, value in self.completed.items():
             if value["batchId"] == batchName:
@@ -159,6 +174,18 @@ class QueueManager:
         return experiments
 
     def getExperimentInfo(self, batch, experimentId):
+        """
+        Return the info of the experiment with the given batch name and id
+
+        Parameters
+        ----------
+        batch : name of the batch
+        experimentId: name of the experiment
+
+        Returns
+        -------
+        experiment info (mean, median, best seen, worst seen)
+        """
         experiment = ""
         if batch+experimentId in self.completed:
             experiment = self.completed[batch+experimentId]
@@ -169,12 +196,18 @@ class QueueManager:
         return expManager.singleInfo(path)
 
     def start(self):
+        """
+        Start a new experiment in a new process
+        """
         if not self.busy[0]:
             self.busy[0] = True
             self.process = mp.Process(target=self._execute_and_update)
             self.process.start()
 
     def stop(self):
+        """
+        Stop the current experiment and save the information about it
+        """
         self.idle.terminate()
         self.pause()
         self.save_state()
@@ -184,6 +217,21 @@ class QueueManager:
         self.busy[0] = False
 
     def getModel(self, batch, experimentId, iteration, modelRun):
+        """
+        Retrieve output of the model for a single model
+
+        Parameters
+        ----------
+        batch : name of the batch
+        experimentId : name of the experiment
+        iterarion : number of iteration of the model to retrieve
+        modelRun : numeber of model run of the model to retrieve
+
+        Returns
+        -------
+        output : output of the model (topic-word-matrix,
+                 document-topic-matrix and vocabulary)
+        """
         experiment = ""
         if batch+experimentId in self.completed:
             experiment = self.completed[batch+experimentId]
@@ -193,17 +241,16 @@ class QueueManager:
             experiment["path"], experiment["experimentId"]))
         return expManager.getModelInfo(path, iteration, modelRun)
 
-    def getModelInfo(self, batch, experimentId, iteration):
-        experiment = ""
-        if batch+experimentId in self.completed:
-            experiment = self.completed[batch+experimentId]
-        if batch+experimentId in self.toRun:
-            experiment = self.toRun[batch+experimentId]
-        path = str(os.path.join(
-            experiment["path"], experiment["experimentId"]))
-        return expManager.retrieveIterationBoResults(path, iteration)
-
     def getExperimentIterationInfo(self, batch, experimentId, iteration=0):
+        """
+        Retrieve the results of the BO untile the given iteration
+
+        Parameters
+        ----------
+        batch : id of the batch
+        experimentId : id of the experiment
+        iteration : last iteration to consider
+        """
         experiment = ""
         if batch+experimentId in self.completed:
             experiment = self.completed[batch+experimentId]
@@ -214,6 +261,14 @@ class QueueManager:
         return expManager.retrieveIterationBoResults(path, iteration)
 
     def getExperiment(self, batch, experimentId):
+        """
+        Retrieve metadata about the experiment
+
+        Parameters
+        ----------
+        batch : name of the batch
+        experimentId : name of the experiment
+        """
         experiment = ""
         if batch+experimentId in self.completed:
             experiment = self.completed[batch+experimentId]
@@ -222,6 +277,14 @@ class QueueManager:
         return experiment
 
     def getAllExpIds(self):
+        """
+        Retrieve the name of each experiment and their batch
+
+        Returns
+        expIds : list of entries. Each entry is a list with 2 elements.
+                 the name of the experiment and a list with name of the batch and
+                 name of the experiment
+        """
         expIds = []
         for key, exp in self.completed.items():
             expIds.append([exp["experimentId"],

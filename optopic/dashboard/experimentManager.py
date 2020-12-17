@@ -250,6 +250,19 @@ def singleInfo(path):
 
 
 def getModelInfo(path, iteration, modelRun):
+    """
+    Retrieve the output of the given model
+
+    Parameters
+    ----------
+    path :  path of the experiment folder
+    iteration : number of iteration
+    modelRun : number of model run
+
+    Returns
+    -------
+    output of the model and vocabulary
+    """
     output = load_model_output(
-        str(os.path.join(path, "models", str(iteration)+"_"+str(modelRun)+".npz")),  str(os.path.join(path,"models", "vocabulary.json")), 20)
+        str(os.path.join(path, "models", str(iteration)+"_"+str(modelRun)+".npz")),  str(os.path.join(path, "models", "vocabulary.json")), 20)
     return output

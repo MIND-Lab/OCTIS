@@ -22,10 +22,20 @@ def scanDatasets():
 
 
 def getDatasetMetadata(datasetName):
-    f = open(str(os.path.join(
-        path, "preprocessed_datasets", datasetName, "metadata.json")),)
-    data = json.load(f)
-    return data
+    """
+    Retrieves the dataset metadata
+
+    Returns
+    -------
+    data : dict with metadata if dataset is found, False otherwise
+    """
+    file = os.path.join(
+        path, "preprocessed_datasets", datasetName, "metadata.json")
+    if file.is_file():
+        f = open(str(file),)
+        data = json.load(f)
+        return data
+    return False
 
 
 def getDocPreview(datasetName, documentNumber):
@@ -44,5 +54,15 @@ def getDocPreview(datasetName, documentNumber):
 
 
 def getVocabulary(path):
-    vocabulary_file = open(path,)
-    return json.load(vocabulary_file)
+    """
+    Retrieves the vocabulary from the vocabulary file of an ezxperiment
+
+    Returns
+    -------
+    vocabulary : a dictionary with id as a key and word as value,
+                 returns False if the vocabulary is not found
+    """
+    if Path(path).is_file():
+        vocabulary_file = open(path,)
+        return json.load(vocabulary_file)
+    return False
