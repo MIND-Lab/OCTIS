@@ -108,7 +108,8 @@ class Dataset:
             with open(file_name, 'w') as outfile:
                 json.dump(data, outfile)
                 return True
-        raise Exception("error in saving metadata")
+        else:
+            raise Exception("error in saving metadata")
 
     def _load_metadata(self, file_name):
         """
@@ -122,7 +123,6 @@ class Dataset:
             with open(file_name, 'r') as metadata_file:
                 metadata = json.load(metadata_file)
             self.__metadata = metadata
-        raise Exception("error in loading metadata")
 
     def _save_corpus(self, file_name):
         """
@@ -136,7 +136,8 @@ class Dataset:
             with open(file_name, 'w') as outfile:
                 for element in data:
                     outfile.write("%s\n" % " ".join(element))
-        raise Exception("error in saving metadata")
+        else:
+            raise Exception("error in saving metadata")
 
     def _load_corpus(self, file_name):
         """
@@ -165,7 +166,8 @@ class Dataset:
             with open(file_name, 'w') as outfile:
                 for element in data:
                     outfile.write("%s\n" % element)
-        raise Exception("error in saving edges")
+        else:
+            raise Exception("error in saving edges")
 
     def _load_edges(self, file_name):
         """
@@ -179,8 +181,6 @@ class Dataset:
             with open(file_name, 'r') as edges_file:
                 edges = [line[0:len(line)-1] for line in edges_file]
             self.__edges = edges
-        else:
-            raise Exception("error in loading edges")
 
     def _save_labels(self, file_name):
         """
@@ -195,7 +195,8 @@ class Dataset:
             with open(file_name, 'w') as outfile:
                 for element in data:
                     outfile.write("%s\n" % json.dumps(element))
-        raise Exception("error in saving labels")
+        else:
+            raise Exception("error in saving labels")
 
     def _load_labels(self, file_name):
         """
@@ -210,7 +211,6 @@ class Dataset:
             with open(file_name, 'r') as labels_file:
                 labels = [json.loads(line.strip()) for line in labels_file]
             self.__labels = labels
-        raise Exception("error in loading labels")
 
     def _save_vocabulary(self, file_name):
         """
@@ -226,7 +226,8 @@ class Dataset:
                 for word, freq in data.items():
                     line = word+" "+str(freq)
                     outfile.write("%s\n" % line)
-        raise Exception("error in saving vocabulary")
+        else:
+            raise Exception("error in saving vocabulary")
 
     def _load_vocabulary(self, file_name):
         """
