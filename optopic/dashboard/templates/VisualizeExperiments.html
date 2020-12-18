@@ -79,6 +79,10 @@
             height: 0;
         }
 
+        .imok {
+            background-color: #14bf98;
+        }
+
         /* The slider */
         .slidercheck {
             position: absolute;
@@ -210,6 +214,9 @@
     <div id="projects" class="filter">
         <div class="container">
             <div class="row">
+                <p><b>Filters:</b></p>
+            </div>
+            <div class="row">
                 <div id="datasetfilters" class="button-group filters-button-group"></div>
             </div>
             <div class="row">
@@ -220,19 +227,23 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-12">
-                    <div id="theCanvas"></div>
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-
+                <p><b>sort by:</b></p>
+            </div>
 
             <div class="row">
-                <div class="col-lg-12">
-                    <div id="theCanvas"></div>
+                <a id="sortDataset" class="button" data-what="dataset"><span>Dataset</span></a>
+            </div>
+            <div class="row">
+                <a id="sortModel" class="button" data-what="model"><span>Models</span></a>
+            </div>
+            <div class="row">
+                <a id="sortMetric" class="button" data-what="metric"><span>Metrics</span></a>
+            </div>
 
-                </div> <!-- end of col -->
+            <div class="row" style="overflow: scroll;">
+                <div id="theCanvas"></div>
             </div> <!-- end of row -->
+
 
         </div> <!-- end of container -->
     </div> <!-- end of filter -->
@@ -341,6 +352,11 @@
         });
 
         allData = ''
+        var toshow = []
+
+        var modelsSet = new Set();
+        var datasetsSet = new Set();
+        var metricsSet = new Set();
 
         function refreshCanvas(batchIds) {
             $.ajax(
@@ -352,10 +368,9 @@
                     data: JSON.stringify({ "data": Object.keys(batchIds) }),
                     success: function (data) {
                         allData = data;
+                        toshow = allData;
 
-                        modelsSet = new Set();
-                        datasetsSet = new Set();
-                        metricsSet = new Set();
+
 
                         data.forEach(function (item, index) {
                             modelsSet.add(item["model"]["name"])
@@ -422,11 +437,156 @@
 
 
 
+        function createMatrix(div, rows, cols) {
+
+            table = document.createElement("table");
+
+
+
+            for (x = 0; x <= rows; x++) {
+
+                row = document.createElement('tr')
+
+                if (x % 2 == 0) {
+                    row.style.backgroundColor = "#f5f9fc"
+                } else {
+                    row.style.backgroundColor = "#f5f5f5"
+                }
+
+
+                for (y = 0; y <= cols; y++) {
+
+                    col = document.createElement('td')
+
+                    col.id = x.toString() + "_" + y.toString()
+
+                    row.appendChild(col)
+
+                }
+
+                table.appendChild(row)
+            }
+
+            div.appendChild(table)
+        }
+
+
+        function fillMatrix(div, list1, list2, key1, key2, dict) {
+            if (list1.length > 0 && list2.length > 0) {
+                createMatrix(div, list1.length, list2.length)
+
+                for (i = 0; i < list1.length; i++) {
+                    cell = document.getElementById((i + 1).toString() + "_0")
+                    cell.innerHTML = cell.innerHTML + "<b>" + list1[i] + "</b>"
+                }
+
+                for (i = 0; i < list2.length; i++) {
+                    cell = document.getElementById("0_" + (i + 1).toString())
+                    cell.innerHTML = cell.innerHTML + "<b>" + list2[i] + "</b>"
+                }
+
+                for (i = 0; i < dict.length; i++) {
+                    row = list1.indexOf(dict[i][key1]) + 1
+                    col = list2.indexOf(dict[i][key2]) + 1
+
+                    cell = document.getElementById(row.toString() + "_" + col.toString())
+                    cell.appendChild(dict[i]["div"])
+
+
+
+
+                    if (document.getElementById("graphType").checked) {
+                        var trace = {
+                            y: item["optimization_data"]["f_val"],
+                            type: 'box'
+                        }
+                        Plotly.newPlot(dict[i]["graph_info"][0], [trace], dict[i]["graph_info"][2]);
+                    }
+                    else {
+
+                        var trace = {
+                            x: second_axe,
+                            y: best_seen,
+                            type: 'scatter'
+                        }
+                        Plotly.newPlot(dict[i]["graph_info"][0], [trace], dict[i]["graph_info"][2]);
+                    }
+
+
+                }
+            } else {
+                div.innerHTML = "Select at least two parameters to sort by."
+            }
+        }
+
+        var key1 = "model"
+        var key2 = "dataset"
+
+        sD = document.getElementById("sortDataset")
+        sMod = document.getElementById("sortModel")
+        sMet = document.getElementById("sortMetric")
+        sD.classList.add("imok")
+        sMod.classList.add("imok")
+
+        sD.addEventListener("click", function () { updatekeys("sortDataset") })
+        sMod.addEventListener("click", function () { updatekeys("sortModel") })
+        sMet.addEventListener("click", function () { updatekeys("sortMetric") })
+
+        function updatekeys(elementId) {
+            elemenet = document.getElementById(elementId)
+            if (elemenet.classList.contains("imok")) {
+                if (key1 == elemenet.dataset.what) {
+                    key1 = ""
+                } else {
+                    key2 = ""
+                }
+                elemenet.classList.remove("imok")
+
+            } else {
+                if (key1 == "") {
+                    key1 = elemenet.dataset.what
+                    elemenet.classList.add("imok")
+                }
+                else {
+                    if (key2 == "") {
+                        key2 = elemenet.dataset.what
+                        elemenet.classList.add("imok")
+                    }
+                    else {
+                        key1 = elemenet.dataset.what
+                        key2 = ""
+
+                        sD = document.getElementById("sortDataset")
+                        sMod = document.getElementById("sortModel")
+                        sMet = document.getElementById("sortMetric")
+                        if (sD.id != elemenet.id) {
+                            sD.classList.remove("imok")
+                        }
+                        if (sMod.id != elemenet.id) {
+                            sMod.classList.remove("imok")
+                        }
+                        if (sMet.id != elemenet.id) {
+                            sMet.classList.remove("imok")
+                        }
+                        elemenet.classList.add("imok")
+
+                    }
+                }
+            }
+
+            redraw(allData)
+
+        }
+
+
         function redraw(data) {
 
             if (data != null) {
                 cont = document.getElementById("theCanvas");
                 cont.innerHTML = '';
+
+
+                dicFinal = []
 
 
 
@@ -436,6 +596,8 @@
                     innerDiv = document.createElement("div")
                     innerDiv.classList.add("element-item")
                     innerDiv.classList.add(item["model"]["name"])
+                    innerDiv.style.height = "500px";
+                    innerDiv.style.width = "500px";
 
                     a = document.createElement("a")
                     a.classList.add("popup-with-move-anim");
@@ -445,6 +607,8 @@
 
                     best_seen = [item["optimization_data"]["f_val"][0]]
                     second_axe = [0]
+
+
 
                     for (i = 1; i < item["optimization_data"]["f_val"].length; i++) {
                         if (best_seen[i - 1] < item["optimization_data"]["f_val"][i]) {
@@ -481,30 +645,48 @@
                     a.appendChild(graph);
 
 
-                    cont.appendChild(innerDiv);
 
-                    if (document.getElementById("graphType").checked) {
-                        var trace = {
-                            y: item["optimization_data"]["f_val"],
-                            type: 'box'
-                        }
-                        Plotly.newPlot(item["experimentId"], [trace], layout);
-                    }
-                    else {
-
-                        var trace = {
-                            x: second_axe,
-                            y: best_seen,
-                            type: 'scatter'
-                        }
-                        Plotly.newPlot(item["experimentId"], [trace], layout);
-                    }
-
+                    dicFinal.push({
+                        "model": item["model"]["name"],
+                        "dataset": item["dataset"],
+                        "metric": item["optimize_metrics"][0]["name"],
+                        "div": innerDiv,
+                        "graph_info": [item["experimentId"], layout]
+                    });
 
                     console.log(item, index);
                 });
 
 
+
+                if (key1 == "model") {
+                    list1 = Array.from(modelsSet)
+                }
+                if (key1 == "metric") {
+                    list1 = Array.from(metricsSet)
+                }
+                if (key1 == "dataset") {
+                    list1 = Array.from(datasetsSet)
+                }
+                if (key1 == "") {
+                    list1 = []
+                }
+
+                if (key2 == "model") {
+                    list2 = Array.from(modelsSet)
+                }
+                if (key2 == "metric") {
+                    list2 = Array.from(metricsSet)
+                }
+                if (key2 == "dataset") {
+                    list2 = Array.from(datasetsSet)
+                }
+                if (key2 == "") {
+                    list2 = []
+                }
+
+
+                fillMatrix(cont, list1, list2, key1, key2, dicFinal)
 
 
             }

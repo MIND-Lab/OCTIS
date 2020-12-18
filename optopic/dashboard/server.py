@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.insert(0,os.getcwd())
+
 from flask import Flask, render_template, request
 import json
 from multiprocessing import Process, Pool

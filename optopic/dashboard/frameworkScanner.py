@@ -31,10 +31,9 @@ def getDatasetMetadata(datasetName):
     """
     file = os.path.join(
         path, "preprocessed_datasets", datasetName, "metadata.json")
-    if file.is_file():
-        f = open(str(file),)
-        data = json.load(f)
-        return data
+    f = open(str(file),)
+    data = json.load(f)
+    return data
     return False
 
 
@@ -43,10 +42,10 @@ def getDocPreview(datasetName, documentNumber):
         path, "preprocessed_datasets", datasetName, "corpus.txt"))
     corpus = []
     file = Path(datasetPath)
-    if file.is_file():
-        with open(datasetPath, 'r') as corpus_file:
-            for line in corpus_file:
-                corpus.append(line)
+
+    with open(datasetPath, 'r') as corpus_file:
+        for line in corpus_file:
+            corpus.append(line)
     splitted = corpus[documentNumber].split()
     if len(splitted) > 40:
         return " ".join(splitted[0:40])
