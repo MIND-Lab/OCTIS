@@ -22,6 +22,14 @@
     <!-- Favicon  -->
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
+    <style>
+        div.choice {
+            border-radius: 25px;
+            border: 2px solid #3254d0;
+            padding: 20px;
+            background-color: #a5b5f1;
+        }
+    </style>
 </head>
 
 <body data-spy="scroll" data-target=".fixed-top">
@@ -87,6 +95,14 @@
     <!-- end of header -->
 
 
+
+    <div>
+        <ul id="container" style="list-style: none;"></ul>
+    </div>
+    <button class="form-control-submit-button" onclick="stopCurrent()">stop running</button>
+    <button class="form-control-submit-button" onclick="start()">Start running</button>
+
+
     <!-- Footer -->
     <div class="footer">
         <div class="container">
@@ -128,6 +144,155 @@
     <script type="text/javascript" src="{{ url_for('static', filename='isotope.pkgd.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='validator.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+    <script>
+
+        function getParams(vars) {
+            return vars;
+        }
+
+        function stopCurrent() {
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: "/pauseExp",
+                    success: function (data) { console.log("stopped") }
+                });
+            el = $(".running:eq(0)")
+            el.attr("draggable", true)
+            el.children().css("background-color", "#a5b5f1")
+            el.removeClass("running")
+
+
+        }
+
+        function start() {
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: "/startExp",
+                    success: function (data) { console.log("stopped") }
+                });
+            el = $("#container li").first()
+            el.attr("draggable", false)
+            el.children().css("background-color", "#a89732")
+            el.addClass("running")
+
+
+        }
+
+        order = getParams({{ order| tojson}});
+        exps = getParams({{ experiments| tojson}});
+        running = getParams({{ running| tojson}});
+
+        element = document.getElementById("container")
+
+
+
+        if (running != null) {
+            child = document.createElement("li")
+            child.classList.add("sortable-bulk")
+            child.setAttribute('draggable', false);
+            child.dataset.expName = running
+            child.classList.add("running")
+
+
+            div = document.createElement("div")
+            div.style.backgroundColor = "#a89732"
+            div.classList.add("choice")
+            div.innerHTML = "<b>" + exps[running]["experimentId"] +
+                " batch: " + exps[running]["batchId"] + " </b><br>" +
+                "<b>Model:</b> " + exps[running]["model"] +
+                "<br><b>Search space:</b> " + JSON.stringify([running]["search_spaces"]) +
+                "<br><b>Dataset:</b> " + exps[running]["dataset"] +
+                "<br><b>Optimized metric:</b> " + exps[running]["optimize_metrics"][0]
+
+            child.appendChild(div)
+            element.appendChild(child)
+        }
+
+
+
+        for (i = 0; i < order.length; i++) {
+
+            child = document.createElement("li")
+            child.classList.add("sortable-bulk")
+            child.setAttribute('draggable', true);
+            child.dataset.expName = order[i]
+
+
+            div = document.createElement("div")
+            div.classList.add("choice")
+            div.innerHTML = "<b>" + exps[order[i]]["experimentId"] +
+                " batch: " + exps[order[i]]["batchId"] + " </b><br>" +
+                "<b>Model:</b> " + exps[order[i]]["model"] +
+                "<br><b>Search space:</b> " + JSON.stringify([order[i]]["search_spaces"]) +
+                "<br><b>Dataset:</b> " + exps[order[i]]["dataset"] +
+                "<br><b>Optimized metric:</b> " + exps[order[i]]["optimize_metrics"][0]
+
+            child.appendChild(div)
+            element.appendChild(child)
+
+        }
+
+
+
+
+        var dragging = null;
+
+        document.addEventListener('dragstart', function (event) {
+            pr = event.target;
+            while (pr.tagName != "li" && pr.tagName != "LI") {
+                pr = pr.parentNode
+            }
+            dragging = pr
+            event.dataTransfer.setData('text/html', dragging);
+        });
+
+        document.addEventListener('dragover', function (event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener('drop', function (event) {
+            event.preventDefault();
+            pr = event.target.parentNode
+            while (pr.tagName != "li" && pr.tagName != "LI") {
+                pr = pr.parentNode
+            }
+            if (!pr.classList.contains("running"))
+                pr.parentNode.insertBefore(dragging, pr);
+
+            update()
+        });
+
+
+        function update() {
+            element = document.getElementById("container")
+
+            newOrder = []
+
+            var i = 0;
+            if (document.getElementsByClassName("running").length > 0) {
+                i = 1;
+            }
+
+            for (i; i < element.children.length; i++) {
+                newOrder.push(element.children[i].dataset.expName)
+            }
+
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: "/updateOrder",
+                    contentType: 'application/json;charset=UTF-8',
+                    dataType: 'json',
+                    data: JSON.stringify({ "data": newOrder }),
+                    success: function (data) {
+                        console.log(newOrder)
+                    }
+                })
+        }
+    </script>
 
 </body>
 

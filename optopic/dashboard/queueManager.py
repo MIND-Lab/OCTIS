@@ -7,6 +7,7 @@ from optopic.dashboard.experimentManager import startExperiment
 import optopic.dashboard.experimentManager as expManager
 import multiprocessing as mp
 from subprocess import Popen
+import signal
 
 
 class QueueManager:
@@ -31,6 +32,7 @@ class QueueManager:
         self.completed = manager.dict()
         self.busy = manager.list()
         self.busy.append(False)
+        self.process = manager.list()
 
         self.load_state()
         self.idle = mp.Process(target=self._run)
@@ -73,6 +75,7 @@ class QueueManager:
         """
         if self.running[0] is None:
             self.running[0] = self.order.pop(0)
+            self.busy[0] = False
             self.start()
         return self.running[0]
 
@@ -132,7 +135,8 @@ class QueueManager:
         """
         if self.busy[0]:
             paused = self.running[0]
-            self.process.terminate()
+            to_stop = self.process.pop()
+            os.kill(to_stop, signal.SIGTERM)
             self.order.insert(0, paused)
             self.running[0] = None
             return paused
@@ -201,8 +205,10 @@ class QueueManager:
         """
         if not self.busy[0]:
             self.busy[0] = True
-            self.process = mp.Process(target=self._execute_and_update)
-            self.process.start()
+            process = mp.Process(target=self._execute_and_update)
+            process.start()
+            print("starting "+self.running[0])
+            self.process.append(process.pid)
 
     def stop(self):
         """
@@ -293,3 +299,40 @@ class QueueManager:
             expIds.append([exp["experimentId"],
                            [exp["batchId"], exp["experimentId"]]])
         return expIds
+
+    def getToRun(self):
+        """
+        Retrieve the experiments to run
+
+        Returns
+        -------
+        experiments : dictionary of the experiments to run
+        """
+        return dict(self.toRun)
+
+    def getOrder(self):
+        """
+        Retrieve the order of the experiments to run
+
+        Returns
+        -------
+        order : id of each experiment to run in order (from first to last) 
+        """
+        return list(self.order)
+
+    def getRunning(self):
+        """
+        returns the id of the running experiment
+
+        Returns
+        -------
+        output : id of the running experiment
+        """
+        return self.running[0]
+
+    def editOrder(self, newOrder):
+        """
+        Updates the order of the experiments to run
+        """
+        self.order[:] = []
+        self.order.extend(newOrder)

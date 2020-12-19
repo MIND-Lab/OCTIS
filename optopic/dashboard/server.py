@@ -1,23 +1,9 @@
-import os
-import sys
-sys.path.insert(0,os.getcwd())
-
-from flask import Flask, render_template, request
-import json
-from multiprocessing import Process, Pool
-import optopic.configuration.defaults as defaults
-import optopic.dashboard.frameworkScanner as fs
 import webbrowser
-import argparse
-import os
-import sys
-sys.path.insert(0, os.getcwd())
-
-sys.path.insert(0, os.getcwd())
-
-sys.path.insert(0, os.getcwd())
-
-sys.path.insert(0, os.getcwd())
+import optopic.dashboard.frameworkScanner as fs
+import optopic.configuration.defaults as defaults
+from multiprocessing import Process, Pool
+import json
+from flask import Flask, render_template, request
 
 
 app = Flask(__name__)
@@ -144,7 +130,34 @@ def VisualizeExperiments():
 
 @ app.route('/ManageExperiments')
 def ManageExperiments():
-    return render_template("ManageExperiments.html")
+    exp_list = queueManager.getToRun()
+    order = queueManager.getOrder()
+    running = queueManager.getRunning()
+    return render_template("ManageExperiments.html",
+                           order=order,
+                           experiments=exp_list,
+                           running=running)
+
+
+@app.route("/pauseExp", methods=["POST"])
+def pauseExp():
+    queueManager.pause()
+    return {"DONE": "YES"}
+
+
+@app.route("/startExp", methods=["POST"])
+def startExp():
+    print(queueManager.getRunning())
+    if queueManager.getRunning() == None:
+        queueManager.next()
+    return {"DONE": "YES"}
+
+
+@app.route("/updateOrder", methods=["POST"])
+def updateOrder():
+    data = request.json['data']
+    queueManager.editOrder(data)
+    return {"DONE": "YES"}
 
 
 @app.route("/getDocPreview", methods=["POST"])
