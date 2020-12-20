@@ -14,7 +14,7 @@ from operator import add
 
 
 class Coherence(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
 
@@ -28,6 +28,8 @@ class Coherence(Abstract_Metric):
                             other measures: 'u_mass', 'c_v', 'c_uci', 'c_npmi'
         """
         super().__init__()
+        if metric_parameters is None:
+            metric_parameters = {}
         parameters = defaults.em_coherence.copy()
         parameters.update(metric_parameters)
 
@@ -49,7 +51,7 @@ class Coherence(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model 
+        model_output : dictionary, output of the model
                        key 'topics' required.
 
         Returns
@@ -71,7 +73,7 @@ class Coherence(Abstract_Metric):
 
 
 class Coherence_word_embeddings(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
 
@@ -87,6 +89,8 @@ class Coherence_word_embeddings(Abstract_Metric):
                             False otherwise (default False)
         """
         super().__init__()
+        if metric_parameters is None:
+            metric_parameters = {}
         parameters = defaults.em_coherence_we.copy()
         parameters.update(metric_parameters)
         self.parameters=parameters
@@ -112,7 +116,7 @@ class Coherence_word_embeddings(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model 
+        model_output : dictionary, output of the model
                        key 'topics' required.
 
         Returns
@@ -136,7 +140,7 @@ class Coherence_word_embeddings(Abstract_Metric):
 
 
 class Coherence_word_embeddings_pairwise(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
 
@@ -148,6 +152,8 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
                             google news 300 will be used instead
         """
         super().__init__()
+        if metric_parameters is None:
+            metric_parameters = {}
         parameters = defaults.em_coherence_we_pc.copy()
         parameters.update(metric_parameters)
         self.parameters=parameters
@@ -170,7 +176,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model 
+        model_output : dictionary, output of the model
                        key 'topics' required.
 
         Returns
@@ -207,7 +213,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
 
 
 class Coherence_word_embeddings_centroid(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
 
@@ -219,6 +225,8 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
                             google news 300 will be used instead
         """
         super().__init__()
+        if metric_parameters is None:
+            metric_parameters = {}
         parameters = defaults.em_coherence_we_pc.copy()
         parameters.update(metric_parameters)
         self.parameters=parameters
@@ -241,7 +249,7 @@ class Coherence_word_embeddings_centroid(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model 
+        model_output : dictionary, output of the model
                        key 'topics' required.
 
         Returns

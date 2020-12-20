@@ -10,8 +10,10 @@ from libsvm.svmutil import *
 
 class F1Score(Abstract_Metric):
 
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         Abstract_Metric.__init__(self, metric_parameters)
+        if metric_parameters is None:
+            metric_parameters = {}
         self.train_document_representations = None
         self.test_document_representations = None
         parameters = defaults.em_f1_score.copy()
@@ -91,7 +93,7 @@ class F1Score(Abstract_Metric):
         else:
             clf = svm.SVC(kernel=self.kernel)
         clf.fit(X_train, train_labels)
-        
+
         predicted_test_labels = clf.predict(X_test)
 
         return f1_score(test_labels, predicted_test_labels, average=self.average)

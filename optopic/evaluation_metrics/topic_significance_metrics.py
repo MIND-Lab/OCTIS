@@ -35,11 +35,13 @@ def _replace_zeros_lines(arr):
 
 
 class KL_uniform(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
         """
         super().__init__()
+        if metric_parameters is None:
+            metric_parameters = {}
         self.parameters=metric_parameters
 
     def info(self):
@@ -84,11 +86,13 @@ class KL_uniform(Abstract_Metric):
 
 
 class KL_vacuous(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
         """
         super().__init__()
+        if metric_parameters is None:
+            metric_parameters = {}
         self.parameters=metric_parameters
 
     def info(self):
@@ -142,11 +146,13 @@ class KL_vacuous(Abstract_Metric):
 
 
 class KL_background(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
         """
         super().__init__()
+        if metric_parameters is None:
+            metric_parameters = {}
         self.parameters=metric_parameters
 
     def info(self):

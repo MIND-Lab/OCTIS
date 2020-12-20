@@ -7,8 +7,8 @@ from optopic.evaluation_metrics.rbo import rbo
 from optopic.evaluation_metrics.word_embeddings_rbo import word_embeddings_rbo
 
 
-class Topic_diversity(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+class TopicDiversity(Abstract_Metric):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
 
@@ -19,6 +19,8 @@ class Topic_diversity(Abstract_Metric):
                             will be computed
         """
         Abstract_Metric.__init__(self, metric_parameters)
+        if metric_parameters is None:
+            metric_parameters = {}
         parameters = defaults.em_topic_diversity.copy()
         parameters.update(metric_parameters)
         self.topk = parameters["topk"]
@@ -36,7 +38,7 @@ class Topic_diversity(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model 
+        model_output : dictionary, output of the model
                        key 'topics' required.
 
         Returns
@@ -55,7 +57,7 @@ class Topic_diversity(Abstract_Metric):
 
 
 class InvertedRBO(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
+    def __init__(self, metric_parameters=None):
         """
         Initialize metric
 
@@ -69,12 +71,14 @@ class InvertedRBO(Abstract_Metric):
                                     to 1.0, there is no weight, the rbo returns
                                     to average overlap.
         """
-        super().__init__()
+        super().__init__(metric_parameters)
+        if metric_parameters is None:
+            metric_parameters = {}
         parameters = defaults.em_invertedRBO.copy()
         parameters.update(metric_parameters)
         self.parameters = parameters
 
-        self. topk = parameters["topk"]
+        self.topk = parameters["topk"]
         self.weight = parameters["weight"]
 
     def score(self, model_output):
@@ -83,7 +87,7 @@ class InvertedRBO(Abstract_Metric):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model 
+        model_output : dictionary, output of the model
                        key 'topics' required.
 
         Returns
@@ -114,8 +118,10 @@ class InvertedRBO(Abstract_Metric):
 
 
 class WordEmbeddingsInvertedRBO(Abstract_Metric):
-    def __init__(self, metric_parameters={}):
-        super().__init__()
+    def __init__(self, metric_parameters=None):
+        super().__init__(metric_parameters)
+        if metric_parameters is None:
+            metric_parameters = {}
         parameters = defaults.em_word_embeddings_invertedRBO.copy()
         parameters.update(metric_parameters)
         self.parameters = parameters
