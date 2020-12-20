@@ -1,9 +1,11 @@
-import webbrowser
-import optopic.dashboard.frameworkScanner as fs
-import optopic.configuration.defaults as defaults
-from multiprocessing import Process, Pool
-import json
 from flask import Flask, render_template, request
+import json
+from multiprocessing import Process, Pool
+import optopic.configuration.defaults as defaults
+import optopic.dashboard.frameworkScanner as fs
+import webbrowser
+import argparse
+
 
 
 app = Flask(__name__)
@@ -163,7 +165,6 @@ def updateOrder():
 @app.route("/getDocPreview", methods=["POST"])
 def getDocPreview():
     data = request.json['data']
-    print(data)
     return json.dumps({"doc": fs.getDocPreview(data["dataset"], int(data["document"]))})
 
 

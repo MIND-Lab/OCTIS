@@ -168,16 +168,18 @@ def retrieveBoResults(path):
     path : path where the results are saved (json file).
     Returns
     -------
-    dict_return :dictionary 
+    dict_return :dictionary
     """
-    # open json file
-    with open(path, 'rb') as file:
-        result = json.load(file)
-    f_val = result['f_val']
-    # output dictionart
-    dict_return = dict()
-    dict_return.update({"f_val": f_val})
-    return dict_return
+    if os.path.isfile(path):
+        # open json file
+        with open(path, 'rb') as file:
+            result = json.load(file)
+        f_val = result['f_val']
+        # output dictionart
+        dict_return = dict()
+        dict_return.update({"f_val": f_val})
+        return dict_return
+    return False
 
 
 def retrieveIterationBoResults(path, iteration):
@@ -189,40 +191,41 @@ def retrieveIterationBoResults(path, iteration):
     iteration : considered iteration.
     Returns
     -------
-    dict_return :dictionary 
+    dict_return :dictionary
     """
-    # open json file
-    with open(path, 'rb') as file:
-        result = json.load(file)
-        values = [result["f_val"][0]]
-    if iteration > 0:
-        values = result['f_val'][0:iteration+1]
-    print(values)
-    type_of_problem = result['optimization_type']
-    if type_of_problem == 'Maximize':
-        best_seen = max(values)
-        worse_seen = min(values)
-    else:
-        best_seen = min(values)
-        worse_seen = max(values)
-    median_seen = np.median(values)
-    mean_seen = np.mean(values)
-    hyperparameters = result['x_iters']
-    name_hyp = list(hyperparameters.keys())
-    hyperparameters_iter = list()
-    for name in name_hyp:
-        hyperparameters_iter.append(hyperparameters[name][iteration])
+    if os.path.isfile(path):
+        # open json file
+        with open(path, 'rb') as file:
+            result = json.load(file)
+            values = [result["f_val"][0]]
+        if iteration > 0:
+            values = result['f_val'][0:iteration+1]
+        type_of_problem = result['optimization_type']
+        if type_of_problem == 'Maximize':
+            best_seen = max(values)
+            worse_seen = min(values)
+        else:
+            best_seen = min(values)
+            worse_seen = max(values)
+        median_seen = np.median(values)
+        mean_seen = np.mean(values)
+        hyperparameters = result['x_iters']
+        name_hyp = list(hyperparameters.keys())
+        hyperparameters_iter = list()
+        for name in name_hyp:
+            hyperparameters_iter.append(hyperparameters[name][iteration])
 
-    hyperparameters_config = dict(zip(name_hyp, hyperparameters_iter))
-    # dizionaro di output
-    dict_return = dict()
-    dict_return.update({"best_seen": best_seen})
-    dict_return.update({"worse_seen": worse_seen})
-    dict_return.update({"median_seen": median_seen})
-    dict_return.update({"mean_seen": mean_seen})
-    dict_return.update(
-        {"hyperparameter_configuration": hyperparameters_config})
-    return dict_return
+        hyperparameters_config = dict(zip(name_hyp, hyperparameters_iter))
+        # dizionaro di output
+        dict_return = dict()
+        dict_return.update({"best_seen": best_seen})
+        dict_return.update({"worse_seen": worse_seen})
+        dict_return.update({"median_seen": median_seen})
+        dict_return.update({"mean_seen": mean_seen})
+        dict_return.update(
+            {"hyperparameter_configuration": hyperparameters_config})
+        return dict_return
+    return False
 
 # Manca retrieve di Iperparametri iteerazione e topic-word-matrix e document-topic matrix
 
@@ -231,22 +234,24 @@ def singleInfo(path):
     """
     Metodo per calcolare media, mediana, best e worse della valutazioni delle funzioni obiettivo
     """
-    with open(path, 'rb') as file:
-        result = json.load(file)
-    values = result['f_val']
-    best_seen = max(values)
-    worse_seen = min(values)
-    median_seen = np.median(values)
-    mean_seen = np.mean(values)
-    # dizionaro di output
-    dict_return = dict()
-    dict_return.update({"f_val": values})
-    dict_return.update({"best_seen": best_seen})
-    dict_return.update({"worse_seen": worse_seen})
-    dict_return.update({"median_seen": median_seen})
-    dict_return.update({"mean_seen": mean_seen})
+    if os.path.isfile(path):
+        with open(path, 'rb') as file:
+            result = json.load(file)
+        values = result['f_val']
+        best_seen = max(values)
+        worse_seen = min(values)
+        median_seen = np.median(values)
+        mean_seen = np.mean(values)
+        # dizionaro di output
+        dict_return = dict()
+        dict_return.update({"f_val": values})
+        dict_return.update({"best_seen": best_seen})
+        dict_return.update({"worse_seen": worse_seen})
+        dict_return.update({"median_seen": median_seen})
+        dict_return.update({"mean_seen": mean_seen})
 
-    return dict_return
+        return dict_return
+    return False
 
 
 def getModelInfo(path, iteration, modelRun):
@@ -263,6 +268,13 @@ def getModelInfo(path, iteration, modelRun):
     -------
     output of the model and vocabulary
     """
-    output = load_model_output(
-        str(os.path.join(path, "models", str(iteration)+"_"+str(modelRun)+".npz")),  str(os.path.join(path, "models", "vocabulary.json")), 20)
-    return output
+    outputfile = str(os.path.join(path,
+                                  "models",
+                                  str(iteration)+"_"+str(modelRun)+".npz"))
+    vocabularyfile = str(os.path.join(path,
+                                      "models",
+                                      "vocabulary.json"))
+    if os.path.isfile(outputfile) and os.path.isfile(vocabularyfile):
+        output = load_model_output(outputfile, vocabularyfile, 20)
+        return output
+    return False

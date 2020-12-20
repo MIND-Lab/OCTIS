@@ -194,6 +194,17 @@
         }
     }
 
+    function isFloat(val) {
+        var floatRegex = /^-?\d+(?:[.,]\d*?)?$/;
+        if (!floatRegex.test(val))
+            return false;
+
+        val = parseFloat(val);
+        if (isNaN(val))
+            return false;
+        return true;
+    }
+
 
     var output = getParams({{ output| tojson}});
     globalInfo = getParams({{ globalInfo| tojson}});
@@ -212,15 +223,20 @@
             hyperparams = "<br><b>Hyperparameters configuration:</b>"
 
             $.each(info["hyperparameter_configuration"], function (key, value) {
-                hyperparams = hyperparams + "<br><b>" + key + ":</b> " + value
+                val = value
+                if (isFloat(value)) {
+                    val = parseFloat(value)
+                    val = val.toFixed(4)
+                }
+                hyperparams = hyperparams + "<br><b>" + key + ":</b> " + val
             });
         }
 
         node = document.createElement("p")
-        node.innerHTML = "<b>Best seen:</b> " + info["best_seen"] +
-            "<br><b>Mean:</b> " + info["mean_seen"] +
-            "<br><b>Median:</b> " + info["median_seen"] +
-            "<br><b>Worst seen:</b> " + info["worse_seen"] +
+        node.innerHTML = "<b>Best seen:</b> " + info["best_seen"].toFixed(4) +
+            "<br><b>Mean:</b> " + info["mean_seen"].toFixed(4) +
+            "<br><b>Median:</b> " + info["median_seen"].toFixed(4) +
+            "<br><b>Worst seen:</b> " + info["worse_seen"].toFixed(4) +
             hyperparams;
 
         ele.appendChild(node)
@@ -255,7 +271,12 @@
     iterSelect.id = "iterselect"
     iterSelect.setAttribute("type", "number");
     iterSelect.setAttribute("min", 0);
-    iterSelect.setAttribute("max", expInfo["optimization"]["iterations"] - 1);
+    if (globalInfo != false) {
+        iterSelect.setAttribute("max", globalInfo["f_val"].length - 1);
+    }
+    else {
+        iterSelect.setAttribute("max", 0);
+    }
     iterSelect.defaultValue = 0
 
     sel.appendChild(document.createTextNode("Iteration: "))
@@ -267,7 +288,11 @@
     runSelect.id = "runselect"
     runSelect.setAttribute("type", "number");
     runSelect.setAttribute("min", 0);
-    runSelect.setAttribute("max", expInfo["optimization"]["model_runs"] - 1);
+    if (expInfo != false) {
+        runSelect.setAttribute("max", expInfo["optimization"]["model_runs"] - 1);
+    } else {
+        runSelect.setAttribute("max", 0);
+    }
     runSelect.defaultValue = 0
 
     sel.appendChild(document.createTextNode("Model run: "))
@@ -289,11 +314,14 @@
             draw(this.value)
         })
 
-        for (i = 0; i < output["topic-word-matrix"].length; i++) {
-            var option = document.createElement("option");
-            option.text = i;
-            option.value = i;
-            topicSelect.appendChild(option)
+        if (output != false) {
+
+            for (i = 0; i < output["topic-word-matrix"].length; i++) {
+                var option = document.createElement("option");
+                option.text = i;
+                option.value = i;
+                topicSelect.appendChild(option)
+            }
         }
 
         topicSelector.appendChild(topicSelect)
@@ -321,10 +349,12 @@
                 }),
                 success: function (data) {
                     console.log(data["iterInfo"])
-                    writeInfo("expInfo", data["iterInfo"])
-                    output = data["output"]
-                    updateTopicSelector()
-                    draw(0)
+                    if (data["iterinfo"] != false && data["expinfo"] != false) {
+                        writeInfo("expInfo", data["iterInfo"])
+                        output = data["output"]
+                        updateTopicSelector()
+                        draw(0)
+                    }
                 }
             })
 
@@ -346,14 +376,18 @@
                 }),
                 success: function (data) {
                     preview = document.getElementById("docPreview")
+                    if (data["doc"] == false) data["doc"] = "document not found"
                     preview.innerHTML = "<b>Doument preview</b><br>" + data["doc"]
 
                     datax = []
                     datay = []
 
-                    for (var i = 0; i < output["topic-document-matrix"].length; i++) {
-                        datax.push(i)
-                        datay.push(output["topic-document-matrix"][i][document.getElementById("docSelector").value])
+                    if (output != false) {
+
+                        for (var i = 0; i < output["topic-document-matrix"].length; i++) {
+                            datax.push(i)
+                            datay.push(output["topic-document-matrix"][i][document.getElementById("docSelector").value])
+                        }
                     }
 
                     var bardata = [
@@ -391,9 +425,8 @@
 
 
 
-
-    writeInfo("optInfo", globalInfo)
-    writeInfo("expInfo", iterationInfo)
+    if (globalInfo != false) writeInfo("optInfo", globalInfo)
+    if (iterationInfo != false) writeInfo("expInfo", iterationInfo)
 
 
 
@@ -413,21 +446,19 @@
 
         var data = []
 
-        for (i = 0; i < output["topics"][topic].length; i++) {
-            data.push({ "x": output["topics"][topic][i][0], "value": output["topics"][topic][i][1], category: topic })
+        if (output != false) {
+
+            for (i = 0; i < output["topics"][topic].length; i++) {
+                data.push({ "x": output["topics"][topic][i][0], "value": output["topics"][topic][i][1], category: topic })
+            }
         }
 
-        // create a tag (word) cloud chart
+
         var chart = anychart.tagCloud(data);
-        // set a chart title
         chart.title('Wordcloud')
-        // set an array of angles at which the words will be laid out
         chart.angles([0])
-        // enable a color range
         chart.colorRange(true);
-        // set the color range length
         chart.colorRange().length('80%');
-        // display the word cloud chart
         chart.container("container");
         chart.draw();
     }
@@ -436,90 +467,98 @@
 
     function draw2() {
 
-        cont = document.getElementById("generic");
+        if (globalInfo != false) {
 
-        second_axe = [0]
+            cont = document.getElementById("generic");
 
-        for (i = 1; i < globalInfo["f_val"].length; i++) {
-            second_axe.push(i);
+            second_axe = [0]
+
+            for (i = 1; i < globalInfo["f_val"].length; i++) {
+                second_axe.push(i);
+            }
+
+            var layout = {
+                margin: {
+                    l: 50,
+                    r: 50,
+                    b: 40,
+                    t: 40,
+                    pad: 4
+                },
+                paper_bgcolor: 'rgba(256,256,256,1)'
+            };
+
+
+            var trace = {
+                x: second_axe,
+                y: globalInfo["f_val"],
+                type: 'scatter'
+            }
+
+            Plotly.newPlot("generic", [trace], layout);
+
         }
-
-        var layout = {
-            margin: {
-                l: 50,
-                r: 50,
-                b: 40,
-                t: 40,
-                pad: 4
-            },
-            paper_bgcolor: 'rgba(256,256,256,1)'
-        };
-
-
-        var trace = {
-            x: second_axe,
-            y: globalInfo["f_val"],
-            type: 'scatter'
-        }
-
-        Plotly.newPlot("generic", [trace], layout);
-
     }
 
     draw2()
 
     wordselector = document.getElementById("wordSelector")
 
-    Object.keys(vocabulary).forEach(function (key) {
-        option = document.createElement("option")
-        option.text = vocabulary[key];
-        option.value = key;
-        wordselector.appendChild(option)
+    if (vocabulary != false) {
 
-    });
+        Object.keys(vocabulary).forEach(function (key) {
+            option = document.createElement("option")
+            option.text = vocabulary[key];
+            option.value = key;
+            wordselector.appendChild(option)
+
+        });
+    }
 
 
 
     function updateWordGraph() {
-        wordselector = document.getElementById("wordSelector")
-        word = vocabulary[wordselector.text]
+        if (vocabulary != false && output != false) {
+            wordselector = document.getElementById("wordSelector")
+            word = vocabulary[wordselector.text]
 
 
 
 
-        datax = []
-        datay = []
+            datax = []
+            datay = []
 
-        for (var i = 0; i < output["topic-word-matrix"].length; i++) {
-            datax.push(i)
-            datay.push(output["topic-word-matrix"][i][wordselector.value])
-        }
-
-        var bardata = [
-            {
-                x: datax,
-                y: datay,
-                type: 'bar'
+            for (var i = 0; i < output["topic-word-matrix"].length; i++) {
+                datax.push(i)
+                datay.push(output["topic-word-matrix"][i][wordselector.value])
             }
-        ];
 
-        var layout = {
-            margin: {
-                l: 40,
-                r: 40,
-                b: 40,
-                t: 40,
-                pad: 2
-            },
-            paper_bgcolor: 'rgba(256,256,256,1)'
-        };
+            var bardata = [
+                {
+                    x: datax,
+                    y: datay,
+                    type: 'bar'
+                }
+            ];
 
-        document.getElementById("wordTopic").innerHTML = ""
+            var layout = {
+                margin: {
+                    l: 40,
+                    r: 40,
+                    b: 40,
+                    t: 40,
+                    pad: 2
+                },
+                paper_bgcolor: 'rgba(256,256,256,1)'
+            };
 
-        Plotly.newPlot('wordTopic', bardata, layout);
+            document.getElementById("wordTopic").innerHTML = ""
+
+            Plotly.newPlot('wordTopic', bardata, layout);
+        }
     }
-
-    updateDropdownIndex("wordSelector", Object.keys(vocabulary)[0])
+    if (vocabulary != false)
+        updateDropdownIndex("wordSelector", Object.keys(vocabulary)[0])
     updateWordGraph()
 
 

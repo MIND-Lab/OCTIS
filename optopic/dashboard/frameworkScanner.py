@@ -29,11 +29,12 @@ def getDatasetMetadata(datasetName):
     -------
     data : dict with metadata if dataset is found, False otherwise
     """
-    file = os.path.join(
-        path, "preprocessed_datasets", datasetName, "metadata.json")
-    f = open(str(file),)
-    data = json.load(f)
-    return data
+    file = str(os.path.join(
+        path, "preprocessed_datasets", datasetName, "metadata.json"))
+    if os.path.isfile(file):
+        f = open(file,)
+        data = json.load(f)
+        return data
     return False
 
 
@@ -41,15 +42,15 @@ def getDocPreview(datasetName, documentNumber):
     datasetPath = str(os.path.join(
         path, "preprocessed_datasets", datasetName, "corpus.txt"))
     corpus = []
-    file = Path(datasetPath)
-
-    with open(datasetPath, 'r') as corpus_file:
-        for line in corpus_file:
-            corpus.append(line)
-    splitted = corpus[documentNumber].split()
-    if len(splitted) > 40:
-        return " ".join(splitted[0:40])
-    return corpus[documentNumber]
+    if os.path.isfile(datasetPath):
+        with open(datasetPath, 'r') as corpus_file:
+            for line in corpus_file:
+                corpus.append(line)
+        splitted = corpus[documentNumber].split()
+        if len(splitted) > 40:
+            return " ".join(splitted[0:40])
+        return corpus[documentNumber]
+    return False
 
 
 def getVocabulary(path):
