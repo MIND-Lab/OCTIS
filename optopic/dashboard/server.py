@@ -1,15 +1,20 @@
-from flask import Flask, render_template, request
-import json
-from multiprocessing import Process, Pool
-import optopic.configuration.defaults as defaults
-import optopic.dashboard.frameworkScanner as fs
-import webbrowser
 import argparse
-
+import webbrowser
+import optopic.dashboard.frameworkScanner as fs
+import optopic.configuration.defaults as defaults
+from multiprocessing import Process, Pool
+import json
+from flask import Flask, render_template, request
 
 
 app = Flask(__name__)
 queueManager = ""
+
+
+@app.route("/shutdown")
+def shutdown():
+    queueManager.stop()
+    shutdown_server()
 
 
 @app.route('/')
@@ -216,6 +221,13 @@ def typed(value):
             return t
         except ValueError:
             return value
+
+
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
 
 
 if __name__ == '__main__':
