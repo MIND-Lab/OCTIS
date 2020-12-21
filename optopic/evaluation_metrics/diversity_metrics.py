@@ -45,14 +45,16 @@ class TopicDiversity(Abstract_Metric):
         -------
         td : score
         """
-        self.topics = model_output["topics"]
-        if self.topk > len(self.topics[0]):
-            raise Exception('Words in topics are less than '+str(self.topk))
+        topics = model_output["topics"]
+        if topics is None:
+            return 0
+        if self.topk > len(topics[0]):
+            raise Exception('Words in topics are less than ' + str(self.topk))
         else:
             unique_words = set()
-            for topic in self.topics:
+            for topic in topics:
                 unique_words = unique_words.union(set(topic[:self.topk]))
-            td = len(unique_words) / (self.topk * len(self.topics))
+            td = len(unique_words) / (self.topk * len(topics))
             return td
 
 
@@ -94,12 +96,14 @@ class InvertedRBO(Abstract_Metric):
         -------
         td : score of the rank biased overlap over tht topics
         """
-        self.topics = model_output['topics']
-        if self.topk > len(self.topics[0]):
+        topics = model_output['topics']
+        if topics is None:
+            return 0
+        if self.topk > len(topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             collect = []
-            for list1, list2 in itertools.combinations(self.topics, 2):
+            for list1, list2 in itertools.combinations(topics, 2):
                 word2index = self.get_word2index(list1, list2)
                 indexed_list1 = [word2index[word] for word in list1]
                 indexed_list2 = [word2index[word] for word in list2]
@@ -130,18 +134,17 @@ class WordEmbeddingsInvertedRBO(Abstract_Metric):
         self.word_embedding_model = metric_parameters['embedding_model']
 
     def score(self, model_output):
-        '''
-        :param weight: p (float), default 1.0: Weight of each agreement at depth d:
-        p**(d-1). When set to 1.0, there is no weight, the rbo returns to average overlap.
-        :param topic_list: a list of lists of words
+        """
         :return: rank_biased_overlap over the topics
-        '''
-        self.topics = model_output['topics']
-        if self.topk > len(self.topics[0]):
+        """
+        topics = model_output['topics']
+        if topics is None:
+            return 0
+        if self.topk > len(topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             collect = []
-            for list1, list2 in itertools.combinations(self.topics, 2):
+            for list1, list2 in itertools.combinations(topics, 2):
                 word2index = self.get_word2index(list1, list2)
                 index2word = {v: k for k, v in word2index.items()}
                 indexed_list1 = [word2index[word] for word in list1]

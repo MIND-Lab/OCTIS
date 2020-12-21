@@ -59,6 +59,8 @@ class Coherence(Abstract_Metric):
         score : coherence score
         """
         self.topics = model_output["topics"]
+        if self.topics is None:
+            return -1
         if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
