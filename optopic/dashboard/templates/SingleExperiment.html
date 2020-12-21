@@ -4,21 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Website Title -->
     <title>OpTopic - {{experimentName}}</title>
 
-    <!-- Styles -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600&display=swap&subset=latin-ext"
-        rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='styles/fontawesome-all.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='styles/magnific-popup.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
 
-    <!-- Favicon  -->
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
     <style>
@@ -33,88 +23,51 @@
     </style>
 </head>
 
-<body data-spy="scroll" data-target=".fixed-top">
-
-    <!-- Preloader -->
-    <div class="spinner-wrapper">
-        <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-        </div>
+<body>
+    <div>
+        <ul class="navbar">
+            <li claa="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                    EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+            </li>
+        </ul>
     </div>
-    <!-- end of preloader -->
-
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
-
-        <!-- Image Logo -->
-        <a class="navbar-brand logo-image" href="index.html"><img
-                src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-awesome fas fa-bars"></span>
-            <span class="navbar-toggler-awesome fas fa-times"></span>
-        </button>
-        <!-- end of mobile menu toggle button -->
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('home') }}">HOME</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                        EXPERIMENTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('shutdown') }}">CLOSE DASHBOARD</a>
-                </li>
-            </ul>
+    <header id="header">
+        <div>
+            <h1 style="text-align: center">{{experimenName}}</h1>
         </div>
-    </nav> <!-- end of navbar -->
-    <!-- end of navbar -->
+    </header>
 
-
-    <!-- Header -->
-    <header id="header" class="ex-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>{{experimentName}}</h1>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </header> <!-- end of ex-header -->
-    <!-- end of header -->
-
-
-    <div id="projects" class="accordion">
+    <div id="projects" class="singleSection">
         <div style="float: left; width: 50%; height: 100%;">
             <div style="height: 10%;" id="expSelector"></div>
             <div style="height: 35%;" id="optInfo"></div>
             <div style="height: 10%;" id="iterationSelector"></div>
             <div style="height: 40%;" id="expInfo"></div>
             <div style="height: 5%"></div>
-        </div> <!-- end of col -->
+        </div>
         <div style="float: left; width: 50%; height: 100%;">
             <div style="height: 85%;" id="container"></div>
             <div style="height: 15%;" id="topicSelector"></div>
         </div>
-
-    </div> <!-- end of col -->
-
-
-    <div class="accordion">
+    </div>
+    <div class="singleSection">
         <div style="float: left; width: 31%; height: 100%;">
             <div style="height: 10%;">
                 <input type="number" value="0" id="docSelector" min="0" max="{{ datasetMetadata['total_documents'] }}">
@@ -125,62 +78,32 @@
         </div>
         <div style="float: left; width: 31%; height: 100%;">
             <div style="height: 10%;">
-                <select id="wordSelector" class="form-control-select" onchange="updateWordGraph()"></select>
+                <select id="wordSelector" class="coolSelect" onchange="updateWordGraph()"></select>
             </div>
             <div id="wordTopic" style="height: 90%;"></div>
         </div>
         <div id="generic" style="float: left; width: 31%; height: 100%;"></div>
     </div>
-
-
-    <!-- Footer -->
     <div class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="text-container about">
-                        <h4>Optopic</h4>
-                        <p class="white">Optimizing topic models made simple.</p>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of footer -->
-    <!-- end of footer -->
+            <h4>Optopic</h4>
+            <p class="white">Optimizing topic models made simple.</p>
+        </div>
+    </div>
 
-
-    <!-- Copyright -->
-    <div class="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <p class="p-small">Made in 2020, MIND. Department of Informatics Systems and Communication of Milano
-                        Bicocca</p>
-                </div> <!-- end of col -->
-            </div> <!-- enf of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of copyright -->
-    <!-- end of copyright -->
-
-
-    <!-- Scripts -->
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.magnific-popup.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
-
 
 </body>
 <script>
     function getParams(vars) {
         return vars;
     }
-
 
     function updateDropdownIndex(dropdownId, value) {
         dropDown = document.getElementById(dropdownId)
@@ -244,7 +167,7 @@
 
 
     selectExp = document.createElement("select")
-    selectExp.classList.add("form-control-select")
+    selectExp.classList.add("coolSelect")
     selectExp.id = "selecExp"
     selectExp.addEventListener("click", function () {
         infoSelector = JSON.parse(this.value)
@@ -265,7 +188,6 @@
     sel = document.getElementById("iterationSelector")
 
     iterSelect = document.createElement("input")
-    iterSelect.classList.add("form-control-number");
     iterSelect.id = "iterselect"
     iterSelect.setAttribute("type", "number");
     iterSelect.setAttribute("min", 0);
@@ -282,7 +204,6 @@
 
 
     runSelect = document.createElement("input")
-    runSelect.classList.add("form-control-number");
     runSelect.id = "runselect"
     runSelect.setAttribute("type", "number");
     runSelect.setAttribute("min", 0);
@@ -306,7 +227,7 @@
         topicSelector.innerHTML = ''
 
         topicSelect = document.createElement("select")
-        topicSelect.classList.add("form-control-select")
+        topicSelect.classList.add("coolSelect")
         topicSelect.id = "selecTopic"
         topicSelect.addEventListener("click", function () {
             draw(this.value)

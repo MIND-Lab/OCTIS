@@ -112,6 +112,7 @@ class QueueManager:
                  completed experiment
         """
         while(True):
+            time.sleep(4)
             if not self.busy[0]:
                 if self.running[0] is not None:
                     finished = self.running[0]
@@ -122,7 +123,7 @@ class QueueManager:
                 if len(self.order) > 0 and self.running[0] is None:
                     self.running[0] = self.order.pop(0)
                     self.start()
-            time.sleep(7)
+            time.sleep(6)
 
     def pause(self):
         """

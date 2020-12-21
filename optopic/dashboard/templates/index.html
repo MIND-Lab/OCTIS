@@ -5,17 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Website Title -->
     <title>OpTopic - Home</title>
 
-    <!-- Styles -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600&display=swap&subset=latin-ext"
-        rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='styles/fontawesome-all.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='styles/magnific-popup.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
 
     <!-- Favicon  -->
@@ -23,228 +15,69 @@
 
 </head>
 
-<body data-spy="scroll" data-target=".fixed-top">
+<body>
 
-    <!-- Preloader -->
-    <div class="spinner-wrapper">
-        <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
+    <div>
+        <ul class="navbar">
+            <li claa="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                    EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+            </li>
+        </ul>
+    </div>
+
+    <header id="header">
+        <div>
+            <h1 style="text-align: center">OpTopic</h1>
+        </div>
+    </header>
+
+    <div>
+        <div>
+            <p style="float: left;">
+                <img class="picAligned" id="pic1" src="{{url_for('static', filename='images/pic1.jpg')}}">
+            </p>
+            <h2 style="float: left;">Create yout own experiments!</h2>
         </div>
     </div>
-    <!-- end of preloader -->
 
+    <div>
+        <div>
+            <h2 style="float: left;">Visualize you're experiments!</h2>
+            <p style="float: left;">
+                <img class="picAligned" id="pic2" src="{{url_for('static', filename='images/pic2.jpg')}}">
+            </p>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
-
-        <!-- Image Logo -->
-        <a class="navbar-brand logo-image" href="index.html"><img
-                src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-awesome fas fa-bars"></span>
-            <span class="navbar-toggler-awesome fas fa-times"></span>
-        </button>
-        <!-- end of mobile menu toggle button -->
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('home') }}">HOME <span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                        EXPERIMENTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-                </li>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link page-scroll" href="{{ url_for('shutdown') }}">CLOSE DASHBOARD</a>
-            </li>
-            </ul>
         </div>
-    </nav> <!-- end of navbar -->
-    <!-- end of navbar -->
+    </div>
 
-
-    <!-- Header -->
-    <header id="header" class="header">
-        <div class="header-content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-container">
-                            <h1> OpTopic </h1>
-                            <p class="p-heading p-large"> OpTopic is a framework to compare and optimize topic models
-                            </p>
-                            <a class="btn-solid-lg page-scroll" href="#details">DISCOVER</a>
-                        </div>
-                    </div> <!-- end of col -->
-                </div> <!-- end of row -->
-            </div> <!-- end of container -->
-        </div> <!-- end of header-content -->
-    </header> <!-- end of header -->
-    <!-- end of header -->
-
-    <!-- Details 1 -->
-    <div id="details" class="accordion">
-        <div class="area-1" id="pic1">
-		</div><div class="area-2">
-
-            <!-- Accordion -->
-            <div class="accordion-container" id="accordionOne">
-                <h2>Create yout own experiments!</h2>
-                <div class="item">
-                    <div id="headingOne">
-                        <span data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                            aria-controls="collapseOne" role="button">
-                            <span class="circle-numbering">1</span><span class="accordion-title">Decide a name for your
-                                experiment batch</span>
-                        </span>
-                    </div>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                        data-parent="#accordionOne">
-                        <div class="accordion-body">
-                            Creating more experiments with the same experiment batch name allow you to add new
-                            experiments to a batch.
-                        </div>
-                    </div>
-                </div> <!-- end of item -->
-
-                <div class="item">
-                    <div id="headingTwo">
-                        <span class="collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
-                            aria-controls="collapseTwo" role="button">
-                            <span class="circle-numbering">2</span><span class="accordion-title">Compile the form and
-                                add the experiment</span>
-                        </span>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionOne">
-                        <div class="accordion-body">
-                            In the experiment creation form you can customize every single parameter of your rxperiment!
-                            or you can use the default parameters. As simple as that!.
-                        </div>
-                    </div>
-                </div> <!-- end of item -->
-
-                <div class="item">
-                    <div id="headingThree">
-                        <span class="collapsed" data-toggle="collapse" data-target="#collapseThree"
-                            aria-expanded="false" aria-controls="collapseThree" role="button">
-                            <span class="circle-numbering">3</span><span class="accordion-title">Click Run!</span>
-                        </span>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionOne">
-                        <div class="accordion-body">
-                            And you're ready to go.
-                        </div>
-                    </div>
-                </div> <!-- end of item -->
-            </div> <!-- end of accordion-container -->
-            <!-- end of accordion -->
-
-        </div> <!-- end of area-2 -->
-    </div> <!-- end of accordion -->
-    <!-- end of details 1 -->
-
-
-    <!-- Details 2 -->
-    <div class="tabs">
-        <div class="area-1">
-            <div class="tabs-container">
-
-                <!-- Tabs Links -->
-                <ul class="nav nav-tabs" id="ariaTabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="nav-tab-1" data-toggle="tab" href="#tab-1" role="tab"
-                            aria-controls="tab-1" aria-selected="true"><i class="fas fa-th"></i> Batch</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="nav-tab-2" data-toggle="tab" href="#tab-2" role="tab"
-                            aria-controls="tab-2" aria-selected="false"><i class="fas fa-th"></i> Single</a>
-                    </li>
-                </ul>
-                <!-- end of tabs links -->
-
-                <!-- Tabs Content -->
-                <div class="tab-content" id="ariaTabsContent">
-
-                    <!-- Tab -->
-                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
-                        <h4>Visualize you're experiments!</h4>
-                        <p>See how you're experiments are going.</p>
-
-
-                    </div> <!-- end of tab-pane -->
-                    <!-- end of tab -->
-
-                    <!-- Tab -->
-                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab-2">
-                        <!-- Tab -->
-                        <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
-                            <h4>Visualize a single experiment!</h4>
-                            <p>And get some details about it.</p>
-                        </div> <!-- end of tab-pane -->
-                        <!-- end of tab -->
-
-                    </div> <!-- end of tab-pane -->
-                    <!-- end of tab -->
-                </div> <!-- end of tab-content -->
-                <!-- end of tabs content -->
-
-            </div> <!-- end of tabs-container -->
-        </div><!-- end of area-1 on same line and no space between comments to eliminate margin white space --><div class="area-2" id="pic2"></div> <!-- end of area-2 -->
-    </div> <!-- end of tabs -->
-    <!-- end of details 2 -->
-
-
-    <!-- Footer -->
     <div class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="text-container about">
-                        <h4>Optopic</h4>
-                        <p class="white">Optimizing topic models made simple.</p>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of footer -->
-    <!-- end of footer -->
+            <h4>Optopic</h4>
+            <p class="white">Optimizing topic models made simple.</p>
+        </div>
+    </div>
 
-
-    <!-- Copyright -->
-    <div class="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <p class="p-small">Made in 2020, MIND. Department of Informatics Systems and Communication of Milano
-                        Bicocca</p>
-                </div> <!-- end of col -->
-            </div> <!-- enf of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of copyright -->
-    <!-- end of copyright -->
-
-
-    <!-- Scripts -->
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.magnific-popup.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
     <script>
         document.getElementById("pic1").onclick = function () {
             window.location.href = "{{ url_for('CreateExperiments') }}";

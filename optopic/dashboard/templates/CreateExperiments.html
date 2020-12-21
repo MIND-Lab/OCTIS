@@ -1,42 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Website Title -->
     <title>OpTopic - Create Experiments</title>
-
-    <!-- Styles -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600&display=swap&subset=latin-ext"
-        rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='styles/fontawesome-all.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='styles/magnific-popup.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
-
-    <!-- Favicon  -->
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
-
 </head>
 
-<body data-spy="scroll" data-target=".fixed-top">
-
-    <!-- Preloader -->
-    <div class="spinner-wrapper">
-        <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-        </div>
-    </div>
-    <!-- end of preloader -->
-
+<body>
     <script>
-
         function destroy() {
             li = this.parentElement
             li.parentElement.removeChild(li);
@@ -80,283 +54,175 @@
         }
     </script>
 
+    <div>
+        <ul class="navbar">
+            <li claa="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                    EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+            </li>
+        </ul>
+    </div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
-
-        <!-- Image Logo -->
-        <a class="navbar-brand logo-image" href="index.html"><img
-                src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-awesome fas fa-bars"></span>
-            <span class="navbar-toggler-awesome fas fa-times"></span>
-        </button>
-        <!-- end of mobile menu toggle button -->
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('home') }}">HOME</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS <span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                        EXPERIMENTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="{{ url_for('shutdown') }}">CLOSE DASHBOARD</a>
-                </li>
-            </ul>
+    <header id="header">
+        <div>
+            <h1 style="text-align: center">Experiment creation </h1>
         </div>
-    </nav> <!-- end of navbar -->
-    <!-- end of navbar -->
+    </header>
 
-
-    <!-- Header -->
-    <header id="header" class="ex-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Experiment creation </h1>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </header> <!-- end of ex-header -->
-    <!-- end of header -->
-
-
-
-
-    <div class="ex-basic-2">
+    <div class="outContainer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-container">
-
-
-                        <!-- Privacy Form -->
-                        <div class="form-container">
+                        <div class="customFormSection">
                             <form id="experimentForm" data-focus="false" method="post"
                                 action="{{ url_for('startExperiment') }}">
-
-                                <div class="form-group">
-                                    <input type="text" class="form-control-input" id="path" name="path" required>
-                                    <label class="label-control" for="pname">select a path to save the
-                                        experiment</label>
+                                <div>
+                                    <label>select a path to save the experiment</label>
+                                    <input type="text" class="coolInput" id="path" name="path" required>
                                 </div>
-
-                                <div class="form-group">
-                                    <input type="text" class="form-control-input" id="batchId" name="batchId" required>
-                                    <label class="label-control" for="pname">Id of the batch</label>
+                                <div>
+                                    <label>Id of the batch</label>
+                                    <input type="text" class="coolInput" id="batchId" name="batchId" required>
                                 </div>
-
-                                <div class="form-group">
-                                    <input type="text" class="form-control-input" id="expId" name="expId" required>
-                                    <label class="label-control" for="pname">Id of the experiment</label>
+                                <div>
+                                    <label>Id of the experiment</label>
+                                    <input type="text" class="coolInput" id="expId" name="expId" required>
                                 </div>
-
-
-
-                                <div class="basic-2">
+                                <div class="customContainer">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <h2>Choose a dataset</h2>
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
+                                            </div>
+                                        </div>
                                         <div class="row">
-                                            <div id="datasetSelector" class="col-lg-12">
-
-
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
-                                    </div> <!-- end of container -->
-                                </div> <!-- end of basic-2 -->
-
-
-                                <div class="basic-2">
+                                            <div id="datasetSelector" class="col-lg-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="customContainer">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <h2>Choose Model</h2>
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div id="modelForm" class="col-lg-12">
-
-
-                                            </div> <!-- end of col -->
+                                            </div>
                                             <div id="modelParameters" class="col-lg-12">
 
                                             </div>
-                                        </div> <!-- end of row -->
-                                    </div> <!-- end of container -->
-                                </div> <!-- end of basic-2 -->
-
-
-                                <!-- Services -->
-                                <div id="services" class="cards-2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="services" class="metricBlock">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div class="section-title">Metrics</div>
+                                                <div class="metric-name">Metrics</div>
                                                 <h2>Choose Metric to optimize</h2>
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-lg-12" id="optimizeMetrics">
-
-
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
-                                    </div> <!-- end of container -->
-                                </div> <!-- end of cards-2 -->
-                                <!-- end of services -->
-
-                                <div id="Metrics" class="form-group">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="Metrics">
                                     <ul class="list-unstyled li-space-lg" id="metricsList">
-
                                     </ul>
                                 </div>
-
-
-
-
-
-
-                                <div id="services-2" class="cards-2">
+                                <div id="services-2" class="metricBlock">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div class="section-title"></div>
+                                                <div class="metric-name"></div>
                                                 <h2>Choose Metrics to track</h2>
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-lg-12" id="trackMetrics">
-
-
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
-                                    </div> <!-- end of container -->
-                                </div> <!-- end of cards-2 -->
-                                <!-- end of services -->
-
-                                <div id="trackMetrics" class="form-group">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="trackMetrics">
                                     <ul class="list-unstyled li-space-lg" id="trackmetricsList">
-
                                     </ul>
                                 </div>
-
-
-                                <div class="basic-2">
+                                <div class="customContainer">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <h2>Optimization parameters</h2>
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div id="boSelector" class="col-lg-12">
-
-                                                <div class="form-group">
+                                                <div>
                                                     <p><b>Number of iterations</b></p>
-                                                    <input type="number" class="form-control-input" value="5"
-                                                        id="iterations" name="iterations" required>
+                                                    <input type="number" class="coolInput" value="5" id="iterations"
+                                                        name="iterations" required>
                                                 </div>
-
-                                                <div class="form-group">
+                                                <div>
                                                     <p><b>Model runs</b></p>
-                                                    <input type="number" class="form-control-input" value="3" id="runs"
+                                                    <input type="number" class="coolInput" value="3" id="runs"
                                                         name="runs" required>
                                                 </div>
-
-                                                <div class="form-group">
+                                                <div>
                                                     <p><b>Initial random points</b></p>
-                                                    <input type="number" class="form-control-input" value="3"
+                                                    <input type="number" class="coolInput" value="3"
                                                         id="n_random_starts" name="n_random_starts" required>
                                                 </div>
-
-
-                                            </div> <!-- end of col -->
-                                        </div> <!-- end of row -->
-                                    </div> <!-- end of container -->
-                                </div> <!-- end of basic-2 -->
-
-
-
-                                <div class="form-group">
-                                    <button type="submit" class="form-control-submit-button">Start Experiment</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
+                                <div>
+                                    <button type="submit" class="send-button">Start Experiment</button>
+                                </div>
                                 <div class="form-message">
                                     <div id="pmsgSubmit" class="h3 text-center hidden"></div>
                                 </div>
                             </form>
-                        </div> <!-- end of form container -->
-                        <!-- end of privacy form -->
+                        </div>
 
-                    </div> <!-- end of col-->
-                </div> <!-- end of row -->
-            </div> <!-- end of col-->
-        </div> <!-- end of row -->
-    </div> <!-- end of container -->
-    </div> <!-- end of ex-basic-2 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
-
-
-    <!-- Footer -->
     <div class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="text-container about">
-                        <h4>Optopic</h4>
-                        <p class="white">Optimizing topic models made simple.</p>
-                    </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of footer -->
-    <!-- end of footer -->
+            <h4>Optopic</h4>
+            <p class="white">Optimizing topic models made simple.</p>
+        </div>
+    </div>
 
-
-    <!-- Copyright -->
-    <div class="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <p class="p-small">Made in 2020, MIND. Department of Informatics Systems and Communication of Milano
-                        Bicocca</p>
-                </div> <!-- end of col -->
-            </div> <!-- enf of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of copyright -->
-    <!-- end of copyright -->
-
-
-    <!-- Scripts -->
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.magnific-popup.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='isotope.pkgd.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts.js') }}"></script>
-
     <script>
-
         function getParams(vars) {
             return vars;
         }
@@ -388,8 +254,8 @@
         metrics = getParams({{ metrics| tojson}});
 
         for (const [key, value] of Object.entries(metrics)) {
-            addMetricCard(key, value, "optimizeMetrics")
-            addMetricCard(key, value, "trackMetrics")
+            addMetricBox(key, value, "optimizeMetrics")
+            addMetricBox(key, value, "trackMetrics")
         }
 
 
@@ -398,7 +264,7 @@
         boSelector = document.getElementById("boSelector");
 
         surrogateModelInput = document.createElement("select")
-        surrogateModelInput.classList.add("form-control-select")
+        surrogateModelInput.classList.add("coolSelect")
         surrogateModelInput.name = "surrogateModel"
 
         for (const val of BO["surrogate_models"]) {
@@ -420,7 +286,7 @@
 
 
         AcqFuncInput = document.createElement("select")
-        AcqFuncInput.classList.add("form-control-select")
+        AcqFuncInput.classList.add("coolSelect")
         AcqFuncInput.name = "acquisitionFunction"
 
         for (const val of BO["acquisition_functions"]) {
@@ -444,23 +310,22 @@
 
 
 
-        function addMetricCard(name, info, where) {
+        function addMetricBox(name, info, where) {
 
             fat = document.getElementById(where)
 
-            card = document.createElement("div")
-            card.classList.add("card")
-            fat.appendChild(card)
+            box = document.createElement("div")
+            box.classList.add("singleMetric")
+            fat.appendChild(box)
 
-            card_body = document.createElement("div")
-            card_body.classList.add("card-body")
-            card.appendChild(card_body)
+            box_body = document.createElement("div")
+            box_body.classList.add("singleMetricBody")
+            box.appendChild(box_body)
 
-            card_title = document.createElement("h3")
-            card_title.classList.add("card-title")
-            card_title.innerHTML = info["name"]
-            card_title.id = name
-            card_body.appendChild(card_title)
+            box_title = document.createElement("h3")
+            box_title.innerHTML = info["name"]
+            box_title.id = name
+            box_body.appendChild(box_title)
 
             for (const [key, value] of Object.entries(info)) {
                 if (key != "name") {
@@ -469,7 +334,7 @@
 
                         case "Categorical":
                             newInput = document.createElement("select")
-                            newInput.classList.add("form-control-select")
+                            newInput.classList.add("coolSelect")
                             newInput.id = key + "input"
 
                             for (const val of value["possible_values"]) {
@@ -485,15 +350,18 @@
                             information.classList.add("information")
                             information.appendChild(label)
                             information.appendChild(newInput)
-                            card_body.appendChild(information)
+                            box_body.appendChild(information)
                             updateDropdownIndex(newInput.id, value["default_value"]);
 
                             break;
                         case "Real":
                             newInput = document.createElement("input")
-                            newInput.classList.add("form-control-number");
                             newInput.setAttribute("type", "number");
-                            newInput.setAttribute("step", "any");
+                            if ("step" in value) {
+                                newInput.setAttribute("step", value["step"]);
+                            } else {
+                                newInput.setAttribute("step", "any");
+                            }
                             newInput.defaultValue = value["default_value"];
 
                             var label = document.createElement("p");
@@ -503,14 +371,16 @@
                             information.classList.add("information")
                             information.appendChild(label)
                             information.appendChild(newInput)
-                            card_body.appendChild(information)
+                            box_body.appendChild(information)
 
 
                             break;
                         case "Integer":
                             newInput = document.createElement("input")
-                            newInput.classList.add("form-control-number");
                             newInput.setAttribute("type", "number");
+                            if ("step" in value) {
+                                newInput.setAttribute("step", value["step"]);
+                            }
                             newInput.defaultValue = value["default_value"];
 
                             var label = document.createElement("p");
@@ -520,12 +390,11 @@
                             information.classList.add("information")
                             information.appendChild(label)
                             information.appendChild(newInput)
-                            card_body.appendChild(information)
+                            box_body.appendChild(information)
                             break;
 
                         case "String":
                             newInput = document.createElement("input")
-                            newInput.classList.add("form-control-number");
                             newInput.setAttribute("type", "text");
                             newInput.defaultValue = value["default_value"];
 
@@ -536,7 +405,7 @@
                             information.classList.add("information")
                             information.appendChild(label)
                             information.appendChild(newInput)
-                            card_body.appendChild(information)
+                            box_body.appendChild(information)
                             break;
 
                     }
@@ -547,24 +416,25 @@
 
             button_container = document.createElement("div")
             button_container.classList.add("button-container")
-            card.appendChild(button_container)
+            box.appendChild(button_container)
 
             button = document.createElement("div")
-            button.classList.add("btn-solid-reg")
+            button.classList.add("coolButton")
+            button.classList.add("metricButton")
             button.classList.add("page-scroll")
             button.innerHTML = "ADD"
 
             button.addEventListener("click", function () {
 
-                theCard = this.parentElement.parentElement
+                thebox = this.parentElement.parentElement
 
                 content = {}
                 name = ""
 
 
-                for (var i = 0; i < theCard.childNodes.length; i++) {
-                    if (theCard.childNodes[i].className == "card-body") {
-                        TheBody = theCard.childNodes[i];
+                for (var i = 0; i < thebox.childNodes.length; i++) {
+                    if (thebox.childNodes[i].className == "singleMetricBody") {
+                        TheBody = thebox.childNodes[i];
 
                         for (var j = 0; j < TheBody.childNodes.length; j++) {
                             if (TheBody.childNodes[j].className == "information") {
@@ -590,12 +460,7 @@
             })
 
             button_container.appendChild(button)
-
-
         }
-
-
-
 
         function createCoolSelection(data, imagePath, rBtnName, father) {
 
@@ -610,10 +475,10 @@
             for (i = 0; i < dataLength; i++) {
 
                 var slide = document.createElement("div");
-                slide.classList.add("team-member");
+                slide.classList.add("singleObject");
 
-                var card = document.createElement("div");
-                card.classList.add("image-wrapper");
+                var box = document.createElement("div");
+                box.classList.add("objectImage");
 
 
                 var img = document.createElement("img");
@@ -681,17 +546,15 @@
                 DataName.classList.add("job-title");
                 DataName.innerHTML = data[i];
 
-                slide.appendChild(card)
-                card.appendChild(img)
-                card.appendChild(DataName)
-                card.appendChild(radioBtn)
+                slide.appendChild(box)
+                box.appendChild(img)
+                box.appendChild(DataName)
+                box.appendChild(radioBtn)
 
                 father.appendChild(slide);
 
             }
-
         }
-
 
         function gestoreContenutiExtra(nomi, id) {
             if (nomi == "model") {
@@ -736,7 +599,7 @@
                                             case "Categorical":
                                                 newInput = document.createElement("select")
                                                 newInput.setAttribute("multiple", "");
-                                                newInput.classList.add("form-control-select");
+                                                newInput.classList.add("coolSelect");
                                                 newInput.name = "model." + key;
                                                 newInput.id = key
 
@@ -756,9 +619,14 @@
                                                 break;
                                             case "Real":
                                                 newInput = document.createElement("input")
-                                                newInput.classList.add("form-control-number");
                                                 newInput.setAttribute("type", "number");
-                                                newInput.setAttribute("step", "any");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                    newInput.defaultValue = value["step"];
+
+                                                } else {
+                                                    newInput.setAttribute("step", "any");
+                                                }
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
                                                 newInput.name = "model." + key + "_xminx";
@@ -771,11 +639,12 @@
                                                 fat.appendChild(newInput);
 
                                                 newInput = document.createElement("input")
-                                                newInput.classList.add("form-control-number");
+
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("step", "any");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
+                                                newInput.defaultValue = value["max_value"];
                                                 newInput.name = "model." + key + "_xmaxx";
 
 
@@ -789,8 +658,12 @@
                                             case "Integer":
 
                                                 newInput = document.createElement("input")
-                                                newInput.classList.add("form-control-number");
+
                                                 newInput.setAttribute("type", "number");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                    newInput.defaultValue = value["step"];
+                                                }
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
                                                 newInput.name = "model." + key + "_xminx";
@@ -803,10 +676,11 @@
                                                 fat.appendChild(newInput);
 
                                                 newInput = document.createElement("input")
-                                                newInput.classList.add("form-control-number");
+
                                                 newInput.setAttribute("type", "number");
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
+                                                newInput.defaultValue = value["max_value"];
                                                 newInput.name = "model." + key + "_xmaxx";
 
 
@@ -818,14 +692,12 @@
 
                                                 break;
                                         }
-
-
                                     } else {
 
                                         switch (param["type"]) {
                                             case "Categorical":
                                                 newInput = document.createElement("select")
-                                                newInput.classList.add("form-control-select");
+                                                newInput.classList.add("coolSelect");
                                                 newInput.name = "model." + key;
                                                 newInput.id = key
 
@@ -846,9 +718,13 @@
                                                 break;
                                             case "Real":
                                                 newInput = document.createElement("input")
-                                                newInput.classList.add("form-control-number");
+
                                                 newInput.setAttribute("type", "number");
-                                                newInput.setAttribute("step", "any");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                } else {
+                                                    newInput.setAttribute("step", "any");
+                                                }
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
                                                 newInput.name = "model." + key;
@@ -860,17 +736,16 @@
 
                                                 fat.appendChild(label);
                                                 fat.appendChild(newInput);
-
-
-
-
                                                 break;
 
                                             case "Integer":
 
                                                 newInput = document.createElement("input")
-                                                newInput.classList.add("form-control-number");
+
                                                 newInput.setAttribute("type", "number");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                }
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
                                                 newInput.name = "model." + key;
@@ -887,15 +762,13 @@
                                         }
                                     }
                                 });
-
                                 divInput.appendChild(document.createTextNode("Optimize parameter"));
                                 parametersDiv.appendChild(divInput);
-
 
                                 switch (value["type"]) {
                                     case "Categorical":
                                         newInput = document.createElement("select")
-                                        newInput.classList.add("form-control-select");
+                                        newInput.classList.add("coolSelect");
                                         newInput.name = "model." + key;
                                         newInput.id = key
 
@@ -917,9 +790,13 @@
                                         break;
                                     case "Real":
                                         newInput = document.createElement("input")
-                                        newInput.classList.add("form-control-number");
+
                                         newInput.setAttribute("type", "number");
-                                        newInput.setAttribute("step", "any");
+                                        if ("step" in value) {
+                                            newInput.setAttribute("step", value["step"]);
+                                        } else {
+                                            newInput.setAttribute("step", "any");
+                                        }
                                         newInput.setAttribute("min", value["min_value"]);
                                         newInput.setAttribute("max", value["max_value"]);
                                         newInput.name = "model." + key;
@@ -931,17 +808,16 @@
 
                                         divInput.appendChild(label);
                                         divInput.appendChild(newInput);
-
-
-
-
                                         break;
 
                                     case "Integer":
 
                                         newInput = document.createElement("input")
-                                        newInput.classList.add("form-control-number");
+
                                         newInput.setAttribute("type", "number");
+                                        if ("step" in value) {
+                                            newInput.setAttribute("step", value["step"]);
+                                        }
                                         newInput.setAttribute("min", value["min_value"]);
                                         newInput.setAttribute("max", value["max_value"]);
                                         newInput.name = "model." + key;
@@ -959,14 +835,9 @@
                             }
                         }
                     }
-
                 });
-
             }
-
-
         }
-
         function updateDropdownIndex(dropdownId, value) {
             dropDown = document.getElementById(dropdownId)
             for (var i, j = 0; i = dropDown.options[j]; j++) {
@@ -976,11 +847,7 @@
                 }
             }
         }
-
         });
     </script>
-
-
 </body>
-
 </html>

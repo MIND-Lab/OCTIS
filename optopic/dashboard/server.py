@@ -1,20 +1,26 @@
-import argparse
-import webbrowser
-import optopic.dashboard.frameworkScanner as fs
-import optopic.configuration.defaults as defaults
-from multiprocessing import Process, Pool
-import json
 from flask import Flask, render_template, request
+import json
+from multiprocessing import Process, Pool
+import optopic.configuration.defaults as defaults
+import optopic.dashboard.frameworkScanner as fs
+import webbrowser
+import argparse
 
 
 app = Flask(__name__)
 queueManager = ""
 
 
+@app.route("/serverClosed")
+def serverClosed():
+    return render_template("serverClosed.html")
+
+
 @app.route("/shutdown")
 def shutdown():
     queueManager.stop()
     shutdown_server()
+    return {"DONE": "YES"}
 
 
 @app.route('/')
