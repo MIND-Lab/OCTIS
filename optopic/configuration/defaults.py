@@ -38,37 +38,40 @@ em_f1_score = {'average': 'micro'}
 
 model_hyperparameters = {
     'LDA': {
-        'alpha': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20},
-        'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20},
+        'alpha': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20,
+                  'step': 1e-4},
+        'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20, 'step': 1e-4},
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 200},
-        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10},
+                        'max_value': 200, 'step':1},
+        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step':1},
         'iterations': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
-                       'max_value': 2000}},
+                       'max_value': 2000, 'step': 1}},
     'ETM': {},
     'LSI': {
-        'decay': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.0, 'max_value': 1.0},
+        'decay': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1},
         'onepass': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False]},
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 200},
-        'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5},
-        'extra_samples': {'type': 'Integer', 'default_value': 100, 'min_value': 0, 'max_value': 500}},
+                        'max_value': 200, 'step': 1},
+        'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5, 'step': 1},
+        'extra_samples': {'type': 'Integer', 'default_value': 100, 'min_value': 0, 'max_value': 500, 'step': 1}},
     'NMF': {
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200},
-        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10},
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1},
+        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step': 1},
         'normalize': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False]},
-        'eval_every': {'type': 'Integer', 'default_value': 10, 'min_value': 1, 'max_value': 50},
-        'kappa': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.1, 'max_value': 5.0},
-        'w_max_iter': {'type': 'Integer', 'default_value': 200, 'min_value': 10, 'max_value': 1000},
-        'h_max_iter': {'type': 'Integer', 'default_value': 50, 'min_value': 10, 'max_value': 1000},
-        'w_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1},
-        'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1}},
+        'eval_every': {'type': 'Integer', 'default_value': 10, 'min_value': 1, 'max_value': 50, 'step': 1},
+        'kappa': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.1, 'max_value': 5.0, 'step': 0.1},
+        'w_max_iter': {'type': 'Integer', 'default_value': 200, 'min_value': 5, 'max_value': 1000, 'step': 1},
+        'h_max_iter': {'type': 'Integer', 'default_value': 50, 'min_value': 5, 'max_value': 1000, 'step': 1},
+        'w_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1,
+                             'step': 1E-6},
+        'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1,
+                             'step': 1E-6}},
     'NMF_scikit': {
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200},
-        'init': {'type': 'Categorical', 'default_value': None, 'possible_values':
-            [None, 'random', 'nndsvd', 'nndsvda', 'nndsvdar']},
-        'alpha': {'type': 'Real', 'default_value': 0.0, 'min_value': 0.0, 'max_value': 1.0},
-        'l1_ratio': {'type': 'Real', 'default_value': 0.0, 'min_value': 0, 'max_value': 1}}}
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1},
+        'init': {'type': 'Categorical', 'default_value': None,
+                 'possible_values': [None, 'random', 'nndsvd', 'nndsvda', 'nndsvdar']},
+        'alpha': {'type': 'Real', 'default_value': 0.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1},
+        'l1_ratio': {'type': 'Real', 'default_value': 0.0, 'min_value': 0, 'max_value': 1, 'step': 0.1}}}
 
 
 
