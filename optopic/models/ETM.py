@@ -13,10 +13,10 @@ from optopic.models.model import Abstract_Model
 class ETM(Abstract_Model):
 
     def __init__(self):
+        super(ETM, self).__init__()
         self.hyperparameters = {}
         self.top_word = 10
         self.early_stopping = None
-
 
     def train_model(self, dataset, hyperparameters, top_words=10, embeddings=None, train_embeddings=True):
         self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
@@ -63,13 +63,7 @@ class ETM(Abstract_Model):
             self.train_tokens, self.train_counts, self.vocab_size, \
             self.vocab = self.preprocess(vocab2id, data_corpus, None)
 
-        self.num_docs_train = self.train_tokens.shape[1]
-        self.num_docs_valid = self.valid_tokens.shape[1]
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        #np.random.seed(0)
-        #torch.manual_seed(0)
-        #if torch.cuda.is_available():
-        #    torch.cuda.manual_seed(0)
 
         self.set_default_hyperparameters(hyperparameters)
         ## define model and optimizer
@@ -97,7 +91,7 @@ class ETM(Abstract_Model):
                                        weight_decay=self.hyperparameters['wdecay'])
         elif self.hyperparameters['optimizer'] == 'rmsprop':
             optimizer = optim.RMSprop(self.model.parameters(), lr=self.hyperparameters['lr'],
-                                   weight_decay=self.hyperparameters['wdecay'])
+                                      weight_decay=self.hyperparameters['wdecay'])
         elif self.hyperparameters['optimizer'] == 'asgd':
             optimizer = optim.ASGD(self.model.parameters(), lr=self.hyperparameters['lr'],
                                    t0=0, lambd=0., weight_decay=self.hyperparameters['wdecay'])
@@ -113,7 +107,7 @@ class ETM(Abstract_Model):
         acc_loss = 0
         acc_kl_theta_loss = 0
         cnt = 0
-        indices = torch.arange(0, self.num_docs_train)
+        indices = torch.arange(0, len(self.train_tokens))
         indices = torch.split(indices, self.hyperparameters['batch_size'])
         for idx, ind in enumerate(indices):
             self.optimizer.zero_grad()
@@ -166,7 +160,7 @@ class ETM(Abstract_Model):
             val_acc_loss = 0
             val_acc_kl_theta_loss = 0
             val_cnt = 0
-            indices = torch.arange(0, self.num_docs_valid)
+            indices = torch.arange(0, len(self.valid_tokens))
             indices = torch.split(indices, self.hyperparameters['batch_size'])
             for idx, ind in enumerate(indices):
                 self.optimizer.zero_grad()
@@ -207,28 +201,26 @@ class ETM(Abstract_Model):
                 else:
                     return True
 
-
-
     def get_info(self):
         topic_w = []
         self.model.eval()
         info = {}
         with torch.no_grad():
             theta, _ = self.model.get_theta(torch.cat(self.data_list))
-            gammas = self.model.get_beta()
+            gammas = self.model.get_beta().cpu().numpy()
             for k in range(self.hyperparameters['num_topics']):
-                gamma = gammas[k].cpu().numpy()
-                if np.isnan(gamma).any():
+                if np.isnan(gammas[k]).any():
                     #to deal with nan matrices
-                    top_words =list(range(self.top_word))
+                    topic_w = None
+                    break
                 else:
-                    top_words = list(gamma.argsort()[-self.top_word:][::-1])
+                    top_words = list(gammas[k].argsort()[-self.top_word:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
-                # print('Topic {}: {}'.format(k, topic_words))
                 topic_w.append(topic_words)
-        info['topics'] = topic_w
-        info['topic-word-matrix'] = self.model.get_beta().cpu().detach().numpy()
+
+        info['topic-word-matrix'] = gammas
         info['topic-document-matrix'] = theta.cpu().detach().numpy().T
+        info['topics'] = topic_w
         print(info['topics'])
         return info
 
@@ -236,7 +228,7 @@ class ETM(Abstract_Model):
         assert isinstance(self.use_partitions, bool) and self.use_partitions
         topic_d = []
         self.model.eval()
-        indices = torch.arange(0, self.test_tokens.shape[1])
+        indices = torch.arange(0, len(self.test_tokens))
         indices = torch.split(indices, self.hyperparameters['batch_size'])
 
         for idx, ind in enumerate(indices):
@@ -261,7 +253,6 @@ class ETM(Abstract_Model):
         info['test-topic-document-matrix'] = emp_array.T
 
         return info
-
 
     def set_default_hyperparameters(self, hyperparameters):
         self.hyperparameters['num_topics'] = hyperparameters.get(
@@ -298,10 +289,17 @@ class ETM(Abstract_Model):
 
     @staticmethod
     def preprocess(vocab2id, train_corpus,test_corpus=None, validation_corpus=None):
+        #def split_bow(bow_in, n_docs):
+        #    indices = np.asarray([np.asarray([w for w in bow_in[doc, :].indices]) for doc in range(n_docs)])
+        #    counts = np.asarray([np.asarray([c for c in bow_in[doc, :].data]) for doc in range(n_docs)])
+        #    return np.expand_dims(indices, axis=0), np.expand_dims(counts, axis=0)
+
         def split_bow(bow_in, n_docs):
-            indices = np.asarray([np.asarray([w for w in bow_in[doc, :].indices]) for doc in range(n_docs)])
-            counts = np.asarray([np.asarray([c for c in bow_in[doc, :].data]) for doc in range(n_docs)])
-            return np.expand_dims(indices, axis=0), np.expand_dims(counts, axis=0)
+            indices = [[w for w in bow_in[doc, :].indices] for doc in range(n_docs)]
+            counts = [[c for c in bow_in[doc, :].data] for doc in range(n_docs)]
+            return indices, counts
+
+
         vec = CountVectorizer(
             vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
 
