@@ -12,11 +12,33 @@ from optopic.models.model import Abstract_Model
 
 class ETM(Abstract_Model):
 
-    def __init__(self):
+    def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
+                 activation='relu', dropout=0.0, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
+                 wdecay=1.2e-6, bow_norm=1):
         super(ETM, self).__init__()
-        self.hyperparameters = {}
+        self.hyperparameters = dict()
+        self.hyperparameters['num_topics'] = num_topics
+        self.hyperparameters['num_epochs'] = num_epochs
+        self.hyperparameters['t_hidden_size'] = t_hidden_size
+        self.hyperparameters['rho_size'] = rho_size
+        self.hyperparameters['embedding_size'] = embedding_size
+        self.hyperparameters['activation'] = activation
+        self.hyperparameters['dropout'] = dropout,
+        self.hyperparameters['lr'] = lr
+        self.hyperparameters['optimizer'] = optimizer
+        self.hyperparameters['batch_size'] = batch_size
+        self.hyperparameters['clip'] = clip
+        self.hyperparameters['wdecay'] = wdecay
+        self.hyperparameters['bow_norm'] = bow_norm
         self.top_word = 10
         self.early_stopping = None
+        self.device = 'cpu'
+        self.test_tokens, self.test_counts = None, None
+        self.valid_tokens, self.valid_counts = None, None
+        self.train_tokens, self.train_counts, self.vocab_size, self.vocab = None, None, None, None
+        self.use_partitions = False
+        self.model = None
+        self.optimizer = None
 
     def train_model(self, dataset, hyperparameters, top_words=10, embeddings=None, train_embeddings=True):
         self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
@@ -29,7 +51,7 @@ class ETM(Abstract_Model):
                 break
 
         # load the last checkpoint with the best model
-        #self.model.load_state_dict(torch.load('etm_checkpoint.pt'))
+        # self.model.load_state_dict(torch.load('etm_checkpoint.pt'))
 
         if self.use_partitions:
             result = self.inference()
@@ -51,30 +73,29 @@ class ETM(Abstract_Model):
             self.vocab = {i: w for i, w in enumerate(vocab)}
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
-            self.train_tokens, self.train_counts, self.test_tokens, \
-            self.test_counts, self.valid_tokens, self.valid_counts, self.vocab_size =\
-            self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
+            self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.valid_tokens, \
+            self.valid_counts, self.vocab_size = \
+                self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             vocab = dataset.get_vocabulary()
             self.vocab = {i: w for i, w in enumerate(vocab)}
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
-            self.train_tokens, self.train_counts, self.vocab_size, \
-            self.vocab = self.preprocess(vocab2id, data_corpus, None)
+            self.train_tokens, self.train_counts, self.vocab_size, self.vocab = \
+                self.preprocess(vocab2id, data_corpus, None)
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         self.set_default_hyperparameters(hyperparameters)
         ## define model and optimizer
-        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'],
-                             vocab_size=self.vocab_size,
+        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'], vocab_size=self.vocab_size,
                              t_hidden_size=self.hyperparameters['t_hidden_size'],
                              rho_size=self.hyperparameters['rho_size'],
-                             emb_size=self.hyperparameters['emb_size'],
-                             theta_act=self.hyperparameters['theta_act'],
+                             emb_size=self.hyperparameters['embedding_size'],
+                             theta_act=self.hyperparameters['activation'],
                              embeddings=embeddings, train_embeddings=train_embeddings,
-                             enc_drop=self.hyperparameters['enc_drop']).to(self.device)
+                             enc_drop=self.hyperparameters['dropout']).to(self.device)
         print('model: {}'.format(self.model))
 
         self.optimizer = self.set_optimizer()
@@ -138,7 +159,7 @@ class ETM(Abstract_Model):
                 cur_real_loss = round(cur_loss + cur_kl_theta, 2)
 
                 print('Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. Rec_loss: {}'
-                      ' .. NELBO: {}'.format(epoch+1, idx, len(indices),
+                      ' .. NELBO: {}'.format(epoch + 1, idx, len(indices),
                                              self.optimizer.param_groups[0]['lr'],
                                              cur_kl_theta, cur_loss, cur_real_loss))
 
@@ -210,7 +231,7 @@ class ETM(Abstract_Model):
             gammas = self.model.get_beta().cpu().numpy()
             for k in range(self.hyperparameters['num_topics']):
                 if np.isnan(gammas[k]).any():
-                    #to deal with nan matrices
+                    # to deal with nan matrices
                     topic_w = None
                     break
                 else:
@@ -255,41 +276,16 @@ class ETM(Abstract_Model):
         return info
 
     def set_default_hyperparameters(self, hyperparameters):
-        self.hyperparameters['num_topics'] = hyperparameters.get(
-            'num_topics', self.hyperparameters.get('num_topics', 10))
-        self.hyperparameters['num_epochs'] = hyperparameters.get(
-            'num_epochs', self.hyperparameters.get('num_epochs', 100))
-        self.hyperparameters['t_hidden_size'] = hyperparameters.get(
-            't_hidden_size', self.hyperparameters.get('t_hidden_size', 800))
-        self.hyperparameters['rho_size'] = hyperparameters.get(
-            'rho_size', self.hyperparameters.get('rho_size', 300))
-        self.hyperparameters['emb_size'] = hyperparameters.get(
-            'emb_size', self.hyperparameters.get('emb_size', 300))
-        self.hyperparameters['theta_act'] = hyperparameters.get(
-            'theta_act', self.hyperparameters.get('theta_act', 'relu'))
-        self.hyperparameters['enc_drop'] = hyperparameters.get(
-            'enc_drop', self.hyperparameters.get('enc_drop', 0.0))
-        self.hyperparameters['lr'] = hyperparameters.get(
-            'lr', self.hyperparameters.get('lr', 0.005))
-        self.hyperparameters['optimizer'] = hyperparameters.get(
-            'optimizer', self.hyperparameters.get('optimizer', 'adam'))
-        self.hyperparameters['batch_size'] = hyperparameters.get(
-            'batch_size', self.hyperparameters.get('batch_size', 128))
-        self.hyperparameters['clip'] = hyperparameters.get(
-            'clip', self.hyperparameters.get('clip', 0.0))
-        self.hyperparameters['wdecay'] = hyperparameters.get(
-            'wdecay', self.hyperparameters.get('wdecay', 1.2e-6))
-        #self.hyperparameters['anneal_lr'] = hyperparameters.get(
-        #    'anneal_lr', self.hyperparameters.get('anneal_lr', 0))
-        self.hyperparameters['bow_norm'] = hyperparameters.get(
-            'bow_norm', self.hyperparameters.get('bow_norm', 1))
+        for k in hyperparameters.keys():
+            if k in self.hyperparameters.keys():
+                self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
 
     @staticmethod
-    def preprocess(vocab2id, train_corpus,test_corpus=None, validation_corpus=None):
-        #def split_bow(bow_in, n_docs):
+    def preprocess(vocab2id, train_corpus, test_corpus=None, validation_corpus=None):
+        # def split_bow(bow_in, n_docs):
         #    indices = np.asarray([np.asarray([w for w in bow_in[doc, :].indices]) for doc in range(n_docs)])
         #    counts = np.asarray([np.asarray([c for c in bow_in[doc, :].data]) for doc in range(n_docs)])
         #    return np.expand_dims(indices, axis=0), np.expand_dims(counts, axis=0)
@@ -298,7 +294,6 @@ class ETM(Abstract_Model):
             indices = [[w for w in bow_in[doc, :].indices] for doc in range(n_docs)]
             counts = [[c for c in bow_in[doc, :].data] for doc in range(n_docs)]
             return indices, counts
-
 
         vec = CountVectorizer(
             vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
@@ -334,4 +329,3 @@ class ETM(Abstract_Model):
                 return x_train_tokens, x_train_count, x_val_tokens, x_val_count, vocab_size
             else:
                 return x_train_tokens, x_train_count, vocab_size
-
