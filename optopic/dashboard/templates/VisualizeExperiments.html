@@ -67,7 +67,13 @@
         }
 
         .imok {
-            background-color: #4059AD;
+            background-color: #ccd4f2;
+        }
+
+        .coolButtonDiv {
+            border-radius: 9px;
+            padding: 3px;
+            border-style: groove;
         }
 
         .slidercheck {
@@ -179,13 +185,13 @@
             </div>
 
             <div class="row">
-                <a id="sortDataset" class="button" data-what="dataset"><span>Dataset</span></a>
+                <a id="sortDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
             </div>
             <div class="row">
-                <a id="sortModel" class="button" data-what="model"><span>Models</span></a>
+                <a id="sortModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
             </div>
             <div class="row">
-                <a id="sortMetric" class="button" data-what="metric"><span>Metrics</span></a>
+                <a id="sortMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
             </div>
 
             <div class="row" style="overflow: scroll;">
@@ -510,7 +516,7 @@
 
         function redraw(data) {
 
-            if (data != null) {
+            if (data != "") {
                 cont = document.getElementById("theCanvas");
                 cont.innerHTML = '';
 

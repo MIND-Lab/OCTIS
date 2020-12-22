@@ -1,8 +1,16 @@
+.centeredText{
+    height: 100%; 
+    width: 100%; 
+    opacity: 0.8; 
+	text-align: center;
+	padding-top: 20%;
+}
+
 .picAligned {
-	height:200px;
-	width:200px;
-	float: left;
-	}
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+}
 
 .buttonsfilters {
     background-color: #ffffff;
@@ -11,7 +19,7 @@
 }
 
 .buttonsfilters.clicked {
-    background-color: #cde4dd;
+    background-color: #ccd4f2;
     border-radius: 10px;
     border-style: groove;
 }
@@ -43,7 +51,8 @@
 .footer{
 	background-color: #4059AD;
 	padding-top: 5rem;
-    padding-bottom: 2rem;
+	padding-bottom: 2rem;
+	overflow: hidden;
 }
 
 .coolButton{

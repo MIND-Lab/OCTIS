@@ -49,20 +49,23 @@
     </header>
 
     <div>
-        <div>
-            <p style="float: left;">
-                <img class="picAligned" id="pic1" src="{{url_for('static', filename='images/pic1.jpg')}}">
-            </p>
-            <h2 style="float: left;">Create yout own experiments!</h2>
+        <div style="overflow: hidden;">
+            <div style="float: left;width: 50%;">
+                <img id="pic1" class="picAligned" src="{{url_for('static', filename='images/pic1.jpg')}}">
+            </div>
+            <div style="float: left;width: 50%;">
+                <h2 class="centeredText">Create yout own experiments!</h2>
+            </div>
         </div>
-    </div>
 
-    <div>
-        <div>
-            <h2 style="float: left;">Visualize you're experiments!</h2>
-            <p style="float: left;">
-                <img class="picAligned" id="pic2" src="{{url_for('static', filename='images/pic2.jpg')}}">
-            </p>
+        <div style="overflow: hidden;">
+            <div style="float: left;width: 50%;">
+                <h2 class="centeredText">Visualize you're experiments!</h2>
+            </div>
+            <div style="float: left;width: 50%;">
+
+                <img id="pic2" class="picAligned" src="{{url_for('static', filename='images/pic2.jpg')}}">
+            </div>
 
         </div>
     </div>
