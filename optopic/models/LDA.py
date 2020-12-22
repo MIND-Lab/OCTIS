@@ -10,16 +10,12 @@ class LDA(Abstract_Model):
 
     id2word = None
     id_corpus = None
-    hyperparameters = {}
     use_partitions = True
     update_with_test = False
 
-    def __init__(self, num_topics=100, distributed=False, chunksize=2000,
-                 passes=1, update_every=1, alpha="symmetric", eta=None,
-                 decay=0.5, offset=1.0, eval_every=10, iterations=50,
-                 gamma_threshold=0.001, minimum_probability=0.0,
-                 random_state=None, minimum_phi_value=0.1,
-                 per_word_topics=False):
+    def __init__(self, num_topics=100, distributed=False, chunksize=2000, passes=1, update_every=1, alpha="symmetric",
+                 eta=None, decay=0.5, offset=1.0, eval_every=10, iterations=50, gamma_threshold=0.001,
+                 minimum_probability=0.0, random_state=None, minimum_phi_value=0.1, per_word_topics=False):
         """
         Initialize LDA model
 
@@ -96,6 +92,8 @@ class LDA(Abstract_Model):
         word, along with their phi values multiplied by the feature length.
 
         """
+        super().__init__()
+        self.hyperparameters = dict()
         self.hyperparameters["num_topics"] = num_topics
         self.hyperparameters["distributed"] = distributed
         self.hyperparameters["chunksize"] = chunksize
@@ -157,14 +155,14 @@ class LDA(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, top_words=10):
+    def train_model(self, dataset, hyperparams=None, top_words=10):
         """
         Train the model and return output
 
         Parameters
         ----------
         dataset : dataset to use to build the model
-        hyperparameters : hyperparameters to build the model
+        hyperparams : hyperparameters to build the model
         top_words : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
@@ -174,6 +172,9 @@ class LDA(Abstract_Model):
                  'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
+        if hyperparams is None:
+            hyperparams = {}
+
         if self.use_partitions:
             train_corpus, test_corpus = dataset.get_partitioned_corpus(use_validation=False)
         else:
@@ -186,19 +187,19 @@ class LDA(Abstract_Model):
             self.id_corpus = [self.id2word.doc2bow(document)
                               for document in train_corpus]
 
-        if "num_topics" not in hyperparameters:
-            hyperparameters["num_topics"] = self.hyperparameters["num_topics"]
+        if "num_topics" not in hyperparams:
+            hyperparams["num_topics"] = self.hyperparameters["num_topics"]
 
         # Allow alpha to be a float in case of symmetric alpha
-        if "alpha" in hyperparameters:
-            if isinstance(hyperparameters["alpha"], float):
-                hyperparameters["alpha"] = [
-                    hyperparameters["alpha"]
-                ] * hyperparameters["num_topics"]
+        if "alpha" in hyperparams:
+            if isinstance(hyperparams["alpha"], float):
+                hyperparams["alpha"] = [
+                    hyperparams["alpha"]
+                ] * hyperparams["num_topics"]
 
-        hyperparameters["corpus"] = self.id_corpus
-        hyperparameters["id2word"] = self.id2word
-        self.hyperparameters.update(hyperparameters)
+        hyperparams["corpus"] = self.id_corpus
+        hyperparams["id2word"] = self.id2word
+        self.hyperparameters.update(hyperparams)
 
         self.trained_model = ldamodel.LdaModel(**self.hyperparameters)
 
