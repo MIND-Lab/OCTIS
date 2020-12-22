@@ -11,7 +11,7 @@ class AVITM(Abstract_Model):
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100):
-        super().__init__()
+        super(Abstract_Model).__init__()
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
         self.hyperparameters['activation'] = activation
@@ -70,24 +70,17 @@ class AVITM(Abstract_Model):
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             self.X_train, input_size = self.preprocess(self.vocab, train=data_corpus)
 
-        self.model = avitm_model.AVITM_model(input_size=input_size,
-                                             num_topics=self.hyperparameters['num_topics'],
-                                             model_type=self.hyperparameters['model_type'],
-                                             hidden_sizes=self.hyperparameters['hidden_sizes'],
-                                             activation=self.hyperparameters['activation'],
-                                             dropout=self.hyperparameters['dropout'],
-                                             learn_priors=self.hyperparameters['learn_priors'],
-                                             batch_size=self.hyperparameters['batch_size'],
-                                             lr=self.hyperparameters['lr'],
-                                             momentum=self.hyperparameters['momentum'],
-                                             solver=self.hyperparameters['solver'],
-                                             num_epochs=self.hyperparameters['num_epochs'],
-                                             reduce_on_plateau=self.hyperparameters[
-                                                 'reduce_on_plateau'],
-                                             topic_prior_mean=self.hyperparameters["prior_mean"],
-                                             topic_prior_variance=self.hyperparameters[
-                                                 "prior_variance"]
-                                             )
+        self.model = avitm_model.AVITM_model(
+            input_size=input_size, num_topics=self.hyperparameters['num_topics'],
+            model_type=self.hyperparameters['model_type'], hidden_sizes=self.hyperparameters['hidden_sizes'],
+            activation=self.hyperparameters['activation'], dropout=self.hyperparameters['dropout'],
+            learn_priors=self.hyperparameters['learn_priors'], batch_size=self.hyperparameters['batch_size'],
+            lr=self.hyperparameters['lr'], momentum=self.hyperparameters['momentum'],
+            solver=self.hyperparameters['solver'], num_epochs=self.hyperparameters['num_epochs'],
+            reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
+            topic_prior_mean=self.hyperparameters["prior_mean"], topic_prior_variance=self.hyperparameters[
+                "prior_variance"]
+        )
 
         self.model.fit(self.X_train, self.X_valid)
 
@@ -162,18 +155,18 @@ class AVITM(Abstract_Model):
         input_size = len(idx2token.keys())
 
         if test is not None and validation is not None:
-            X_test = vec.transform(test)
-            test_data = datasets.BOWDataset(X_test.toarray(), idx2token)
-            X_valid = vec.transform(validation)
-            valid_data = datasets.BOWDataset(X_valid.toarray(), idx2token)
+            x_test = vec.transform(test)
+            test_data = datasets.BOWDataset(x_test.toarray(), idx2token)
+            x_valid = vec.transform(validation)
+            valid_data = datasets.BOWDataset(x_valid.toarray(), idx2token)
             return train_data, test_data, valid_data, input_size
         if test is None and validation is not None:
-            X_valid = vec.transform(validation)
-            valid_data = datasets.BOWDataset(X_valid.toarray(), idx2token)
+            x_valid = vec.transform(validation)
+            valid_data = datasets.BOWDataset(x_valid.toarray(), idx2token)
             return train_data, valid_data, input_size
         if test is not None and validation is None:
-            X_test = vec.transform(test)
-            test_data = datasets.BOWDataset(X_test.toarray(), idx2token)
+            x_test = vec.transform(test)
+            test_data = datasets.BOWDataset(x_test.toarray(), idx2token)
             return train_data, test_data, input_size
         if test is None and validation is None:
             return train_data, input_size
