@@ -4,17 +4,17 @@ os.chdir(os.path.pardir)
 os.chdir(os.path.pardir)
 
 #%% load the libraries
-from models.LDA import LDA_Model
-from dataset.dataset import Dataset
-from optimization.optimizer import Optimizer
+from optopic.models.LDA import LDA
+from optopic.dataset.dataset import Dataset
+from optopic.optimization.optimizer import Optimizer
 from skopt.space.space import Real
-from evaluation_metrics.coherence_metrics import Coherence
+from optopic.evaluation_metrics.coherence_metrics import Coherence
 #%% Load dataset
 dataset = Dataset()
-dataset.load("preprocessed_datasets/m10/M10_lemmatized_0")
+dataset.load("optopic/preprocessed_datasets/m10")
     
 #%% Load model
-model = LDA_Model()
+model = LDA()
 
 #%% Set model hyperparameters (not optimized by BO)
 model.hyperparameters.update({ "num_topics": 25, "iterations": 200 })

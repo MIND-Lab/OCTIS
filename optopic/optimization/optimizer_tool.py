@@ -11,55 +11,55 @@ def select_metric(metric_parameters,metric_name):
         
     # classification_metrics        
     if metric_name=="F1Score": 
-        from evaluation_metrics.classification_metrics import F1Score    
+        from optopic.evaluation_metrics.classification_metrics import F1Score    
         metric = F1Score(metric_parameters)      
      
     # coherence_metrics
     if metric_name=="Coherence": 
-        from evaluation_metrics.coherence_metrics import Coherence    
+        from optopic.evaluation_metrics.coherence_metrics import Coherence    
         metric = Coherence(metric_parameters)   
         
     elif metric_name=="Coherence_word_embeddings":
-        from evaluation_metrics.coherence_metrics import Coherence_word_embeddings  
+        from optopic.evaluation_metrics.coherence_metrics import Coherence_word_embeddings  
         metric = Coherence_word_embeddings(metric_parameters) 
         
     elif metric_name=="Coherence_word_embeddings_pairwise":
-        from evaluation_metrics.coherence_metrics import Coherence_word_embeddings_pairwise  
+        from optopic.evaluation_metrics.coherence_metrics import Coherence_word_embeddings_pairwise  
         metric = Coherence_word_embeddings_pairwise(metric_parameters) 
 
     elif metric_name=="Coherence_word_embeddings_centroid":
-        from evaluation_metrics.coherence_metrics import Coherence_word_embeddings_centroid  
+        from optopic.evaluation_metrics.coherence_metrics import Coherence_word_embeddings_centroid  
         metric = Coherence_word_embeddings_centroid(metric_parameters)   
 
     # diversity_metrics
     elif metric_name=="Topic_diversity":
-        from evaluation_metrics.diversity_metrics import Topic_diversity  
+        from optopic.evaluation_metrics.diversity_metrics import Topic_diversity  
         metric = Topic_diversity(metric_parameters) 
         
     # diversity_metrics
     elif metric_name=="InvertedRBO":
-        from evaluation_metrics.diversity_metrics import InvertedRBO  
+        from optopic.evaluation_metrics.diversity_metrics import InvertedRBO  
         metric = InvertedRBO(metric_parameters) 
 
     elif metric_name=="WordEmbeddingsInvertedRBO":
-        from evaluation_metrics.diversity_metrics import WordEmbeddingsInvertedRBO  
+        from optopic.evaluation_metrics.diversity_metrics import WordEmbeddingsInvertedRBO  
         metric = WordEmbeddingsInvertedRBO(metric_parameters)          
 
     elif metric_name=="KL_uniform":
-        from evaluation_metrics.topic_significance_metrics import KL_uniform  
+        from optopic.evaluation_metrics.topic_significance_metrics import KL_uniform  
         metric = KL_uniform(metric_parameters)    
 
     # topic_significance_metrics
     elif metric_name=="KL_uniform":
-        from evaluation_metrics.topic_significance_metrics import KL_uniform  
+        from optopic.evaluation_metrics.topic_significance_metrics import KL_uniform  
         metric = KL_uniform(metric_parameters)    
 
     elif metric_name=="KL_vacuous":
-        from evaluation_metrics.topic_significance_metrics import KL_vacuous  
+        from optopic.evaluation_metrics.topic_significance_metrics import KL_vacuous  
         metric = KL_vacuous(metric_parameters)    
 
     elif metric_name=="KL_background":
-        from evaluation_metrics.topic_significance_metrics import KL_background  
+        from optopic.evaluation_metrics.topic_significance_metrics import KL_background  
         metric = KL_background(metric_parameters)   
 
     return metric
@@ -69,38 +69,38 @@ def load_model(BestObject):
     model_parameters=BestObject['model_attributes']
     model_name=BestObject['model_name']
 
-    if model_name=="LDA_Model": 
-        from models.LDA import LDA_Model  
-        model = LDA_Model()  
+    if model_name=="LDA": 
+        from optopic.models.LDA import LDA 
+        model = LDA()  
         model.hyperparameters.update(model_parameters)
 
     if model_name=="LSI_Model": 
-        from models.LSI import LSI_Model  
+        from optopic.models.LSI import LSI_Model  
         model = LSI_Model()  
         model.hyperparameters.update(model_parameters)
 
     if model_name=="HDP_Model": 
-        from models.HDP import HDP_Model  
+        from optopic.models.HDP import HDP_Model  
         model = HDP_Model()  
         model.hyperparameters.update(model_parameters)
 
     if model_name=="NMF_Model": 
-        from models.NMF import NMF_Model  
+        from optopic.models.NMF import NMF_Model  
         model = NMF_Model()  
         model.hyperparameters.update(model_parameters)
 
     if model_name=="TomoLDA": 
-        from models.NMF import FastLDA  
+        from optopic.models.NMF import FastLDA  
         model = FastLDA()  
         model.hyperparameters.update(model_parameters)
 
     if model_name=="TorchAvitm": 
-        from models.TorchAvitm import TorchAvitm  
+        from optopic.models.TorchAvitm import TorchAvitm  
         model = TorchAvitm()  
         model.hyperparameters.update(model_parameters)
 
     if model_name=="TorchETM": 
-        from models.TorchAvitm import ETM_Wrapper  
+        from optopic.models.TorchAvitm import ETM_Wrapper  
         model = ETM_Wrapper()  
         model.hyperparameters.update(model_parameters)
 
