@@ -7,7 +7,107 @@ from skopt import Optimizer as skopt_optimizer
 from skopt.utils import dimensions_aslist
 
 
-def choose_optimizer(params, restart=False):
+def select_metric(metric_parameters,metric_name):
+        
+    # classification_metrics        
+    if metric_name=="F1Score": 
+        from evaluation_metrics.classification_metrics import F1Score    
+        metric = F1Score(metric_parameters)      
+     
+    # coherence_metrics
+    if metric_name=="Coherence": 
+        from evaluation_metrics.coherence_metrics import Coherence    
+        metric = Coherence(metric_parameters)   
+        
+    elif metric_name=="Coherence_word_embeddings":
+        from evaluation_metrics.coherence_metrics import Coherence_word_embeddings  
+        metric = Coherence_word_embeddings(metric_parameters) 
+        
+    elif metric_name=="Coherence_word_embeddings_pairwise":
+        from evaluation_metrics.coherence_metrics import Coherence_word_embeddings_pairwise  
+        metric = Coherence_word_embeddings_pairwise(metric_parameters) 
+
+    elif metric_name=="Coherence_word_embeddings_centroid":
+        from evaluation_metrics.coherence_metrics import Coherence_word_embeddings_centroid  
+        metric = Coherence_word_embeddings_centroid(metric_parameters)   
+
+    # diversity_metrics
+    elif metric_name=="Topic_diversity":
+        from evaluation_metrics.diversity_metrics import Topic_diversity  
+        metric = Topic_diversity(metric_parameters) 
+        
+    # diversity_metrics
+    elif metric_name=="InvertedRBO":
+        from evaluation_metrics.diversity_metrics import InvertedRBO  
+        metric = InvertedRBO(metric_parameters) 
+
+    elif metric_name=="WordEmbeddingsInvertedRBO":
+        from evaluation_metrics.diversity_metrics import WordEmbeddingsInvertedRBO  
+        metric = WordEmbeddingsInvertedRBO(metric_parameters)          
+
+    elif metric_name=="KL_uniform":
+        from evaluation_metrics.topic_significance_metrics import KL_uniform  
+        metric = KL_uniform(metric_parameters)    
+
+    # topic_significance_metrics
+    elif metric_name=="KL_uniform":
+        from evaluation_metrics.topic_significance_metrics import KL_uniform  
+        metric = KL_uniform(metric_parameters)    
+
+    elif metric_name=="KL_vacuous":
+        from evaluation_metrics.topic_significance_metrics import KL_vacuous  
+        metric = KL_vacuous(metric_parameters)    
+
+    elif metric_name=="KL_background":
+        from evaluation_metrics.topic_significance_metrics import KL_background  
+        metric = KL_background(metric_parameters)   
+
+    return metric
+
+def load_model(BestObject):
+    
+    model_parameters=BestObject['model_attributes']
+    model_name=BestObject['model_name']
+
+    if model_name=="LDA_Model": 
+        from models.LDA import LDA_Model  
+        model = LDA_Model()  
+        model.hyperparameters.update(model_parameters)
+
+    if model_name=="LSI_Model": 
+        from models.LSI import LSI_Model  
+        model = LSI_Model()  
+        model.hyperparameters.update(model_parameters)
+
+    if model_name=="HDP_Model": 
+        from models.HDP import HDP_Model  
+        model = HDP_Model()  
+        model.hyperparameters.update(model_parameters)
+
+    if model_name=="NMF_Model": 
+        from models.NMF import NMF_Model  
+        model = NMF_Model()  
+        model.hyperparameters.update(model_parameters)
+
+    if model_name=="TomoLDA": 
+        from models.NMF import FastLDA  
+        model = FastLDA()  
+        model.hyperparameters.update(model_parameters)
+
+    if model_name=="TorchAvitm": 
+        from models.TorchAvitm import TorchAvitm  
+        model = TorchAvitm()  
+        model.hyperparameters.update(model_parameters)
+
+    if model_name=="TorchETM": 
+        from models.TorchAvitm import ETM_Wrapper  
+        model = ETM_Wrapper()  
+        model.hyperparameters.update(model_parameters)
+
+
+    return model
+
+def choose_optimizer(params):
 
     params_space_list = dimensions_aslist(params.search_space)
 
@@ -20,7 +120,7 @@ def choose_optimizer(params, restart=False):
     elif params.surrogate_model == "ET":
         estimator = ExtraTreesRegressor(
             n_estimators=100, min_samples_leaf=3, random_state=params.random_state)
-        # GP Minimize
+    # GP Minimize
     elif params.surrogate_model == "GP":
         estimator = GaussianProcessRegressor(
             kernel=params.kernel, random_state=params.random_state)
@@ -28,26 +128,23 @@ def choose_optimizer(params, restart=False):
     elif params.surrogate_model == "RS":
         estimator = "dummy"
 
-    if restart == False:
+    if estimator=="dummy":
         opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                              acq_func=params.acq_func,
-                              acq_optimizer='sampling',
-                              n_initial_points=params.n_random_starts,
-                              initial_point_generator=params.initial_point_generator,
-                              # work only for version skopt 8.0!!!
-                              acq_optimizer_kwargs={
-                                  "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
-                              acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
-                              random_state=params.random_state)
+                                  acq_func=params.acq_func,
+                                  acq_optimizer='sampling',
+                                  initial_point_generator=params.initial_point_generator,
+                                  random_state=params.random_state)
     else:
         opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                              acq_func=params.acq_func,
-                              acq_optimizer='sampling',
-                              acq_optimizer_kwargs={
-                                  "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
-                              acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
-                              random_state=params.random_state)
-
+                                  acq_func=params.acq_func,
+                                  acq_optimizer='sampling',
+                                  n_initial_points=params.n_random_starts,
+                                  initial_point_generator=params.initial_point_generator,
+                                  # work only for version skopt 8.0!!!
+                                  acq_optimizer_kwargs={
+                                      "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
+                                  acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
+                                  random_state=params.random_state)
     return opt
 
 
@@ -182,10 +279,176 @@ def plot_bayesian_optimization(values, name_plot,
 
     plt.close()
 
+
+def convertType(obj):
+
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    else:
+        return obj
+        
+def check_instance(obj):
+    
+    if isinstance(obj, str):
+        return True
+    
+    if isinstance(obj, float):
+        return True
+
+    if isinstance(obj, int):
+        return True
+
+    if isinstance(obj, bool):
+        return True
+       
+    return False
 ##############################################################################
 
 
 class BestEvaluation:
+
+    def __init__(self, params, resultsBO):
+        """
+        Create an object with all the information about Bayesian Optimization
+
+        """
+        search_space = params.search_space
+        optimization_type = params.optimization_type
+
+        # Creation of model metric-parameters saved in the json file
+        metric_parameters=params.metric.parameters
+        dict_metric_parameters=dict()
+
+        for key in list(metric_parameters.keys()):
+            if check_instance(metric_parameters[key])==True:
+                dict_metric_parameters.update({key:metric_parameters[key]})
+
+        # Creation of model hyper-parameters saved in the json file
+        model_parameters=params.model.hyperparameters
+        dict_model_parameters=dict()
+
+        for key in list(model_parameters.keys()):
+            if check_instance(model_parameters[key])==True:
+                dict_model_parameters.update({key:model_parameters[key]})
+
+
+
+        # Creation of extra metric-parameters saved in the json file
+        dict_extra_metric_parameters=dict()
+        
+        for i in range(len(params.extra_metrics)):
+            metric_parameters=params.extra_metrics[i].parameters
+            dict_extra_metric_parameters.update({params.extra_metric_names[i]:dict()})
+            for key in list(metric_parameters.keys()):
+                if check_instance(metric_parameters[key])==True:
+
+                    dict_extra_metric_parameters[params.extra_metric_names[i]].update({key:metric_parameters[key]})
+
+        # Info about optimization
+        self.info = dict()
+        self.info.update({"dataset_name": params.dataset.get_metadata()["info"]["name"]})
+        self.info.update({"dataset_path": params.dataset.path})
+        self.info.update({"kernel": str(params.kernel)})
+        self.info.update({"acq_func": params.acq_func})
+        self.info.update({"surrogate_model": params.surrogate_model})
+        self.info.update({"optimization_type": "Maximize" if optimization_type == "Maximize" else "Minimize"})
+        self.info.update({"model_runs": params.model_runs})
+        self.info.update({"save_models": params.save_models})
+        self.info.update({"save_step": params.save_step})
+        self.info.update({"save_name": params.save_name})
+        self.info.update({"save_path": params.save_path})
+        self.info.update({"early_stop": params.early_stop})
+        self.info.update({"early_step": params.early_step})
+        self.info.update({"plot_model": params.plot_model})
+        self.info.update({"plot_best_seen": params.plot_best_seen})
+        self.info.update({"plot_name": params.plot_name})
+        self.info.update({"log_scale_plot": params.log_scale_plot})
+        self.info.update({"search_space": str(params.search_space)})
+        self.info.update({"model_name": params.model.__class__.__name__})
+        self.info.update({"model_attributes": dict_model_parameters})
+        self.info.update({"metric_name": params.name_optimized_metric})      
+        self.info.update({"extra_metric_names": [name for name in params.extra_metric_names]}) 
+        self.info.update({"metric_attributes":dict_metric_parameters})
+        self.info.update({"extra_metric_attributes":dict_extra_metric_parameters})
+        self.info.update({"current_call":params.current_call})
+        self.info.update({"number_of_call":params.number_of_call})
+        self.info.update({"random_state":params.random_state})
+        self.info.update({"x0":params.x0})
+        self.info.update({"y0":params.y0})
+        self.info.update({"n_random_starts":params.n_random_starts})
+        self.info.update({"initial_point_generator":params.initial_point_generator})
+        self.info.update({"topk":params.topk})
+        self.info.update({"time_eval":params.time_eval})
+        self.info.update({"dict_model_runs": params.dict_model_runs})
+
+        # Reverse the sign of minimization if the problem is a maximization
+        if optimization_type == "Maximize":
+            self.func_vals = [-val for val in resultsBO.func_vals]
+            self.y_best = resultsBO.fun
+        else:
+            self.func_vals = [val for val in resultsBO.func_vals]
+            self.y_best = resultsBO.fun
+
+        self.x_iters = dict()
+        name_hyperparameters = list(search_space.keys())
+
+        # dictionary of x_iters
+        lenList = len(resultsBO.x_iters)
+        for i, name in enumerate(name_hyperparameters):
+            self.x_iters.update(
+                {name: [convertType(resultsBO.x_iters[j][i]) for j in range(lenList)]})
+        
+        self.info.update({"f_val": self.func_vals})
+        self.info.update({"x_iters": self.x_iters})
+
+        self.metric = params.metric
+        self.extra_metrics = params.extra_metrics
+
+    def save(self, name_file):
+        """
+        Save results for Bayesian Optimization
+        """
+        self.name_json=name_file
+        with open(name_file, 'w') as fp:
+            json.dump(self.info, fp)
+
+    def save_to_csv(self, name_file):
+
+        n_row = len(self.func_vals)
+        n_extra_metrics = len(self.extra_metrics)
+
+        # creation of the Dataframe
+        df = pd.DataFrame()
+        df['dataset'] = [self.info["dataset_name"]] * n_row
+        df['surrogate model'] = [self.info["surrogate_model"]] * n_row
+        df['acquisition function'] = [self.info["acq_func"]] * n_row
+        df['num_iteration'] = [i for i in range(n_row)]
+        df['time'] = [self.info['time_eval'][i] for i in range(n_row)]
+        df['Mean(model_runs)'] = [np.mean(
+            self.info['dict_model_runs'][self.info['metric_name']]['iteration_'+str(i)]) for i in range(n_row)]
+        df['Standard_Deviation(model_runs)'] = [np.std(
+            self.info['dict_model_runs'][self.metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]
+
+        for hyperparameter in list(self.x_iters.keys()):
+            df[hyperparameter] = self.x_iters[hyperparameter]
+
+        for metric, i in zip(self.extra_metrics, range(n_extra_metrics)):
+            try:
+                df[metric.info()["name"]+'(not optimized)'] = [np.median(
+                    self.dict_model_runs[metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]
+            except:
+                df[metric.__class__.__name__+'(not optimized)'] = [np.median(
+                    self.dict_model_runs[metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]
+
+        if not name_file.endswith(".csv"):
+            name_file = name_file+".csv"
+
+        # save the Dataframe to a csv
+        df.to_csv(name_file, index=False, na_rep='Unkown')
 
     def __init__(self, params, resultsBO, times):
         """
@@ -306,12 +569,4 @@ class BestEvaluation:
         return result
 
 
-def convertType(obj):
-    if isinstance(obj, np.integer):
-        return int(obj)
-    elif isinstance(obj, np.floating):
-        return float(obj)
-    elif isinstance(obj, np.ndarray):
-        return obj.tolist()
-    else:
-        return obj
+
