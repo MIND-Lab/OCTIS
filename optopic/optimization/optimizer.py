@@ -1,6 +1,8 @@
 # Utils
 import time
 from pathlib import Path
+import numpy as np
+import json
 
 # utils from skopt and sklearn
 from sklearn.gaussian_process.kernels import *
@@ -13,29 +15,26 @@ from optopic.optimization.optimizer_tool import BestEvaluation
 from optopic.optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
 from optopic.optimization.optimizer_tool import early_condition
 from optopic.optimization.optimizer_tool import choose_optimizer
-
+from optopic.optimization.optimizer_tool import select_metric
+from optopic.optimization.optimizer_tool import load_model
 
 class Optimizer:
     """
     Class Optimizer to perform Bayesian Optimization on Topic Model
     """
 
-    # Values of hyperparameters and metrics for each iteration
-    _iterations = []  # counter for the BO iteration
-    topk = 10  # if False the topk words will not be computed
-
-    def __init__(self, model, dataset, metric, search_space, extra_metrics=None,
-                 number_of_call=5, n_random_starts=0,
+    def optimize(self,model, dataset, metric, search_space, extra_metrics=[],
+                 number_of_call=5, n_random_starts=1,
                  initial_point_generator="lhs",  # work only for version skopt 8.0!!!
                  optimization_type='Maximize', model_runs=5, surrogate_model="RF",
                  kernel=1.0 * Matern(length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5),
-                 acq_func="LCB", random_state=False, x0=None, y0=None,
-                 save_models=False, save_step=1, save_name="result", save_path="results/", early_stop=False,
+                 acq_func="LCB", random_state=False, x0=[], y0=[],
+                 save_models=True, save_step=1, save_name="result", save_path="results/", early_stop=False,
                  early_step=5,
-                 plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False):
+                 plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False,topk=10):
 
         """
-        Inizialization of the optimizer for the model
+        Hyper-parameter Optimization for Topic Model
 
         Parameters
         ----------
@@ -70,21 +69,13 @@ class Optimizer:
         log_scale_plot : if True the "y_axis" of the plot is set to log_scale
 
         """
-        if y0 is None:
-            y0 = []
-        if x0 is None:
-            x0 = []
-        if extra_metrics is None:
-            extra_metrics = []
+        # Set the attributes
         self.model = model
         self.dataset = dataset
         self.metric = metric
         self.search_space = search_space
-        self.current_call = 0
-        self.hyperparameters = list(sorted(self.search_space.keys()))
         self.extra_metrics = extra_metrics
         self.optimization_type = optimization_type
-        self.dict_model_runs = dict()
         self.number_of_call = number_of_call
         self.n_random_starts = n_random_starts
         self.initial_point_generator = initial_point_generator
@@ -105,34 +96,82 @@ class Optimizer:
         self.plot_best_seen = plot_best_seen
         self.plot_name = plot_name
         self.log_scale_plot = log_scale_plot
+        self.topk=topk
 
-        # create the directory where the results are saved
+        self.hyperparameters = list(sorted(self.search_space.keys()))
+        self.dict_model_runs = dict()
+        self.number_of_previous_calls=0
+        self.current_call = 0
+        self.time_eval=[]
+                
+        self.name_optimized_metric=metric.__class__.__name__
+        self.dict_model_runs[self.name_optimized_metric] = dict()
+        
+        # Info about extra metrics
+        i=0
+        self.extra_metric_names=[]
+        for extra_metric in extra_metrics:
+            self.extra_metric_names.append(str(i)+'_'+extra_metric.__class__.__name__)
+            self.dict_model_runs[self.extra_metric_names[i]] = dict()
+            i=i+1
+            
+        # Control about the correctness of BO parameters
+        if self._check_BO_parameters() == -1:
+            print("ERROR: wrong initialitation of BO parameters")
+            return None
+
+        # Create the directory where the results are saved
         Path(self.save_path).mkdir(parents=True, exist_ok=True)
 
-        # inizialize the dictories about model_runs
-        self.dict_model_runs[metric.__class__.__name__] = dict()
-        for extra_metric in extra_metrics:
-            self.dict_model_runs[extra_metric.__class__.__name__] = dict()
+        # Initialize the directories about model_runs
+        if self.save_models:
+            self.model_path_models = self.save_path + "models/"
+            Path(self.model_path_models).mkdir(parents=True, exist_ok=True)
 
-        # control about the correctness of Bo parameters
-        if self.check_BO_parameters() == -1:
+
+        # Choice of the optimizer
+        opt = choose_optimizer(self)
+
+        # Perform Bayesian Optimization
+        results=self._optimization_loop(opt)
+
+        return results
+
+    def resume_optimization(self,name_path, extra_evaluations=0):
+        """
+        Method to restart the optimization from the json file. 
+        
+        Parameters
+        ----------
+        name_path: path of the json file
+            
+        extra_evaluations: extra iterations for the BO optimization
+        
+        """
+
+        # Restore of the parameters
+        res,opt=self._restore_parameters(name_path)  
+        
+        # Set the number of total calls
+        self.number_of_call=self.number_of_call+extra_evaluations
+
+        # Check if there are other iterations to do
+        if self.number_of_previous_calls==self.number_of_call:
+            print("No other evaluations to do!!!")
+            return -1
+
+        # Control about the correctness of BO parameters
+        if self._check_BO_parameters() == -1:
             print("ERROR: wrong inizialitation of BO parameters")
             return None
 
+        results=self._optimization_loop(opt)
+
+        return results
+
     def _objective_function(self, hyperparameters):
         """
-        objective function to optimize
-
-        Parameters
-        ----------
-        hyperparameters : dictionary of hyperparameters
-                          (It's a list for real)
-                          key: name of the parameter
-                          value: skopt search space dimension
-
-        Returns
-        -------
-        result : score of the metric to maximize
+        Method to evaluate the objective function
         """
 
         # Retrieve parameters labels
@@ -163,15 +202,15 @@ class Optimizer:
                 save_model_path = self.model_path_models + name
                 save_model_output(model_output, save_model_path)
 
-        # update of the dictionaries
-        self.dict_model_runs[self.metric.__class__.__name__][
+        # Update of the dictionaries
+        self.dict_model_runs[self.name_optimized_metric][
             'iteration_' + str(self.current_call)] = different_model_runs
 
         for j, extra_metric in enumerate(self.extra_metrics):
-            self.dict_model_runs[extra_metric.__class__.__name__]['iteration_' + str(self.current_call)] = \
+            self.dict_model_runs[self.extra_metric_names[j]]['iteration_' + str(self.current_call)] = \
             different_model_runs_extra_metrics[j]
 
-        # the output for BO is the median over different_model_runs
+        # The output for BO is the median over different_model_runs
         result = np.median(different_model_runs)
 
         if self.optimization_type == 'Maximize':
@@ -179,63 +218,50 @@ class Optimizer:
 
         # Boxplot for matrix_model_runs
         if self.plot_model:
-            name_plot = self.save_path + self.plot_name + "_model_runs_" + self.metric.__class__.__name__
-            plot_model_runs(self.dict_model_runs[self.metric.__class__.__name__], self.current_call, name_plot)
+            name_plot = self.save_path + self.plot_name + "_model_runs_" + self.name_optimized_metric
+            plot_model_runs(self.dict_model_runs[self.name_optimized_metric], self.current_call, name_plot)
 
             # Boxplot of extrametrics (if any)
+            j=0
             for extra_metric in self.extra_metrics:
-                name_plot = self.save_path + self.plot_name + "_model_runs_" + self.metric.__class__.__name__
-                plot_model_runs(self.dict_model_runs[extra_metric.__class__.__name__], self.current_call, name_plot)
-
+                name_plot = self.save_path + self.plot_name + "_model_runs_" + self.extra_metric_names[j]
+                plot_model_runs(self.dict_model_runs[self.extra_metric_names[j]], self.current_call, name_plot)
+                j=j+1
         return result
 
-    def optimize(self):
+    def _optimization_loop(self,opt):
         """
-        Optimize the hyperparameters of the model
-
-        Returns
-
-        ----------
-        an object containing all the information about BO:
-            -func_vals    : function value for each optimization run
-            -y_best       : function value at the optimum
-            -x_iters      : location of function evaluation for each optimization run
-            -x_best       : location of the optimum
-            -models_runs  : dictionary about all the model runs
-            -extra_metrics: dictionary about all the model runs for the extra metrics
-
+        Method to perform the BO iterations 
         """
-        # Choice of the optimizer
-        opt = choose_optimizer(self)
-
-        # for loop to perform Bayesian Optimization
-        time_eval = []
-        for i in range(self.number_of_call):
-
+        
+        # For loop to perform Bayesian Optimization 
+        for i in range(self.number_of_previous_calls,self.number_of_call):
+            
+            # Next point proposed by BO and evaluation of the objective function
             print("Current call: ", self.current_call)
             start_time = time.time()
 
-            # next point proposed by BO and evaluation of the objective function
+            # Next point proposed by BO and evaluation of the objective function
             if i < len(self.x0):
                 next_x = self.x0[i]
 
                 if len(self.y0) == 0:
-                    self.dict_model_runs[self.metric.__class__.__name__]['iteration_' + str(i)] = self.y0[i]
                     f_val = self._objective_function(next_x)
-                else:
+                else:              
+                    self.dict_model_runs[self.metric.__class__.__name__]['iteration_' + str(i)] = self.y0[i]
                     f_val = -self.y0[i] if self.optimization_type == 'Maximize' else self.y0[i]
 
             else:
                 next_x = opt.ask()
                 f_val = self._objective_function(next_x)
 
-            #update the opt using (next_x,f_val)
+            # Update the opt using (next_x,f_val)
             res = opt.tell(next_x, f_val)
 
-            # update the computational time for next_x (BO+Function evaluation)
+            # Update the computational time for next_x (BO+Function evaluation)
             end_time = time.time()
             total_time_function = end_time - start_time
-            time_eval.append(total_time_function)
+            self.time_eval.append(total_time_function)
 
             # Plot best seen
             if self.plot_best_seen:
@@ -243,12 +269,12 @@ class Optimizer:
                                            self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
 
             # Create an object related to the BO optimization
-            results = BestEvaluation(self, resultsBO=res, times=time_eval)
+            results = BestEvaluation(self, resultsBO=res)
 
             # Save the object
             if i % self.save_step == 0:
-                name_pkl = self.save_path + self.save_name + ".json"
-                results.save(name_pkl)
+                name_json = self.save_path + self.save_name + ".json"
+                results.save(name_json)
 
             # Early stop condition
             if i >= len(self.x0) and self.early_stop and early_condition(res.func_vals, self.early_step,
@@ -256,118 +282,114 @@ class Optimizer:
                 print("Stop because of early stopping condition")
                 break
 
-            # update current_call
+            # Update current_call
             self.current_call = self.current_call + 1
-
+            
         return results
 
-    def restart_optimize(self, BestObject, number_of_call, model, metric=None,
-                         extra_metrics=None, acq_func=None, surrogate_model=None,
-                         kernel=None, optimization_type=None, model_runs=None,
-                         save_models=None, save_step=None, save_path=None,
-                         early_stop=None, early_step=None, plot_model=None,
-                         plot_best_seen=None, plot_name=None, log_scale_plot=None,
-                         search_space=None):
+    def _load_metric(self,BestObject,dataset):
+        """
+        Method to load the metric from the json file, useful for the resume method
 
-        if extra_metrics is None:
-            extra_metrics = []
-        self.model = model
+        Parameters
+        ----------
 
-        # re-inizialization of the parameters
-        self.extra_metrics = extra_metrics
-        self.search_space = search_space if search_space else eval(BestObject["search_space"])
-        self.acq_func = acq_func if acq_func else BestObject["acq_func"]
-        self.surrogate_model = surrogate_model if surrogate_model else BestObject["surrogate_model"]
-        self.kernel = kernel if kernel else eval(BestObject["kernel"])
-        self.optimization_type = optimization_type if optimization_type else BestObject["optimization_type"]
-        self.model_runs = model_runs if model_runs else BestObject["model_runs"]
-        self.save_models = save_models if save_models else BestObject["save_models"]
-        self.save_step = save_step if save_step else BestObject["save_step"]
-        self.save_models = save_models if save_models else BestObject["save_models"]
-        self.save_path = save_path if save_path else BestObject["save_path"]
-        self.early_stop = early_stop if early_stop else BestObject["early_stop"]
-        self.early_step = early_step if early_step else BestObject["early_step"]
-        self.plot_model = plot_model if plot_model else BestObject["plot_model"]
-        self.plot_best_seen = plot_best_seen if plot_best_seen else BestObject["plot_best_seen"]
-        self.plot_name = plot_name if plot_name else BestObject["plot_name"]
-        self.log_scale_plot = log_scale_plot if log_scale_plot else BestObject["log_scale_plot"]
+        """
+        # Optimized Metric 
+        self.name_optimized_metric=BestObject['metric_name']
+        metric_parameters=BestObject['metric_attributes']
+        
+        if self.name_optimized_metric.startswith('Coherence'):
+            metric_parameters.update({'texts':dataset.get_corpus()})
+            
+        self.metric=select_metric(metric_parameters,self.name_optimized_metric)
 
-        if metric is None:
-            import evaluation_metrics.coherence_metrics as metrics
-            metric_attributes = BestObject["metric_attributes"]
-            self.metric = getattr(metrics, BestObject["metric_name"])(metric_attributes)
-        else:
-            self.metric = metric
+        #Extra metrics
+        self.extra_metrics=[]
+        self.extra_metric_names=BestObject['extra_metric_names']
+        dict_extra_metric_parameters=BestObject['extra_metric_attributes']
+        
+        for name in self.extra_metric_names:
+            metric_parameters=dict_extra_metric_parameters[name]            
+            if 'Coherence' in name:
+                metric_parameters.update({'texts':dataset.get_corpus()})
+    
+            metric=select_metric(metric_parameters,name[2:])     
+            self.extra_metrics.append(metric)
 
-        # Load of the dataset
+    def _restore_parameters(self,name_path):
+        """
+        Restore the parameters of the BO from the json file
+        """
+    
+        #Load the previous results
+        with open(name_path, 'rb') as file:
+            BestObject=json.load(file)       
+
+        self.search_space= eval(BestObject["search_space"])
+        self.acq_func =BestObject["acq_func"]
+        self.surrogate_model =BestObject["surrogate_model"]       
+        self.kernel =eval(BestObject["kernel"])            
+        self.optimization_type = BestObject["optimization_type"]          
+        self.model_runs = BestObject["model_runs"]
+        self.save_models = BestObject["save_models"]     
+        self.save_step = BestObject["save_step"]             
+        self.save_name =  BestObject["save_name"]         
+        self.save_models = BestObject["save_models"] 
+        self.save_path =BestObject["save_path"]                       
+        self.early_stop = BestObject["early_stop"]         
+        self.early_step =BestObject["early_step"]   
+        self.plot_model = BestObject["plot_model"]         
+        self.plot_best_seen =  BestObject["plot_best_seen"]         
+        self.plot_name =  BestObject["plot_name"]       
+        self.log_scale_plot = BestObject["log_scale_plot"]    
+        self.random_state= BestObject["random_state"]                 
+        self.dict_model_runs=BestObject['dict_model_runs']
+        self.number_of_previous_calls=BestObject['current_call']+1
+        self.current_call=BestObject['current_call']+1
+        self.number_of_call=BestObject['number_of_call']
+        self.save_path=BestObject['save_path']
+        self.x0=BestObject['x0']
+        self.y0=BestObject['y0']
+        self.n_random_starts = BestObject['n_random_starts']
+        self.initial_point_generator = BestObject['initial_point_generator']
+        self.topk = BestObject['topk']
+        self.time_eval = BestObject["time_eval"]
+        
+        # Load the dataset
         dataset = Dataset()
         dataset.load(BestObject["dataset_path"])
-        self.dataset = dataset
+        self.dataset=dataset
+        
+        # Load the metric
+        self._load_metric(BestObject,dataset)
+
+        # Load the model 
+        self.model=load_model(BestObject)
+        
+        # Creation of the hyperparameters
+        self.hyperparameters = list(sorted(self.search_space.keys()))
 
         # Choice of the optimizer
-        opt = choose_optimizer(self, restart=True)
+        opt=choose_optimizer(self);
 
-        # update of the model through x0,y0
-        time_eval = BestObject["time"]
+        # Update number_of_call for restarting
+        for i in range(self.number_of_previous_calls):
+            next_x=[BestObject["x_iters"][key][i] for key in self.hyperparameters]
+            f_val=-BestObject["f_val"][i] if self.optimization_type == 'Maximize' else BestObject["f_val"][i]
+            res = opt.tell(next_x, f_val)  
 
-        # update number_of_call for restarting
-        number_of_previous_calls = len(time_eval)
-        self.number_of_call = number_of_previous_calls + number_of_call
-        self.current_call = number_of_previous_calls
+        # Create the directory where the results are saved
+        Path(self.save_path).mkdir(parents=True, exist_ok=True)
+        
+        self.model_path_models = self.save_path + "models/"
 
-        self.dict_model_runs = BestObject['dict_model_runs']
-
-        for metric in self.extra_metrics:
-            if metric.__class__.__name__ not in self.dict_model_runs.keys():
-                self.dict_model_runs[metric.__class__.__name__] = dict()
-                for i in range(number_of_previous_calls):
-                    self.dict_model_runs[metric.__class__.__name__]["iteration_" + str(i)] = 0
-
-        for i in range(number_of_previous_calls):
-            next_x = [BestObject["x_iters"][key][i] for key in self.hyperparameters]
-            f_val = -BestObject["f_val"][i] if self.optimization_type == 'Maximize' else BestObject["f_val"][i]
-            res = opt.tell(next_x, f_val)
-
-        # for loop to perform Bayesian Optimization
-        for i in range(number_of_previous_calls, self.number_of_call):
-            # next point proposed by BO and evaluation of the objective function
-            print("Current call: ", self.current_call)
-            # next point proposed by BO and evaluation of the objective function
-            start_time = time.time()
-            next_x = opt.ask()
-            f_val = self._objective_function(next_x)
-
-            # update the opt using (next_x,f_val)
-            res = opt.tell(next_x, f_val)
-
-            # update the computational time for next_x (BO+Function evaluation)
-            end_time = time.time()
-            total_time_function = end_time - start_time
-            time_eval.append(total_time_function)
-            # Plot best seen
-            if self.plot_best_seen:
-                plot_bayesian_optimization(res.func_vals, self.save_path + self.plot_name + "_best_seen",
-                                           self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
-
-            # Create an object related to the BO optimization
-            results = BestEvaluation(self, resultsBO=res, times=time_eval)
-
-            if i % self.save_step == 0:
-                name_pkl = self.save_path + self.save_name + ".json"
-                results.save(name_pkl)
-
-            # Early stop condition
-            if i >= len(self.x0) and self.early_stop and early_condition(res.func_vals, self.early_step,
-                                                                         self.n_random_starts):
-                print("Stop because of early stopping condition")
-                break
-
-            # update current_call
-            self.current_call = self.current_call + 1
-
-        return results
-
-    def check_BO_parameters(self):
+        return res,opt
+    
+    def _check_BO_parameters(self):
+        """
+        Controls about the BO parameters
+        """
         # Controls about BO parameters
         if self.optimization_type not in ['Maximize', 'Minimize']:
             print("Error: optimization type must be Maximize or Minimize")
@@ -408,6 +430,10 @@ class Optimizer:
         if not isinstance(self.save_step, int):
             print("Error: save_step must be an integer")
             return -1
+        
+        if self.n_random_starts<=0:
+            print("Error: the number of initial_points must be >=1 !!!")
+            return -1            
 
         if self.initial_point_generator not in ['lhs', 'sobol', 'halton', 'hammersly', 'grid', 'random']:
             print("Error: wrong initial_point_generator")
@@ -421,9 +447,5 @@ class Optimizer:
 
         if self.save_path[-1] != '/':
             self.save_path = self.save_path + '/'
-
-        if self.save_models:
-            self.model_path_models = self.save_path + "models/"
-            Path(self.model_path_models).mkdir(parents=True, exist_ok=True)
 
         return 0
