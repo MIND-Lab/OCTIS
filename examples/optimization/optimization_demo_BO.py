@@ -30,8 +30,8 @@ npmi = Coherence(metric_parameters)
 
 #%% Create search space for optimization
 search_space = {
-    "alpha": Real(low=0.001, high=5.0),
-   "eta": Real(low=0.001, high=5.0)
+   "eta": Real(low=0.001, high=0.1),
+    "alpha": Real(low=0.1, high=5.0),
 }
 #%% Optimize the function npmi using Bayesian Optimization
 optimizer=Optimizer()
@@ -57,4 +57,4 @@ BestObject.save_to_csv("results.csv")
 #%% Resume the optimization
 path=BestObject.name_json
 optimizer=Optimizer()
-optimizer.resume_optimization(path,extra_evaluations=3)
+BestObject=optimizer.resume_optimization(path,extra_evaluations=3)

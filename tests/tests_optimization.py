@@ -375,6 +375,7 @@ def test_extra_metrics_initial_input_points(save_path):
         "alpha": Real(low=0.001, high=5.0),
        "eta": Real(low=0.001, high=5.0)
     }
+
     #%% Optimize the function npmi using Bayesian Optimization (simple Optimization)
     optimizer=Optimizer()
     optimizer.optimize(model,dataset, npmi,search_space,
@@ -394,7 +395,7 @@ def test_extra_metrics_initial_input_points(save_path):
                                     plot_best_seen=True,
                                     plot_model=True,
                                     model_runs=model_runs,
-                                    save_path=save_path+'test1/')  
+                                    save_path=save_path+'test2/')  
 
 #%% main function to test all the functions
 def main():
