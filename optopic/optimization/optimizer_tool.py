@@ -5,107 +5,67 @@ import pandas as pd
 from skopt.learning import GaussianProcessRegressor, RandomForestRegressor, ExtraTreesRegressor
 from skopt import Optimizer as skopt_optimizer
 from skopt.utils import dimensions_aslist
+import os
+import importlib
+import sys
+import optopic.configuration.defaults as defaults
 
+def importClass(className, moduleName, modulePath):
+    """
+    Import a class runtime based on its module and name
 
-def select_metric(metric_parameters,metric_name):
-        
-    # classification_metrics        
-    if metric_name=="F1Score": 
-        from optopic.evaluation_metrics.classification_metrics import F1Score    
-        metric = F1Score(metric_parameters)      
-     
-    # coherence_metrics
-    if metric_name=="Coherence": 
-        from optopic.evaluation_metrics.coherence_metrics import Coherence    
-        metric = Coherence(metric_parameters)   
-        
-    elif metric_name=="Coherence_word_embeddings":
-        from optopic.evaluation_metrics.coherence_metrics import Coherence_word_embeddings  
-        metric = Coherence_word_embeddings(metric_parameters) 
-        
-    elif metric_name=="Coherence_word_embeddings_pairwise":
-        from optopic.evaluation_metrics.coherence_metrics import Coherence_word_embeddings_pairwise  
-        metric = Coherence_word_embeddings_pairwise(metric_parameters) 
+    Parameters
+    ----------
+    className : name of the class
+    moduleName : name of the module
+    modulePath: absolute path to the module
 
-    elif metric_name=="Coherence_word_embeddings_centroid":
-        from optopic.evaluation_metrics.coherence_metrics import Coherence_word_embeddings_centroid  
-        metric = Coherence_word_embeddings_centroid(metric_parameters)   
-
-    # diversity_metrics
-    elif metric_name=="Topic_diversity":
-        from optopic.evaluation_metrics.diversity_metrics import Topic_diversity  
-        metric = Topic_diversity(metric_parameters) 
-        
-    # diversity_metrics
-    elif metric_name=="InvertedRBO":
-        from optopic.evaluation_metrics.diversity_metrics import InvertedRBO  
-        metric = InvertedRBO(metric_parameters) 
-
-    elif metric_name=="WordEmbeddingsInvertedRBO":
-        from optopic.evaluation_metrics.diversity_metrics import WordEmbeddingsInvertedRBO  
-        metric = WordEmbeddingsInvertedRBO(metric_parameters)          
-
-    elif metric_name=="KL_uniform":
-        from optopic.evaluation_metrics.topic_significance_metrics import KL_uniform  
-        metric = KL_uniform(metric_parameters)    
-
-    # topic_significance_metrics
-    elif metric_name=="KL_uniform":
-        from optopic.evaluation_metrics.topic_significance_metrics import KL_uniform  
-        metric = KL_uniform(metric_parameters)    
-
-    elif metric_name=="KL_vacuous":
-        from optopic.evaluation_metrics.topic_significance_metrics import KL_vacuous  
-        metric = KL_vacuous(metric_parameters)    
-
-    elif metric_name=="KL_background":
-        from optopic.evaluation_metrics.topic_significance_metrics import KL_background  
-        metric = KL_background(metric_parameters)   
-
-    return metric
+    Returns
+    singleClass : returns the selected class
+    """
+    spec = importlib.util.spec_from_file_location(
+        moduleName, modulePath, submodule_search_locations=[])
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    importlib.invalidate_caches()
+    singleClass = getattr(module, className)
+    return singleClass
 
 def load_model(BestObject):
+    """
     
+    Function used to load the topic model for the resume_optimization
+    
+    Parameters
+    ----------
+    BestObject : dictionary where the BO parameter are saved.
+
+    Returns
+    -------
+    modelIstance : topic model used during the BO.
+
+    """
+    from optopic.models.LDA import LDA
     model_parameters=BestObject['model_attributes']
     model_name=BestObject['model_name']
 
-    if model_name=="LDA": 
-        from optopic.models.LDA import LDA 
-        model = LDA()  
-        model.hyperparameters.update(model_parameters)
+    modulePath = "optopic/models"
+    modulePath = os.path.join(modulePath, model_name+".py")
+    model = importClass(model_name, model_name, modulePath)
+    modelIstance=model()
+    modelIstance.hyperparameters.update(model_parameters)
 
-    if model_name=="LSI_Model": 
-        from optopic.models.LSI import LSI_Model  
-        model = LSI_Model()  
-        model.hyperparameters.update(model_parameters)
+    return modelIstance
 
-    if model_name=="HDP_Model": 
-        from optopic.models.HDP import HDP_Model  
-        model = HDP_Model()  
-        model.hyperparameters.update(model_parameters)
+def select_metric(metric_parameters,metric_name): 
+    modulePath = "optopic/evaluation_metrics"
+    moduleName = defaults.metric_parameters[metric_name]["module"]
+    modulePath = os.path.join(modulePath, moduleName+".py")
+    Metric = importClass(metric_name, metric_name, modulePath)
+    metric = Metric(metric_parameters)
 
-    if model_name=="NMF_Model": 
-        from optopic.models.NMF import NMF_Model  
-        model = NMF_Model()  
-        model.hyperparameters.update(model_parameters)
-
-    if model_name=="TomoLDA": 
-        from optopic.models.NMF import FastLDA  
-        model = FastLDA()  
-        model.hyperparameters.update(model_parameters)
-
-    if model_name=="TorchAvitm": 
-        from optopic.models.TorchAvitm import TorchAvitm  
-        model = TorchAvitm()  
-        model.hyperparameters.update(model_parameters)
-
-    if model_name=="TorchETM": 
-        from optopic.models.TorchAvitm import ETM_Wrapper  
-        model = ETM_Wrapper()  
-        model.hyperparameters.update(model_parameters)
-
-
-    return model
+    return metric
 
 def choose_optimizer(params):
 
@@ -292,6 +252,11 @@ def convertType(obj):
         return obj
         
 def check_instance(obj):
+    """
+
+    Function to check if a specific object con be inserted in the json file.
+
+    """
     
     if isinstance(obj, str):
         return True
@@ -394,7 +359,7 @@ class BestEvaluation:
             self.y_best = resultsBO.fun
 
         self.x_iters = dict()
-        name_hyperparameters = list(search_space.keys())
+        name_hyperparameters = sorted(list(search_space.keys()))
 
         # dictionary of x_iters
         lenList = len(resultsBO.x_iters)
