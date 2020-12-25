@@ -8,13 +8,14 @@ from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
 from optopic.models.ETM_model import etm
 from optopic.models.model import Abstract_Model
-
+import gensim
+import pickle as pkl
 
 class ETM(Abstract_Model):
 
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
-                 activation='relu', dropout=0.0, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
-                 wdecay=1.2e-6, bow_norm=1):
+                 activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
+                 wdecay=1.2e-6, bow_norm=1, train_embeddings=True, embeddings_path=None):
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = num_topics
@@ -23,7 +24,7 @@ class ETM(Abstract_Model):
         self.hyperparameters['rho_size'] = rho_size
         self.hyperparameters['embedding_size'] = embedding_size
         self.hyperparameters['activation'] = activation
-        self.hyperparameters['dropout'] = dropout,
+        self.hyperparameters['dropout'] = dropout
         self.hyperparameters['lr'] = lr
         self.hyperparameters['optimizer'] = optimizer
         self.hyperparameters['batch_size'] = batch_size
@@ -35,13 +36,16 @@ class ETM(Abstract_Model):
         self.device = 'cpu'
         self.test_tokens, self.test_counts = None, None
         self.valid_tokens, self.valid_counts = None, None
-        self.train_tokens, self.train_counts, self.vocab_size, self.vocab = None, None, None, None
+        self.train_tokens, self.train_counts, self.vocab = None, None, None
         self.use_partitions = False
         self.model = None
         self.optimizer = None
+        self.train_embeddings = train_embeddings
+        self.embeddings_path = embeddings_path
+        self.embeddings = None
 
-    def train_model(self, dataset, hyperparameters, top_words=10, embeddings=None, train_embeddings=True):
-        self.set_model(dataset, hyperparameters, embeddings, train_embeddings)
+    def train_model(self, dataset, hyperparameters, top_words=10):
+        self.set_model(dataset, hyperparameters)
         self.top_word = top_words
         self.early_stopping = EarlyStopping(patience=5, verbose=True)
 
@@ -60,7 +64,7 @@ class ETM(Abstract_Model):
 
         return result
 
-    def set_model(self, dataset, hyperparameters, embeddings, train_embeddings):
+    def set_model(self, dataset, hyperparameters):
         if self.use_partitions:
             train_data, validation_data, testing_data = \
                 dataset.get_partitioned_corpus(use_validation=True)
@@ -74,27 +78,26 @@ class ETM(Abstract_Model):
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
             self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.valid_tokens, \
-            self.valid_counts, self.vocab_size = \
-                self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
+            self.valid_counts = self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             vocab = dataset.get_vocabulary()
             self.vocab = {i: w for i, w in enumerate(vocab)}
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
-            self.train_tokens, self.train_counts, self.vocab_size, self.vocab = \
-                self.preprocess(vocab2id, data_corpus, None)
+            self.train_tokens, self.train_counts = self.preprocess(vocab2id, data_corpus, None)
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         self.set_default_hyperparameters(hyperparameters)
+        self.load_embeddings()
         ## define model and optimizer
-        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'], vocab_size=self.vocab_size,
+        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'], vocab_size=len(self.vocab.keys()),
                              t_hidden_size=self.hyperparameters['t_hidden_size'],
                              rho_size=self.hyperparameters['rho_size'],
                              emb_size=self.hyperparameters['embedding_size'],
                              theta_act=self.hyperparameters['activation'],
-                             embeddings=embeddings, train_embeddings=train_embeddings,
+                             embeddings=self.embeddings, train_embeddings=self.train_embeddings,
                              enc_drop=self.hyperparameters['dropout']).to(self.device)
         print('model: {}'.format(self.model))
 
@@ -116,6 +119,9 @@ class ETM(Abstract_Model):
         elif self.hyperparameters['optimizer'] == 'asgd':
             optimizer = optim.ASGD(self.model.parameters(), lr=self.hyperparameters['lr'],
                                    t0=0, lambd=0., weight_decay=self.hyperparameters['wdecay'])
+        elif self.hyperparameters['optimizer'] == 'sgd':
+            optimizer = optim.SGD(self.model.parameters(), lr=self.hyperparameters['lr'],
+                                  weight_decay=self.hyperparameters['wdecay'])
         else:
             print('Defaulting to vanilla SGD')
             optimizer = optim.SGD(self.model.parameters(), lr=self.hyperparameters['lr'])
@@ -133,9 +139,8 @@ class ETM(Abstract_Model):
         for idx, ind in enumerate(indices):
             self.optimizer.zero_grad()
             self.model.zero_grad()
-            data_batch = data.get_batch(self.train_tokens, self.train_counts,
-                                        ind, self.vocab_size,
-                                        self.hyperparameters['emb_size'], self.device)
+            data_batch = data.get_batch(self.train_tokens, self.train_counts, ind, len(self.vocab.keys()),
+                                        self.hyperparameters['embedding_size'], self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
@@ -187,8 +192,8 @@ class ETM(Abstract_Model):
                 self.optimizer.zero_grad()
                 self.model.zero_grad()
                 val_data_batch = data.get_batch(self.valid_tokens, self.valid_counts,
-                                                ind, self.vocab_size,
-                                                self.hyperparameters['emb_size'], self.device)
+                                                ind, len(self.vocab.keys()),
+                                                self.hyperparameters['embedding_size'], self.device)
                 sums = val_data_batch.sum(1).unsqueeze(1)
                 if self.hyperparameters['bow_norm']:
                     val_normalized_data_batch = val_data_batch / sums
@@ -254,8 +259,8 @@ class ETM(Abstract_Model):
 
         for idx, ind in enumerate(indices):
             data_batch = data.get_batch(self.test_tokens, self.test_counts,
-                                        ind, self.vocab_size,
-                                        self.hyperparameters['emb_size'], self.device)
+                                        ind, len(self.vocab.keys()),
+                                        self.hyperparameters['embedding_size'], self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
@@ -306,26 +311,70 @@ class ETM(Abstract_Model):
 
         vec.fit(dataset)
         idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-        vocab_size = len(idx2token.keys())
 
         x_train = vec.transform(train_corpus)
         x_train_tokens, x_train_count = split_bow(x_train, x_train.shape[0])
 
         if test_corpus is not None:
-            X_test = vec.transform(test_corpus)
-            x_test_tokens, x_test_count = split_bow(X_test, X_test.shape[0])
+            x_test = vec.transform(test_corpus)
+            x_test_tokens, x_test_count = split_bow(x_test, x_test.shape[0])
 
             if validation_corpus is not None:
                 x_validation = vec.transform(validation_corpus)
                 x_val_tokens, x_val_count = split_bow(x_validation, x_validation.shape[0])
 
-                return x_train_tokens, x_train_count, x_test_tokens, x_test_count, x_val_tokens, x_val_count, vocab_size
+                return x_train_tokens, x_train_count, x_test_tokens, x_test_count, x_val_tokens, x_val_count
             else:
-                return x_train_tokens, x_train_count, x_test_tokens, x_test_count, vocab_size
+                return x_train_tokens, x_train_count, x_test_tokens, x_test_count
         else:
             if validation_corpus is not None:
                 x_validation = vec.transform(validation_corpus)
                 x_val_tokens, x_val_count = split_bow(x_validation, x_validation.shape[0])
-                return x_train_tokens, x_train_count, x_val_tokens, x_val_count, vocab_size
+                return x_train_tokens, x_train_count, x_val_tokens, x_val_count
             else:
-                return x_train_tokens, x_train_count, vocab_size
+                return x_train_tokens, x_train_count
+
+
+    def load_embeddings(self):
+        if not self.train_embeddings:
+            vectors = {}
+            embs = pkl.load(open(self.embeddings_path, 'rb'))
+            for l in embs:
+                line = l.split()
+                word = line[0]
+                if word in self.vocab.values():
+                    vect = np.array(line[1:]).astype(np.float)
+                    vectors[word] = vect
+            embeddings = np.zeros((len(self.vocab.keys()), self.hyperparameters['embedding_size']))
+            words_found = 0
+            for i, word in enumerate(self.vocab.values()):
+                try:
+                    embeddings[i] = vectors[word]
+                    words_found += 1
+                except KeyError:
+                    embeddings[i] = np.random.normal(scale=0.6, size=(self.hyperparameters['embedding_size'],))
+            self.embeddings = torch.from_numpy(embeddings).to(self.device)
+
+
+    def filter_pretrained_embeddings(self, pretrained_embeddings_path, save_embedding_path, vocab_path, binary=True):
+        """
+        Filter the embeddings from a set of word2vec-format pretrained embeddings based on the vocabulary
+        This should allow you to avoid to load the whole embedding space every time you do Bayesian Optimization
+        but just the embeddings that are in the vocabulary.
+        :param pretrained_embeddings_path:
+        :return:
+        """
+        vocab = []
+        with open(vocab_path, 'r') as fr:
+            for line in fr.readlines():
+                vocab.append(line.strip().split(" ")[0])
+
+        w2v_model = gensim.models.KeyedVectors.load_word2vec_format(pretrained_embeddings_path, binary=binary)
+        embeddings = []
+        for word in vocab:
+            if word in w2v_model.vocab:
+                line = word
+                for w in w2v_model[word].tolist():
+                    line = line + " " + str(w)
+                embeddings.append(line)
+        pkl.dump(embeddings, open(save_embedding_path, 'wb'))
