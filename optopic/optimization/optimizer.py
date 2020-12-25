@@ -169,7 +169,7 @@ class Optimizer:
 
         return results
 
-    def _objective_function(self, hyperparameters):
+    def _objective_function(self, hyperparameter_values):
         """
         Method to evaluate the objective function
         """
@@ -177,7 +177,7 @@ class Optimizer:
         # Retrieve parameters labels
         params = {}
         for i in range(len(self.hyperparameters)):
-            params[self.hyperparameters[i]] = hyperparameters[i]
+            params[self.hyperparameters[i]] = hyperparameter_values[i]
 
         # Compute the score of the hyper-parameter configuration
         different_model_runs = []
@@ -244,7 +244,6 @@ class Optimizer:
             # Next point proposed by BO and evaluation of the objective function
             if i < len(self.x0):
                 next_x = self.x0[i]
-
                 if len(self.y0) == 0:
                     f_val = self._objective_function(next_x)
                 else:              
