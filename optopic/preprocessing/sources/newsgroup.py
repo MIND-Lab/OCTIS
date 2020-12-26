@@ -18,10 +18,10 @@ def retrieve_20newsgroup_gensim():
 
     for data in dataset:
         corpus.append(data["data"])
-        if data["set"] == "test" and partition == None:
+        if data["set"] == "test" and partition is None:
             partition = len(corpus) - 1
         labels.append([data["topic"]])
-    result = {}
+    result = dict()
     result["partition"] = partition
     result["corpus"] = corpus
     result["doc_labels"] = labels
@@ -60,17 +60,7 @@ def retrieve_20newsgroup_scikit():
 
     partition = len(corpus) - 1
 
-    newsgroup = fetch_20newsgroups(
-        subset="test", remove=('headers', 'footers', 'quotes'))
-
-    cate = newsgroup.target_names
-
-    corpus = corpus + newsgroup.data
-
-    for doc in newsgroup.target:
-        labels.append([cate[doc]])
-
-    result = {}
+    result = dict()
     result["partition"] = partition
     result["corpus"] = corpus
     result["doc_labels"] = labels
