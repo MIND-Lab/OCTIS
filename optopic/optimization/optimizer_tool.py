@@ -46,7 +46,7 @@ def load_model(BestObject):
     modelIstance : topic model used during the BO.
 
     """
-    from optopic.models.LDA import LDA
+
     model_parameters=BestObject['model_attributes']
     model_name=BestObject['model_name']
 
@@ -59,6 +59,7 @@ def load_model(BestObject):
     return modelIstance
 
 def select_metric(metric_parameters,metric_name): 
+    
     modulePath = "optopic/evaluation_metrics"
     moduleName = defaults.metric_parameters[metric_name]["module"]
     modulePath = os.path.join(modulePath, moduleName+".py")
@@ -261,16 +262,55 @@ def check_instance(obj):
     if isinstance(obj, str):
         return True
     
-    if isinstance(obj, float):
+    elif isinstance(obj, float):
         return True
 
-    if isinstance(obj, int):
+    elif isinstance(obj, int):
         return True
 
-    if isinstance(obj, bool):
+    elif isinstance(obj, bool):
         return True
        
     return False
+
+def save_search_space(search_space):
+    """
+
+    Function to check if a specific object con be inserted in the json file.
+
+    """
+    from skopt.space.space import Real, Categorical, Integer
+    
+    Object=dict()
+    for key in list(search_space.keys()):
+        if type(search_space[key])==Real:
+            Object[key]=['Real',search_space[key].bounds]
+        elif type(search_space[key])==Integer:
+            Object[key]=['Integer',search_space[key].bounds]
+        elif type(search_space[key])==Categorical:
+            Object[key]=['Categorical',search_space[key].categories]            
+            
+    return Object
+
+def load_search_space(search_space):
+    """
+
+    Function to check if a specific object con be inserted in the json file.
+
+    """
+    from skopt.space.space import Real, Categorical, Integer
+    
+    Object=dict()
+    for key in list(search_space.keys()):
+        if search_space[key][0]=='Real':
+            Object[key]=Real(low=search_space[key][1][0],high=search_space[key][1][1])
+        elif search_space[key][0]=='Integer':
+            Object[key]=Integer(low=search_space[key][1][0],high=search_space[key][1][1])
+        elif search_space[key][0]=='Categorical':
+            Object[key]=Categorical(categories=search_space[key][1])          
+            
+    return Object
+
 ##############################################################################
 
 
@@ -332,7 +372,7 @@ class BestEvaluation:
         self.info.update({"plot_best_seen": params.plot_best_seen})
         self.info.update({"plot_name": params.plot_name})
         self.info.update({"log_scale_plot": params.log_scale_plot})
-        self.info.update({"search_space": str(params.search_space)})
+        self.info.update({"search_space":  save_search_space(params.search_space)})
         self.info.update({"model_name": params.model.__class__.__name__})
         self.info.update({"model_attributes": dict_model_parameters})
         self.info.update({"metric_name": params.name_optimized_metric})      
