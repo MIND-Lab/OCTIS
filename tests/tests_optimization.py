@@ -7,7 +7,7 @@ os.chdir(os.path.pardir)
 from optopic.models.LDA import LDA
 from optopic.dataset.dataset import Dataset
 from optopic.optimization.optimizer import Optimizer
-from skopt.space.space import Real
+from skopt.space.space import Real,Categorical
 from optopic.evaluation_metrics.coherence_metrics import Coherence
 
 number_of_call=5
@@ -376,27 +376,29 @@ def test_extra_metrics_initial_input_points(save_path):
        "eta": Real(low=0.001, high=5.0)
     }
 
+    #%% inizialization of x0 as a dict
+    x0={"eta":[0.1,0.5,0.5],"alpha":[0.5,0.1,0.5]}
+
     #%% Optimize the function npmi using Bayesian Optimization (simple Optimization)
     optimizer=Optimizer()
     optimizer.optimize(model,dataset, npmi,search_space,
                                     number_of_call=number_of_call,
-                                    x0=[[0.1,0.5],[0.5,0.1],[0.5,0.5]],
+                                    x0=x0,
                                     y0=[-0.1,0.1,-0.1],
                                     plot_best_seen=True,
                                     plot_model=True,
                                     model_runs=model_runs,
                                     save_path=save_path+'test1/')  
-    
     #%% Optimize the function npmi using Bayesian Optimization (simple Optimization)
     optimizer=Optimizer()
     optimizer.optimize(model,dataset, npmi,search_space,
                                     number_of_call=number_of_call,
-                                    x0=[[0.1,0.5],[0.5,0.1],[0.5,0.5]],
+                                    x0=x0,
                                     plot_best_seen=True,
                                     plot_model=True,
                                     model_runs=model_runs,
                                     save_path=save_path+'test2/')  
-
+    
 #%% main function to test all the functions
 def main():
     
