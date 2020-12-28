@@ -17,6 +17,7 @@ from optopic.optimization.optimizer_tool import early_condition
 from optopic.optimization.optimizer_tool import choose_optimizer
 from optopic.optimization.optimizer_tool import select_metric
 from optopic.optimization.optimizer_tool import load_model
+from optopic.optimization.optimizer_tool import load_search_space
 
 class Optimizer:
     """
@@ -28,7 +29,7 @@ class Optimizer:
                  initial_point_generator="lhs",  # work only for version skopt 8.0!!!
                  optimization_type='Maximize', model_runs=5, surrogate_model="RF",
                  kernel=1.0 * Matern(length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5),
-                 acq_func="LCB", random_state=False, x0=[], y0=[],
+                 acq_func="LCB", random_state=False, x0=dict(), y0=[],
                  save_models=True, save_step=1, save_name="result", save_path="results/", early_stop=False,
                  early_step=5,
                  plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False,topk=10):
@@ -102,8 +103,8 @@ class Optimizer:
         self.dict_model_runs = dict()
         self.number_of_previous_calls=0
         self.current_call = 0
-        self.time_eval=[]
-                
+        self.time_eval=[]   
+        
         self.name_optimized_metric=metric.__class__.__name__
         self.dict_model_runs[self.name_optimized_metric] = dict()
         
@@ -242,12 +243,13 @@ class Optimizer:
             start_time = time.time()
 
             # Next point proposed by BO and evaluation of the objective function
-            if i < len(self.x0):
-                next_x = self.x0[i]
+            if i < self.lenx0: 
+                next_x=[self.x0[name][i] for name in self.hyperparameters]                
+                #next_x = self.x0[i]
                 if len(self.y0) == 0:
                     f_val = self._objective_function(next_x)
                 else:              
-                    self.dict_model_runs[self.metric.__class__.__name__]['iteration_' + str(i)] = self.y0[i]
+                    self.dict_model_runs[self.name_optimized_metric]['iteration_' + str(i)] = self.y0[i]
                     f_val = -self.y0[i] if self.optimization_type == 'Maximize' else self.y0[i]
 
             else:
@@ -325,7 +327,7 @@ class Optimizer:
         with open(name_path, 'rb') as file:
             BestObject=json.load(file)       
 
-        self.search_space= eval(BestObject["search_space"])
+        self.search_space= load_search_space(BestObject["search_space"])
         self.acq_func =BestObject["acq_func"]
         self.surrogate_model =BestObject["surrogate_model"]       
         self.kernel =eval(BestObject["kernel"])            
@@ -438,6 +440,32 @@ class Optimizer:
             print("Error: wrong initial_point_generator")
             return -1
 
+        if not isinstance(self.x0, dict):
+            print("Error: x0 must be a dictionary!")
+            return -1   
+        
+        if not isinstance(self.y0, list):
+            print("Error: y0 must be a dictionary!")
+            return -1                   
+
+        if len(self.x0)>0:
+            self.lenx0=len(list(self.x0.values())[0])
+            for i in range(len(self.x0.values())):
+                lenC=len(list(self.x0.values())[i])
+                if lenC !=self.lenx0:
+                    print("Error: dimension of x0 is not consistent!")
+                    return -1      
+                
+            if len(self.y0)>0:
+                if self.lenx0 != len(self.y0):
+                    print("Error: different dimension for x0 and y0!")
+                    return -1     
+
+        else: 
+            self.lenx0=0
+            self.leny0=0
+
+
         if self.plot_name.endswith(".png"):
             self.plot_name = self.plot_name[:-4]
 
@@ -446,5 +474,6 @@ class Optimizer:
 
         if self.save_path[-1] != '/':
             self.save_path = self.save_path + '/'
+
 
         return 0
