@@ -87,7 +87,7 @@ metric_parameters = {
         "measure": {"type": "Categorical", "default_value": "c_npmi",
                     "possible_values": ['u_mass', 'c_v', 'c_uci', 'c_npmi']}},
     # diversity
-    "Topic_diversity": {
+    "TopicDiversity": {
         "name": "% Unique words",
         "module": "diversity_metrics",
         "topk": {"type": "Integer", "default_value": 10, "min_value": 5,

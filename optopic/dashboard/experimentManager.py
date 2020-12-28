@@ -141,7 +141,8 @@ def startExperiment(parameters):
     file.close()
 
     Optimizer = importOptimizer()
-    optimizer = Optimizer(model,
+    optimizer = Optimizer()
+    optimizer.optimize(model,
                           dataset,
                           metric,
                           search_space,
@@ -156,8 +157,6 @@ def startExperiment(parameters):
                           save_models=True,
                           save_name=parameters["experimentId"],
                           save_path=str(os.path.join(parameters["path"], parameters["experimentId"])))
-
-    optimizer.optimize()
 
 
 def retrieveBoResults(path):

@@ -283,8 +283,8 @@
                     dataType: 'json',
                     data: JSON.stringify({ "data": Object.keys(batchIds) }),
                     success: function (data) {
-                        toshow = data;
-                        draw(toshow)
+                        allData = data;
+                        draw()
                     }
                 })
         }

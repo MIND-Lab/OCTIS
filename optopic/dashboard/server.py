@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.insert(0,os.getcwd())
+
 from flask import Flask, render_template, request
 import json
 from multiprocessing import Process, Pool
@@ -34,7 +38,7 @@ def startExperiment():
     data = request.form.to_dict(flat=False)
     batch = data["batchId"][0]
     experimentId = data["expId"][0]
-    if queueManager.getExperiment(batch, experimentId) != "":
+    if queueManager.getExperiment(batch, experimentId) != False:
         return VisualizeExperiments()
 
     expParams = {}
