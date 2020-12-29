@@ -125,10 +125,10 @@
             div.classList.add("choice")
             div.innerHTML = "<b>" + exps[running]["experimentId"] +
                 " batch: " + exps[running]["batchId"] + " </b><br>" +
-                "<b>Model:</b> " + exps[running]["model"] +
-                "<br><b>Search space:</b> " + JSON.stringify([running]["search_spaces"]) +
+                "<b>Model:</b> " + exps[running]["model"]["name"] +
+                "<br><b>Search space:</b> " + JSON.stringify(exps[running]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[running]["dataset"] +
-                "<br><b>Optimized metric:</b> " + exps[running]["optimize_metrics"][0]
+                "<br><b>Optimized metric:</b> " + exps[running]["optimize_metrics"][0]["name"]
 
             child.appendChild(div)
             element.appendChild(child)
@@ -148,10 +148,10 @@
             div.classList.add("choice")
             div.innerHTML = "<b>" + exps[order[i]]["experimentId"] +
                 " batch: " + exps[order[i]]["batchId"] + " </b><br>" +
-                "<b>Model:</b> " + exps[order[i]]["model"] +
-                "<br><b>Search space:</b> " + JSON.stringify([order[i]]["search_spaces"]) +
+                "<b>Model:</b> " + exps[order[i]]["model"]["name"] +
+                "<br><b>Search space:</b> " + JSON.stringify(exps[order[i]]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[order[i]]["dataset"] +
-                "<br><b>Optimized metric:</b> " + exps[order[i]]["optimize_metrics"][0]
+                "<br><b>Optimized metric:</b> " + exps[order[i]]["optimize_metrics"][0]["name"]
 
             child.appendChild(div)
             element.appendChild(child)

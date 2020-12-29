@@ -429,11 +429,16 @@
 
 
                     if (document.getElementById("graphType").checked) {
-                        var trace = {
-                            y: dict[i]["graph_info"][2][2],
-                            type: 'box'
+                        data = []
+                        for (j = 0; j < dict[i]["graph_info"][2][2].length; j++) {
+                            var trace = {
+                                y: dict[i]["graph_info"][2][2][j],
+                                type: 'box'
+                            }
+                            data.push(trace)
                         }
-                        Plotly.newPlot(dict[i]["graph_info"][0], [trace], dict[i]["graph_info"][1]);
+
+                        Plotly.newPlot(dict[i]["graph_info"][0], data, dict[i]["graph_info"][1]);
                     }
                     else {
 
@@ -572,6 +577,7 @@
                         ExpName = document.createElement("div")
                         ExpName.innerHTML = "<span>" + item["batchId"] + " " + item["experimentId"] + "</span>";
                         ExpName.dataset.expName = item["experimentId"]
+                        ExpName.style.cursor = "pointer"
                         ExpName.dataset.batchName = item["batchId"]
                         ExpName.addEventListener('click', function () {
                             location.href = "SingleExperiment/" + this.dataset.batchName + "/" + this.dataset.expName
@@ -588,7 +594,13 @@
                             "dataset": item["dataset"],
                             "metric": item["optimize_metrics"][0]["name"],
                             "div": innerDiv,
-                            "graph_info": [item["experimentId"], layout, [best_seen, second_axe, item["optimization_data"]["f_val"]]]
+                            "graph_info": [
+                                item["experimentId"],
+                                layout,
+                                [
+                                    best_seen,
+                                    second_axe,
+                                    item["optimization_data"]["model_runs"][item["optimize_metrics"][0]["name"]]]]
                         });
 
                         console.log(item, index);

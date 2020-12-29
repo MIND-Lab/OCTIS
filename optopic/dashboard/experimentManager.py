@@ -82,81 +82,92 @@ def startExperiment(parameters):
     """
     Starts an experiment with the given parameters
     """
-    # Import dataset class and initialize an instance with the choosen dataset
-    datasetClass = importDataset()
-    dataset = datasetClass()
-    datasetPath = str(os.path.join(
-        path, "preprocessed_datasets", parameters["dataset"]))
-    dataset.load(datasetPath)
 
-    modelClass = importModel(parameters["model"]["name"])
-    model = modelClass()
+    optimizationPath = str(os.path.join(
+        parameters["path"], parameters["experimentId"]))
+    jsonFile = str(os.path.join(optimizationPath,
+                                parameters["experimentId"]+".json"))
+    if(os.path.isfile(jsonFile)):
+        Optimizer = importOptimizer()
+        optimizer = Optimizer()
+        optimizer.resume_optimization(jsonFile)
+    else:
+        # Import dataset class and initialize an instance with the choosen dataset
+        datasetClass = importDataset()
+        dataset = datasetClass()
+        datasetPath = str(os.path.join(
+            path, "preprocessed_datasets", parameters["dataset"]))
+        dataset.load(datasetPath)
 
-    model.hyperparameters.update(parameters["model"]["parameters"])
-    model.partitioning(False)
+        modelClass = importModel(parameters["model"]["name"])
+        model = modelClass()
 
-    search_space = {}
+        model.hyperparameters.update(parameters["model"]["parameters"])
+        model.partitioning(False)
 
-    for key, value in parameters["optimization"]["search_spaces"].items():
-        if "low" in value:
-            if isinstance(value["low"], float) or isinstance(value["high"], float):
-                search_space[key] = Real(low=value["low"], high=value["high"])
+        search_space = {}
+
+        for key, value in parameters["optimization"]["search_spaces"].items():
+            if "low" in value:
+                if isinstance(value["low"], float) or isinstance(value["high"], float):
+                    search_space[key] = Real(
+                        low=value["low"], high=value["high"])
+                else:
+                    search_space[key] = Integer(
+                        low=value["low"], high=value["high"])
             else:
-                search_space[key] = Integer(
-                    low=value["low"], high=value["high"])
-        else:
-            search_space[key]: Categorical(value)
+                search_space[key]: Categorical(value)
 
-    metric_parameters = parameters["optimize_metrics"][0]["parameters"]
-    for key in metric_parameters:
-        if metric_parameters[key] == "use dataset texts":
-            metric_parameters[key] = dataset.get_corpus()
-        if os.path.isdir(str(metric_parameters[key])):
-            metricDataset = datasetClass()
-            metricDataset.load(metric_parameters[key])
-            metric_parameters[key] = metricDataset.get_corpus()
+        metric_parameters = parameters["optimize_metrics"][0]["parameters"]
+        for key in metric_parameters:
+            if metric_parameters[key] == "use dataset texts":
+                metric_parameters[key] = dataset.get_corpus()
+            if os.path.isdir(str(metric_parameters[key])):
+                metricDataset = datasetClass()
+                metricDataset.load(metric_parameters[key])
+                metric_parameters[key] = metricDataset.get_corpus()
 
-    metricClass = importMetric(parameters["optimize_metrics"][0]["name"])
-    metric = metricClass(metric_parameters)
+        metricClass = importMetric(parameters["optimize_metrics"][0]["name"])
+        metric = metricClass(metric_parameters)
 
-    metrics_to_track = []
-    for single_metric in parameters["track_metrics"]:
-        metricClass = importMetric(single_metric["name"])
-        single_metric_parameters = single_metric["parameters"]
-        for key in single_metric_parameters:
-            if single_metric_parameters[key] == "use dataset texts":
-                single_metric_parameters[key] = dataset.get_corpus()
-        new_metric = metricClass(single_metric_parameters)
-        metrics_to_track.append(new_metric)
+        metrics_to_track = []
+        for single_metric in parameters["track_metrics"]:
+            metricClass = importMetric(single_metric["name"])
+            single_metric_parameters = single_metric["parameters"]
+            for key in single_metric_parameters:
+                if single_metric_parameters[key] == "use dataset texts":
+                    single_metric_parameters[key] = dataset.get_corpus()
+            new_metric = metricClass(single_metric_parameters)
+            metrics_to_track.append(new_metric)
 
-    vocabularyPath = str(os.path.join(
-        parameters["path"], parameters["experimentId"], "models"))
+        vocabularyPath = str(os.path.join(
+            parameters["path"], parameters["experimentId"], "models"))
 
-    Path(vocabularyPath).mkdir(parents=True, exist_ok=True)
+        Path(vocabularyPath).mkdir(parents=True, exist_ok=True)
 
-    vocabularyPath = str(os.path.join(vocabularyPath, "vocabulary.json"))
+        vocabularyPath = str(os.path.join(vocabularyPath, "vocabulary.json"))
 
-    file = open(vocabularyPath, "w")
-    json.dump(dict(corpora.Dictionary(dataset.get_corpus())), file)
-    file.close()
+        file = open(vocabularyPath, "w")
+        json.dump(dict(corpora.Dictionary(dataset.get_corpus())), file)
+        file.close()
 
-    Optimizer = importOptimizer()
-    optimizer = Optimizer()
-    optimizer.optimize(model,
-                          dataset,
-                          metric,
-                          search_space,
-                          metrics_to_track,
-                          random_state=True,
-                          initial_point_generator="random",
-                          surrogate_model=parameters["optimization"]["surrogate_model"],
-                          model_runs=parameters["optimization"]["model_runs"],
-                          n_random_starts=parameters["optimization"]["n_random_starts"],
-                          acq_func=parameters["optimization"]["acquisition_function"],
-                          number_of_call=parameters["optimization"]["iterations"],
-                          save_models=True,
-                          save_name=parameters["experimentId"],
-                          save_path=str(os.path.join(parameters["path"], parameters["experimentId"])))
+        Optimizer = importOptimizer()
+        optimizer = Optimizer()
+        optimizer.optimize(model,
+                           dataset,
+                           metric,
+                           search_space,
+                           metrics_to_track,
+                           random_state=True,
+                           initial_point_generator="random",
+                           surrogate_model=parameters["optimization"]["surrogate_model"],
+                           model_runs=parameters["optimization"]["model_runs"],
+                           n_random_starts=parameters["optimization"]["n_random_starts"],
+                           acq_func=parameters["optimization"]["acquisition_function"],
+                           number_of_call=parameters["optimization"]["iterations"],
+                           save_models=True,
+                           save_name=parameters["experimentId"],
+                           save_path=optimizationPath)
 
 
 def retrieveBoResults(path):
@@ -241,8 +252,20 @@ def singleInfo(path):
         worse_seen = min(values)
         median_seen = np.median(values)
         mean_seen = np.mean(values)
+
+        dict_metrics = result['dict_model_runs']
+        name_metrics = list(dict_metrics.keys())
+        dict_results = dict()
+        for name in name_metrics:
+            dict_results[name] = list()
+            metric_results = dict_metrics[name]
+            iterations = len(metric_results.keys())
+            for i in range(iterations):
+                dict_results[name].append(metric_results['iteration_'+str(i)])
+
         # dizionaro di output
         dict_return = dict()
+        dict_return.update({"model_runs": dict_results})
         dict_return.update({"f_val": values})
         dict_return.update({"best_seen": best_seen})
         dict_return.update({"worse_seen": worse_seen})
