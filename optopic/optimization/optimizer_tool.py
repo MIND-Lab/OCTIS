@@ -10,6 +10,7 @@ import importlib
 import sys
 import optopic.configuration.defaults as defaults
 
+
 def importClass(className, moduleName, modulePath):
     """
     Import a class runtime based on its module and name
@@ -32,11 +33,12 @@ def importClass(className, moduleName, modulePath):
     singleClass = getattr(module, className)
     return singleClass
 
+
 def load_model(BestObject):
     """
-    
+
     Function used to load the topic model for the resume_optimization
-    
+
     Parameters
     ----------
     BestObject : dictionary where the BO parameter are saved.
@@ -47,31 +49,31 @@ def load_model(BestObject):
 
     """
 
-    model_parameters=BestObject['model_attributes']
-    model_name=BestObject['model_name']
+    model_parameters = BestObject['model_attributes']
+    model_name = BestObject['model_name']
 
     modulePath = "optopic/models"
-    modulePath = os.path.join(modulePath, model_name+".py")
+    modulePath = os.path.join(modulePath, model_name + ".py")
     model = importClass(model_name, model_name, modulePath)
-    modelIstance=model()
+    modelIstance = model()
     modelIstance.hyperparameters.update(model_parameters)
 
     return modelIstance
 
-def select_metric(metric_parameters,metric_name): 
-    
+
+def select_metric(metric_parameters, metric_name):
     modulePath = "optopic/evaluation_metrics"
     moduleName = defaults.metric_parameters[metric_name]["module"]
-    modulePath = os.path.join(modulePath, moduleName+".py")
+    modulePath = os.path.join(modulePath, moduleName + ".py")
     Metric = importClass(metric_name, metric_name, modulePath)
     metric = Metric(metric_parameters)
 
     return metric
 
+
 def choose_optimizer(params):
-
     params_space_list = dimensions_aslist(params.search_space)
-
+    estimator = None
     # Choice of the surrogate model
     # Random forest
     if params.surrogate_model == "RF":
@@ -89,30 +91,30 @@ def choose_optimizer(params):
     elif params.surrogate_model == "RS":
         estimator = "dummy"
 
-    if estimator=="dummy":
+    if estimator == "dummy":
         opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                                  acq_func=params.acq_func,
-                                  acq_optimizer='sampling',
-                                  initial_point_generator=params.initial_point_generator,
-                                  random_state=params.random_state)
+                              acq_func=params.acq_func,
+                              acq_optimizer='sampling',
+                              initial_point_generator=params.initial_point_generator,
+                              random_state=params.random_state)
     else:
         opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                                  acq_func=params.acq_func,
-                                  acq_optimizer='sampling',
-                                  n_initial_points=params.n_random_starts,
-                                  initial_point_generator=params.initial_point_generator,
-                                  # work only for version skopt 8.0!!!
-                                  acq_optimizer_kwargs={
-                                      "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
-                                  acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
-                                  random_state=params.random_state)
+                              acq_func=params.acq_func,
+                              acq_optimizer='sampling',
+                              n_initial_points=params.n_random_starts,
+                              initial_point_generator=params.initial_point_generator,
+                              # work only for version skopt 8.0!!!
+                              acq_optimizer_kwargs={
+                                  "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
+                              acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
+                              random_state=params.random_state)
     return opt
 
 
 def convergence_res(values, optimization_type="minimize"):
     """
         Given a single element of a
-        Bayesian_optimization return the 
+        Bayesian_optimization return the
         convergence of y
 
         Parameters
@@ -121,7 +123,7 @@ def convergence_res(values, optimization_type="minimize"):
 
         Returns
         -------
-        val : A list with the best min seen for 
+        val : A list with the best min seen for
             each evaluation
     """
     values2 = values.copy()
@@ -176,34 +178,34 @@ def plot_model_runs(model_runs, current_call, name_plot):
         matrix: list of list of list of numbers
                 or a 3D matrix
 
-        name_plot : The name of the file you want to 
+        name_plot : The name of the file you want to
                     give to the plot
 
     """
 
-    values = [model_runs["iteration_"+str(i)] for i in range(current_call+1)]
+    values = [model_runs["iteration_" + str(i)] for i in range(current_call + 1)]
 
     plt.ioff()
     plt.xlabel('number of calls')
     plt.grid(True)
     plt.boxplot(values)
 
-    plt.savefig(name_plot+".png")
+    plt.savefig(name_plot + ".png")
 
     plt.close()
 
 
 def plot_bayesian_optimization(values, name_plot,
-                               log_scale=False,  conv_max=True):
+                               log_scale=False, conv_max=True):
     """
-        Save a convergence plot of the result of a 
+        Save a convergence plot of the result of a
         Bayesian_optimization.
 
         Parameters
         ----------
         values : values obtained by BO
 
-        name_plot : The name of the file you want to 
+        name_plot : The name of the file you want to
                     give to the plot
 
         log_scale : y log scale if True
@@ -236,13 +238,12 @@ def plot_bayesian_optimization(values, name_plot,
     plt.tight_layout()
     plt.grid(True)
 
-    plt.savefig(name_plot+".png")
+    plt.savefig(name_plot + ".png")
 
     plt.close()
 
 
-def convertType(obj):
-
+def convert_type(obj):
     if isinstance(obj, np.integer):
         return int(obj)
     elif isinstance(obj, np.floating):
@@ -251,27 +252,22 @@ def convertType(obj):
         return obj.tolist()
     else:
         return obj
-        
+
+
 def check_instance(obj):
     """
 
     Function to check if a specific object con be inserted in the json file.
 
     """
-    
-    if isinstance(obj, str):
-        return True
-    
-    elif isinstance(obj, float):
-        return True
+    types = [str, float, int, bool]
 
-    elif isinstance(obj, int):
-        return True
+    for t in types:
+        if isinstance(obj, t):
+            return True
 
-    elif isinstance(obj, bool):
-        return True
-       
     return False
+
 
 def save_search_space(search_space):
     """
@@ -280,17 +276,18 @@ def save_search_space(search_space):
 
     """
     from skopt.space.space import Real, Categorical, Integer
-    
-    Object=dict()
+
+    ss = dict()
     for key in list(search_space.keys()):
-        if type(search_space[key])==Real:
-            Object[key]=['Real',search_space[key].bounds]
-        elif type(search_space[key])==Integer:
-            Object[key]=['Integer',search_space[key].bounds]
-        elif type(search_space[key])==Categorical:
-            Object[key]=['Categorical',search_space[key].categories]            
-            
-    return Object
+        if type(search_space[key]) == Real:
+            ss[key] = ['Real', search_space[key].bounds]
+        elif type(search_space[key]) == Integer:
+            ss[key] = ['Integer', search_space[key].bounds]
+        elif type(search_space[key]) == Categorical:
+            ss[key] = ['Categorical', search_space[key].categories]
+
+    return ss
+
 
 def load_search_space(search_space):
     """
@@ -299,17 +296,18 @@ def load_search_space(search_space):
 
     """
     from skopt.space.space import Real, Categorical, Integer
-    
-    Object=dict()
+
+    ss = dict()
     for key in list(search_space.keys()):
-        if search_space[key][0]=='Real':
-            Object[key]=Real(low=search_space[key][1][0],high=search_space[key][1][1])
-        elif search_space[key][0]=='Integer':
-            Object[key]=Integer(low=search_space[key][1][0],high=search_space[key][1][1])
-        elif search_space[key][0]=='Categorical':
-            Object[key]=Categorical(categories=search_space[key][1])          
-            
-    return Object
+        if search_space[key][0] == 'Real':
+            ss[key] = Real(low=search_space[key][1][0], high=search_space[key][1][1])
+        elif search_space[key][0] == 'Integer':
+            ss[key] = Integer(low=search_space[key][1][0], high=search_space[key][1][1])
+        elif search_space[key][0] == 'Categorical':
+            ss[key] = Categorical(categories=search_space[key][1])
+
+    return ss
+
 
 ##############################################################################
 
@@ -325,33 +323,30 @@ class BestEvaluation:
         optimization_type = params.optimization_type
 
         # Creation of model metric-parameters saved in the json file
-        metric_parameters=params.metric.parameters
-        dict_metric_parameters=dict()
+        metric_parameters = params.metric.parameters
+        dict_metric_parameters = dict()
 
         for key in list(metric_parameters.keys()):
-            if check_instance(metric_parameters[key])==True:
-                dict_metric_parameters.update({key:metric_parameters[key]})
+            if check_instance(metric_parameters[key]):
+                dict_metric_parameters.update({key: metric_parameters[key]})
 
         # Creation of model hyper-parameters saved in the json file
-        model_parameters=params.model.hyperparameters
-        dict_model_parameters=dict()
+        model_parameters = params.model.hyperparameters
+        dict_model_parameters = dict()
 
         for key in list(model_parameters.keys()):
-            if check_instance(model_parameters[key])==True:
-                dict_model_parameters.update({key:model_parameters[key]})
-
-
+            if check_instance(model_parameters[key]):
+                dict_model_parameters.update({key: model_parameters[key]})
 
         # Creation of extra metric-parameters saved in the json file
-        dict_extra_metric_parameters=dict()
-        
-        for i in range(len(params.extra_metrics)):
-            metric_parameters=params.extra_metrics[i].parameters
-            dict_extra_metric_parameters.update({params.extra_metric_names[i]:dict()})
-            for key in list(metric_parameters.keys()):
-                if check_instance(metric_parameters[key])==True:
+        dict_extra_metric_parameters = dict()
 
-                    dict_extra_metric_parameters[params.extra_metric_names[i]].update({key:metric_parameters[key]})
+        for i in range(len(params.extra_metrics)):
+            metric_parameters = params.extra_metrics[i].parameters
+            dict_extra_metric_parameters.update({params.extra_metric_names[i]: dict()})
+            for key in list(metric_parameters.keys()):
+                if check_instance(metric_parameters[key]):
+                    dict_extra_metric_parameters[params.extra_metric_names[i]].update({key: metric_parameters[key]})
 
         # Info about optimization
         self.info = dict()
@@ -372,22 +367,22 @@ class BestEvaluation:
         self.info.update({"plot_best_seen": params.plot_best_seen})
         self.info.update({"plot_name": params.plot_name})
         self.info.update({"log_scale_plot": params.log_scale_plot})
-        self.info.update({"search_space":  save_search_space(params.search_space)})
+        self.info.update({"search_space": save_search_space(params.search_space)})
         self.info.update({"model_name": params.model.__class__.__name__})
         self.info.update({"model_attributes": dict_model_parameters})
-        self.info.update({"metric_name": params.name_optimized_metric})      
-        self.info.update({"extra_metric_names": [name for name in params.extra_metric_names]}) 
-        self.info.update({"metric_attributes":dict_metric_parameters})
-        self.info.update({"extra_metric_attributes":dict_extra_metric_parameters})
-        self.info.update({"current_call":params.current_call})
-        self.info.update({"number_of_call":params.number_of_call})
-        self.info.update({"random_state":params.random_state})
-        self.info.update({"x0":params.x0})
-        self.info.update({"y0":params.y0})
-        self.info.update({"n_random_starts":params.n_random_starts})
-        self.info.update({"initial_point_generator":params.initial_point_generator})
-        self.info.update({"topk":params.topk})
-        self.info.update({"time_eval":params.time_eval})
+        self.info.update({"metric_name": params.name_optimized_metric})
+        self.info.update({"extra_metric_names": [name for name in params.extra_metric_names]})
+        self.info.update({"metric_attributes": dict_metric_parameters})
+        self.info.update({"extra_metric_attributes": dict_extra_metric_parameters})
+        self.info.update({"current_call": params.current_call})
+        self.info.update({"number_of_call": params.number_of_call})
+        self.info.update({"random_state": params.random_state})
+        self.info.update({"x0": params.x0})
+        self.info.update({"y0": params.y0})
+        self.info.update({"n_random_starts": params.n_random_starts})
+        self.info.update({"initial_point_generator": params.initial_point_generator})
+        self.info.update({"topk": params.topk})
+        self.info.update({"time_eval": params.time_eval})
         self.info.update({"dict_model_runs": params.dict_model_runs})
 
         # Reverse the sign of minimization if the problem is a maximization
@@ -405,8 +400,8 @@ class BestEvaluation:
         lenList = len(resultsBO.x_iters)
         for i, name in enumerate(name_hyperparameters):
             self.x_iters.update(
-                {name: [convertType(resultsBO.x_iters[j][i]) for j in range(lenList)]})
-        
+                {name: [convert_type(resultsBO.x_iters[j][i]) for j in range(lenList)]})
+
         self.info.update({"f_val": self.func_vals})
         self.info.update({"x_iters": self.x_iters})
 
@@ -417,7 +412,7 @@ class BestEvaluation:
         """
         Save results for Bayesian Optimization
         """
-        self.name_json=name_file
+        self.name_json = name_file
         with open(name_file, 'w') as fp:
             json.dump(self.info, fp)
 
@@ -434,23 +429,23 @@ class BestEvaluation:
         df['num_iteration'] = [i for i in range(n_row)]
         df['time'] = [self.info['time_eval'][i] for i in range(n_row)]
         df['Mean(model_runs)'] = [np.mean(
-            self.info['dict_model_runs'][self.info['metric_name']]['iteration_'+str(i)]) for i in range(n_row)]
+            self.info['dict_model_runs'][self.info['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
         df['Standard_Deviation(model_runs)'] = [np.std(
-            self.info['dict_model_runs'][self.metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]
+            self.info['dict_model_runs'][self.metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
 
         for hyperparameter in list(self.x_iters.keys()):
             df[hyperparameter] = self.x_iters[hyperparameter]
 
         for metric, i in zip(self.extra_metrics, range(n_extra_metrics)):
             try:
-                df[metric.info()["name"]+'(not optimized)'] = [np.median(
-                    self.dict_model_runs[metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]
+                df[metric.info()["name"] + '(not optimized)'] = [np.median(
+                    self.dict_model_runs[metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
             except:
-                df[metric.__class__.__name__+'(not optimized)'] = [np.median(
-                    self.dict_model_runs[metric.__class__.__name__]['iteration_'+str(i)]) for i in range(n_row)]
+                df[metric.__class__.__name__ + '(not optimized)'] = [np.median(
+                    self.dict_model_runs[metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
 
         if not name_file.endswith(".csv"):
-            name_file = name_file+".csv"
+            name_file = name_file + ".csv"
 
         # save the Dataframe to a csv
         df.to_csv(name_file, index=False, na_rep='Unkown')
@@ -463,6 +458,3 @@ class BestEvaluation:
             result = json.load(file)
 
         return result
-
-
-
