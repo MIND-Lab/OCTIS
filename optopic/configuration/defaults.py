@@ -101,7 +101,15 @@ metric_parameters = {
     # divergences
     "KL_uniform": {"name": "KL-U", "module": "topic_significance_metrics"},
     "KL_background": {"name": "KL-B", "module": "topic_significance_metrics"},
-    "KL_vacuous": {"name": "KL-V", "module": "topic_significance_metrics"}
+    "KL_vacuous": {"name": "KL-V", "module": "topic_significance_metrics"},
+
+    #classification
+    "F1Score": {"name": "F1Score", "module": "classification_metrics",
+                'average': {"type": "Categorical", "default_value": "micro",
+                            "possible_values": [None, 'binary', 'micro',
+                                                'macro', 'samples', 'weighted']
+                            }}
+
 }
 
 
