@@ -57,7 +57,7 @@ class DecoderNetwork(nn.Module):
             input_size, n_components, hidden_sizes, activation)
         if torch.cuda.is_available():
             self.inf_net = self.inf_net.cuda()
-
+																					
         # init prior parameters
         # \mu_1k = log \alpha_k + 1/K \sum_i log \alpha_i;
         # \alpha = 1 \forall \alpha
@@ -119,6 +119,7 @@ class DecoderNetwork(nn.Module):
                 self.beta_batchnorm(torch.matmul(theta, self.beta)), dim=1)
             topic_word = self.beta
             # word_dist: batch_size x input_size
+            self.topic_word_matrix = self.beta											  
         elif self.model_type == 'LDA':
             # simplex constrain on Beta
             beta = F.softmax(self.beta_batchnorm(self.beta), dim=1)
