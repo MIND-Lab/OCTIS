@@ -159,7 +159,7 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
         word_found_in_article = {}
         for word in document:
             if word in words_dict:
-                if not word in word_found_in_article:
+                if word not in word_found_in_article:
                     words_dict[word] += 1
                     word_found_in_article[word] = True
             else:
@@ -168,7 +168,7 @@ def words_to_remove(corpus, min_word_freq, max_word_freq):
     to_remove = {}
     for key, value in words_dict.items():
         word_frequency = float(value)/float(corpus_length)
-        if word_frequency <= min_word_freq or word_frequency >= max_word_freq or len(key)<3:
+        if word_frequency <= min_word_freq or word_frequency >= max_word_freq or len(key) < 3:
             to_remove[key] = True
     return to_remove
 
