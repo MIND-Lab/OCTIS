@@ -5,7 +5,7 @@ import optopic.configuration.defaults as defaults
 import optopic.dashboard.frameworkScanner as fs
 import webbrowser
 import argparse
-
+import os
 
 app = Flask(__name__)
 queueManager = ""
