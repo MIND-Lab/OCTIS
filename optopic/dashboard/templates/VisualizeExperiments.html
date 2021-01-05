@@ -521,9 +521,11 @@
 
         function redraw(data) {
 
+            cont = document.getElementById("theCanvas");
+            cont.innerHTML = '';
+
             if (data != "") {
-                cont = document.getElementById("theCanvas");
-                cont.innerHTML = '';
+
 
 
                 dicFinal = []
@@ -536,8 +538,8 @@
                     innerDiv = document.createElement("div")
                     innerDiv.classList.add("element-item")
                     innerDiv.classList.add(item["model"]["name"])
-                    innerDiv.style.height = "500px";
-                    innerDiv.style.width = "500px";
+                    innerDiv.style.height = "530px";
+                    innerDiv.style.width = "530px";
 
                     a = document.createElement("a")
                     a.classList.add("popup-with-move-anim");
@@ -650,6 +652,8 @@
                 fillMatrix(cont, list1, list2, key1, key2, dicFinal)
 
 
+            } else {
+                fillMatrix(cont, [], [], key1, key2, {})
             }
         }
 
@@ -661,54 +665,63 @@
             if (buttons.length == 0) {
                 redraw(allData)
             } else {
-                to_remove = [];
+                all = new Set();
+                for (i in allData) {
+                    all.add(allData[i]["experimentId"])
+                }
+
+                toshowmetrics = new Set();
+                toshowdatasets = new Set();
+                toshowmodels = new Set();
+
                 buttons.each(function () {
                     currentFilter = this.dataset.filter
                     if (this.dataset.what == "model") {
                         for (i in allData) {
-                            if (allData[i]["model"]["name"] != currentFilter) {
-                                to_remove.push(allData[i]["experimentId"])
+                            if (allData[i]["model"]["name"] == currentFilter) {
+                                toshowmodels.add(allData[i]["experimentId"])
                             }
                         }
                     }
                     if (this.dataset.what == "dataset") {
                         for (i in allData) {
-                            if (allData[i]["dataset"] != currentFilter) {
-                                to_remove.push(allData[i]["experimentId"])
+                            if (allData[i]["dataset"] == currentFilter) {
+                                toshowdatasets.add(allData[i]["experimentId"])
                             }
                         }
                     }
                     if (this.dataset.what == "metric") {
                         for (i in allData) {
 
-                            ver = false;
-                            allData[i]["track_metrics"].forEach(function (item, index) {
-                                if (item["name"] == currentFilter) ver = true;
-                            })
-
-                            if (!ver && allData[i]["optimize_metrics"][0]["name"] != currentFilter) {
-                                to_remove.push(allData[i]["experimentId"])
+                            if (allData[i]["optimize_metrics"][0]["name"] == currentFilter) {
+                                toshowmetrics.add(allData[i]["experimentId"])
                             }
+                            allData[i]["track_metrics"].forEach(function (item, index) {
+                                if (item["name"] == currentFilter) toshowmetrics.add(allData[i]["experimentId"]);
+                            })
                         }
                     }
+                });
 
+                if (toshowmetrics.size == 0) toshowmetrics = Array.from(all); else toshowmetrics = Array.from(toshowmetrics)
+                if (toshowdatasets.size == 0) toshowdatasets = Array.from(all); else toshowdatasets = Array.from(toshowdatasets)
+                if (toshowmodels.size == 0) toshowmodels = Array.from(all); else toshowmodels = Array.from(toshowmodels)
 
-
+                to_show = []
+                Array.from(all).forEach(ele => {
+                    if (toshowmetrics.indexOf(ele) >= 0 && toshowdatasets.indexOf(ele) >= 0 && toshowmodels.indexOf(ele) >= 0)
+                        to_show.push(ele)
                 });
 
                 toshow = []
                 for (i in allData) {
-                    if (to_remove.indexOf(allData[i]["experimentId"]) >= 0) {
-
-                    } else {
+                    if (to_show.indexOf(allData[i]["experimentId"]) >= 0) {
                         toshow.push(allData[i])
                     }
                 }
 
-                redraw(toshow)
-
+                redraw(Array.from(toshow))
             }
-
         }
 
 
