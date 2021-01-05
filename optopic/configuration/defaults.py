@@ -30,7 +30,7 @@ em_coherence_we_pc = {'topk': 10, 'w2v_model': None}
 em_topic_diversity = {'topk': 10}
 em_invertedRBO = {'topk': 10, 'weight': 0.9}
 em_word_embeddings_invertedRBO = {'topk': 10, 'weight': 0.9}
-em_f1_score = {'average': 'micro'}
+em_f1_score = {'average': 'micro', 'use_log': False}
 
 '''
 # MODELS PARAMETERS #
@@ -42,7 +42,7 @@ model_hyperparameters = {
                   'step': 1e-4},
         'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20, 'step': 1e-4},
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 200, 'step':1},
+                        'max_value': 200, 'step': 1},
         'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step':1},
         'iterations': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
                        'max_value': 2000, 'step': 1}},
