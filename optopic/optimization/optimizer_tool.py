@@ -22,7 +22,7 @@ def importClass(className, moduleName, modulePath):
     modulePath: absolute path to the module
 
     Returns
-    singleClass : returns the selected class
+    imported_class : returns the selected class
     """
     spec = importlib.util.spec_from_file_location(
         moduleName, modulePath, submodule_search_locations=[])
@@ -30,42 +30,42 @@ def importClass(className, moduleName, modulePath):
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     importlib.invalidate_caches()
-    singleClass = getattr(module, className)
-    return singleClass
+    imported_class = getattr(module, className)
+    return imported_class
 
 
-def load_model(BestObject):
+def load_model(optimization_object):
     """
 
     Function used to load the topic model for the resume_optimization
 
     Parameters
     ----------
-    BestObject : dictionary where the BO parameter are saved.
+    optimization_object : dictionary where the BO parameter are saved.
 
     Returns
     -------
-    modelIstance : topic model used during the BO.
+    model_instance : topic model used during the BO.
 
     """
 
-    model_parameters = BestObject['model_attributes']
-    model_name = BestObject['model_name']
+    model_parameters = optimization_object['model_attributes']
+    model_name = optimization_object['model_name']
 
-    modulePath = "optopic/models"
-    modulePath = os.path.join(modulePath, model_name + ".py")
-    model = importClass(model_name, model_name, modulePath)
-    modelIstance = model()
-    modelIstance.hyperparameters.update(model_parameters)
+    module_path = "optopic/models"
+    module_path = os.path.join(module_path, model_name + ".py")
+    model = importClass(model_name, model_name, module_path)
+    model_instance = model()
+    model_instance.hyperparameters.update(model_parameters)
 
-    return modelIstance
+    return model_instance
 
 
 def select_metric(metric_parameters, metric_name):
-    modulePath = "optopic/evaluation_metrics"
-    moduleName = defaults.metric_parameters[metric_name]["module"]
-    modulePath = os.path.join(modulePath, moduleName + ".py")
-    Metric = importClass(metric_name, metric_name, modulePath)
+    module_path = "optopic/evaluation_metrics"
+    module_name = defaults.metric_parameters[metric_name]["module"]
+    module_path = os.path.join(module_path, module_name + ".py")
+    Metric = importClass(metric_name, metric_name, module_path)
     metric = Metric(metric_parameters)
 
     return metric
