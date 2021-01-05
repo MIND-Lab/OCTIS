@@ -302,7 +302,7 @@ class Optimizer:
 
         if self.name_optimized_metric.startswith('Coherence'):
             metric_parameters.update({'texts': dataset.get_corpus()})
-        if 'dataset' in metric_parameters:
+        if self.name_optimized_metric.startswith('F1Score'):
             metric_parameters.update({'dataset': dataset})
 
         self.metric = select_metric(metric_parameters, self.name_optimized_metric)
@@ -316,6 +316,8 @@ class Optimizer:
             metric_parameters = dict_extra_metric_parameters[name]
             if 'Coherence' in name:
                 metric_parameters.update({'texts': dataset.get_corpus()})
+            if self.name_optimized_metric.startswith('F1Score'):
+                metric_parameters.update({'dataset': dataset})
 
             metric = select_metric(metric_parameters, name[2:])
             self.extra_metrics.append(metric)
