@@ -516,7 +516,7 @@
 
         }
 
-        var intervalID = setInterval(function () { getNewExpState(batchToShow); }, 5000);
+        var intervalID = setInterval(function () { getNewExpState(batchToShow); }, 20000);
 
 
         function redraw(data) {
@@ -608,28 +608,39 @@
                 });
 
 
+                actModelsSet = new Set();
+                actDatasetsSet = new Set();
+                actMetricsSet = new Set();
+
+                dicFinal.forEach(ele => {
+                    actModelsSet.add(ele["model"])
+                    actDatasetsSet.add(ele["dataset"])
+                    actMetricsSet.add(ele["metric"])
+                })
+
+
 
                 if (key1 == "model") {
-                    list1 = Array.from(modelsSet)
+                    list1 = Array.from(actModelsSet)
                 }
                 if (key1 == "metric") {
-                    list1 = Array.from(metricsSet)
+                    list1 = Array.from(actMetricsSet)
                 }
                 if (key1 == "dataset") {
-                    list1 = Array.from(datasetsSet)
+                    list1 = Array.from(actDatasetsSet)
                 }
                 if (key1 == "") {
                     list1 = []
                 }
 
                 if (key2 == "model") {
-                    list2 = Array.from(modelsSet)
+                    list2 = Array.from(actModelsSet)
                 }
                 if (key2 == "metric") {
-                    list2 = Array.from(metricsSet)
+                    list2 = Array.from(actMetricsSet)
                 }
                 if (key2 == "dataset") {
-                    list2 = Array.from(datasetsSet)
+                    list2 = Array.from(actDatasetsSet)
                 }
                 if (key2 == "") {
                     list2 = []
