@@ -1,9 +1,9 @@
 .centeredText{
-    height: 100%; 
-    width: 100%; 
-    opacity: 0.8; 
+    height: 100%;
+    width: 100%;
+    opacity: 0.8;
 	text-align: center;
-	padding-top: 20%;
+	padding-top: 10%;
 }
 
 .picAligned {
@@ -31,11 +31,11 @@
 	overflow: hidden;
 	background-color: #4059AD;
 }
-  
+
 .navbarEl{
 	float: left;
 }
-  
+
 .navbarLink{
 	display: block;
 	color: white;
@@ -43,7 +43,7 @@
 	padding: 14px 16px;
 	text-decoration: none;
 }
-  
+
 .navbarLink:hover{
 	background-color: #6B9AC4
 }
@@ -110,8 +110,8 @@ select::-ms-expand {
 }
 
 .metricBlock {
-	padding-top: 20px;	
-	padding-bottom: 4px;	
+	padding-top: 10px;
+	padding-bottom: 4px;
 	background-color: #e5e9ec;
 }
 
@@ -120,13 +120,13 @@ select::-ms-expand {
 }
 
 .metricBlock h2 {
-	margin-bottom: 3.25rem;
+	margin-bottom: 1rem;
 	text-align: center;
 }
 
 .metricBlock .singleMetric {
 	padding: 3px;
-	margin-bottom: 5.625rem;
+	margin-bottom: 2rem;
 	border: none;
 	display: inline-block;
 	vertical-align: top;
@@ -152,14 +152,14 @@ select::-ms-expand {
 }
 
 .customContainer {
-	padding-top: 6.375rem;
+	padding-top: 1rem;
 	background-color: #e5e9ec;
 	text-align: center;
 }
 
 .customContainer .singleObject {
 	display: inline-block;
-	max-width: 13rem;
+	max-width: 5rem;
 }
 
 @media (min-width: 768px) {
@@ -194,7 +194,7 @@ select::-ms-expand {
 		margin-right: 1.375rem;
 		margin-left: 1.375rem;
 	}
-	
+
 	.outContainer .customFormSection{
 		margin-left: 1.75rem;
 	}
