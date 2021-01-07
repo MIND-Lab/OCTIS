@@ -99,30 +99,39 @@
                 <div class="text-container">
                     <div class="collapse" id="collapseExample">
                         <div class="card card-body">
-                            In this page, you can define and start the optimization experiments.
+                            <p class="lead"> In this page, you can define and start the optimization experiments.
                             An optimization experiment is an experiment that involves a chosen
                             dataset and topic modeling algorithm whose hyperparameters (or a subset
                             of hyperparameters) are optimized with respect of a chosen evaluation metric.
-                            <b> Quick start: </b>
+                            </p>
+
+                            </br>
+                            <h5> Quick start: </h5>
+
                             <ul>
-                                <li>
-                                    Select a Dataset among our preprocessed datasets
+                                <li>  Select the folder in which you will save your experiments.
+                                     For each experiment you need to specify the name of the experiment (experiment name)
+                                    and the name for the set of experiments (batch name). The batch name will be the parent
+                                    folder for all the experiments you will start.
+                                </li>
+                                <li>  Select a <strong>Dataset</strong> among our preprocessed datasets.
                                 </li>
                                 <li>
-                                    Select a Model among our predefined models
+                                    Select a <strong>Model</strong> among our predefined topic models.
                                 </li>
                                 <li>
-                                    Select the hyperparameters of the model that you want to optimize
+                                    Select the <strong>hyperparameters</strong> of the model that you want to optimize
                                     and/or fix the value of the hyperpararameters that you like.
-                                    If you optimize a hyperparameter, you need to select the range
-                                    of the values for the selected hyperparameter.
+                                    If you optimize a hyperparameter, you need to select the <strong>value range</strong>
+                                    for the selected hyperparameter.
                                 </li>
                                 <li>
-                                    Select the Metric that you want to optimize (just one for now, but we
-                                    plan to do multi-objective hyperparameter optimization soon)
+                                    Select the <strong>Metric</strong> that you want to optimize (just one for now, but we
+                                    plan to do multi-objective hyperparameter optimization soon) and its corresponding
+                                    parameters.
                                 </li>
                                 <li>
-                                    Select the configuration of the parameters of Bayesian Optimization
+                                    Select the configuration of the <strong>parameters of Bayesian Optimization</strong>.
                                 </li>
                             </ul>
 
