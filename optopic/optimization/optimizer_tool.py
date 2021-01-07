@@ -10,27 +10,32 @@ import importlib
 import sys
 import optopic.configuration.defaults as defaults
 
+from pathlib import Path
 
-def importClass(className, moduleName, modulePath):
+framework_path = Path(os.path.dirname(os.path.realpath(__file__)))
+framework_path = str(framework_path.parent)
+
+
+def importClass(class_name, module_name, module_path):
     """
     Import a class runtime based on its module and name
 
     Parameters
     ----------
-    className : name of the class
-    moduleName : name of the module
-    modulePath: absolute path to the module
+    class_name : name of the class
+    module_name : name of the module
+    module_path: absolute path to the module
 
     Returns
     imported_class : returns the selected class
     """
     spec = importlib.util.spec_from_file_location(
-        moduleName, modulePath, submodule_search_locations=[])
+        module_name, module_path, submodule_search_locations=[])
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     importlib.invalidate_caches()
-    imported_class = getattr(module, className)
+    imported_class = getattr(module, class_name)
     return imported_class
 
 
@@ -51,8 +56,7 @@ def load_model(optimization_object):
 
     model_parameters = optimization_object['model_attributes']
     model_name = optimization_object['model_name']
-
-    module_path = "optopic/models"
+    module_path = os.path.join(framework_path, "models")
     module_path = os.path.join(module_path, model_name + ".py")
     model = importClass(model_name, model_name, module_path)
     model_instance = model()
@@ -62,7 +66,7 @@ def load_model(optimization_object):
 
 
 def select_metric(metric_parameters, metric_name):
-    module_path = "optopic/evaluation_metrics"
+    module_path = os.path.join(framework_path, "evaluation_metrics")
     module_name = defaults.metric_parameters[metric_name]["module"]
     module_path = os.path.join(module_path, module_name + ".py")
     Metric = importClass(metric_name, metric_name, module_path)
