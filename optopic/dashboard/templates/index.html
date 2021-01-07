@@ -17,71 +17,82 @@
 
 <body>
 
+<div>
+    <ul class="navbar">
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                                                                    src="{{ url_for('static', filename='images/logo.png') }}"
+                                                                    alt="alternative"></a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+        </li>
+    </ul>
+</div>
+
+<header id="header">
     <div>
-        <ul class="navbar">
-            <li claa="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
-                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                    EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
-            </li>
-        </ul>
+        <h1 style="text-align: center">Welcome to OpTopic! </h1>
     </div>
-
-    <header id="header">
-        <div>
-            <h1 style="text-align: center">OpTopic</h1>
+</header>
+<div class="outContainer">
+    <div class="container" style="overflow: hidden;">
+        <!---<div style="float: left;width: 50%;">
+            <img id="pic1" class="picAligned" src="{{url_for('static', filename='images/pic1.jpg')}}">
         </div>
-    </header>
-
-    <div>
-        <div style="overflow: hidden;">
-            <div style="float: left;width: 50%;">
-                <img id="pic1" class="picAligned" src="{{url_for('static', filename='images/pic1.jpg')}}">
-            </div>
-            <div style="float: left;width: 50%;">
-                <h2 class="centeredText">Create yout own experiments!</h2>
-            </div>
-        </div>
-
-        <div style="overflow: hidden;">
-            <div style="float: left;width: 50%;">
-                <h2 class="centeredText">Visualize you're experiments!</h2>
-            </div>
-            <div style="float: left;width: 50%;">
-
-                <img id="pic2" class="picAligned" src="{{url_for('static', filename='images/pic2.jpg')}}">
-            </div>
-
+        -->
+        <div style="float: left;width: 100%;">
+            <h5> What is OpTopic?</h5>
+            <p>OpTopic is an open-source evaluation and optimization framework
+                that allows you to optimize the hyperparameters of state-of-the-art Topic Models and
+                compare their performance with respect to several evaluation metrics on several datasets.</p>
         </div>
     </div>
 
-    <div class="footer">
-        <div class="container">
-            <h4>Optopic</h4>
-            <p class="white">Optimizing topic models made simple.</p>
+    <div class="container" style="overflow: hidden;">
+        <div style="float: left;width: 100%;">
+            <h5>Main Features </h5>
+            <p>You can (1) define your experiments directly from this dashboard (link ..)
+                and (2) compare their optimization progress ( link...) and
+                (3) inspect the output of each topic model (link...) </p>
+            <p> <h5> Contribute</h5>
+            .... </p>
         </div>
-    </div>
+        <!---
+        <div style="float: left;width: 50%;">
 
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script>
+            <img id="pic2" class="picAligned" src="{{url_for('static', filename='images/pic2.jpg')}}">
+        </div>
+          -->
+
+    </div>
+</div>
+
+<div class="footer">
+    <div class="container">
+        <h4>Optopic</h4>
+        <p class="white">Optimizing topic models made simple.</p>
+    </div>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
+<script>
         document.getElementById("pic1").onclick = function () {
             window.location.href = "{{ url_for('CreateExperiments') }}";
         }
@@ -89,7 +100,8 @@
         document.getElementById("pic2").onclick = function () {
             window.location.href = "{{ url_for('VisualizeExperiments') }}";
         }
-    </script>
+
+</script>
 </body>
 
 </html>
