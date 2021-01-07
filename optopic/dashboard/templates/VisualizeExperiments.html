@@ -121,98 +121,123 @@
         .slidercheck.round:before {
             border-radius: 50%;
         }
+
+
     </style>
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 
 <body>
+<div>
+    <ul class="navbar">
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                                                                    src="{{ url_for('static', filename='images/logo.png') }}"
+                                                                    alt="alternative"></a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+        </li>
+    </ul>
+</div>
+<header id="header">
     <div>
-        <ul class="navbar">
-            <li claa="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
-                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                    EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
-            </li>
-        </ul>
+        <h1 style="text-align: center">Visualize experiments
+            <button class="btn btn-primary" type="button" data-toggle="collapse"
+                    data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Click here to read the instructions!
+            </button>
+        </h1>
     </div>
-    <header id="header">
-        <div>
-            <h1 style="text-align: center">Visualize experiments</h1>
-        </div>
-    </header>
+</header>
 
-    <section id="batchSelector" class="regular slider"></section>
-    <div style="padding-left: 70%;">
-        <p id="labelGraphType"><b>Line chart</b></p>
-        <label class="switch">
-            <input type="checkbox" id="graphType" name="graphType">
-            <span class="slidercheck round"></span>
-        </label>
-    </div>
-
-    <div id="projects">
-        <div class="container">
-            <div class="row">
-                <p><b>Filters:</b></p>
-            </div>
-            <div class="row">
-                <div id="datasetfilters" class="button-group"></div>
-            </div>
-            <div class=" row">
-                <div id="modelfilters" class="button-group"></div>
-            </div>
-            <div class="row">
-                <div id="metricfilters" class="button-group"></div>
-            </div>
-
-            <div class="row">
-                <p><b>sort by:</b></p>
-            </div>
-
-            <div class="row">
-                <a id="sortDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
-            </div>
-            <div class="row">
-                <a id="sortModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
-            </div>
-            <div class="row">
-                <a id="sortMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
-            </div>
-
-            <div class="row" style="overflow: scroll;">
-                <div id="theCanvas"></div>
+<div class="outContainer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-container">
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <p class="lead"> In this page, you can ....
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="footer">
-        <div class="container">
-            <h4>Optopic</h4>
-            <p class="white">Optimizing topic models made simple.</p>
+</div>
+
+<section id="batchSelector" class="regular slider"></section>
+<div style="padding-left: 70%;">
+    <p id="labelGraphType"><b>Line chart</b></p>
+    <label class="switch">
+        <input type="checkbox" id="graphType" name="graphType">
+        <span class="slidercheck round"></span>
+    </label>
+</div>
+
+<div id="projects">
+    <div class="container">
+        <div class="row">
+            <p><b>Filters:</b></p>
+        </div>
+        <div class="row">
+            <div id="datasetfilters" class="button-group"></div>
+        </div>
+        <div class=" row">
+            <div id="modelfilters" class="button-group"></div>
+        </div>
+        <div class="row">
+            <div id="metricfilters" class="button-group"></div>
+        </div>
+
+        <div class="row">
+            <p><b>sort by:</b></p>
+        </div>
+
+        <div class="row">
+            <a id="sortDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
+        </div>
+        <div class="row">
+            <a id="sortModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
+        </div>
+        <div class="row">
+            <a id="sortMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
+        </div>
+
+        <div class="row" style="overflow: scroll;">
+            <div id="theCanvas"></div>
         </div>
     </div>
+</div>
+<div class="footer">
+    <div class="container">
+        <h4>Optopic</h4>
+        <p class="white">Optimizing topic models made simple.</p>
+    </div>
+</div>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='slick.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
-    <script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='slick.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+<script>
         function getParams(vars) {
             return vars;
         }
@@ -743,7 +768,9 @@
     });
 
 
-    </script>
+
+
+</script>
 
 </body>
 
