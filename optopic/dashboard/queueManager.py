@@ -222,7 +222,8 @@ class QueueManager:
         """
         if not self.busy[0]:
             self.busy[0] = True
-            process = mp.Process(target=_execute_and_update, args=(self,))
+            process = mp.Process(
+                target=QueueManager._execute_and_update, args=(self,))
             process.start()
             print("starting "+self.running[0])
             self.process.append(process.pid)
@@ -235,9 +236,10 @@ class QueueManager:
         self.pause()
         self.save_state()
 
-    def _execute_and_update(self):
-        startExperiment(self.toRun[self.running[0]])
-        self.busy[0]=False
+    @staticmethod
+    def _execute_and_update(queuemanager):
+        startExperiment(queuemanager.toRun[queuemanager.running[0]])
+        queuemanager.busy[0] = False
 
     def getModel(self, batch, experimentId, iteration, modelRun):
         """
@@ -255,18 +257,18 @@ class QueueManager:
         output : output of the model (topic-word-matrix,
                  document-topic-matrix and vocabulary)
         """
-        experiment=None
+        experiment = None
         if batch+experimentId in self.completed:
-            experiment=self.completed[batch+experimentId]
+            experiment = self.completed[batch+experimentId]
         if batch+experimentId in self.toRun:
-            experiment=self.toRun[batch+experimentId]
+            experiment = self.toRun[batch+experimentId]
         if experiment is not None:
-            path=str(os.path.join(
+            path = str(os.path.join(
                 experiment["path"], experiment["experimentId"]))
             return expManager.getModelInfo(path, iteration, modelRun)
         return False
 
-    def getExperimentIterationInfo(self, batch, experimentId, iteration = 0):
+    def getExperimentIterationInfo(self, batch, experimentId, iteration=0):
         """
         Retrieve the results of the BO untile the given iteration
 
@@ -276,13 +278,13 @@ class QueueManager:
         experimentId : id of the experiment
         iteration : last iteration to consider
         """
-        experiment=None
+        experiment = None
         if batch+experimentId in self.completed:
-            experiment=self.completed[batch+experimentId]
+            experiment = self.completed[batch+experimentId]
         if batch+experimentId in self.toRun:
-            experiment=self.toRun[batch+experimentId]
+            experiment = self.toRun[batch+experimentId]
         if experiment is not None:
-            path=str(os.path.join(
+            path = str(os.path.join(
                 experiment["path"], experiment["experimentId"], experiment["experimentId"]+".json"))
             return expManager.retrieveIterationBoResults(path, iteration)
         return False
@@ -296,11 +298,11 @@ class QueueManager:
         batch : name of the batch
         experimentId : name of the experiment
         """
-        experiment=False
+        experiment = False
         if batch+experimentId in self.completed:
-            experiment=self.completed[batch+experimentId]
+            experiment = self.completed[batch+experimentId]
         if batch+experimentId in self.toRun:
-            experiment=self.toRun[batch+experimentId]
+            experiment = self.toRun[batch+experimentId]
         return experiment
 
     def getAllExpIds(self):
@@ -312,8 +314,8 @@ class QueueManager:
                  the name of the experiment and a list with name of the batch and
                  name of the experiment
         """
-        expIds=[]
-        to_remove=[]
+        expIds = []
+        to_remove = []
         for key, exp in self.completed.items():
             if not self.getExperimentInfo(exp["batchId"], exp["experimentId"]):
                 to_remove.append(key)
@@ -361,9 +363,5 @@ class QueueManager:
         """
         Updates the order of the experiments to run
         """
-        self.order[:]=[]
+        self.order[:] = []
         self.order.extend(newOrder)
-
-
-def _execute_and_update(queuemanager):
-    queuemanager._execute_and_update()
