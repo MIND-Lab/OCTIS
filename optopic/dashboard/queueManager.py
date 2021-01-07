@@ -134,7 +134,7 @@ class QueueManager:
         output : a tuple containing id of the batch and id of the
                  paused experiment
         """
-        if self.busy[0]:
+        if self.busy[0] and self.running[0] != None:
             paused = self.running[0]
             to_stop = self.process.pop()
             os.kill(to_stop, signal.SIGTERM)
@@ -369,3 +369,7 @@ class QueueManager:
         """
         self.order[:] = []
         self.order.extend(newOrder)
+
+    def deleteFromOrder(self, experimentId):
+        self.order = list(filter(lambda a: a != experimentId, self.order))
+        del self.toRun[experimentId]

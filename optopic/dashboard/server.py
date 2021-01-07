@@ -1,11 +1,12 @@
-from flask import Flask, render_template, request
-import json
-from multiprocessing import Process, Pool
-import optopic.configuration.defaults as defaults
-import optopic.dashboard.frameworkScanner as fs
-import webbrowser
 import argparse
-import os
+import webbrowser
+import optopic.dashboard.frameworkScanner as fs
+import optopic.configuration.defaults as defaults
+from multiprocessing import Process, Pool
+import json
+from flask import Flask, render_template, request
+
+
 
 app = Flask(__name__)
 queueManager = ""
@@ -163,6 +164,18 @@ def startExp():
     print(queueManager.getRunning())
     if queueManager.getRunning() == None:
         queueManager.next()
+    return {"DONE": "YES"}
+
+
+@app.route("/deleteExp", methods=["POST"])
+def deleteExp():
+    data = request.json['data']
+    print(queueManager.getRunning())
+    if queueManager.getRunning() != None and queueManager.getRunning() == data:
+        queueManager.pause()
+        queueManager.deleteFromOrder(data)
+    else:
+        queueManager.deleteFromOrder(data)
     return {"DONE": "YES"}
 
 

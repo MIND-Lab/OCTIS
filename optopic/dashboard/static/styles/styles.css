@@ -66,13 +66,12 @@
 }
 
 .coolButton:hover {
-	background-color: transparent;
+	background-color: white;
 	color:#4059AD;
 }
 
 .send-button {
 	display: inline-block;
-	width: 100%;
 	height: 3.125rem;
 	border: 0.125rem solid #4059AD;
 	background-color:#4059AD;
