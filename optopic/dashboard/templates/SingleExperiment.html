@@ -53,37 +53,74 @@
             <h1 style="text-align: center">{{experimenName}}</h1>
         </div>
     </header>
-
+    <h2 style="text-align: center;">Overview of the experiments</h2>
     <div id="projects" class="singleSection">
-        <div style="float: left; width: 50%; height: 100%;">
-            <div style="height: 10%;" id="expSelector"></div>
-            <div style="height: 35%;" id="optInfo"></div>
-            <div style="height: 10%;" id="iterationSelector"></div>
-            <div style="height: 40%;" id="expInfo"></div>
-            <div style="height: 5%"></div>
+        <div style="height: 5%"></div>
+        <div style="float: left; margin-left: 1%;width: 50%; height: 21%;">
+            <div class="container">
+               <div class="row">
+                    <div class="col-sm-4">
+                        <b> Select a experiment to analyze </b>
+                    </div>
+                     <div class="col-sm-4">
+                        <div style="height: 10%;width: 100%;" id="expSelector"></div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div style="float: left; width: 50%; height: 100%;">
-            <div style="height: 85%;" id="container"></div>
-            <div style="height: 15%;" id="topicSelector"></div>
-        </div>
+        <div id="generic" style="float: left; margin-left: 5%;margin-right:5%; width: 90%; height: 79%;"></div>
     </div>
+    <hr>
+    <h2 style="text-align: center;">Titolo2</h2>
     <div class="singleSection">
-        <div style="float: left; width: 31%; height: 100%;">
-            <div style="height: 10%;">
+        <div style="height: 5%"></div>
+        <div style="float: left; margin-left: 1%;width: 29%; height: 100%;">
+            <b>blablabla blablabla blablabla </b>
+            <div style="height: 10%;" id="iterationSelector"></div>
+            <p>Statistics of a single model </p>
+            <div style="height: 40%;" id="expInfo"></div>
+        </div>
+        <div style="float: left; width: 70%; height: 100%;">
+            <div style="height: 15%;">
+                <div class="container">
+                   <div class="row">
+                        <div class="col-sm-4">
+                            <b> blablabla blablabla blablabla</b>
+                        </div>
+                         <div class="col-sm-4">
+                            <div style="height: 15%;margin-left: 10%; width: 30%" id="topicSelector"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 85%;" id="container"></div>
+        </div>
+
+    </div>
+    <hr>
+
+    <h2 style="text-align: center;">Titolo3</h2>
+    <div class="singleSection">
+         <div style="float: left; margin-left: 5%;margin-right: 5%;width: 40%; height: 100%;">
+             <div style="height: 20%;">
+                 <b>Topic distribution as a function of the document </b>
                 <input type="number" value="0" id="docSelector" min="0" max="{{ datasetMetadata['total_documents'] }}">
                 <input type="button" value="Ok" onclick="updateDocViewer()">
             </div>
-            <div id="docTopic" style="height: 60%;"></div>
-            <div id="docPreview" style="height: 30%;"></div>
+            <div id="docTopic" style="height: 70%;"></div>
+            <div id="docPreview" style="height: 10%;"></div>
         </div>
-        <div style="float: left; width: 31%; height: 100%;">
-            <div style="height: 10%;">
-                <select id="wordSelector" class="coolSelect" onchange="updateWordGraph()"></select>
+        <div style="float: left; margin-right: 5%;margin-left: 5% ;width: 40%; height: 100%;">
+              <div style="height: 10%;">
+                 <b>Word distribution on the topic </b>
+                <select style="width: 50%;" id="wordSelector" class="coolSelect" onchange="updateWordGraph()"></select>
             </div>
+
             <div id="wordTopic" style="height: 90%;"></div>
         </div>
-        <div id="generic" style="float: left; width: 31%; height: 100%;"></div>
     </div>
+
     <div class="footer">
         <div class="container">
             <h4>Optopic</h4>
@@ -169,6 +206,7 @@
     selectExp = document.createElement("select")
     selectExp.classList.add("coolSelect")
     selectExp.id = "selecExp"
+
     selectExp.addEventListener("click", function () {
         infoSelector = JSON.parse(this.value)
         location.href = "../../SingleExperiment/" + infoSelector["batchId"] + "/" + infoSelector["expId"]
@@ -296,7 +334,7 @@
                 success: function (data) {
                     preview = document.getElementById("docPreview")
                     if (data["doc"] == false) data["doc"] = "document not found"
-                    preview.innerHTML = "<b>Doument preview</b><br>" + data["doc"]
+                    preview.innerHTML = "<b>Document preview</b><br>" + data["doc"]
 
                     datax = []
                     datay = []
@@ -344,7 +382,7 @@
 
 
 
-    if (globalInfo != false) writeInfo("optInfo", globalInfo)
+
     if (iterationInfo != false) writeInfo("expInfo", iterationInfo)
 
 
@@ -402,19 +440,36 @@
                     r: 50,
                     b: 40,
                     t: 40,
-                    pad: 4
+                    pad: 4,
+                    grid: {rows: 1, columns: 2, pattern: 'independent'}
                 },
-                paper_bgcolor: 'rgba(256,256,256,1)'
+                paper_bgcolor: 'rgba(256,256,256,1)',
+                xaxis: {domain: [0, 0.7]},
+                yaxis2: {anchor: 'x2'},
+                xaxis2: {domain: [0.8, 1]},
+                showlegend: false
             };
 
 
-            var trace = {
+            var trace1 = {
                 x: second_axe,
                 y: globalInfo["f_val"],
                 type: 'scatter'
             }
 
-            Plotly.newPlot("generic", [trace], layout);
+            var trace2 = {
+                y: globalInfo["f_val"],
+                type: 'box',
+                  marker: {
+                    color: 'rgb(10,140,208)'
+                  },
+                name: '',
+                xaxis: 'x2',
+                yaxis: 'y2'
+            }
+            var data = [trace1, trace2]
+
+            Plotly.newPlot("generic", data, layout);
 
         }
     }
