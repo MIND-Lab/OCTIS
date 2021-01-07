@@ -111,7 +111,7 @@ class QueueManager:
         output : a tuple containing id of the batch and id of the
                  completed experiment
         """
-        while(True):
+        while True:
             time.sleep(4)
             if not self.busy[0]:
                 if self.running[0] is not None:
@@ -148,29 +148,29 @@ class QueueManager:
         Get the name of each batch with experiment in the completed list or
         in the list of experiments to run
         """
-        batchNames = []
+        batch_names = []
         to_remove = []
         for key, value in self.completed.items():
-            if self.getExperimentInfo(value["batchId"], value["experimentId"]) == False:
+            if not self.getExperimentInfo(value["batchId"], value["experimentId"]):
                 to_remove.append(key)
             else:
-                if value["batchId"] not in batchNames:
-                    batchNames.append(value["batchId"])
+                if value["batchId"] not in batch_names:
+                    batch_names.append(value["batchId"])
         for el in to_remove:
             del self.completed[el]
 
         for key, value in self.toRun.items():
-            if value["batchId"] not in batchNames:
-                batchNames.append(value["batchId"])
-        return batchNames
+            if value["batchId"] not in batch_names:
+                batch_names.append(value["batchId"])
+        return batch_names
 
-    def getBatchExperiments(self, batchName):
+    def getBatchExperiments(self, batch_name):
         """
         Retrieves all the experiments of the selected batch
 
         Parameters
         ----------
-        batchName : name of the batch
+        batch_name : name of the batch
 
         Returns
         -------
@@ -179,16 +179,16 @@ class QueueManager:
         experiments = []
         to_remove = []
         for key, value in self.completed.items():
-            if self.getExperimentInfo(value["batchId"], value["experimentId"]) == False:
+            if not self.getExperimentInfo(value["batchId"], value["experimentId"]):
                 to_remove.append(key)
             else:
-                if value["batchId"] == batchName:
+                if value["batchId"] == batch_name:
                     experiments.append(value)
         for el in to_remove:
             del self.completed[el]
 
         for key, value in self.toRun.items():
-            if value["batchId"] == batchName:
+            if value["batchId"] == batch_name:
                 experiments.append(value)
         return experiments
 
@@ -206,11 +206,11 @@ class QueueManager:
         experiment info (mean, median, best seen, worst seen)
         """
         experiment = None
-        if batch+experimentId in self.completed:
+        if batch + experimentId in self.completed:
             experiment = self.completed[batch+experimentId]
-        if batch+experimentId in self.toRun:
+        if batch + experimentId in self.toRun:
             experiment = self.toRun[batch+experimentId]
-        if experiment != None:
+        if experiment is not None:
             path = str(os.path.join(
                 experiment["path"], experiment["experimentId"], experiment["experimentId"]+".json"))
             return expManager.singleInfo(path)
@@ -260,7 +260,7 @@ class QueueManager:
             experiment = self.completed[batch+experimentId]
         if batch+experimentId in self.toRun:
             experiment = self.toRun[batch+experimentId]
-        if experiment != None:
+        if experiment is not None:
             path = str(os.path.join(
                 experiment["path"], experiment["experimentId"]))
             return expManager.getModelInfo(path, iteration, modelRun)
@@ -281,7 +281,7 @@ class QueueManager:
             experiment = self.completed[batch+experimentId]
         if batch+experimentId in self.toRun:
             experiment = self.toRun[batch+experimentId]
-        if experiment != None:
+        if experiment is not None:
             path = str(os.path.join(
                 experiment["path"], experiment["experimentId"], experiment["experimentId"]+".json"))
             return expManager.retrieveIterationBoResults(path, iteration)
@@ -315,7 +315,7 @@ class QueueManager:
         expIds = []
         to_remove = []
         for key, exp in self.completed.items():
-            if self.getExperimentInfo(exp["batchId"], exp["experimentId"]) == False:
+            if not self.getExperimentInfo(exp["batchId"], exp["experimentId"]):
                 to_remove.append(key)
             else:
                 expIds.append([exp["experimentId"],
@@ -343,7 +343,7 @@ class QueueManager:
 
         Returns
         -------
-        order : id of each experiment to run in order (from first to last) 
+        order : id of each experiment to run in order (from first to last)
         """
         return list(self.order)
 
