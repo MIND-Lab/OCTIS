@@ -223,7 +223,11 @@ class QueueManager:
         if not self.busy[0]:
             self.busy[0] = True
             process = mp.Process(
-                target=QueueManager._execute_and_update, args=(self,))
+                target=QueueManager._execute_and_update, args=(
+                    self.toRun,
+                    self.running,
+                    self.busy
+                ))
             process.start()
             print("starting "+self.running[0])
             self.process.append(process.pid)
@@ -237,9 +241,9 @@ class QueueManager:
         self.save_state()
 
     @staticmethod
-    def _execute_and_update(queuemanager):
-        startExperiment(queuemanager.toRun[queuemanager.running[0]])
-        queuemanager.busy[0] = False
+    def _execute_and_update(toRun, running, busy):
+        startExperiment(toRun[running[0]])
+        busy[0] = False
 
     def getModel(self, batch, experimentId, iteration, modelRun):
         """
