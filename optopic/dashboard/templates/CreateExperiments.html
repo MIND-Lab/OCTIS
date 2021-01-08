@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +11,7 @@
 </head>
 
 <body>
-<script>
+    <script>
         function destroy() {
             li = this.parentElement
             li.parentElement.removeChild(li);
@@ -18,6 +19,8 @@
         function newListElement(listToUpdate, identifier, content) {
             if (listToUpdate == "optimizeMetrics") {
                 content.type = "optimize";
+                lastChild = document.getElementById(listToUpdate).lastChild;
+                if (lastChild.tagName == "LI" || lastChild.tagName == "li") lastChild.remove()
             } else {
                 content.type = "track";
             }
@@ -53,229 +56,236 @@
 
         }
 
-</script>
+    </script>
 
-<div>
-    <ul class="navbar">
-        <li class="navbarEl">
-            <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
-                                                                    src="{{ url_for('static', filename='images/logo.png') }}"
-                                                                    alt="alternative"></a>
-        </li>
-        <li class="navbarEl">
-            <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
-        </li>
-        <li class="navbarEl">
-            <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-        </li>
-        <li class="navbarEl">
-            <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                EXPERIMENTS</a>
-        </li>
-        <li class="navbarEl">
-            <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-        </li>
-        <li class="navbarEl">
-            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
-        </li>
-    </ul>
-</div>
-
-<header id="header">
     <div>
-        </br>
-        <h1 style="text-align: center">Experiment creation
-                        <button class="btn btn-primary" type="button" data-toggle="collapse"
-                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            Click here to read the instructions!
-                        </button></h1>
+        <ul class="navbar">
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                    EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+            </li>
+        </ul>
     </div>
-</header>
-<hr>
-<div class="outContainer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="text-container">
-                    <div class="collapse" id="collapseExample">
-                        <div class="card card-body">
-                            <p class="lead"> In this page, you can define and start the optimization experiments.
-                            An optimization experiment is an experiment that involves a chosen
-                            dataset and topic modeling algorithm whose hyperparameters (or a subset
-                            of hyperparameters) are optimized with respect of a chosen evaluation metric.
-                            </p>
 
-                            </br>
-                            <h5> Quick start: </h5>
+    <header id="header">
+        <div>
+            </br>
+            <h1 style="text-align: center">Experiment creation
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Click here to read the instructions!
+                </button>
+            </h1>
+        </div>
+    </header>
+    <hr>
+    <div class="outContainer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-container">
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <p class="lead"> In this page, you can define and start the optimization experiments.
+                                    An optimization experiment is an experiment that involves a chosen
+                                    dataset and topic modeling algorithm whose hyperparameters (or a subset
+                                    of hyperparameters) are optimized with respect of a chosen evaluation metric.
+                                </p>
 
-                            <ul>
-                                <li>  Select the folder in which you will save your experiments.
-                                     For each experiment you need to specify the name of the experiment (experiment name)
-                                    and the name for the set of experiments (batch name). The batch name will be the parent
-                                    folder for all the experiments you will start.
-                                </li>
-                                <li>  Select a <strong>Dataset</strong> among our preprocessed datasets.
-                                </li>
-                                <li>
-                                    Select a <strong>Model</strong> among our predefined topic models.
-                                </li>
-                                <li>
-                                    Select the <strong>hyperparameters</strong> of the model that you want to optimize
-                                    and/or fix the value of the hyperpararameters that you like.
-                                    If you optimize a hyperparameter, you need to select the <strong>value range</strong>
-                                    for the selected hyperparameter.
-                                </li>
-                                <li>
-                                    Select the <strong>Metric</strong> that you want to optimize (just one for now, but we
-                                    plan to do multi-objective hyperparameter optimization soon) and its corresponding
-                                    parameters.
-                                </li>
-                                <li>
-                                    Select the configuration of the <strong>parameters of Bayesian Optimization</strong>.
-                                </li>
-                            </ul>
+                                </br>
+                                <h5> Quick start: </h5>
 
+                                <ul>
+                                    <li> Select the folder in which you will save your experiments.
+                                        For each experiment you need to specify the name of the experiment (experiment
+                                        name)
+                                        and the name for the set of experiments (batch name). The batch name will be the
+                                        parent
+                                        folder for all the experiments you will start.
+                                    </li>
+                                    <li> Select a <strong>Dataset</strong> among our preprocessed datasets.
+                                    </li>
+                                    <li>
+                                        Select a <strong>Model</strong> among our predefined topic models.
+                                    </li>
+                                    <li>
+                                        Select the <strong>hyperparameters</strong> of the model that you want to
+                                        optimize
+                                        and/or fix the value of the hyperpararameters that you like.
+                                        If you optimize a hyperparameter, you need to select the <strong>value
+                                            range</strong>
+                                        for the selected hyperparameter.
+                                    </li>
+                                    <li>
+                                        Select the <strong>Metric</strong> that you want to optimize (just one for now,
+                                        but we
+                                        plan to do multi-objective hyperparameter optimization soon) and its
+                                        corresponding
+                                        parameters.
+                                    </li>
+                                    <li>
+                                        Select the configuration of the <strong>parameters of Bayesian
+                                            Optimization</strong>.
+                                    </li>
+                                </ul>
+
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="customFormSection">
-                        <form id="experimentForm" data-focus="false" method="post"
-                              action="{{ url_for('startExperiment') }}">
-                            <div>
-                                <label>select a path to save the experiment</label>
-                                <input type="text" class="coolInput" id="path" name="path" required>
-                            </div>
-                            <div class="row">
-                                <div class="col-6" data-toggle="popover" title="Popover title 3"
-                                     data-content="And here's some amazing content. It's very engaging. Right?">
-                                    <label>Id of the batch</label>
-                                    <input type="text" class="coolInput" id="batchId" name="batchId" required>
+                        <div class="customFormSection">
+                            <form id="experimentForm" data-focus="false" method="post"
+                                action="{{ url_for('startExperiment') }}">
+                                <div>
+                                    <label>select a path to save the experiment</label>
+                                    <input type="text" class="coolInput" id="path" name="path" required>
                                 </div>
-                                <div class="col-6">
-                                    <label>Id of the experiment</label>
-                                    <input type="text" class="coolInput" id="expId" name="expId" required>
-                                </div>
-                            </div>
-                            </br>
-                            <div class="customContainer">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <h2>Choose a Dataset</h2>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-6" data-toggle="popover" title="Popover title 3"
+                                        data-content="And here's some amazing content. It's very engaging. Right?">
+                                        <label>Id of the batch</label>
+                                        <input type="text" class="coolInput" id="batchId" name="batchId" required>
                                     </div>
-                                    <div class="row">
-                                        <div id="datasetSelector" class="col-lg-12"></div>
+                                    <div class="col-6">
+                                        <label>Id of the experiment</label>
+                                        <input type="text" class="coolInput" id="expId" name="expId" required>
                                     </div>
                                 </div>
-                            </div>
-                            </br>
-                            <div class="customContainer">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <h2>Choose Model</h2>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div id="modelForm" class="col-lg-12">
-                                        </div>
-                                        <div id="modelParameters" class="col-lg-12">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="services" class="metricBlock">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="metric-name">Metrics</div>
-                                            <h2>Choose Metric to optimize</h2>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12" id="optimizeMetrics">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="Metrics">
-                                <ul class="list-unstyled li-space-lg" id="metricsList">
-                                </ul>
-                            </div>
-                            <div id="services-2" class="metricBlock">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="metric-name"></div>
-                                            <h2>Choose Metrics to track</h2>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12" id="trackMetrics">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="trackMetrics">
-                                <ul class="list-unstyled li-space-lg" id="trackmetricsList">
-                                </ul>
-                            </div>
-                            <div class="customContainer">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <h2>Optimization parameters</h2>
-                                        </div>
-                                    </div>
-                                    <div id="boSelector" class="col-lg-12">
+                                </br>
+                                <div class="customContainer">
+                                    <div class="container">
                                         <div class="row">
-                                            <div class="col-lg-4">
-                                                <p><b>Number of iterations</b></p>
-                                                <input type="number" class="coolInput" value="5" id="iterations"
-                                                       name="iterations" required>
+                                            <div class="col-lg-12">
+                                                <h2>Choose a Dataset</h2>
                                             </div>
-                                            <div class="col-lg-4">
-                                                <p><b>Model runs</b></p>
-                                                <input type="number" class="coolInput" value="3" id="runs"
-                                                       name="runs" required>
+                                        </div>
+                                        <div class="row">
+                                            <div id="datasetSelector" class="col-lg-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="customContainer">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2>Choose Model</h2>
                                             </div>
-                                            <div class="col-lg-4">
-                                                <p><b>Initial random points</b></p>
-                                                <input type="number" class="coolInput" value="3"
-                                                       id="n_random_starts" name="n_random_starts" required>
+                                        </div>
+                                        <div class="row">
+                                            <div id="modelForm" class="col-lg-12">
+                                            </div>
+                                            <div id="modelParameters" class="col-lg-12">
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <button type="submit" class="send-button">Start Experiment</button>
-                            </div>
-                            <div class="form-message">
-                                <div id="pmsgSubmit" class="h3 text-center hidden"></div>
-                            </div>
-                        </form>
-                    </div>
+                                <div id="services" class="metricBlock">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="metric-name">Metrics</div>
+                                                <h2>Choose Metric to optimize</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12" id="optimizeMetrics">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="Metrics">
+                                    <ul class="list-unstyled li-space-lg" id="metricsList">
+                                    </ul>
+                                </div>
+                                <div id="services-2" class="metricBlock">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="metric-name"></div>
+                                                <h2>Choose Metrics to track</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12" id="trackMetrics">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="trackMetrics">
+                                    <ul class="list-unstyled li-space-lg" id="trackmetricsList">
+                                    </ul>
+                                </div>
+                                <div class="customContainer">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2>Optimization parameters</h2>
+                                            </div>
+                                        </div>
+                                        <div id="boSelector" class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <p><b>Number of iterations</b></p>
+                                                    <input type="number" class="coolInput" value="5" id="iterations"
+                                                        name="iterations" required>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <p><b>Model runs</b></p>
+                                                    <input type="number" class="coolInput" value="3" id="runs"
+                                                        name="runs" required>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <p><b>Initial random points</b></p>
+                                                    <input type="number" class="coolInput" value="3"
+                                                        id="n_random_starts" name="n_random_starts" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="send-button">Start Experiment</button>
+                                </div>
+                                <div class="form-message">
+                                    <div id="pmsgSubmit" class="h3 text-center hidden"></div>
+                                </div>
+                            </form>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="footer">
-    <div class="container">
-        <h4>Optopic</h4>
-        <p class="white">Optimizing topic models made simple.</p>
+    <div class="footer">
+        <div class="container">
+            <h4>Optopic</h4>
+            <p class="white">Optimizing topic models made simple.</p>
+        </div>
     </div>
-</div>
 
-<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-<script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script>
         function getParams(vars) {
             return vars;
         }
@@ -285,81 +295,81 @@
 
             //Get dataset names
             dataset = getParams({{ datasets| tojson}});
-            imgPath = "{{ url_for('static', filename='images/dataset.png') }}";
-            rBtnName = "dataset"
-            father = document.getElementById("datasetSelector");
-            createCoolSelection(dataset, imgPath, rBtnName, father)
+        imgPath = "{{ url_for('static', filename='images/dataset.png') }}";
+        rBtnName = "dataset"
+        father = document.getElementById("datasetSelector");
+        createCoolSelection(dataset, imgPath, rBtnName, father)
 
 
-            model = getParams({{ models| tojson}});
-            father = document.getElementById("modelForm");
+        model = getParams({{ models| tojson}});
+        father = document.getElementById("modelForm");
 
-            modelNames = []
-            for (const [key, value] of Object.entries(model)) {
-                modelNames.push(key)
-            }
-            rBtnName = "model"
-            imgPath = "{{ url_for('static', filename='images/model.png') }}";
-            createCoolSelection(modelNames, imgPath, rBtnName, father)
+        modelNames = []
+        for (const [key, value] of Object.entries(model)) {
+            modelNames.push(key)
+        }
+        rBtnName = "model"
+        imgPath = "{{ url_for('static', filename='images/model.png') }}";
+        createCoolSelection(modelNames, imgPath, rBtnName, father)
 
-            metrics = getParams({{ metrics| tojson}});
+        metrics = getParams({{ metrics| tojson}});
 
-            for (const [key, value] of Object.entries(metrics)) {
-                addMetricBox(key, value, "optimizeMetrics")
-                addMetricBox(key, value, "trackMetrics")
-            }
-
-
-            BO = getParams({{ optimization| tojson}});
-
-            boSelector = document.getElementById("boSelector");
-
-            surrogateModelInput = document.createElement("select")
-            surrogateModelInput.classList.add("coolSelect")
-            surrogateModelInput.name = "surrogateModel"
-
-            for (const val of BO["surrogate_models"]) {
-                var option = document.createElement("option");
-                option.text = val["name"];
-                option.value = val["id"]
-                surrogateModelInput.appendChild(option)
-            }
-
-            label = document.createElement("p")
-            label.innerHTML = "<b>Surrogate model</b>";
-
-            div = document.createElement("div")
-            div.classList.add("form-group")
-            div.appendChild(label)
-            div.appendChild(surrogateModelInput)
-
-            boSelector.appendChild(div)
+        for (const [key, value] of Object.entries(metrics)) {
+            addMetricBox(key, value, "optimizeMetrics")
+            addMetricBox(key, value, "trackMetrics")
+        }
 
 
-            AcqFuncInput = document.createElement("select")
-            AcqFuncInput.classList.add("coolSelect")
-            AcqFuncInput.name = "acquisitionFunction"
+        BO = getParams({{ optimization| tojson}});
 
-            for (const val of BO["acquisition_functions"]) {
-                var option = document.createElement("option");
-                option.text = val["name"];
-                option.value = val["id"]
-                AcqFuncInput.appendChild(option)
-            }
+        boSelector = document.getElementById("boSelector");
 
-            label = document.createElement("p")
-            label.innerHTML = "<b>Acquisition function</b>";
+        surrogateModelInput = document.createElement("select")
+        surrogateModelInput.classList.add("coolSelect")
+        surrogateModelInput.name = "surrogateModel"
 
-            div = document.createElement("div")
-            div.classList.add("form-group")
-            div.appendChild(label)
-            div.appendChild(AcqFuncInput)
+        for (const val of BO["surrogate_models"]) {
+            var option = document.createElement("option");
+            option.text = val["name"];
+            option.value = val["id"]
+            surrogateModelInput.appendChild(option)
+        }
 
-            boSelector.appendChild(div)
+        label = document.createElement("p")
+        label.innerHTML = "<b>Surrogate model</b>";
+
+        div = document.createElement("div")
+        div.classList.add("form-group")
+        div.appendChild(label)
+        div.appendChild(surrogateModelInput)
+
+        boSelector.appendChild(div)
+
+
+        AcqFuncInput = document.createElement("select")
+        AcqFuncInput.classList.add("coolSelect")
+        AcqFuncInput.name = "acquisitionFunction"
+
+        for (const val of BO["acquisition_functions"]) {
+            var option = document.createElement("option");
+            option.text = val["name"];
+            option.value = val["id"]
+            AcqFuncInput.appendChild(option)
+        }
+
+        label = document.createElement("p")
+        label.innerHTML = "<b>Acquisition function</b>";
+
+        div = document.createElement("div")
+        div.classList.add("form-group")
+        div.appendChild(label)
+        div.appendChild(AcqFuncInput)
+
+        boSelector.appendChild(div)
 
 
         $(function () {
-          $('[data-toggle="popover"]').popover()
+            $('[data-toggle="popover"]').popover()
         });
 
         function addMetricBox(name, info, where) {
@@ -675,7 +685,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 if ("step" in value) {
                                                     newInput.setAttribute("step", value["step"]);
-                                                    newInput.defaultValue = value["step"];
+                                                    newInput.defaultValue = value["min_value"];
 
                                                 } else {
                                                     newInput.setAttribute("step", "any");
@@ -715,7 +725,7 @@
                                                 newInput.setAttribute("type", "number");
                                                 if ("step" in value) {
                                                     newInput.setAttribute("step", value["step"]);
-                                                    newInput.defaultValue = value["step"];
+                                                    newInput.defaultValue = value["min_value"];
                                                 }
                                                 newInput.setAttribute("min", param["min_value"]);
                                                 newInput.setAttribute("max", param["max_value"]);
@@ -902,6 +912,7 @@
         }
         });
 
-</script>
+    </script>
 </body>
+
 </html>
