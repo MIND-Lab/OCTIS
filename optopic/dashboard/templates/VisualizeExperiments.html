@@ -221,13 +221,19 @@
             </div>
 
             <div class="row">
-                <a id="sortDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
+                <p>row:</p>
+                <a id="sortRowDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
+                <a id="sortRowModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
+                <a id="sortRowMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
             </div>
             <div class="row">
-                <a id="sortModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
+                <p>column:</p>
+                <a id="sortColDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
+                <a id="sortColModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
+                <a id="sortColMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
             </div>
             <div class="row">
-                <a id="sortMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
+
             </div>
 
             <div class="row" style="overflow: scroll;">
@@ -493,63 +499,98 @@
             }
         }
 
-        var key1 = "model"
-        var key2 = "dataset"
+        var key1 = "dataset"
+        var key2 = "model"
 
-        sD = document.getElementById("sortDataset")
-        sMod = document.getElementById("sortModel")
-        sMet = document.getElementById("sortMetric")
+        sD = document.getElementById("sortRowDataset")
+        sMod = document.getElementById("sortRowModel")
+        sMet = document.getElementById("sortRowMetric")
+
+
+        sCD = document.getElementById("sortColDataset")
+        sCMod = document.getElementById("sortColModel")
+        sCMet = document.getElementById("sortColMetric")
+
+
         sD.classList.add("imok")
-        sMod.classList.add("imok")
+        sCMod.classList.add("imok")
 
-        sD.addEventListener("click", function () { updatekeys("sortDataset") })
-        sMod.addEventListener("click", function () { updatekeys("sortModel") })
-        sMet.addEventListener("click", function () { updatekeys("sortMetric") })
+        sD.addEventListener("click", function () { updatekeys1("sortRowDataset") })
+        sMod.addEventListener("click", function () { updatekeys1("sortRowModel") })
+        sMet.addEventListener("click", function () { updatekeys1("sortRowMetric") })
 
-        function updatekeys(elementId) {
+        sCD.addEventListener("click", function () { updatekeys2("sortColDataset") })
+        sCMod.addEventListener("click", function () { updatekeys2("sortColModel") })
+        sCMet.addEventListener("click", function () { updatekeys2("sortColMetric") })
+
+        function updatekeys1(elementId) {
             elemenet = document.getElementById(elementId)
             if (elemenet.classList.contains("imok")) {
-                if (key1 == elemenet.dataset.what) {
-                    key1 = ""
-                } else {
-                    key2 = ""
-                }
+                key1 = ""
                 elemenet.classList.remove("imok")
-
             } else {
-                if (key1 == "") {
-                    key1 = elemenet.dataset.what
-                    elemenet.classList.add("imok")
+                key1 = elemenet.dataset.what
+                if (sD.id != elemenet.id) {
+                    sD.classList.remove("imok")
                 }
-                else {
-                    if (key2 == "") {
-                        key2 = elemenet.dataset.what
-                        elemenet.classList.add("imok")
-                    }
-                    else {
-                        key1 = elemenet.dataset.what
-                        key2 = ""
-
-                        sD = document.getElementById("sortDataset")
-                        sMod = document.getElementById("sortModel")
-                        sMet = document.getElementById("sortMetric")
-                        if (sD.id != elemenet.id) {
-                            sD.classList.remove("imok")
-                        }
-                        if (sMod.id != elemenet.id) {
-                            sMod.classList.remove("imok")
-                        }
-                        if (sMet.id != elemenet.id) {
-                            sMet.classList.remove("imok")
-                        }
-                        elemenet.classList.add("imok")
-
-                    }
+                if (sMod.id != elemenet.id) {
+                    sMod.classList.remove("imok")
                 }
+                if (sMet.id != elemenet.id) {
+                    sMet.classList.remove("imok")
+                }
+                elemenet.classList.add("imok")
             }
-
+            if (key1 == key2) {
+                switch (key1) {
+                    case "model":
+                        sCMod.classList.remove("imok")
+                        break;
+                    case "dataset":
+                        sCD.classList.remove("imok")
+                        break;
+                    case "metric":
+                        sCMet.classList.remove("imok")
+                        break;
+                }
+                key2 = ""
+            }
             draw(allData)
+        }
 
+        function updatekeys2(elementId) {
+            elemenet = document.getElementById(elementId)
+            if (elemenet.classList.contains("imok")) {
+                key2 = ""
+                elemenet.classList.remove("imok")
+            } else {
+                key2 = elemenet.dataset.what
+                if (sCD.id != elemenet.id) {
+                    sCD.classList.remove("imok")
+                }
+                if (sCMod.id != elemenet.id) {
+                    sCMod.classList.remove("imok")
+                }
+                if (sCMet.id != elemenet.id) {
+                    sCMet.classList.remove("imok")
+                }
+                elemenet.classList.add("imok")
+            }
+            if (key1 == key2) {
+                switch (key2) {
+                    case "model":
+                        sMod.classList.remove("imok")
+                        break;
+                    case "dataset":
+                        sD.classList.remove("imok")
+                        break;
+                    case "metric":
+                        sMet.classList.remove("imok")
+                        break;
+                }
+                key1 = ""
+            }
+            draw(allData)
         }
 
         var intervalID = setInterval(function () { getNewExpState(batchToShow); }, 20000);
@@ -622,8 +663,8 @@
                             " " +
                             item["experimentId"] + "</span>";
 
-                        
-                        col2= document.createElement("div")
+
+                        col2 = document.createElement("div")
                         col2.classList.add("col-6")
                         buttonlink = document.createElement("div")
                         buttonlink.dataset.expName = item["experimentId"]
