@@ -230,18 +230,18 @@
                                         </div>
                                     </div>
                                     <div id="boSelector" class="col-lg-12">
-                                        <div class="row">
-                                            <div class="col-lg-4">
+                                        <div id="boRow" class="row col-lg-12">
+                                            <div class="col-lg-2">
                                                 <p><b>Number of iterations</b></p>
                                                 <input type="number" class="coolInput" value="5" id="iterations"
                                                        name="iterations" required>
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-2">
                                                 <p><b>Model runs</b></p>
                                                 <input type="number" class="coolInput" value="3" id="runs"
                                                        name="runs" required>
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-2">
                                                 <p><b>Initial random points</b></p>
                                                 <input type="number" class="coolInput" value="3"
                                                        id="n_random_starts" name="n_random_starts" required>
@@ -325,13 +325,24 @@
                 surrogateModelInput.appendChild(option)
             }
 
+
+            div = document.getElementById("boRow");
+            //div = document.createElement("div")
+            //div.classList.add("form-group")
+            //div.classList.add("col-lg-1")
+
+            new_div = document.createElement("div")
+            new_div.classList.add("form-group")
+            new_div.classList.add("col-lg-3")
+
+
             label = document.createElement("p")
             label.innerHTML = "<b>Surrogate model</b>";
 
-            div = document.createElement("div")
-            div.classList.add("form-group")
-            div.appendChild(label)
-            div.appendChild(surrogateModelInput)
+            new_div.appendChild(label)
+            new_div.appendChild(surrogateModelInput)
+
+            div.appendChild(new_div)
 
             boSelector.appendChild(div)
 
@@ -350,10 +361,15 @@
             label = document.createElement("p")
             label.innerHTML = "<b>Acquisition function</b>";
 
-            div = document.createElement("div")
-            div.classList.add("form-group")
-            div.appendChild(label)
-            div.appendChild(AcqFuncInput)
+            div = document.getElementById("boRow");
+            new_div = document.createElement("div")
+            new_div.classList.add("form-group")
+            new_div.classList.add("col-lg-3")
+
+            new_div.appendChild(label)
+            new_div.appendChild(AcqFuncInput)
+
+            div.appendChild(new_div)
 
             boSelector.appendChild(div)
 
