@@ -697,6 +697,19 @@
 
                                                 break;
                                             case "Real":
+                                                row = document.createElement("div")
+                                                row.classList.add("row")
+
+                                                col1 = document.createElement("div")
+                                                col1.classList.add("col-6")
+
+                                                col2 = document.createElement("div")
+                                                col2.classList.add("col-6")
+
+                                                row.appendChild(col1)
+                                                row.appendChild(col2)
+
+
                                                 newInput = document.createElement("input")
                                                 newInput.setAttribute("type", "number");
                                                 if ("step" in value) {
@@ -711,11 +724,13 @@
                                                 newInput.name = "model." + key + "_xminx";
 
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>min " + key + "</b>";
+                                                var label = document.createElement("label");
+                                                label.htmlFor = "model." + key + "_xminx";
+                                                label.style.padding = "5px";
+                                                label.innerHTML = "<b>" + key + " from</b>";
 
-                                                fat.appendChild(label);
-                                                fat.appendChild(newInput);
+                                                col1.appendChild(label);
+                                                col1.appendChild(newInput);
 
                                                 newInput = document.createElement("input")
 
@@ -732,20 +747,35 @@
                                                 newInput.name = "model." + key + "_xmaxx";
 
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>max " + key + "</b>";
+                                                var label = document.createElement("label");
+                                                label.htmlFor = "model." + key + "_xmaxx";
+                                                label.style.padding = "5px";
+                                                label.innerHTML = "<b>to</b>";
 
-                                                fat.appendChild(label);
-                                                fat.appendChild(newInput);
+                                                col2.appendChild(label);
+                                                col2.appendChild(newInput);
+
+                                                fat.appendChild(row)
                                                 break;
 
                                             case "Integer":
+                                                row = document.createElement("div")
+                                                row.classList.add("row")
+
+                                                col1 = document.createElement("div")
+                                                col1.classList.add("col-6")
+
+                                                col2 = document.createElement("div")
+                                                col2.classList.add("col-6")
+
+                                                row.appendChild(col1)
+                                                row.appendChild(col2)
 
                                                 newInput = document.createElement("input")
 
                                                 newInput.setAttribute("type", "number");
                                                 if ("step" in value) {
-                                                    newInput.setAttribute("step", value["step"]);   
+                                                    newInput.setAttribute("step", value["step"]);
                                                 }
                                                 newInput.defaultValue = value["min_value"];
                                                 newInput.setAttribute("min", param["min_value"]);
@@ -753,11 +783,13 @@
                                                 newInput.name = "model." + key + "_xminx";
 
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>min " + key + "</b>";
+                                                var label = document.createElement("label");
+                                                label.htmlFor = "model." + key + "_xminx";
+                                                label.style.padding = "5px";
+                                                label.innerHTML = "<b>" + key + " from</b>";
 
-                                                fat.appendChild(label);
-                                                fat.appendChild(newInput);
+                                                col1.appendChild(label);
+                                                col1.appendChild(newInput);
 
                                                 newInput = document.createElement("input")
                                                 newInput.setAttribute("type", "number");
@@ -770,12 +802,15 @@
                                                 newInput.name = "model." + key + "_xmaxx";
 
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>max " + key + "</b>";
+                                                var label = document.createElement("label");
+                                                label.htmlFor = "model." + key + "_xmaxx";
+                                                label.style.padding = "5px";
+                                                label.innerHTML = "<b>to</b>";
 
-                                                fat.appendChild(label);
-                                                fat.appendChild(newInput);
+                                                col2.appendChild(label);
+                                                col2.appendChild(newInput);
 
+                                                fat.appendChild(row)
                                                 break;
                                         }
                                     } else {
