@@ -55,8 +55,9 @@
             <h1 style="text-align: center">Manage experiments</h1>
         </div>
     </header>
-    <div>
-        <ul id="container" style="list-style: none;"></ul>
+    <hr>
+    <div class="outContainer">
+        <ul id="container" class="container" style="list-style: none;"></ul>
     </div>
 
     <div class="footer">
@@ -158,20 +159,20 @@
             stopButton = document.createElement("button")
             stopButton.id = "stopButton"
             stopButton.classList.add("send-button")
-            stopButton.innerHTML = "stop running"
+            stopButton.innerHTML = "Stop running"
             stopButton.addEventListener("click", stopCurrent)
 
             div = document.createElement("div")
             div.style.backgroundColor = "#a89732"
             div.classList.add("choice")
             div.classList.add("row")
-            div.innerHTML = "<div class='col-6'><b>" + exps[running]["experimentId"] +
-                " batch: " + exps[running]["batchId"] + " </b><br>" +
+            div.innerHTML = "<div class='col-6'><b> Name of the experiment: " + exps[running]["experimentId"] +
+                " (Name of the batch: " + exps[running]["batchId"] + " )</b><br>" +
                 "<b>Model:</b> " + exps[running]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[running]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[running]["dataset"] +
-                "<br><b>Optimized metric:</b> " + exps[running]["optimize_metrics"][0]["name"] +
-                "</div>"
+                "<br><b>Metric to optimize:</b> " + exps[running]["optimize_metrics"][0]["name"] +
+                "<br><b>Current iteration: </b> </div>"
 
             buttonsDiv.appendChild(deleteButton)
             buttonsDiv.appendChild(stopButton)
@@ -206,13 +207,14 @@
             div = document.createElement("div")
             div.classList.add("choice")
             div.classList.add("row")
-            div.innerHTML = "<div class='col-6'><b>" + exps[order[i]]["experimentId"] +
-                " batch: " + exps[order[i]]["batchId"] + " </b><br>" +
+            div.innerHTML = "<div class='col-6'><b> Name of the experiment: " + exps[running]["experimentId"] +
+                " (Name of the batch: " + exps[running]["batchId"] + " )</b><br>" +
                 "<b>Model:</b> " + exps[order[i]]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[order[i]]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[order[i]]["dataset"] +
-                "<br><b>Optimized metric:</b> " + exps[order[i]]["optimize_metrics"][0]["name"] +
-                "</div>"
+                "<br><b>Metric to optimize:</b> " + exps[order[i]]["optimize_metrics"][0]["name"] +
+                "<br><b>Current iteration: </b> </div>"
+
 
             buttonsDiv.appendChild(deleteButton)
 
