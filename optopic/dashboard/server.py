@@ -5,7 +5,7 @@ import optopic.configuration.defaults as defaults
 from multiprocessing import Process, Pool
 import json
 from flask import Flask, render_template, request
-
+import os
 
 
 app = Flask(__name__)
