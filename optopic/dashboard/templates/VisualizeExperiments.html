@@ -270,7 +270,7 @@
             batchDiv = document.createElement("div")
             img = document.createElement("img");
             img.classList.add("img-fluid");
-            img.id = batchId;
+            img.id = batchId + "slctr";
             img.src = "{{ url_for('static', filename='images/batch.png') }}";
             img.alt = "alternative";
             img.addEventListener("click", function () {
@@ -278,11 +278,11 @@
                 if (this.src.includes("selected")) {
                     n = this.src.indexOf("_selected")
                     this.src = this.src.substring(0, n).concat(".png")
-                    delete batchToShow[this.id]
+                    delete batchToShow[this.id.substring(0, this.id.length - 5)]
                 } else {
                     n = this.src.length - 4
                     this.src = this.src.substring(0, n).concat("_selected.png")
-                    batchToShow[this.id] = true;
+                    batchToShow[this.id.substring(0, this.id.length - 5)] = true;
                 }
                 refreshCanvas(batchToShow)
 
