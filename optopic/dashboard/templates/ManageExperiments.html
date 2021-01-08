@@ -11,6 +11,12 @@
 
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
     <style>
+
+        ul li{
+            font-size:18px;
+              margin: 10px 0;
+
+            }
         div.choice {
             border-radius: 25px;
             border: 2px solid #3254d0;
@@ -52,9 +58,47 @@
 
     <header id="header">
         <div>
-            <h1 style="text-align: center">Manage experiments</h1>
+            <h1 style="text-align: center">Manage the experiment queue
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Click here to read the instructions!
+                </button></h1>
         </div>
     </header>
+        <div class="outContainer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-container">
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <p class="lead"> In this page, you can manage the queue of the experiments that
+                                    you have defined in the
+                                    <a class="btn btn-primary" href="{{ url_for('CreateExperiments') }}" role="button">Create Experiments</a>
+                                    page. The experiment in the top is the currently running experiment.
+                                    You can
+                                    <ul>
+                                <li> Stop a running experiment by clicking on <button type="button" class="btn btn-warning">Stop Experiment</button>
+                                </li>
+                                <li> Start or restart an experiment by clicking on <button type="button" class="btn btn-success">Start Experiment</button>
+                                </li>
+                                <li> Delete an experiment by clicking on <button type="button" class="btn btn-danger">Delete Experiment</button>.
+                                    The experiment will be removed from the queue but you can still see the results in the
+                                    <a class="btn btn-primary" href="{{ url_for('VisualizeExperiments') }}" role="button">Visualize Experiments</a>
+                                    page.
+                                </li>
+                                <li> Drag and drop an experiment to sort the experiments queue. You can do this operation only if the
+                                    involved experiments are not running.
+                                </li>
+                            </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <hr>
     <div class="outContainer">
         <ul id="container" class="container" style="list-style: none;"></ul>
@@ -90,7 +134,8 @@
             buttonsDiv = document.getElementById("container").firstChild.firstChild.getElementsByTagName('div')[1];
 
             startExp = document.createElement("button")
-            startExp.classList.add("send-button")
+            startExp.classList.add("btn")
+            startExp.classList.add("btn-success")
             startExp.id = "startButton"
             startExp.addEventListener("click", start)
             startExp.innerHTML = "Start running"
@@ -112,15 +157,16 @@
                 });
             el = $("#container li").first()
             el.attr("draggable", false)
-            el.children().css("background-color", "#a89732")
+            el.children().css("background-color", "#de8787")
 
             buttonsDiv = document.getElementById("container").firstChild.firstChild.getElementsByTagName('div')[1];
 
             stopExp = document.createElement("button")
-            stopExp.classList.add("send-button")
+            stopExp.classList.add("btn")
+            stopExp.classList.add("btn-warning")
             stopExp.id = "stopButton"
             stopExp.addEventListener("click", stopCurrent)
-            stopExp.innerHTML = "Stop running"
+            stopExp.innerHTML = "Stop Experiment"
 
             buttonsDiv.append(stopExp)
             $("#startButton").remove()
@@ -148,9 +194,10 @@
 
 
             buttonsDiv = document.createElement("div")
-            buttonsDiv.classList.add("col-6")
+            buttonsDiv.classList.add("col-4")
             deleteButton = document.createElement("button")
-            deleteButton.classList.add("send-button")
+            deleteButton.classList.add("btn")
+            deleteButton.classList.add("btn-danger")
             deleteButton.innerHTML = "Delete experiment";
             deleteButton.dataset.expId = running
             deleteButton.dataset.childname = child.id
@@ -158,15 +205,16 @@
 
             stopButton = document.createElement("button")
             stopButton.id = "stopButton"
-            stopButton.classList.add("send-button")
-            stopButton.innerHTML = "Stop running"
+            stopButton.classList.add("btn")
+            stopButton.classList.add("btn-warning")
+            stopButton.innerHTML = "Stop Experiment"
             stopButton.addEventListener("click", stopCurrent)
 
             div = document.createElement("div")
-            div.style.backgroundColor = "#a89732"
+            div.style.backgroundColor = "#de8787"
             div.classList.add("choice")
             div.classList.add("row")
-            div.innerHTML = "<div class='col-6'><b> Name of the experiment: " + exps[running]["experimentId"] +
+            div.innerHTML = "<div class='col-8'><b> Name of the experiment: " + exps[running]["experimentId"] +
                 " (Name of the batch: " + exps[running]["batchId"] + " )</b><br>" +
                 "<b>Model:</b> " + exps[running]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[running]["optimization"]["search_spaces"]) +
@@ -195,9 +243,10 @@
 
 
             buttonsDiv = document.createElement("div")
-            buttonsDiv.classList.add("col-6")
+            buttonsDiv.classList.add("col-4")
             deleteButton = document.createElement("button")
-            deleteButton.classList.add("send-button")
+            deleteButton.classList.add("btn")
+            deleteButton.classList.add("btn-danger")
             deleteButton.innerHTML = "Delete experiment";
             deleteButton.dataset.expId = order[i]
             deleteButton.dataset.childname = child.id
@@ -207,8 +256,8 @@
             div = document.createElement("div")
             div.classList.add("choice")
             div.classList.add("row")
-            div.innerHTML = "<div class='col-6'><b> Name of the experiment: " + exps[running]["experimentId"] +
-                " (Name of the batch: " + exps[running]["batchId"] + " )</b><br>" +
+            div.innerHTML = "<div class='col-8'><b> Name of the experiment: " + exps[order[i]]["experimentId"] +
+                " (Name of the batch: " + exps[order[i]]["batchId"] + " )</b><br>" +
                 "<b>Model:</b> " + exps[order[i]]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[order[i]]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[order[i]]["dataset"] +
@@ -221,8 +270,9 @@
             if (i == 0 && running == null) {
                 startButton = document.createElement("button")
                 startButton.id = "startButton"
-                startButton.classList.add("send-button")
-                startButton.innerHTML = "start running"
+                startButton.classList.add("btn")
+                startButton.classList.add("btn-success")
+                startButton.innerHTML = "Start Experiment"
                 startButton.addEventListener("click", start)
                 buttonsDiv.appendChild(startButton)
             }
@@ -307,10 +357,11 @@
                         if ($("#startButton").length == 0 && $("#stopButton").length == 0) {
                             buttonsDiv = document.getElementById("container").firstChild.firstChild.getElementsByTagName('div')[1];
                             startExp = document.createElement("button")
-                            startExp.classList.add("send-button")
+                            startExp.classList.add("btn")
+                            startExp.classList.add("btn-success")
                             startExp.id = "startButton"
                             startExp.addEventListener("click", start)
-                            startExp.innerHTML = "Start running"
+                            startExp.innerHTML = "Start Experiment"
 
                             buttonsDiv.append(startExp)
                         }
