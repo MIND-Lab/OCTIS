@@ -367,8 +367,12 @@ class QueueManager:
         """
         Updates the order of the experiments to run
         """
+        FinalOrder = []
+        for el in newOrder:
+            if el in self.order:
+                FinalOrder.append(el)
         self.order[:] = []
-        self.order.extend(newOrder)
+        self.order.extend(FinalOrder)
 
     def deleteFromOrder(self, experimentId):
         self.order = list(filter(lambda a: a != experimentId, self.order))
