@@ -156,9 +156,10 @@
             <li class="navbarEl">
                 <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
             </li>
-            <li class="navbarEl">
+            <!--<li class="navbarEl">
                 <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
             </li>
+            -->
         </ul>
     </div>
     <header id="header">
@@ -190,12 +191,16 @@
     </div>
 
     <section id="batchSelector" class="regular slider"></section>
-    <div style="padding-left: 70%;">
-        <p id="labelGraphType"><b>Line chart</b></p>
+    <div class="row" style="padding-left: 70%;">
+        <p class="col-lg-3"> <b> Line chart </b> </p>
+
+        <p id="labelGraphType"></p>
         <label class="switch">
             <input type="checkbox" id="graphType" name="graphType">
             <span class="slidercheck round"></span>
         </label>
+        <p class="col-lg-3"> <b> Box Plot</b></p>
+
     </div>
 
     <div id="projects">
@@ -300,11 +305,12 @@
 
         boxplotCheck.addEventListener('change', function () {
             lab = document.getElementById("labelGraphType");
-            if (this.checked) {
-                lab.innerHTML = "<b>Boxplot</b>"
-            } else {
-                lab.innerHTML = "<b>Line chart</b>"
-            }
+            //if (this.checked) {
+            //    lab.innerHTML = "<b>Boxplot</b>"
+            //} else {
+            //    lab.innerHTML = "<b>Line chart</b>"
+            //}
+            //lab.innerHTML = "<b>Boxplot / Line Chart (Best seen) </b>"
             refreshCanvas(batchToShow)
         });
 
