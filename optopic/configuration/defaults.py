@@ -39,23 +39,32 @@ em_f1_score = {'average': 'micro', 'use_log': False}
 model_hyperparameters = {
     'LDA': {
         'alpha': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20,
-                  'step': 1e-4},
-        'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20, 'step': 1e-4},
+                  'step': 1e-4, 'alternative_name': '&alpha;', 'description': 'symmetric Dirichlet hyperparameter that '
+                                                                              'controls the sparsity of the ... (real)'},
+        'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20, 'step': 1e-4,
+                'alternative_name': '&beta;', 'description': 'Dirichlet hyperparameter .... (real)'},
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 200, 'step': 1},
+                        'max_value': 200, 'step': 1, 'alternative_name': 'number of topics', 'description':
+                        'number of topics to discover (integer)'},
         'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step':1},
         'iterations': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
-                       'max_value': 2000, 'step': 1}},
+                       'max_value': 2000, 'step': 1,
+                       'description': 'Number of iterations of the topic model algorithm (integer)'}},
     'ETM': {},
     'LSI': {
         'decay': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1},
-        'onepass': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False]},
+        'onepass': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False],
+                    'description': 'Whether the one-pass algorithm should be used for training. Pass False to force a multi-pass stochastic algorithm.',
+                    'alternative_name': 'one-pass algorithm'},
         'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 200, 'step': 1},
+                        'max_value': 200, 'step': 1, 'alternative_name': 'number of topics', 'description':
+                        'number of topics to discover'},
         'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5, 'step': 1},
         'extra_samples': {'type': 'Integer', 'default_value': 100, 'min_value': 0, 'max_value': 500, 'step': 1}},
     'NMF': {
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1},
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
+                        'alternative_name': 'number of topics', 'description': 'number of topics to discover'
+                        },
         'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step': 1},
         'normalize': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False]},
         'eval_every': {'type': 'Integer', 'default_value': 10, 'min_value': 1, 'max_value': 50, 'step': 1},
@@ -67,7 +76,9 @@ model_hyperparameters = {
         'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1,
                              'step': 1E-6}},
     'NMF_scikit': {
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1},
+        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
+                        'alternative_name': 'number of topics', 'description': 'number of topics to discover'
+                        },
         'init': {'type': 'Categorical', 'default_value': None,
                  'possible_values': [None, 'random', 'nndsvd', 'nndsvda', 'nndsvdar']},
         'alpha': {'type': 'Real', 'default_value': 0.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1},

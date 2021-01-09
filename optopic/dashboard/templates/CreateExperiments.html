@@ -157,7 +157,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6" data-toggle="popover" title="Popover title 3"
-                                        data-content="And here's some amazing content. It's very engaging. Right?">
+                                         data-content="And here's some amazing content. It's very engaging. Right?">
                                         <label>Id of the batch</label>
                                         <input type="text" class="coolInput" id="batchId" name="batchId" required>
                                     </div>
@@ -284,29 +284,30 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
     <script>
         function getParams(vars) {
             return vars;
         }
 
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        });
+
         $(document).ready(function () {
-
-
             //Get dataset names
             dataset = getParams({{ datasets| tojson}});
-        imgPath = "{{ url_for('static', filename='images/dataset.png') }}";
-        rBtnName = "dataset"
-        father = document.getElementById("datasetSelector");
-        createCoolSelection(dataset, imgPath, rBtnName, father)
+            imgPath = "{{ url_for('static', filename='images/dataset.png') }}";
+            rBtnName = "dataset"
+            father = document.getElementById("datasetSelector");
+            createCoolSelection(dataset, imgPath, rBtnName, father)
 
 
-        model = getParams({{ models| tojson}});
-        father = document.getElementById("modelForm");
+            model = getParams({{ models| tojson}});
+            father = document.getElementById("modelForm");
 
-        modelNames = []
-        for (const [key, value] of Object.entries(model)) {
-            modelNames.push(key)
+            modelNames = []
+            for (const [key, value] of Object.entries(model)) {
+                modelNames.push(key)
         }
         rBtnName = "model"
         imgPath = "{{ url_for('static', filename='images/model.png') }}";
@@ -383,10 +384,6 @@
 
         boSelector.appendChild(div)
 
-
-        $(function () {
-            $('[data-toggle="popover"]').popover()
-        });
 
         function addMetricBox(name, info, where) {
 
@@ -643,7 +640,7 @@
                     if (this.id == id.substring(0, id.length - 4)) {
                         toShow = model[this.id];
                         parametersDiv = document.getElementById("modelParameters")
-                        parametersDiv.innerHTML = ""
+                        parametersDiv.innerHTML = "<hr><h5>Set the Hyperparameters' Values</h5>"
                         parametersDiv.name = this.id + "pd"
 
                         if (document.getElementById(id).checked == true) {
@@ -673,7 +670,6 @@
                                     fat.appendChild(document.createTextNode("Optimize parameter"))
 
                                     if (this.checked == true) {
-
                                         switch (param["type"]) {
                                             case "Categorical":
                                                 newInput = document.createElement("select")
@@ -688,12 +684,23 @@
                                                     newInput.appendChild(option)
                                                 }
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>" + key + "</b>";
+                                                var label = document.createElement("div");
+
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value){
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
+
+                                                if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + "</b>";}
+                                                else {newHTML += "<b>" + key + "</b>";}
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
 
                                                 fat.appendChild(label);
                                                 fat.appendChild(newInput);
-
 
                                                 break;
                                             case "Real":
@@ -709,7 +716,6 @@
                                                 row.appendChild(col1)
                                                 row.appendChild(col2)
 
-
                                                 newInput = document.createElement("input")
                                                 newInput.setAttribute("type", "number");
                                                 if ("step" in value) {
@@ -724,10 +730,21 @@
                                                 newInput.name = "model." + key + "_xminx";
 
 
-                                                var label = document.createElement("label");
+                                                var label = document.createElement("div");
                                                 label.htmlFor = "model." + key + "_xminx";
                                                 label.style.padding = "5px";
-                                                label.innerHTML = "<b>" + key + " from</b>";
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value){
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
+
+                                                if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + " from</b>";}
+                                                else {newHTML += "<b>" + key + " from</b>";}
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
 
                                                 col1.appendChild(label);
                                                 col1.appendChild(newInput);
@@ -747,9 +764,10 @@
                                                 newInput.name = "model." + key + "_xmaxx";
 
 
-                                                var label = document.createElement("label");
+                                                var label = document.createElement("div");
                                                 label.htmlFor = "model." + key + "_xmaxx";
                                                 label.style.padding = "5px";
+
                                                 label.innerHTML = "<b>to</b>";
 
                                                 col2.appendChild(label);
@@ -783,10 +801,23 @@
                                                 newInput.name = "model." + key + "_xminx";
 
 
-                                                var label = document.createElement("label");
+                                                var label = document.createElement("div");
                                                 label.htmlFor = "model." + key + "_xminx";
                                                 label.style.padding = "5px";
-                                                label.innerHTML = "<b>" + key + " from</b>";
+
+                                                ////
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value){
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
+
+                                                if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + " from</b>";}
+                                                else {newHTML += "<b>" + key + " from</b>";}
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
 
                                                 col1.appendChild(label);
                                                 col1.appendChild(newInput);
@@ -813,8 +844,13 @@
                                                 fat.appendChild(row)
                                                 break;
                                         }
+                                        $("#" + idd).popover({
+                                            html: true,
+                                            content: function(idd) {
+                                              return $("#newDiv" + idd).html();
+                                            }.bind(this, idd)
+                                        });
                                     } else {
-
                                         switch (param["type"]) {
                                             case "Categorical":
                                                 newInput = document.createElement("select")
@@ -828,9 +864,19 @@
                                                     newInput.appendChild(option)
                                                 }
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>" + key + "</b>";
+                                                var label = document.createElement("div");
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value){
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
 
+                                                if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + "</b>";}
+                                                else {newHTML += "<b>" + key + "</b>";}
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
                                                 fat.appendChild(label);
                                                 fat.appendChild(newInput);
                                                 updateDropdownIndex(newInput.id, param["default_value"]);
@@ -852,8 +898,19 @@
                                                 newInput.id = key
                                                 newInput.defaultValue = param["default_value"]
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>" + key + "</b>";
+                                                var label = document.createElement("div");
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value){
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
+
+                                                if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + "</b>";}
+                                                else {newHTML += "<b>" + key + "</b>";}
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
 
                                                 fat.appendChild(label);
                                                 fat.appendChild(newInput);
@@ -873,14 +930,32 @@
                                                 newInput.id = key
                                                 newInput.defaultValue = param["default_value"]
 
-                                                var label = document.createElement("p");
-                                                label.innerHTML = "<b>" + key + "</b>";
+                                                var label = document.createElement("div");
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value){
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
+
+                                                if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + " from</b>";}
+                                                else {newHTML += "<b>" + key + " from</b>";}
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
 
                                                 fat.appendChild(label);
                                                 fat.appendChild(newInput);
 
                                                 break;
+
                                         }
+                                        $("#" + idd).popover({
+                                            html: true,
+                                            content: function(idd) {
+                                              return $("#newDiv" + idd).html();
+                                            }.bind(this, idd)
+                                        });
                                     }
                                 });
                                 divInput.appendChild(document.createTextNode("Optimize parameter"));
@@ -899,14 +974,23 @@
                                             newInput.appendChild(option)
                                         }
 
+                                        var label = document.createElement("div");
+                                        var idd = "param_" + key
+                                        var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                        if ('description' in value){
+                                            newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                        }
+                                        else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
 
-                                        var label = document.createElement("p");
-                                        label.innerHTML = "<b>" + key + "</b>";
+                                        if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + "</b>";}
+                                        else {newHTML += "<b>" + key + "</b>";}
+                                        newHTML += "</p>"
+
+                                        label.innerHTML = newHTML;
 
                                         divInput.appendChild(label);
                                         divInput.appendChild(newInput);
                                         updateDropdownIndex(newInput.id, value["default_value"]);
-
 
                                         break;
                                     case "Real":
@@ -924,8 +1008,20 @@
                                         newInput.id = key
                                         newInput.defaultValue = value["default_value"]
 
-                                        var label = document.createElement("p");
-                                        label.innerHTML = "<b>" + key + "</b>";
+                                        var label = document.createElement("div");
+
+                                        var idd = "param_" + key
+                                        var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                        if ('description' in value){
+                                            newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                        }
+                                        else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
+
+                                        if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + "</b>";}
+                                        else {newHTML += "<b>" + key + "</b>";}
+                                        newHTML += "</p>"
+
+                                        label.innerHTML = newHTML;
 
                                         divInput.appendChild(label);
                                         divInput.appendChild(newInput);
@@ -945,14 +1041,32 @@
                                         newInput.id = key
                                         newInput.defaultValue = value["default_value"]
 
-                                        var label = document.createElement("p");
-                                        label.innerHTML = "<b>" + key + "</b>";
+                                        var label = document.createElement("div");
+
+                                        var idd = "param_" + key
+                                        var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                        if ('description' in value){
+                                            newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                        }
+                                        else{newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">";}
+
+                                        if ("alternative_name" in value){newHTML += "<b>" + value["alternative_name"] + "</b>";}
+                                        else {newHTML += "<b>" + key + "</b>";}
+                                        newHTML += "</p>"
+
+                                        label.innerHTML = newHTML;
 
                                         divInput.appendChild(label);
                                         divInput.appendChild(newInput);
 
                                         break;
                                 }
+                                 $("#" + idd).popover({
+                                            html: true,
+                                            content: function(idd) {
+                                              return $("#newDiv" + idd).html();
+                                            }.bind(this, idd)
+                                        });
                             }
                         }
                     }
@@ -970,7 +1084,9 @@
         }
         });
 
+
     </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 </body>
 
 </html>
