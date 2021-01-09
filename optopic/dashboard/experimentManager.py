@@ -122,7 +122,7 @@ def startExperiment(parameters):
         for key in metric_parameters:
             if metric_parameters[key] == "use dataset texts":
                 metric_parameters[key] = dataset.get_corpus()
-            if os.path.isdir(str(metric_parameters[key])):
+            elif os.path.isdir(str(metric_parameters[key])):
                 metricDataset = datasetClass()
                 metricDataset.load(metric_parameters[key])
                 metric_parameters[key] = metricDataset.get_corpus()
