@@ -58,11 +58,11 @@
         <div style="height: 5%"></div>
         <div style="float: left; margin-left: 1%;width: 50%; height: 21%;">
             <div class="container">
-               <div class="row">
+                <div class="row">
                     <div class="col-sm-4">
                         <b> Select a experiment to analyze </b>
                     </div>
-                     <div class="col-sm-4">
+                    <div class="col-sm-4">
                         <div style="height: 10%;width: 100%;" id="expSelector"></div>
                     </div>
                 </div>
@@ -72,11 +72,10 @@
         <div id="generic" style="float: left; margin-left: 5%;margin-right:5%; width: 90%; height: 79%;"></div>
     </div>
     <hr>
-    <h2 style="text-align: center;">Titolo2</h2>
+    <h2 style="text-align: center;">Info about iteration</h2>
     <div class="singleSection">
         <div style="height: 5%"></div>
         <div style="float: left; margin-left: 1%;width: 29%; height: 100%;">
-            <b>blablabla blablabla blablabla </b>
             <div style="height: 10%;" id="iterationSelector"></div>
             <p>Statistics of a single model </p>
             <div style="height: 40%;" id="expInfo"></div>
@@ -84,13 +83,11 @@
         <div style="float: left; width: 70%; height: 100%;">
             <div style="height: 15%;">
                 <div class="container">
-                   <div class="row">
-                        <div class="col-sm-4">
-                            <b> blablabla blablabla blablabla</b>
+                    <div class="row">
+                        <b>Wordcloud of topic </b>
+                        <div style="height: 15%;margin-left: 5%; margin-right: 5%; width: 30%" id="topicSelector">
                         </div>
-                         <div class="col-sm-4">
-                            <div style="height: 15%;margin-left: 10%; width: 30%" id="topicSelector"></div>
-                        </div>
+                        <b> for current iteration</b>
                     </div>
                 </div>
             </div>
@@ -100,11 +97,11 @@
     </div>
     <hr>
 
-    <h2 style="text-align: center;">Titolo3</h2>
+    <h2 style="text-align: center;">Word and topic distribution of current iteration and run</h2>
     <div class="singleSection">
-         <div style="float: left; margin-left: 5%;margin-right: 5%;width: 40%; height: 100%;">
-             <div style="height: 20%;">
-                 <b>Topic distribution as a function of the document </b>
+        <div style="float: left; margin-left: 5%;margin-right: 5%;width: 40%; height: 100%;">
+            <div style="height: 20%;">
+                <b>Topic distribution as a function of the document </b>
                 <input type="number" value="0" id="docSelector" min="0" max="{{ datasetMetadata['total_documents'] }}">
                 <input type="button" value="Ok" onclick="updateDocViewer()">
             </div>
@@ -112,8 +109,8 @@
             <div id="docPreview" style="height: 10%;"></div>
         </div>
         <div style="float: left; margin-right: 5%;margin-left: 5% ;width: 40%; height: 100%;">
-              <div style="height: 10%;">
-                 <b>Word distribution on the topic </b>
+            <div style="height: 10%;">
+                <b>Word distribution on the topic </b>
                 <select style="width: 50%;" id="wordSelector" class="coolSelect" onchange="updateWordGraph()"></select>
             </div>
 
@@ -237,7 +234,9 @@
     }
     iterSelect.defaultValue = 0
 
-    sel.appendChild(document.createTextNode("Iteration: "))
+    bold = document.createElement('strong')
+    bold.appendChild(document.createTextNode("Get info about iteration: "))
+    sel.appendChild(bold)
     sel.appendChild(iterSelect)
 
 
@@ -252,7 +251,10 @@
     }
     runSelect.defaultValue = 0
 
-    sel.appendChild(document.createTextNode("Model run: "))
+
+    bold = document.createElement('strong')
+    bold.appendChild(document.createTextNode(" Model run: "))
+    sel.appendChild(bold)
     sel.appendChild(runSelect)
 
 
@@ -441,12 +443,12 @@
                     b: 40,
                     t: 40,
                     pad: 4,
-                    grid: {rows: 1, columns: 2, pattern: 'independent'}
+                    grid: { rows: 1, columns: 2, pattern: 'independent' }
                 },
                 paper_bgcolor: 'rgba(256,256,256,1)',
-                xaxis: {domain: [0, 0.7]},
-                yaxis2: {anchor: 'x2'},
-                xaxis2: {domain: [0.8, 1]},
+                xaxis: { domain: [0, 0.7] },
+                yaxis2: { anchor: 'x2' },
+                xaxis2: { domain: [0.8, 1] },
                 showlegend: false
             };
 
@@ -460,9 +462,9 @@
             var trace2 = {
                 y: globalInfo["f_val"],
                 type: 'box',
-                  marker: {
+                marker: {
                     color: 'rgb(10,140,208)'
-                  },
+                },
                 name: '',
                 xaxis: 'x2',
                 yaxis: 'y2'
