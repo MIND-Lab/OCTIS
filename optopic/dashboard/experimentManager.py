@@ -250,8 +250,15 @@ def singleInfo(path):
         with open(path, 'rb') as file:
             result = json.load(file)
         values = result['f_val']
-        best_seen = max(values)
-        worse_seen = min(values)
+        type_of_problem = result['optimization_type']
+        if type_of_problem == 'Maximize':
+            best_seen = max(values)
+            worse_seen = min(values)
+            best_index=np.argmax(values)
+        else:
+            best_seen = min(values)
+            worse_seen = max(values)
+            best_index=np.argin(values)
         median_seen = np.median(values)
         mean_seen = np.mean(values)
 
@@ -265,6 +272,12 @@ def singleInfo(path):
             for i in range(iterations):
                 dict_results[name].append(metric_results['iteration_'+str(i)])
 
+        hyperparameters = result['x_iters']
+        name_hyp = list(hyperparameters.keys())
+        best_hyperparameter_configuration = dict()
+        for name in name_hyp:
+            best_hyperparameter_configuration.update({name: hyperparameters[name][best_index]})
+
         # dizionaro di output
         dict_return = dict()
         dict_return.update({"model_runs": dict_results})
@@ -275,6 +288,25 @@ def singleInfo(path):
         dict_return.update({"mean_seen": mean_seen})
         dict_return.update({"current_iteration": result["current_call"],
                             "total_iterations": result["number_of_call"]})
+        dict_return.update({"metric_names": name_metrics})    #nome delle metriche
+        dict_return.update({"hyperparameter_configurations": hyperparameters})
+        dict_return.update({"hyperparameter_configuration": best_hyperparameter_configuration})
+        dict_return.update({"optimized_metric": result["metric_name"]})
+
+        dict_values_extra_metrics = dict()
+        if len(result['extra_metric_names'])>0:
+            extra_metrics_names=list(result['dict_model_runs'].keys())
+
+            for name in extra_metrics_names[1:]:
+                values=[]
+                dict_values=result['dict_model_runs'][name]
+                iterations = list(dict_values.keys())
+                for iter in iterations:
+                    values.append(np.median(dict_values[iter]))
+                dict_values_extra_metrics.update({name:values})
+            dict_return.update({"extra_metris_vals": dict_values_extra_metrics})
+        else:
+            dict_return.update({"extra_metris_vals": dict()})
 
         return dict_return
     return False
