@@ -15,7 +15,7 @@ class ETM(Abstract_Model):
 
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
-                 wdecay=1.2e-6, bow_norm=1, train_embeddings=True, embeddings_path=None):
+                 wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None):
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = num_topics
@@ -31,17 +31,17 @@ class ETM(Abstract_Model):
         self.hyperparameters['clip'] = clip
         self.hyperparameters['wdecay'] = wdecay
         self.hyperparameters['bow_norm'] = bow_norm
-        self.top_word = 10
+        self.hyperparameters['train_embeddings'] = train_embeddings
+        self.hyperparameters['embeddings_path'] = embeddings_path
+        self.top_word = top_word
         self.early_stopping = None
-        self.device = 'cpu'
+        self.device = device
         self.test_tokens, self.test_counts = None, None
         self.valid_tokens, self.valid_counts = None, None
         self.train_tokens, self.train_counts, self.vocab = None, None, None
-        self.use_partitions = False
+        self.use_partitions = True
         self.model = None
         self.optimizer = None
-        self.train_embeddings = train_embeddings
-        self.embeddings_path = embeddings_path
         self.embeddings = None
 
     def train_model(self, dataset, hyperparameters, top_words=10):
@@ -65,20 +65,21 @@ class ETM(Abstract_Model):
         return result
 
     def set_model(self, dataset, hyperparameters):
-        if self.use_partitions:
-            train_data, validation_data, testing_data = \
-                dataset.get_partitioned_corpus(use_validation=True)
+        #if self.use_partitions:
+        train_data, validation_data, testing_data = \
+            dataset.get_partitioned_corpus(use_validation=True)
 
-            data_corpus_train = [' '.join(i) for i in train_data]
-            data_corpus_test = [' '.join(i) for i in testing_data]
-            data_corpus_val = [' '.join(i) for i in validation_data]
+        data_corpus_train = [' '.join(i) for i in train_data]
+        data_corpus_test = [' '.join(i) for i in testing_data]
+        data_corpus_val = [' '.join(i) for i in validation_data]
 
-            vocab = dataset.get_vocabulary()
-            self.vocab = {i: w for i, w in enumerate(vocab)}
-            vocab2id = {w: i for i, w in enumerate(vocab)}
+        vocab = dataset.get_vocabulary()
+        self.vocab = {i: w for i, w in enumerate(vocab)}
+        vocab2id = {w: i for i, w in enumerate(vocab)}
 
-            self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.valid_tokens, \
-            self.valid_counts = self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
+        self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.valid_tokens, \
+        self.valid_counts = self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
+        '''
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             vocab = dataset.get_vocabulary()
@@ -86,7 +87,7 @@ class ETM(Abstract_Model):
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
             self.train_tokens, self.train_counts = self.preprocess(vocab2id, data_corpus, None)
-
+        '''
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         self.set_default_hyperparameters(hyperparameters)
@@ -97,7 +98,8 @@ class ETM(Abstract_Model):
                              rho_size=self.hyperparameters['rho_size'],
                              emb_size=self.hyperparameters['embedding_size'],
                              theta_act=self.hyperparameters['activation'],
-                             embeddings=self.embeddings, train_embeddings=self.train_embeddings,
+                             embeddings=self.embeddings,
+                             train_embeddings=self.hyperparameters['train_embeddings'],
                              enc_drop=self.hyperparameters['dropout']).to(self.device)
         print('model: {}'.format(self.model))
 
@@ -334,11 +336,10 @@ class ETM(Abstract_Model):
             else:
                 return x_train_tokens, x_train_count
 
-
     def load_embeddings(self):
-        if not self.train_embeddings:
+        if not self.hyperparameters['train_embeddings']:
             vectors = {}
-            embs = pkl.load(open(self.embeddings_path, 'rb'))
+            embs = pkl.load(open(self.hyperparameters['embeddings_path'], 'rb'))
             for l in embs:
                 line = l.split()
                 word = line[0]
@@ -354,7 +355,6 @@ class ETM(Abstract_Model):
                 except KeyError:
                     embeddings[i] = np.random.normal(scale=0.6, size=(self.hyperparameters['embedding_size'],))
             self.embeddings = torch.from_numpy(embeddings).to(self.device)
-
 
     def filter_pretrained_embeddings(self, pretrained_embeddings_path, save_embedding_path, vocab_path, binary=True):
         """
