@@ -651,6 +651,8 @@
 
                                 divInput = document.createElement("div");
                                 divInput.classList.add("form-group")
+                                divInput.classList.add("col-sm-1")
+                                divInput.classList.add("singleObject")
 
                                 checkbox = document.createElement("input")
                                 checkbox.setAttribute("type", "checkbox");
@@ -698,7 +700,7 @@
                                                 else {newHTML += "<b>" + key + "</b>";}
                                                 newHTML += "</p>"
 
-                                                label.innerHTML = newHTML;
+                                                label.innerHTML = "<p><b>to</b></p>";
 
                                                 fat.appendChild(label);
                                                 fat.appendChild(newInput);
@@ -769,7 +771,7 @@
                                                 label.htmlFor = "model." + key + "_xmaxx";
                                                 label.style.padding = "5px";
 
-                                                label.innerHTML = "<b>to</b>";
+                                                label.innerHTML = "<p><b>to</b></p>";
 
                                                 col2.appendChild(label);
                                                 col2.appendChild(newInput);
@@ -837,7 +839,7 @@
                                                 var label = document.createElement("label");
                                                 label.htmlFor = "model." + key + "_xmaxx";
                                                 label.style.padding = "5px";
-                                                label.innerHTML = "<b>to</b>";
+                                                label.innerHTML = "<p><b>to</b></p>";
 
                                                 col2.appendChild(label);
                                                 col2.appendChild(newInput);
