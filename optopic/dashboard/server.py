@@ -8,6 +8,7 @@ from flask import Flask, render_template, request
 import os
 
 
+
 app = Flask(__name__)
 queueManager = ""
 
@@ -145,6 +146,11 @@ def VisualizeExperiments():
 @ app.route('/ManageExperiments')
 def ManageExperiments():
     exp_list = queueManager.getToRun()
+    for exp in exp_list:
+        exp_info = queueManager.getExperimentInfo(
+            exp_list[exp]["batchId"], exp_list[exp]["experimentId"])
+        if exp_info != False:
+            exp_list[exp].update(exp_info)
     order = queueManager.getOrder()
     running = queueManager.getRunning()
     return render_template("ManageExperiments.html",

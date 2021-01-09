@@ -11,12 +11,12 @@
 
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
     <style>
+        ul li {
+            font-size: 18px;
+            margin: 10px 0;
 
-        ul li{
-            font-size:18px;
-              margin: 10px 0;
+        }
 
-            }
         div.choice {
             border-radius: 25px;
             border: 2px solid #3254d0;
@@ -62,10 +62,11 @@
                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
                     aria-expanded="false" aria-controls="collapseExample">
                     Click here to read the instructions!
-                </button></h1>
+                </button>
+            </h1>
         </div>
     </header>
-        <div class="outContainer">
+    <div class="outContainer">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -74,23 +75,30 @@
                             <div class="card card-body">
                                 <p class="lead"> In this page, you can manage the queue of the experiments that
                                     you have defined in the
-                                    <a class="btn btn-primary" href="{{ url_for('CreateExperiments') }}" role="button">Create Experiments</a>
+                                    <a class="btn btn-primary" href="{{ url_for('CreateExperiments') }}"
+                                        role="button">Create Experiments</a>
                                     page. The experiment in the top is the currently running experiment.
                                     You can
-                                    <ul>
-                                <li> Stop a running experiment by clicking on <button type="button" class="btn btn-warning">Stop Experiment</button>
-                                </li>
-                                <li> Start or restart an experiment by clicking on <button type="button" class="btn btn-success">Start Experiment</button>
-                                </li>
-                                <li> Delete an experiment by clicking on <button type="button" class="btn btn-danger">Delete Experiment</button>.
-                                    The experiment will be removed from the queue but you can still see the results in the
-                                    <a class="btn btn-primary" href="{{ url_for('VisualizeExperiments') }}" role="button">Visualize Experiments</a>
-                                    page.
-                                </li>
-                                <li> Drag and drop an experiment to sort the experiments queue. You can do this operation only if the
-                                    involved experiments are not running.
-                                </li>
-                            </ul>
+                                <ul>
+                                    <li> Stop a running experiment by clicking on <button type="button"
+                                            class="btn btn-warning">Stop Experiment</button>
+                                    </li>
+                                    <li> Start or restart an experiment by clicking on <button type="button"
+                                            class="btn btn-success">Start Experiment</button>
+                                    </li>
+                                    <li> Delete an experiment by clicking on <button type="button"
+                                            class="btn btn-danger">Delete Experiment</button>.
+                                        The experiment will be removed from the queue but you can still see the results
+                                        in the
+                                        <a class="btn btn-primary" href="{{ url_for('VisualizeExperiments') }}"
+                                            role="button">Visualize Experiments</a>
+                                        page.
+                                    </li>
+                                    <li> Drag and drop an experiment to sort the experiments queue. You can do this
+                                        operation only if the
+                                        involved experiments are not running.
+                                    </li>
+                                </ul>
                                 </p>
                             </div>
                         </div>
@@ -214,8 +222,17 @@
             div.style.backgroundColor = "#de8787"
             div.classList.add("choice")
             div.classList.add("row")
+
+            current_iteration = 0;
+            total_iterations = 100;
+            if (("current_iteration" in exps[running])) {
+                current_iteration = exps[running]["current_iteration"]
+                total_iterations = exps[running]["total_iterations"]
+            }
+            percentage = ((current_iteration / total_iterations) * 100).toFixed(0).toString()
             div.innerHTML = "<div class='col-8'><b> Name of the experiment: " + exps[running]["experimentId"] +
                 " (Name of the batch: " + exps[running]["batchId"] + " )</b><br>" +
+                "<p><progress value='" + current_iteration + "' max='" + total_iterations + "'></progress> " + percentage + "% Completed</p>" +
                 "<b>Model:</b> " + exps[running]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[running]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[running]["dataset"] +
@@ -256,8 +273,18 @@
             div = document.createElement("div")
             div.classList.add("choice")
             div.classList.add("row")
+
+            current_iteration = 0;
+            total_iterations = 100;
+            if (("current_iteration" in exps[order[i]])) {
+                current_iteration = exps[order[i]]["current_iteration"]
+                total_iterations = exps[order[i]]["total_iterations"]
+            }
+            percentage = ((current_iteration / total_iterations) * 100).toFixed(0).toString()
+
             div.innerHTML = "<div class='col-8'><b> Name of the experiment: " + exps[order[i]]["experimentId"] +
                 " (Name of the batch: " + exps[order[i]]["batchId"] + " )</b><br>" +
+                "<p><progress value='" + current_iteration + "' max='" + total_iterations + "'></progress> " + percentage + "% Completed</p>" +
                 "<b>Model:</b> " + exps[order[i]]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[order[i]]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[order[i]]["dataset"] +

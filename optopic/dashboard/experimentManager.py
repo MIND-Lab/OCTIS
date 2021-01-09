@@ -185,9 +185,11 @@ def retrieveBoResults(path):
         with open(path, 'rb') as file:
             result = json.load(file)
         f_val = result['f_val']
-        # output dictionart
+        # output dictionary
         dict_return = dict()
-        dict_return.update({"f_val": f_val})
+        dict_return.update({"f_val": f_val,
+                            "current_iteration": result["current_call"],
+                            "total_iterations": result["number_of_call"]})
         return dict_return
     return False
 
@@ -271,6 +273,8 @@ def singleInfo(path):
         dict_return.update({"worse_seen": worse_seen})
         dict_return.update({"median_seen": median_seen})
         dict_return.update({"mean_seen": mean_seen})
+        dict_return.update({"current_iteration": result["current_call"],
+                            "total_iterations": result["number_of_call"]})
 
         return dict_return
     return False
