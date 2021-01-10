@@ -313,8 +313,8 @@ class AVITM_model(object):
                 topic_document_mat.append(topic_document)
 
         results = self.get_info()
-        results['test-topic-document-matrix2'] = np.vstack(
-            np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
+        #results['test-topic-document-matrix2'] = np.vstack(
+        #    np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
         results['test-topic-document-matrix'] = np.asarray(self.get_thetas(dataset)).T
 
         return results
@@ -353,10 +353,10 @@ class AVITM_model(object):
         info = {}
         topic_word = self.get_topics()
         topic_word_dist = self.get_topic_word_mat()
-        topic_document_dist = self.get_topic_document_mat()
+        #topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
 
-        info['topic-document-matrix2'] = topic_document_dist.T
+        #info['topic-document-matrix2'] = topic_document_dist.T
         info['topic-document-matrix'] = np.asarray(self.get_thetas(self.train_data)).T
 
         info['topic-word-matrix'] = topic_word_dist
