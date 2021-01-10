@@ -55,12 +55,15 @@ def load_model(optimization_object):
     """
 
     model_parameters = optimization_object['model_attributes']
+    use_partitioning=optimization_object['use_partitioning']
+    
     model_name = optimization_object['model_name']
     module_path = os.path.join(framework_path, "models")
     module_path = os.path.join(module_path, model_name + ".py")
     model = importClass(model_name, model_name, module_path)
     model_instance = model()
     model_instance.hyperparameters.update(model_parameters)
+    model_instance.use_partitions=use_partitioning
 
     return model_instance
 
@@ -374,6 +377,7 @@ class BestEvaluation:
         self.info.update({"search_space": save_search_space(params.search_space)})
         self.info.update({"model_name": params.model.__class__.__name__})
         self.info.update({"model_attributes": dict_model_parameters})
+        self.info.update({"use_partitioning":  params.model.use_partitions})
         self.info.update({"metric_name": params.name_optimized_metric})
         self.info.update({"extra_metric_names": [name for name in params.extra_metric_names]})
         self.info.update({"metric_attributes": dict_metric_parameters})
