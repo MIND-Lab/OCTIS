@@ -76,7 +76,7 @@ model_hyperparameters = {
             #                  'alternative_name': 'pretrained embeddings size',
             #                  'description': 'size of the word embeddings that have been uploaded (type: categorical)'},
 
-            'activation': {'type': 'Categorical', 'default_value': 300,
+            'activation': {'type': 'Categorical', 'default_value': 'relu',
                            'possible_values': ['relu', 'tanh', 'sigmoid', 'softplus', 'rrelu', 'leakyrelu', 'elu',
                                                'selu', 'glu'],
                            'alternative_name': 'activation function',
@@ -91,7 +91,7 @@ model_hyperparameters = {
                            'possible_values': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
                            'alternative_name': 'batch size',
                            'description': 'batch size (type: categorical)'},
-            'bow_norm': {'type': 'Categorical', 'default_value': 1, 'possible_values': [0,1],
+            'bow_norm': {'type': 'Categorical', 'default_value': 1, 'possible_values': [0, 1],
                          'alternative_name': 'bow normalization', 'description':
                              'Whether to normalize (1) or not normalize (0) the BOW (bag-of-words) documents.'},
             'wdecay': {'type': 'Real', 'default_value': 1.2e-6, 'min_value': 0, 'max_value': 1, 'step': 1e-6,
@@ -150,8 +150,8 @@ model_hyperparameters = {
                                             'the current batch. (type: real)'},
         'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1,
                              'step': 1E-6, 'alternative_name': 'stopping condition for H',
-        'description': 'If error difference gets less than that, training of H stops for '
-                       'the current batch. (type: real)'}},
+                             'description': 'If error difference gets less than that, training of H stops for '
+                                            'the current batch. (type: real)'}},
     'NMF_scikit': {
         'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
                        'alternative_name': 'number of topics', 'description': 'number of topics to discover'
@@ -159,7 +159,89 @@ model_hyperparameters = {
         'init': {'type': 'Categorical', 'default_value': None,
                  'possible_values': [None, 'random', 'nndsvd', 'nndsvda', 'nndsvdar']},
         'alpha': {'type': 'Real', 'default_value': 0.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1},
-        'l1_ratio': {'type': 'Real', 'default_value': 0.0, 'min_value': 0, 'max_value': 1, 'step': 0.1}}}
+        'l1_ratio': {'type': 'Real', 'default_value': 0.0, 'min_value': 0, 'max_value': 1, 'step': 0.1}},
+    'NeuralLDA': {
+        'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
+                       'alternative_name': 'number of topics', 'description': 'number of topics to discover'
+                       },
+        'activation': {'type': 'Categorical', 'default_value': 'softplus',
+                       'possible_values': ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                                           'rrelu', 'elu', 'selu'],
+                       'alternative_name': 'activation function',
+                       'description': 'activation function applied to the hidden layer (type: categorical)'},
+        'dropout': {'type': 'Real', 'default_value': 0.2, 'min_value': 0.0, 'max_value': 0.95, 'step': 0.05,
+                    'description': 'Dropout applied to the hidden layer',
+                    'alternative_name': 'dropout'},
+        'batch_size': {'type': 'Categorical', 'default_value': 200,
+                       'possible_values': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+                       'alternative_name': 'batch size',
+                       'description': 'batch size (type: categorical)'},
+        'lr': {'type': 'Real', 'default_value': 2e-3, 'min_value': 1e-6, 'max_value': 0.1, 'step': 1e-6,
+               'description': 'Learning rate for the training of the network',
+               'alternative_name': 'learning rate'},
+        'momentum': {'type': 'Real', 'default_value': 0.99, 'min_value': 0, 'max_value': 1, 'step': 0.01,
+                     'description': 'Momentum',
+                     'alternative_name': 'Momentum'},
+        'solver': {'type': 'Categorical', 'default_value': 'sgd',
+                   'possible_values': ['adagrad', 'adam', 'sgd', 'adadelta', 'rmsprop'],
+                   'alternative_name': 'optimizer',
+                   'description': 'optimizer algorithm (type: categorical)'},
+        'num_epochs': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
+                       'max_value': 300, 'step': 1, 'alternative_name': 'number of training epochs', 'description':
+                           'number of training epochs (type: integer)'},
+        'num_neurons':
+            {'type': 'Categorical', 'default_value': 800,
+             'possible_values': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+             'alternative_name': 'Number of neurons',
+             'description': 'Number of neurons for each layer of the network (type: integer)'},
+
+        'num_layers':
+            {'type': 'Categorical', 'default_value': 2,
+             'possible_values': [1, 2, 3, 4, 5],
+             'alternative_name': 'Number of layers',
+             'description': 'Number of layers of the network (type: integer)'}},
+    'ProdLDA': {
+        'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
+                       'alternative_name': 'number of topics', 'description': 'number of topics to discover'
+                       },
+        'activation': {'type': 'Categorical', 'default_value': 'softplus',
+                       'possible_values': ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                                           'rrelu', 'elu', 'selu'],
+                       'alternative_name': 'activation function',
+                       'description': 'activation function applied to the hidden layer (type: categorical)'},
+        'dropout': {'type': 'Real', 'default_value': 0.2, 'min_value': 0.0, 'max_value': 0.95, 'step': 0.05,
+                    'description': 'Dropout applied to the hidden layer',
+                    'alternative_name': 'dropout'},
+        'batch_size': {'type': 'Categorical', 'default_value': 200,
+                       'possible_values': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+                       'alternative_name': 'batch size',
+                       'description': 'batch size (type: categorical)'},
+        'lr': {'type': 'Real', 'default_value': 2e-3, 'min_value': 1e-6, 'max_value': 0.1, 'step': 1e-6,
+               'description': 'Learning rate for the training of the network',
+               'alternative_name': 'learning rate'},
+        'momentum': {'type': 'Real', 'default_value': 0.99, 'min_value': 0, 'max_value': 1, 'step': 0.01,
+                     'description': 'Momentum',
+                     'alternative_name': 'Momentum'},
+        'solver': {'type': 'Categorical', 'default_value': 'sgd',
+                   'possible_values': ['adagrad', 'adam', 'sgd', 'adadelta', 'rmsprop'],
+                   'alternative_name': 'optimizer',
+                   'description': 'optimizer algorithm (type: categorical)'},
+        'num_epochs': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
+                       'max_value': 300, 'step': 1, 'alternative_name': 'number of training epochs', 'description':
+                           'number of training epochs (type: integer)'},
+        'num_neurons':
+            {'type': 'Categorical', 'default_value': 800,
+             'possible_values': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+             'alternative_name': 'Number of neurons',
+             'description': 'Number of neurons for each layer of the network (type: integer)'},
+
+        'num_layers':
+            {'type': 'Categorical', 'default_value': 2,
+             'possible_values': [1, 2, 3, 4, 5],
+             'alternative_name': 'Number of layers',
+             'description': 'Number of layers of the network (type: integer)'}
+    }
+}
 
 '''
 # METRIC PARAMETERS #
