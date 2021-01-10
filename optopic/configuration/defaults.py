@@ -39,52 +39,127 @@ em_f1_score = {'average': 'micro', 'use_log': False}
 model_hyperparameters = {
     'LDA': {
         'alpha': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20,
-                  'step': 1e-4, 'alternative_name': '&alpha;', 'description': 'symmetric Dirichlet hyperparameter that '
-                                                                              'controls the sparsity of the ... (real)'},
+                  'step': 1e-4, 'alternative_name': '&alpha;',
+                  'description': 'symmetric Dirichlet prior controlling the document-topic distribution. '
+                                 'Low values (<1) place more weight on having each document composed of '
+                                 'only a few dominant topics (type: real)'},
         'eta': {'type': 'Real', 'default_value': 0.1, 'min_value': 1e-4, 'max_value': 20, 'step': 1e-4,
-                'alternative_name': '&beta;', 'description': 'Dirichlet hyperparameter .... (real)'},
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 200, 'step': 1, 'alternative_name': 'number of topics', 'description':
-                        'number of topics to discover (integer)'},
-        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step':1},
+                'alternative_name': '&beta;', 'description': 'symmetric Dirichlet prior over the vocabulary. '
+                                                             'Low values (<1) place more weight on having each topic'
+                                                             ' composed of only a few dominant words (type: real)'},
+        'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2,
+                       'max_value': 200, 'step': 1, 'alternative_name': 'number of topics', 'description':
+                           'number of topics to discover (integer)'},
+        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step': 1,
+                   'description': 'Number of passes through the corpus during training', 'alternative_name':
+                       'Number of passes'},
         'iterations': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
                        'max_value': 2000, 'step': 1,
                        'description': 'Number of iterations of the topic model algorithm (integer)'}},
-    'ETM': {},
+    'ETM': {'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2,
+                           'max_value': 200, 'step': 1, 'alternative_name': 'number of topics', 'description':
+                               'number of topics to discover (integer)'},
+            'num_epochs': {'type': 'Integer', 'default_value': 50, 'min_value': 5,
+                           'max_value': 300, 'step': 1, 'alternative_name': 'number of training epochs', 'description':
+                               'number of training epochs (type: integer)'},
+            't_hidden_size':
+                {'type': 'Categorical', 'default_value': 800,
+                 'possible_values': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+                 'alternative_name': 'hidden size',
+                 'description': 'size of the deepest hidden layer (type: categorical)'},
+            'rho_size':
+                {'type': 'Categorical', 'default_value': 300, 'possible_values': [100, 200, 300, 400, 500],
+                 'alternative_name': 'rho size',
+                 'description': 'size of the word embeddings to learn (type: categorical)'},
+
+            # 'embedding_size': {'type': 'Categorical', 'default_value': 300,
+            #                  'alternative_name': 'pretrained embeddings size',
+            #                  'description': 'size of the word embeddings that have been uploaded (type: categorical)'},
+
+            'activation': {'type': 'Categorical', 'default_value': 300,
+                           'possible_values': ['relu', 'tanh', 'sigmoid', 'softplus', 'rrelu', 'leakyrelu', 'elu',
+                                               'selu', 'glu'],
+                           'alternative_name': 'activation function',
+                           'description': 'activation function applied to the hidden layer (type: categorical)'},
+            'dropout': {'type': 'Real', 'default_value': 0.5, 'min_value': 0.0, 'max_value': 0.95, 'step': 0.05,
+                        'description': 'Dropout applied to the hidden layer',
+                        'alternative_name': 'dropout'},
+            'lr': {'type': 'Real', 'default_value': 0.005, 'min_value': 1e-6, 'max_value': 0.1, 'step': 1e-6,
+                   'description': 'Learning rate for the training of the network',
+                   'alternative_name': 'learning rate'},
+            'batch_size': {'type': 'Categorical', 'default_value': 200,
+                           'possible_values': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+                           'alternative_name': 'batch size',
+                           'description': 'batch size (type: categorical)'},
+            'bow_norm': {'type': 'Categorical', 'default_value': 1, 'possible_values': [0,1],
+                         'alternative_name': 'bow normalization', 'description':
+                             'Whether to normalize (1) or not normalize (0) the BOW (bag-of-words) documents.'},
+            'wdecay': {'type': 'Real', 'default_value': 1.2e-6, 'min_value': 0, 'max_value': 1, 'step': 1e-6,
+                       'alternative_name': 'weight decay', 'description':
+                           'Weight decay factor.'},
+
+            'optimizer': {'type': 'Categorical', 'default_value': 'sgd',
+                          'possible_values': ['adam', 'adagrad', 'adadelta', 'rmsprop', 'asgd', 'sgd'],
+                          'alternative_name': 'optimizer',
+                          'description': 'optimizer algorithm (type: categorical)'},
+
+            },
     'LSI': {
-        'decay': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1},
+        'decay': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1,
+                  'description': 'Weight of existing observations relatively to new ones',
+                  'alternative_name': 'decay'},
         'onepass': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False],
-                    'description': 'Whether the one-pass algorithm should be used for training. Pass False to force a multi-pass stochastic algorithm.',
+                    'description': 'Whether the one-pass algorithm should be used for training. '
+                                   'Pass False to force a multi-pass stochastic algorithm.',
                     'alternative_name': 'one-pass algorithm'},
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2,
-                        'max_value': 200, 'step': 1, 'alternative_name': 'number of topics', 'description':
-                        'number of topics to discover'},
-        'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5, 'step': 1},
-        'extra_samples': {'type': 'Integer', 'default_value': 100, 'min_value': 0, 'max_value': 500, 'step': 1}},
+        'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2,
+                       'max_value': 200, 'step': 1, 'alternative_name': 'number of topics', 'description':
+                           'number of topics to discover'},
+        'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5, 'step': 1,
+                        'description': 'Number of power iteration steps to be used. Increasing the number of power '
+                                       'iterations improves accuracy, but lowers performance', 'alternative_name':
+                            'Number of power iteration steps'},
+        'extra_samples': {'type': 'Integer', 'default_value': 100, 'min_value': 0, 'max_value': 500, 'step': 1,
+                          'description': 'Extra samples to be used besides the rank k. Can improve accuracy',
+                          'alternative_name': 'Number of extra samples'}},
     'NMF': {
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
-                        'alternative_name': 'number of topics', 'description': 'number of topics to discover'
-                        },
-        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step': 1},
-        'normalize': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False]},
-        'eval_every': {'type': 'Integer', 'default_value': 10, 'min_value': 1, 'max_value': 50, 'step': 1},
-        'kappa': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.1, 'max_value': 5.0, 'step': 0.1},
-        'w_max_iter': {'type': 'Integer', 'default_value': 200, 'min_value': 5, 'max_value': 1000, 'step': 1},
-        'h_max_iter': {'type': 'Integer', 'default_value': 50, 'min_value': 5, 'max_value': 1000, 'step': 1},
+        'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
+                       'alternative_name': 'number of topics', 'description': 'number of topics to discover'
+                       },
+        'passes': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 10, 'step': 1,
+                   'description': 'Number of passes through the corpus during training', 'alternative_name':
+                       'Number of passes'},
+        'normalize': {'type': 'Categorical', 'default_value': True, 'possible_values': [True, False],
+                      'description': 'Whether to normalize the result'},
+        'eval_every': {'type': 'Integer', 'default_value': 10, 'min_value': 1, 'max_value': 50, 'step': 1,
+                       'description': 'Number of batches after which l2 norm of (v - Wh) is computed. '
+                                      'Decreases performance if set too low.', 'alternative_name': 'evaluate every'},
+        'kappa': {'type': 'Real', 'default_value': 1.0, 'min_value': 0.1, 'max_value': 5.0, 'step': 0.1,
+                  'alternative_name': 'k',
+                  'description': 'Gradient descent step size. Larger value makes the model train faster, but could lead to non-convergence if set too large.'},
+        'w_max_iter': {'type': 'Integer', 'default_value': 200, 'min_value': 5, 'max_value': 1000, 'step': 1,
+                       'alternative_name': 'Maximum iterations for W', 'description':
+                           'Maximum number of iterations to train the matrix W per each batch (type: integer'},
+        'h_max_iter': {'type': 'Integer', 'default_value': 50, 'min_value': 5, 'max_value': 1000, 'step': 1,
+                       'alternative_name': 'Maximum iterations for H', 'description':
+                           'Maximum number of iterations to train the matrix H per each batch (type: integer)'
+                       },
         'w_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1,
-                             'step': 1E-6},
+                             'step': 1E-6, 'alternative_name': 'stopping condition for W',
+                             'description': 'If error difference gets less than that, training of W stops for '
+                                            'the current batch. (type: real)'},
         'h_stop_condition': {'type': 'Real', 'default_value': 0.0001, 'min_value': 1E-6, 'max_value': 0.1,
-                             'step': 1E-6}},
+                             'step': 1E-6, 'alternative_name': 'stopping condition for H',
+        'description': 'If error difference gets less than that, training of H stops for '
+                       'the current batch. (type: real)'}},
     'NMF_scikit': {
-        'num_topics':  {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
-                        'alternative_name': 'number of topics', 'description': 'number of topics to discover'
-                        },
+        'num_topics': {'type': 'Integer', 'default_value': 10, 'min_value': 2, 'max_value': 200, 'step': 1,
+                       'alternative_name': 'number of topics', 'description': 'number of topics to discover'
+                       },
         'init': {'type': 'Categorical', 'default_value': None,
                  'possible_values': [None, 'random', 'nndsvd', 'nndsvda', 'nndsvdar']},
         'alpha': {'type': 'Real', 'default_value': 0.0, 'min_value': 0.0, 'max_value': 1.0, 'step': 0.1},
         'l1_ratio': {'type': 'Real', 'default_value': 0.0, 'min_value': 0, 'max_value': 1, 'step': 0.1}}}
-
-
 
 '''
 # METRIC PARAMETERS #
@@ -114,7 +189,7 @@ metric_parameters = {
     "KL_background": {"name": "KL-B", "module": "topic_significance_metrics"},
     "KL_vacuous": {"name": "KL-V", "module": "topic_significance_metrics"},
 
-    #classification
+    # classification
     "F1Score": {"name": "F1Score", "module": "classification_metrics",
                 'average': {"type": "Categorical", "default_value": "micro",
                             "possible_values": [None, 'binary', 'micro',
@@ -122,7 +197,6 @@ metric_parameters = {
                             }}
 
 }
-
 
 '''
 # OPTIMIZATION PARAMETERS #
@@ -135,7 +209,6 @@ optimization_parameters = {
     "acquisition_functions": [{"name": "Upper confidence bound", "id": "LCB"},
                               {"name": "Expected improvement", "id": "EI"}]
 }
-
 
 '''
 # PARAMETERS INFO #
@@ -197,21 +270,27 @@ decay (float, optional) – A number between (0.5, 1] to weight what percentage 
 
 offset (float, optional) –
 
-Hyper-parameter that controls how much we will slow down the first steps the first few iterations. Corresponds to Tau_0 from Matthew D. Hoffman, David M. Blei, Francis Bach: “Online Learning for Latent Dirichlet Allocation NIPS’10”. \n
+Hyper-parameter that controls how much we will slow down the first steps the first few iterations.
+Corresponds to Tau_0 from Matthew D. Hoffman, David M. Blei, Francis Bach: “Online Learning for Latent Dirichlet Allocation NIPS’10”. \n
 
-eval_every (int, optional) – Log perplexity is estimated every that many updates. Setting this to one slows down training by ~2x. \n
+eval_every (int, optional) – Log perplexity is estimated every that many updates. Setting this to one slows
+down training by ~2x. \n
 
-iterations (int, optional) – Maximum number of iterations through the corpus when inferring the topic distribution of a corpus. \n
+iterations (int, optional) – Maximum number of iterations through the corpus when inferring the topic
+distribution of a corpus. \n
 
 gamma_threshold (float, optional) – Minimum change in the value of the gamma parameters to continue iterating. \n
 
 minimum_probability (float, optional) – Topics with a probability lower than this threshold will be filtered out. \n
 
-random_state ({np.random.RandomState, int}, optional) – Either a randomState object or a seed to generate one. Useful for reproducibility. \n
+random_state ({np.random.RandomState, int}, optional) – Either a randomState object or a seed to generate one. Useful
+for reproducibility. \n
 
-minimum_phi_value (float, optional) – if per_word_topics is True, this represents a lower bound on the term probabilities. \n
+minimum_phi_value (float, optional) – if per_word_topics is True, this represents a lower bound on the term
+probabilities. \n
 
-per_word_topics (bool) – If True, the model also computes a list of topics, sorted in descending order of most likely topics for each word, along with their phi values multiplied by the feature length (i.e. word count). \n
+per_word_topics (bool) – If True, the model also computes a list of topics, sorted in descending order of most likely
+topics for each word, along with their phi values multiplied by the feature length (i.e. word count). \n
 """
 
 LSI_hyperparameters_info = """
@@ -223,9 +302,11 @@ decay (float, optional) – Weight of existing observations relatively to new on
 
 distributed (bool, optional) – If True - distributed mode (parallel execution on several machines) will be used. \n
 
-onepass (bool, optional) – Whether the one-pass algorithm should be used for training. Pass False to force a multi-pass stochastic algorithm. \n
+onepass (bool, optional) – Whether the one-pass algorithm should be used for training. Pass False to force a multi-pass
+ stochastic algorithm. \n
 
-power_iters (int, optional) – Number of power iteration steps to be used. Increasing the number of power iterations improves accuracy, but lowers performance \n
+power_iters (int, optional) – Number of power iteration steps to be used. Increasing the number of power iterations
+improves accuracy, but lowers performance \n
 
 extra_samples (int, optional) – Extra samples to be used besides the rank k. Can improve accuracy.
 """
@@ -235,21 +316,26 @@ num_topics (int, optional) – Number of topics to extract. \n
 
 chunksize (int, optional) – Number of documents to be used in each training chunk. \n
 
-passes (int, optional) – Number of full passes over the training corpus. Leave at default passes=1 if your input is an iterator. \n
+passes (int, optional) – Number of full passes over the training corpus. Leave at default passes=1 if your input is an
+ iterator. \n
 
-kappa (float, optional) – Gradient descent step size. Larger value makes the model train faster, but could lead to non-convergence if set too large. \n
+kappa (float, optional) – Gradient descent step size. Larger value makes the model train faster, but could lead to
+non-convergence if set too large. \n
 
-minimum_probability – If normalize is True, topics with smaller probabilities are filtered out. If normalize is False, topics with smaller factors are filtered out. If set to None, a value of 1e-8 is used to prevent 0s. \n
+minimum_probability – If normalize is True, topics with smaller probabilities are filtered out. If normalize is False,
+ topics with smaller factors are filtered out. If set to None, a value of 1e-8 is used to prevent 0s. \n
 
 w_max_iter (int, optional) – Maximum number of iterations to train W per each batch. \n
 
-w_stop_condition (float, optional) – If error difference gets less than that, training of W stops for the current batch. \n
+w_stop_condition (float, optional) – If error difference gets less than that, training of W stops for the current
+batch. \n
 
 h_max_iter (int, optional) – Maximum number of iterations to train h per each batch. \n
 
 h_stop_condition (float) – If error difference gets less than that, training of h stops for the current batch. \n
 
-eval_every (int, optional) – Number of batches after which l2 norm of (v - Wh) is computed. Decreases performance if set too low. \n
+eval_every (int, optional) – Number of batches after which l2 norm of (v - Wh) is computed. Decreases performance if
+set too low. \n
 
 normalize (bool or None, optional) – Whether to normalize the result. \n
 
