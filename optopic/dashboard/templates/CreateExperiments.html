@@ -8,6 +8,12 @@
     <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <style>
+        .invisibleRadioBtn {
+            width: 0px;
+        }
+    </style>
 </head>
 
 <body>
@@ -624,17 +630,18 @@
                 radioBtn.type = "radio"
                 radioBtn.value = data[i];
                 radioBtn.id = data[i].concat("rBtn")
-                radioBtn.style.visibility = "hidden";
                 radioBtn.name = rBtnName
+                radioBtn.required = true
+                radioBtn.classList.add("invisibleRadioBtn")
 
                 var DataName = document.createElement("p");
                 DataName.classList.add("job-title");
                 DataName.innerHTML = data[i];
 
                 slide.appendChild(box)
+                box.appendChild(radioBtn)
                 box.appendChild(img)
                 box.appendChild(DataName)
-                box.appendChild(radioBtn)
 
                 father.appendChild(slide);
 
