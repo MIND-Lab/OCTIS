@@ -39,7 +39,7 @@ class ETM(Abstract_Model):
         self.test_tokens, self.test_counts = None, None
         self.valid_tokens, self.valid_counts = None, None
         self.train_tokens, self.train_counts, self.vocab = None, None, None
-        self.use_partitions = True
+        self.use_partitions = False
         self.model = None
         self.optimizer = None
         self.embeddings = None
@@ -65,21 +65,21 @@ class ETM(Abstract_Model):
         return result
 
     def set_model(self, dataset, hyperparameters):
-        #if self.use_partitions:
-        train_data, validation_data, testing_data = \
-            dataset.get_partitioned_corpus(use_validation=True)
+        if self.use_partitions:
+            train_data, validation_data, testing_data = \
+                dataset.get_partitioned_corpus(use_validation=True)
 
-        data_corpus_train = [' '.join(i) for i in train_data]
-        data_corpus_test = [' '.join(i) for i in testing_data]
-        data_corpus_val = [' '.join(i) for i in validation_data]
+            data_corpus_train = [' '.join(i) for i in train_data]
+            data_corpus_test = [' '.join(i) for i in testing_data]
+            data_corpus_val = [' '.join(i) for i in validation_data]
 
-        vocab = dataset.get_vocabulary()
-        self.vocab = {i: w for i, w in enumerate(vocab)}
-        vocab2id = {w: i for i, w in enumerate(vocab)}
+            vocab = dataset.get_vocabulary()
+            self.vocab = {i: w for i, w in enumerate(vocab)}
+            vocab2id = {w: i for i, w in enumerate(vocab)}
 
-        self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.valid_tokens, \
-        self.valid_counts = self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
-        '''
+            self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.valid_tokens, \
+            self.valid_counts = self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
+
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             vocab = dataset.get_vocabulary()
@@ -87,7 +87,7 @@ class ETM(Abstract_Model):
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
             self.train_tokens, self.train_counts = self.preprocess(vocab2id, data_corpus, None)
-        '''
+
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         self.set_default_hyperparameters(hyperparameters)
@@ -182,52 +182,55 @@ class ETM(Abstract_Model):
         print('*' * 100)
 
         # VALIDATION ###
-        model = self.model.to(self.device)
-        model.eval()
-        with torch.no_grad():
-            val_acc_loss = 0
-            val_acc_kl_theta_loss = 0
-            val_cnt = 0
-            indices = torch.arange(0, len(self.valid_tokens))
-            indices = torch.split(indices, self.hyperparameters['batch_size'])
-            for idx, ind in enumerate(indices):
-                self.optimizer.zero_grad()
-                self.model.zero_grad()
-                val_data_batch = data.get_batch(self.valid_tokens, self.valid_counts,
-                                                ind, len(self.vocab.keys()),
-                                                self.hyperparameters['embedding_size'], self.device)
-                sums = val_data_batch.sum(1).unsqueeze(1)
-                if self.hyperparameters['bow_norm']:
-                    val_normalized_data_batch = val_data_batch / sums
-                else:
-                    val_normalized_data_batch = val_data_batch
+        if self.valid_tokens is None:
+            return True
+        else:
+            model = self.model.to(self.device)
+            model.eval()
+            with torch.no_grad():
+                val_acc_loss = 0
+                val_acc_kl_theta_loss = 0
+                val_cnt = 0
+                indices = torch.arange(0, len(self.valid_tokens))
+                indices = torch.split(indices, self.hyperparameters['batch_size'])
+                for idx, ind in enumerate(indices):
+                    self.optimizer.zero_grad()
+                    self.model.zero_grad()
+                    val_data_batch = data.get_batch(self.valid_tokens, self.valid_counts,
+                                                    ind, len(self.vocab.keys()),
+                                                    self.hyperparameters['embedding_size'], self.device)
+                    sums = val_data_batch.sum(1).unsqueeze(1)
+                    if self.hyperparameters['bow_norm']:
+                        val_normalized_data_batch = val_data_batch / sums
+                    else:
+                        val_normalized_data_batch = val_data_batch
 
-                val_recon_loss, val_kld_theta = self.model(val_data_batch,
-                                                           val_normalized_data_batch)
+                    val_recon_loss, val_kld_theta = self.model(val_data_batch,
+                                                               val_normalized_data_batch)
 
-                val_acc_loss += torch.sum(val_recon_loss).item()
-                val_acc_kl_theta_loss += torch.sum(val_kld_theta).item()
-                val_cnt += 1
-                val_total_loss = val_recon_loss + val_kld_theta
+                    val_acc_loss += torch.sum(val_recon_loss).item()
+                    val_acc_kl_theta_loss += torch.sum(val_kld_theta).item()
+                    val_cnt += 1
+                    val_total_loss = val_recon_loss + val_kld_theta
 
-            val_cur_loss = round(val_acc_loss / cnt, 2)
-            val_cur_kl_theta = round(val_acc_kl_theta_loss / cnt, 2)
-            val_cur_real_loss = round(val_cur_loss + val_cur_kl_theta, 2)
-            print('*' * 100)
-            print('VALIDATION .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
-                self.optimizer.param_groups[0]['lr'], val_cur_kl_theta, val_cur_loss,
-                val_cur_real_loss))
-            print('*' * 100)
-            if np.isnan(val_cur_real_loss):
-                return False
-            else:
-                self.early_stopping(val_total_loss, model)
-
-                if self.early_stopping.early_stop:
-                    print("Early stopping")
+                val_cur_loss = round(val_acc_loss / cnt, 2)
+                val_cur_kl_theta = round(val_acc_kl_theta_loss / cnt, 2)
+                val_cur_real_loss = round(val_cur_loss + val_cur_kl_theta, 2)
+                print('*' * 100)
+                print('VALIDATION .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
+                    self.optimizer.param_groups[0]['lr'], val_cur_kl_theta, val_cur_loss,
+                    val_cur_real_loss))
+                print('*' * 100)
+                if np.isnan(val_cur_real_loss):
                     return False
                 else:
-                    return True
+                    self.early_stopping(val_total_loss, model)
+
+                    if self.early_stopping.early_stop:
+                        print("Early stopping")
+                        return False
+                    else:
+                        return True
 
     def get_info(self):
         topic_w = []
