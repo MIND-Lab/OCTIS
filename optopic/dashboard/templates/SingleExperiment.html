@@ -78,21 +78,23 @@
                 </div>
             </div>
             <hr>
-            <div class="row " id="Row_extra_metric1">
-                 <div class="col-sm-3 offset-sm-1">
-                    <H4> Choose the extra-metric to inspect</H4>
+            <div class="container-fluid" id="Row_extra_metric1" >
+                <div class="row " >
+                     <div class="col-sm-3 offset-sm-1">
+                        <H4> Choose the extra-metric to inspect</H4>
+                    </div>
+                     <div class="col-sm-2 ">
+                         <select id="ExtraMetricSelector" style="width:100%" class="coolSelect" onchange="updateExtraMetricSelector()"></select>
+                    </div>
                 </div>
-                 <div class="col-sm-2 ">
-                     <select id="ExtraMetricSelector" style="width:100%" class="coolSelect" onchange="updateExtraMetricSelector()"></select>
-                </div>
-            </div>
-            <div class="row" id="Row_extra_metric2">
-                 <div class="col-sm-2 offset-sm-1">
-                     <H5> Summary of the extra-metric  </H5>
-                     <div style="height: 50%;margin-left: 5% ;" id="optInfoExtra"></div>
-                </div>
-                 <div class="col-sm-8">
-                    <div id="generic_extra" ></div>
+                <div class="row" >
+                     <div class="col-sm-2 offset-sm-1">
+                         <H5> Summary of the extra-metric  </H5>
+                         <div style="height: 50%;margin-left: 5% ;" id="optInfoExtra"></div>
+                    </div>
+                     <div class="col-sm-8">
+                        <div id="generic_extra" ></div>
+                    </div>
                 </div>
             </div>
     </div>
@@ -181,14 +183,13 @@
 
 </body>
 <script>
-    //document.getElementById("Row_extra_metric1").style.display = "none";
-    //document.getElementById("Row_extra_metric2").style.display = "none";
+
 
 
     function getParams(vars) {
         return vars;
     }
-    /* Function to update the DropDown Menu*/
+    //Function to update the DropDown Menu
     function updateDropdownIndex(dropdownId, value) {
         dropDown = document.getElementById(dropdownId)
         for (var i, j = 0; i = dropDown.options[j]; j++) {
@@ -210,7 +211,7 @@
         return true;
     }
 
-
+    //load the input parameters
     var output = getParams({{ output| tojson}});
     globalInfo = getParams({{ globalInfo| tojson}});
     iterationInfo = getParams({{ iterationInfo| tojson}});
@@ -219,7 +220,13 @@
     expName = getParams({{ experimentName| tojson}});
     var vocabulary = getParams({{ vocabulary| tojson}});
 
-    /*Function to write information */
+    if (globalInfo["metric_names"]==0){
+      document.getElementById("Row_extra_metric1").style.display = "none";
+    }else{
+      document.getElementById("Row_extra_metric1").style.display = "inline";
+    }
+
+    //Function to write statistics of the optimized metric
     function writeInfo(elementId, info) {
         ele = document.getElementById(elementId)
         ele.innerHTML = ''
@@ -257,6 +264,7 @@
 
         ele.appendChild(node)
     }
+
     //function to write information on extra metrics
     function writeInfo_Extra(elementId, info) {
 
@@ -281,7 +289,7 @@
     }
 
 
-
+    //select the specific experiment
     selectExp = document.createElement("select")
     selectExp.classList.add("coolSelect")
     selectExp.id = "selecExp"
@@ -298,6 +306,7 @@
         selectExp.appendChild(option)
     }
 
+    //load on the menu of the experiments all the possible experiments
     document.getElementById("expSelector").appendChild(selectExp)
     updateDropdownIndex(selectExp.id, expName)
 
@@ -367,31 +376,31 @@
 
 
     //Code for extra metrics*
-    ExtraMetricSelector = document.getElementById("ExtraMetricSelector");
-    json_data=globalInfo['metric_names']
-    var array = [];
-    for(var i in json_data)
-        if (i>=1){
-            array.push([json_data [i]]);
+    if (globalInfo["metric_names"]==0){
+    }else{
+        ExtraMetricSelector = document.getElementById("ExtraMetricSelector");
+        json_data=globalInfo['metric_names']
+        var array = [];
+        for(var i in json_data) array.push([json_data [i]]);
+        //Create and append the options
+        for (var i = 0; i < array.length; i++) {
+            var option = document.createElement("option");
+            option.setAttribute("value", array[i]);
+            option.text = array[i];
+            ExtraMetricSelector.appendChild(option);
         }
-    //Create and append the options
-    for (var i = 0; i < array.length; i++) {
-        var option = document.createElement("option");
-        option.setAttribute("value", array[i]);
-        option.text = array[i];
-        ExtraMetricSelector.appendChild(option);
     }
 
-
+    //function to update the plots of the extra metrics and the summary information
     function updateExtraMetricSelector() {
         ExtraMetricSelector = document.getElementById("ExtraMetricSelector")
         writeInfo_Extra("optInfoExtra", globalInfo)
         draw3(ExtraMetricSelector.value)
     }
-    updateExtraMetricSelector()
-
-
-
+    if (globalInfo["metric_names"]==0){
+    }else{
+        updateExtraMetricSelector()
+    }
 
 
     but = document.createElement("BUTTON")
@@ -480,10 +489,8 @@
                     };
 
                     document.getElementById("docTopic").innerHTML = ""
-
+                    //create the plot
                     Plotly.newPlot('docTopic', bardata, layout);
-
-
 
                 }
             })
@@ -493,17 +500,12 @@
 
     sel.appendChild(but)
 
-
-
     if (globalInfo != false) writeInfo("optInfo", globalInfo)
-    if (globalInfo != false) writeInfo_Extra("optInfoExtra", globalInfo)
+    if (globalInfo["metric_names"]==0){
+    }else{
+        if (globalInfo != false) writeInfo_Extra("optInfoExtra", globalInfo)
+    }
     if (iterationInfo != false) writeInfo("expInfo", iterationInfo)
-
-
-
-
-
-
 
     anychart.onDocumentReady(function () {
         draw(0)

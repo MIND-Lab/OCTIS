@@ -288,7 +288,6 @@ def singleInfo(path):
         dict_return.update({"mean_seen": mean_seen})
         dict_return.update({"current_iteration": result["current_call"],
                             "total_iterations": result["number_of_call"]})
-        dict_return.update({"metric_names": name_metrics})    #nome delle metriche
         dict_return.update({"hyperparameter_configurations": hyperparameters})
         dict_return.update({"hyperparameter_configuration": best_hyperparameter_configuration})
         dict_return.update({"optimized_metric": result["metric_name"]})
@@ -296,6 +295,7 @@ def singleInfo(path):
         dict_values_extra_metrics = dict()
         dict_stats_extra_metrics=dict()
         if len(result['extra_metric_names'])>0:
+            dict_return.update({"metric_names": name_metrics[1:]})  # nome delle metriche
             extra_metrics_names=list(result['dict_model_runs'].keys())
 
             for name in extra_metrics_names[1:]:
@@ -310,6 +310,7 @@ def singleInfo(path):
             dict_return.update({"extra_metric_vals": dict_values_extra_metrics})
             dict_return.update({"extra_metric_stats": dict_stats_extra_metrics})
         else:
+            dict_return.update({"metric_names": 0})
             dict_return.update({"extra_metric_vals": dict()})
             dict_return.update({"extra_metric_stats": dict()})
 
