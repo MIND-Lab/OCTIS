@@ -23,7 +23,8 @@ class AVITM_model(object):
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
                  learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False,
-                 topic_prior_mean=0.0, topic_prior_variance=None):
+                 topic_prior_mean=0.0, topic_prior_variance=None,
+                 num_data_loader_workers=mp.cpu_count()):
         """
         Initialize AVITM model.
 
@@ -43,11 +44,11 @@ class AVITM_model(object):
             reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
         """
 
-        assert isinstance(input_size, int) and input_size > 0,\
+        assert isinstance(input_size, int) and input_size > 0, \
             "input_size must by type int > 0."
-        assert isinstance(num_topics, int) and input_size > 0,\
+        assert isinstance(num_topics, int) and input_size > 0, \
             "num_topics must by type int > 0."
-        assert model_type in ['LDA', 'prodLDA'],\
+        assert model_type in ['LDA', 'prodLDA'], \
             "model must be 'LDA' or 'prodLDA'."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
@@ -56,20 +57,20 @@ class AVITM_model(object):
             "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
             " 'rrelu', 'elu', 'selu' or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
-        #assert isinstance(learn_priors, bool), "learn_priors must be boolean."
-        assert isinstance(batch_size, int) and batch_size > 0,\
+        # assert isinstance(learn_priors, bool), "learn_priors must be boolean."
+        assert isinstance(batch_size, int) and batch_size > 0, \
             "batch_size must be int > 0."
         assert lr > 0, "lr must be > 0."
-        assert isinstance(momentum, float) and momentum > 0 and momentum <= 1,\
+        assert isinstance(momentum, float) and momentum > 0 and momentum <= 1, \
             "momentum must be 0 < float <= 1."
-        assert solver in ['adagrad','adam', 'sgd', 'adadelta', 'rmsprop'], \
+        assert solver in ['adagrad', 'adam', 'sgd', 'adadelta', 'rmsprop'], \
             "solver must be 'adam', 'adadelta', 'sgd', 'rmsprop' or 'adagrad'"
-        assert isinstance(reduce_on_plateau, bool),\
+        assert isinstance(reduce_on_plateau, bool), \
             "reduce_on_plateau must be type bool."
         assert isinstance(topic_prior_mean, float), \
             "topic_prior_mean must be type float"
         # and topic_prior_variance >= 0, \
-        #assert isinstance(topic_prior_variance, float), \
+        # assert isinstance(topic_prior_variance, float), \
         #    "topic prior_variance must be type float"
 
         self.input_size = input_size
@@ -85,6 +86,7 @@ class AVITM_model(object):
         self.solver = solver
         self.num_epochs = num_epochs
         self.reduce_on_plateau = reduce_on_plateau
+        self.num_data_loader_workers = num_data_loader_workers
         self.topic_prior_mean = topic_prior_mean
         self.topic_prior_variance = topic_prior_variance
         # init inference avitm network
@@ -92,7 +94,7 @@ class AVITM_model(object):
             input_size, num_topics, model_type, hidden_sizes, activation,
             dropout, learn_priors, topic_prior_mean, topic_prior_variance)
         self.early_stopping = EarlyStopping(patience=5, verbose=True)
-
+        self.validation_data = None
         # init optimizer
         if self.solver == 'adam':
             self.optimizer = optim.Adam(self.model.parameters(), lr=lr, betas=(self.momentum, 0.99))
@@ -102,7 +104,6 @@ class AVITM_model(object):
             self.optimizer = optim.Adagrad(self.model.parameters(), lr=lr)
         elif self.solver == 'adadelta':
             self.optimizer = optim.Adadelta(self.model.parameters(), lr=lr)
-
         elif self.solver == 'rmsprop':
             self.optimizer = optim.RMSprop(self.model.parameters(), lr=lr, momentum=self.momentum)
         # init lr scheduler
@@ -163,15 +164,14 @@ class AVITM_model(object):
             # forward pass
             self.model.zero_grad()
             prior_mean, prior_variance, \
-                posterior_mean, posterior_variance, posterior_log_variance, \
-                word_dists, topic_word, topic_document = self.model(X)
+            posterior_mean, posterior_variance, posterior_log_variance, \
+            word_dists, topic_words, topic_document = self.model(X)
 
             topic_doc_list.extend(topic_document)
-            # append here topic document batch
 
             # backward pass
             loss = self._loss(X, word_dists, prior_mean, prior_variance,
-                posterior_mean, posterior_variance, posterior_log_variance)
+                              posterior_mean, posterior_variance, posterior_log_variance)
             loss.backward()
             self.optimizer.step()
 
@@ -181,15 +181,13 @@ class AVITM_model(object):
 
         train_loss /= samples_processed
 
-        return samples_processed, train_loss, topic_word, topic_doc_list
-
+        return samples_processed, train_loss, topic_words, topic_doc_list
 
     def _validation(self, loader):
         """Train epoch."""
         self.model.eval()
         val_loss = 0
         samples_processed = 0
-        topic_doc_list = []
         for batch_samples in loader:
             # batch_size x vocab_size
             X = batch_samples['X']
@@ -199,11 +197,11 @@ class AVITM_model(object):
             # forward pass
             self.model.zero_grad()
             prior_mean, prior_variance, \
-                posterior_mean, posterior_variance, posterior_log_variance, \
-                word_dists, topic_word, topic_document = self.model(X)
+            posterior_mean, posterior_variance, posterior_log_variance, \
+            word_dists, topic_word, topic_document = self.model(X)
 
             loss = self._loss(X, word_dists, prior_mean, prior_variance,
-                posterior_mean, posterior_variance, posterior_log_variance)
+                              posterior_mean, posterior_variance, posterior_log_variance)
 
             # compute train loss
             samples_processed += X.size()[0]
@@ -236,17 +234,17 @@ class AVITM_model(object):
                Momentum: {}\n\
                Reduce On Plateau: {}\n\
                Save Dir: {}".format(
-                   self.num_topics, self.topic_prior_mean,
-                   self.topic_prior_variance, self.model_type,
-                   self.hidden_sizes, self.activation, self.dropout, self.learn_priors,
-                   self.lr, self.momentum, self.reduce_on_plateau, save_dir))
+            self.num_topics, self.topic_prior_mean,
+            self.topic_prior_variance, self.model_type,
+            self.hidden_sizes, self.activation, self.dropout, self.learn_priors,
+            self.lr, self.momentum, self.reduce_on_plateau, save_dir))
 
         self.model_dir = save_dir
         self.train_data = train_dataset
         self.validation_data = validation_dataset
         train_loader = DataLoader(
             self.train_data, batch_size=self.batch_size, shuffle=True,
-            num_workers=0)
+            num_workers=self.num_data_loader_workers)
 
         # init training variables
         train_loss = 0
@@ -257,55 +255,56 @@ class AVITM_model(object):
             self.nn_epoch = epoch
             # train epoch
             s = datetime.datetime.now()
-            sp, train_loss, topic_word, topic_document = self._train_epoch(train_loader)
+            sp, train_loss, topic_words, topic_document = self._train_epoch(train_loader)
             samples_processed += sp
             e = datetime.datetime.now()
 
             # report
             print("Epoch: [{}/{}]\tSamples: [{}/{}]\tTrain Loss: {}\tTime: {}".format(
-                epoch+1, self.num_epochs, samples_processed,
-                len(self.train_data)*self.num_epochs, train_loss, e - s))
+                epoch + 1, self.num_epochs, samples_processed,
+                len(self.train_data) * self.num_epochs, train_loss, e - s))
 
             self.best_components = self.model.beta
-            self.final_topic_word = topic_word
+            self.final_topic_word = topic_words
             self.final_topic_document = topic_document
             self.best_loss_train = train_loss
+            if self.validation_data is not None:
+                validation_loader = DataLoader(
+                    self.validation_data, batch_size=self.batch_size, shuffle=True,
+                    num_workers=self.num_data_loader_workers)
+                # train epoch
+                s = datetime.datetime.now()
+                val_samples_processed, val_loss = self._validation(validation_loader)
+                e = datetime.datetime.now()
 
-            validation_loader = DataLoader(
-                self.validation_data, batch_size=self.batch_size, shuffle=True,
-                num_workers=0)
-            # train epoch
-            s = datetime.datetime.now()
-            val_samples_processed, val_loss = self._validation(validation_loader)
-            e = datetime.datetime.now()
+                # report
+                print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
+                    epoch + 1, self.num_epochs, val_samples_processed,
+                    len(self.validation_data) * self.num_epochs, val_loss, e - s))
 
-            # report
-            print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
-                epoch + 1, self.num_epochs, val_samples_processed,
-                len(self.validation_data) * self.num_epochs, val_loss, e - s))
-
-            if np.isnan(val_loss) or np.isnan(train_loss):
-                break
-            else:
-                self.early_stopping(val_loss, self.model)
-                if self.early_stopping.early_stop:
-                    print("Early stopping")
-                    if save_dir is not None:
-                        self.save(save_dir)
+                if np.isnan(val_loss) or np.isnan(train_loss):
                     break
+                else:
+                    self.early_stopping(val_loss, self.model)
+                    if self.early_stopping.early_stop:
+                        print("Early stopping")
+                        if save_dir is not None:
+                            self.save(save_dir)
+                        break
 
     def predict(self, dataset):
         """Predict input."""
         self.model.eval()
 
         loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False,
-                            num_workers=mp.cpu_count())
+                            num_workers=self.num_data_loader_workers)
 
         topic_document_mat = []
         with torch.no_grad():
             for batch_samples in loader:
                 # batch_size x vocab_size
                 X = batch_samples['X']
+                X = X.reshape(X.shape[0], -1)
                 if self.USE_CUDA:
                     X = X.cuda()
                 # forward pass
@@ -364,8 +363,8 @@ class AVITM_model(object):
         return info
 
     def _format_file(self):
-        model_dir = "AVITM_nc_{}_tpm_{}_tpv_{}_hs_{}_ac_{}_do_{}_lr_{}_mo_{}_rp_{}".\
-            format(self.num_topics, 0.0, 1 - (1./self.num_topics),
+        model_dir = "AVITM_nc_{}_tpm_{}_tpv_{}_hs_{}_ac_{}_do_{}_lr_{}_mo_{}_rp_{}". \
+            format(self.num_topics, 0.0, 1 - (1. / self.num_topics),
                    self.model_type, self.hidden_sizes, self.activation,
                    self.dropout, self.lr, self.momentum,
                    self.reduce_on_plateau)
@@ -398,7 +397,7 @@ class AVITM_model(object):
             model_dir: directory where models are saved.
             epoch: epoch of model to load.
         """
-        epoch_file = "epoch_"+str(epoch)+".pth"
+        epoch_file = "epoch_" + str(epoch) + ".pth"
         model_file = os.path.join(model_dir, epoch_file)
         with open(model_file, 'rb') as model_dict:
             checkpoint = torch.load(model_dict)
@@ -413,7 +412,7 @@ class AVITM_model(object):
         """Predict input."""
         self.model.eval()
         loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False,
-                            num_workers=0)
+                            num_workers=self.num_data_loader_workers)
         with torch.no_grad():
             collect_theta = []
             for batch_samples in loader:

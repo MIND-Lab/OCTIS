@@ -67,6 +67,7 @@ class AVITM(Abstract_Model):
                 self.preprocess(self.vocab, data_corpus_train, test=data_corpus_test,
                                 validation=data_corpus_validation)
         else:
+            self.vocab = dataset.get_vocabulary()
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             self.X_train, input_size = self.preprocess(self.vocab, train=data_corpus)
 
@@ -82,11 +83,11 @@ class AVITM(Abstract_Model):
                 "prior_variance"]
         )
 
-        self.model.fit(self.X_train, self.X_valid)
-
         if self.use_partitions:
+            self.model.fit(self.X_train, self.X_valid)
             result = self.inference()
         else:
+            self.model.fit(self.X_train, None)
             result = self.model.get_info()
         return result
 
