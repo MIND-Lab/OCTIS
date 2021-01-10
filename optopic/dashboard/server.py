@@ -35,10 +35,10 @@ def startExperiment():
     data = request.form.to_dict(flat=False)
     batch = data["batchId"][0]
     experimentId = data["expId"][0]
-    if queueManager.getExperiment(batch, experimentId) != False:
+    if queueManager.getExperiment(batch, experimentId):
         return VisualizeExperiments()
 
-    expParams = {}
+    expParams = dict()
     expParams["partitioning"] = ("partitioning" in data)
     expParams["path"] = data["path"][0]
     expParams["dataset"] = data["dataset"][0]
