@@ -12,69 +12,68 @@ import optopic.configuration.defaults as defaults
 from skopt.space.space import Real, Categorical, Integer
 from optopic.models.model import load_model_output
 
-
 path = Path(os.path.dirname(os.path.realpath(__file__)))
 path = str(path.parent)
 
 # Import optopic module
 spec = importlib.util.spec_from_file_location(
-    "optopic",  str(os.path.join(path, "__init__.py")), submodule_search_locations=[])
+    "optopic", str(os.path.join(path, "__init__.py")), submodule_search_locations=[])
 module = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = module
 spec.loader.exec_module(module)
 importlib.invalidate_caches()
 
 
-def importClass(className, moduleName, modulePath):
+def importClass(class_name, module_name, module_path):
     """
     Import a class runtime based on its module and name
 
     Parameters
     ----------
-    className : name of the class
-    moduleName : name of the module
-    modulePath: absolute path to the module
+    class_name : name of the class
+    module_name : name of the module
+    module_path: absolute path to the module
 
     Returns
-    singleClass : returns the selected class
+    single_class : returns the selected class
     """
     spec = importlib.util.spec_from_file_location(
-        moduleName, modulePath, submodule_search_locations=[])
+        module_name, module_path, submodule_search_locations=[])
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     importlib.invalidate_caches()
-    singleClass = getattr(module, className)
-    return singleClass
+    single_class = getattr(module, class_name)
+    return single_class
 
 
-def importModel(modelName):
-    modulePath = os.path.join(path, "models")
-    modulePath = os.path.join(modulePath, modelName+".py")
-    model = importClass(modelName, modelName, modulePath)
+def importModel(model_name):
+    module_path = os.path.join(path, "models")
+    module_path = os.path.join(module_path, model_name + ".py")
+    model = importClass(model_name, model_name, module_path)
     return model
 
 
-def importMetric(metricName):
-    modulePath = os.path.join(path, "evaluation_metrics")
-    moduleName = defaults.metric_parameters[metricName]["module"]
-    modulePath = os.path.join(modulePath, moduleName+".py")
-    metric = importClass(metricName, metricName, modulePath)
+def importMetric(metric_name):
+    module_path = os.path.join(path, "evaluation_metrics")
+    module_name = defaults.metric_parameters[metric_name]["module"]
+    module_path = os.path.join(module_path, module_name + ".py")
+    metric = importClass(metric_name, metric_name, module_path)
     return metric
 
 
 def importDataset():
-    modulePath = os.path.join(path, "dataset")
-    modulePath = os.path.join(modulePath, "dataset.py")
-    datasetClass = importClass("Dataset", "dataset", modulePath)
-    return datasetClass
+    module_path = os.path.join(path, "dataset")
+    module_path = os.path.join(module_path, "dataset.py")
+    dataset_class = importClass("Dataset", "dataset", module_path)
+    return dataset_class
 
 
 def importOptimizer():
-    modulePath = os.path.join(path, "optimization")
-    modulePath = os.path.join(modulePath, "optimizer.py")
-    optimizerClass = importClass("Optimizer", "optimizer", modulePath)
-    return optimizerClass
+    module_path = os.path.join(path, "optimization")
+    module_path = os.path.join(module_path, "optimizer.py")
+    optimizer_class = importClass("Optimizer", "optimizer", module_path)
+    return optimizer_class
 
 
 # TO UPDATE
@@ -85,22 +84,22 @@ def startExperiment(parameters):
 
     optimizationPath = str(os.path.join(
         parameters["path"], parameters["experimentId"]))
-    jsonFile = str(os.path.join(optimizationPath,
-                                parameters["experimentId"]+".json"))
-    if(os.path.isfile(jsonFile)):
+    json_file = str(os.path.join(optimizationPath,
+                                parameters["experimentId"] + ".json"))
+    if os.path.isfile(json_file):
         Optimizer = importOptimizer()
         optimizer = Optimizer()
-        optimizer.resume_optimization(jsonFile)
+        optimizer.resume_optimization(json_file)
     else:
         # Import dataset class and initialize an instance with the choosen dataset
-        datasetClass = importDataset()
-        dataset = datasetClass()
-        datasetPath = str(os.path.join(
+        dataset_class = importDataset()
+        dataset = dataset_class()
+        dataset_path = str(os.path.join(
             path, "preprocessed_datasets", parameters["dataset"]))
-        dataset.load(datasetPath)
+        dataset.load(dataset_path)
 
-        modelClass = importModel(parameters["model"]["name"])
-        model = modelClass()
+        model_class = importModel(parameters["model"]["name"])
+        model = model_class()
 
         model.hyperparameters.update(parameters["model"]["parameters"])
         model.partitioning(parameters["partitioning"])
@@ -123,66 +122,59 @@ def startExperiment(parameters):
             if metric_parameters[key] == "use dataset texts":
                 metric_parameters[key] = dataset.get_corpus()
             elif os.path.isdir(str(metric_parameters[key])):
-                metricDataset = datasetClass()
+                metricDataset = dataset_class()
                 metricDataset.load(metric_parameters[key])
                 metric_parameters[key] = metricDataset.get_corpus()
 
-        metricClass = importMetric(parameters["optimize_metrics"][0]["name"])
-        metric = metricClass(metric_parameters)
+        metric_class = importMetric(parameters["optimize_metrics"][0]["name"])
+        metric = metric_class(metric_parameters)
 
         metrics_to_track = []
         for single_metric in parameters["track_metrics"]:
-            metricClass = importMetric(single_metric["name"])
+            metric_class = importMetric(single_metric["name"])
             single_metric_parameters = single_metric["parameters"]
             for key in single_metric_parameters:
                 if single_metric_parameters[key] == "use dataset texts":
                     single_metric_parameters[key] = dataset.get_corpus()
-            new_metric = metricClass(single_metric_parameters)
+            new_metric = metric_class(single_metric_parameters)
             metrics_to_track.append(new_metric)
 
-        vocabularyPath = str(os.path.join(
+        vocabulary_path = str(os.path.join(
             parameters["path"], parameters["experimentId"], "models"))
 
-        Path(vocabularyPath).mkdir(parents=True, exist_ok=True)
+        Path(vocabulary_path).mkdir(parents=True, exist_ok=True)
 
-        vocabularyPath = str(os.path.join(vocabularyPath, "vocabulary.json"))
+        vocabulary_path = str(os.path.join(vocabulary_path, "vocabulary.json"))
 
-        file = open(vocabularyPath, "w")
+        file = open(vocabulary_path, "w")
         json.dump(dict(corpora.Dictionary(dataset.get_corpus())), file)
         file.close()
 
         Optimizer = importOptimizer()
         optimizer = Optimizer()
-        optimizer.optimize(model,
-                           dataset,
-                           metric,
-                           search_space,
-                           metrics_to_track,
-                           random_state=True,
+        optimizer.optimize(model, dataset, metric, search_space, metrics_to_track, random_state=True,
                            initial_point_generator="random",
                            surrogate_model=parameters["optimization"]["surrogate_model"],
                            model_runs=parameters["optimization"]["model_runs"],
                            n_random_starts=parameters["optimization"]["n_random_starts"],
                            acq_func=parameters["optimization"]["acquisition_function"],
                            number_of_call=parameters["optimization"]["iterations"],
-                           save_models=True,
-                           save_name=parameters["experimentId"],
-                           save_path=optimizationPath)
+                           save_models=True, save_name=parameters["experimentId"], save_path=optimizationPath)
 
 
-def retrieveBoResults(path):
+def retrieveBoResults(result_path):
     """
-    Function to load the results of BO
+    Function to load the results_old of BO
     Parameters
     ----------
-    path : path where the results are saved (json file).
+    result_path : path where the results_old are saved (json file).
     Returns
     -------
     dict_return :dictionary
     """
-    if os.path.isfile(path):
+    if os.path.isfile(result_path):
         # open json file
-        with open(path, 'rb') as file:
+        with open(result_path, 'rb') as file:
             result = json.load(file)
         f_val = result['f_val']
         # output dictionary
@@ -196,10 +188,10 @@ def retrieveBoResults(path):
 
 def retrieveIterationBoResults(path, iteration):
     """
-    Function to load the results of BO until iteration
+    Function to load the results_old of BO until iteration
     Parameters
     ----------
-    path : path where the results are saved (json file).
+    path : path where the results_old are saved (json file).
     iteration : considered iteration.
     Returns
     -------
@@ -211,7 +203,7 @@ def retrieveIterationBoResults(path, iteration):
             result = json.load(file)
             values = [result["f_val"][0]]
         if iteration > 0:
-            values = result['f_val'][0:iteration+1]
+            values = result['f_val'][0:iteration + 1]
         type_of_problem = result['optimization_type']
         if type_of_problem == 'Maximize':
             best_seen = max(values)
@@ -239,12 +231,13 @@ def retrieveIterationBoResults(path, iteration):
         return dict_return
     return False
 
-# Manca retrieve di Iperparametri iteerazione e topic-word-matrix e document-topic matrix
+
+# Manca retrieve di Iperparametri iterazione e topic-word-matrix e document-topic matrix
 
 
 def singleInfo(path):
     """
-    Metodo per calcolare media, mediana, best e worse della valutazioni delle funzioni obiettivo
+    Compute average, median, best and worst result of the object function evaluations
     """
     if os.path.isfile(path):
         with open(path, 'rb') as file:
@@ -258,7 +251,7 @@ def singleInfo(path):
         else:
             best_seen = min(values)
             worse_seen = max(values)
-            best_index = np.argin(values)
+            best_index = np.argmin(values)
         median_seen = np.median(values)
         mean_seen = np.mean(values)
 
@@ -270,7 +263,7 @@ def singleInfo(path):
             metric_results = dict_metrics[name]
             iterations = len(metric_results.keys())
             for i in range(iterations):
-                dict_results[name].append(metric_results['iteration_'+str(i)])
+                dict_results[name].append(metric_results['iteration_' + str(i)])
 
         hyperparameters = result['x_iters']
         name_hyp = list(hyperparameters.keys())
@@ -324,13 +317,13 @@ def singleInfo(path):
     return False
 
 
-def getModelInfo(path, iteration, modelRun):
+def getModelInfo(experiment_path, iteration, modelRun):
     """
     Retrieve the output of the given model
 
     Parameters
     ----------
-    path :  path of the experiment folder
+    experiment_path :  path of the experiment folder
     iteration : number of iteration
     modelRun : number of model run
 
@@ -338,10 +331,10 @@ def getModelInfo(path, iteration, modelRun):
     -------
     output of the model and vocabulary
     """
-    outputfile = str(os.path.join(path,
+    outputfile = str(os.path.join(experiment_path,
                                   "models",
-                                  str(iteration)+"_"+str(modelRun)+".npz"))
-    vocabularyfile = str(os.path.join(path,
+                                  str(iteration) + "_" + str(modelRun) + ".npz"))
+    vocabularyfile = str(os.path.join(experiment_path,
                                       "models",
                                       "vocabulary.json"))
     if os.path.isfile(outputfile) and os.path.isfile(vocabularyfile):
