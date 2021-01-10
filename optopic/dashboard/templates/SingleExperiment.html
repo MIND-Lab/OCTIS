@@ -279,7 +279,7 @@
         ele.innerHTML = ''
 
         node = document.createElement("p")
-        node.innerHTML ="<br><b>Metric name:</b> " +metric_name +
+        node.innerHTML ="<br><b>Metric name:</b> " +metric_name.substring(2,999) +
             "<br><b>Max value:</b> " + stats[0].toFixed(4)+
             "<br><b>Min value:</b> " + stats[1].toFixed(4)+
             "<br><b>Median value:</b> " + stats[2].toFixed(4)+
@@ -325,7 +325,7 @@
     iterSelect.defaultValue = 0
 
     bold = document.createElement('strong')
-    bold.appendChild(document.createTextNode("Get info about iteration: "))
+    bold.appendChild(document.createTextNode("Iteration: "))
     sel.appendChild(bold)
     sel.appendChild(iterSelect)
 
@@ -605,7 +605,6 @@
     draw2()
 
     function draw3(metric_name) {
-
         if (globalInfo != false) {
 
             second_axe = [0]
@@ -629,11 +628,11 @@
                     title: 'Iteration'
                 },
                 yaxis: {
-                    title: metric_name,
+                    title: metric_name.substring(2,999),
                     automargin: true
                 },
                 yaxis2: { anchor: 'x2',
-                          title: metric_name,
+                          title: metric_name.substring(2,999),
                           automargin: true
                 },
                 xaxis2: {
