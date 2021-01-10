@@ -294,6 +294,7 @@ def singleInfo(path):
         dict_return.update({"optimized_metric": result["metric_name"]})
 
         dict_values_extra_metrics = dict()
+        dict_stats_extra_metrics=dict()
         if len(result['extra_metric_names'])>0:
             extra_metrics_names=list(result['dict_model_runs'].keys())
 
@@ -304,9 +305,13 @@ def singleInfo(path):
                 for iter in iterations:
                     values.append(np.median(dict_values[iter]))
                 dict_values_extra_metrics.update({name:values})
-            dict_return.update({"extra_metris_vals": dict_values_extra_metrics})
+                val_stats=[np.max(values),np.min(values),np.median(values),np.mean(values)]
+                dict_stats_extra_metrics.update({name:val_stats})
+            dict_return.update({"extra_metric_vals": dict_values_extra_metrics})
+            dict_return.update({"extra_metric_stats": dict_stats_extra_metrics})
         else:
-            dict_return.update({"extra_metris_vals": dict()})
+            dict_return.update({"extra_metric_vals": dict()})
+            dict_return.update({"extra_metric_stats": dict()})
 
         return dict_return
     return False
