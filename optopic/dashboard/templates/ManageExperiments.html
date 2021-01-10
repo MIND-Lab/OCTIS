@@ -27,104 +27,118 @@
         .send-button {
             margin: 2px;
         }
+
     </style>
 </head>
 
 <body>
-    <div>
-        <ul class="navbar">
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
-                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                    EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-            </li>
-            <!--<li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
-            </li>
-            -->
-        </ul>
-    </div>
+<div>
+    <ul class="navbar">
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                                                                    src="{{ url_for('static', filename='images/logo.png') }}"
+                                                                    alt="alternative"></a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+        </li>
+        <!--<li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+        </li>
+        -->
+    </ul>
+</div>
 
-    <header id="header">
-        <div>
-            <h1 style="text-align: center">Manage the experiment queue
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+<header id="header">
+    <div>
+        <h1 style="text-align: center">Manage the experiment queue
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
                     aria-expanded="false" aria-controls="collapseExample">
-                    Click here to read the instructions!
-                </button>
-            </h1>
-        </div>
-    </header>
-    <div class="outContainer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-container">
-                        <div class="collapse" id="collapseExample">
-                            <div class="card card-body">
-                                <p class="lead"> In this page, you can manage the queue of the experiments that
-                                    you have defined in the
-                                    <a class="btn btn-primary" href="{{ url_for('CreateExperiments') }}"
-                                        role="button">Create Experiments</a>
-                                    page. The experiment in the top is the currently running experiment.
-                                    You can
-                                <ul>
-                                    <li> Stop a running experiment by clicking on <button type="button"
-                                            class="btn btn-warning">Stop Experiment</button>
-                                    </li>
-                                    <li> Start or restart an experiment by clicking on <button type="button"
-                                            class="btn btn-success">Start Experiment</button>
-                                    </li>
-                                    <li> Delete an experiment by clicking on <button type="button"
-                                            class="btn btn-danger">Delete Experiment</button>.
-                                        The experiment will be removed from the queue but you can still see the results
-                                        in the
-                                        <a class="btn btn-primary" href="{{ url_for('VisualizeExperiments') }}"
-                                            role="button">Visualize Experiments</a>
-                                        page.
-                                    </li>
-                                    <li> Drag and drop an experiment to sort the experiments queue. You can do this
-                                        operation only if the
-                                        involved experiments are not running.
-                                    </li>
-                                </ul>
-                                </p>
-                            </div>
+                Click here to read the instructions!
+            </button>
+        </h1>
+    </div>
+</header>
+<div class="outContainer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-container">
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <p class="lead"> In this page, you can manage the queue of the experiments that
+                                you have defined in the
+                                <a class="btn btn-primary" href="{{ url_for('CreateExperiments') }}"
+                                   role="button">Create Experiments</a>
+                                page. The experiment in the top is the currently running experiment.
+                                You can
+                            <ul>
+                                <li> Stop a running experiment by clicking on
+                                    <button type="button"
+                                            class="btn btn-warning">Stop Experiment
+                                    </button>
+                                </li>
+                                <li> Start or restart an experiment by clicking on
+                                    <button type="button"
+                                            class="btn btn-success">Start Experiment
+                                    </button>
+                                </li>
+                                <li> Delete an experiment by clicking on
+                                    <button type="button"
+                                            class="btn btn-danger">Delete Experiment
+                                    </button>
+                                    .
+                                    The experiment will be removed from the queue but you can still see the results
+                                    in the
+                                    <a class="btn btn-primary" href="{{ url_for('VisualizeExperiments') }}"
+                                       role="button">Visualize Experiments</a>
+                                    page.
+                                </li>
+                                <li> Drag and drop an experiment to sort the experiments queue. You can do this
+                                    operation only if the
+                                    involved experiments are not running.
+                                </li>
+                            </ul>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <hr>
-    <div class="outContainer">
-        <ul id="container" class="container" style="list-style: none;"></ul>
-    </div>
-
-    <div class="footer">
-        <div class="container">
-            <h4>OpTopic</h4>
-            <p class="white">Optimizing topic models made simple.</p>
+</div>
+<hr>
+<div class="outContainer">
+    <ul id="container" class="container" style="list-style: none;"></ul>
+    <div class="container">
+        <div class="row">
+            <a class="btn btn-dark" href="{{ url_for('serverClosed') }}" role="button">Safely Close the Dashboard </a>
         </div>
     </div>
+</div>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script>
+<div class="footer">
+    <div class="container">
+        <h4>OpTopic</h4>
+        <p class="white">Optimizing topic models made simple.</p>
+    </div>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
+<script>
 
         function getParams(vars) {
             return vars;
@@ -233,12 +247,13 @@
             percentage = ((current_iteration / total_iterations) * 100).toFixed(0).toString()
             div.innerHTML = "<div class='col-8'><b> Name of the experiment: " + exps[running]["experimentId"] +
                 " (Name of the batch: " + exps[running]["batchId"] + " )</b><br>" +
-                "<p><progress value='" + current_iteration + "' max='" + total_iterations + "'></progress> " + percentage + "% Completed</p>" +
                 "<b>Model:</b> " + exps[running]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[running]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[running]["dataset"] +
                 "<br><b>Metric to optimize:</b> " + exps[running]["optimize_metrics"][0]["name"] +
-                "<br><b>Current iteration: </b> </div>"
+                "<br><b>Progress: </b> <span class=\"progress\"><span class=\"progress-bar\" role=\"progressbar\" style=\"width: " +
+                percentage + "%;\" aria-valuenow=\"" + percentage+ "\" aria-valuemin=\"0\" aria-valuemax=\"100\">" +
+                + percentage + "%</span></span><br>"
 
             buttonsDiv.appendChild(deleteButton)
             buttonsDiv.appendChild(stopButton)
@@ -285,12 +300,13 @@
 
             div.innerHTML = "<div class='col-8'><b> Name of the experiment: " + exps[order[i]]["experimentId"] +
                 " (Name of the batch: " + exps[order[i]]["batchId"] + " )</b><br>" +
-                "<p><progress value='" + current_iteration + "' max='" + total_iterations + "'></progress> " + percentage + "% Completed</p>" +
                 "<b>Model:</b> " + exps[order[i]]["model"]["name"] +
                 "<br><b>Search space:</b> " + JSON.stringify(exps[order[i]]["optimization"]["search_spaces"]) +
                 "<br><b>Dataset:</b> " + exps[order[i]]["dataset"] +
                 "<br><b>Metric to optimize:</b> " + exps[order[i]]["optimize_metrics"][0]["name"] +
-                "<br><b>Current iteration: </b> </div>"
+                "<br><b>Progress: </b> <span class=\"progress\"><span class=\"progress-bar\" role=\"progressbar\" style=\"width: " +
+                percentage + "%;\" aria-valuenow=\"" + percentage+ "\" aria-valuemin=\"0\" aria-valuemax=\"100\">" +
+                + percentage + "%</span></span><br>"
 
 
             buttonsDiv.appendChild(deleteButton)
@@ -424,7 +440,8 @@
                     }
                 })
         }
-    </script>
+
+</script>
 
 </body>
 

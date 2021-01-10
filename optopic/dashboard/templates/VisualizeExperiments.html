@@ -612,11 +612,12 @@
 
                         col2 = document.createElement("div")
                         col2.classList.add("col-6")
-                        buttonlink = document.createElement("div")
+                        buttonlink = document.createElement("button")
                         buttonlink.dataset.expName = item["experimentId"]
                         buttonlink.dataset.batchName = item["batchId"]
-                        buttonlink.classList.add("singleExpLink")
-                        buttonlink.innerHTML = "More info"
+                        buttonlink.classList.add("btn")
+                        buttonlink.classList.add("btn-info")
+                        buttonlink.innerHTML = "Click here to inspect the results"
 
                         buttonlink.addEventListener('click', function () {
                             location.href = "SingleExperiment/" + this.dataset.batchName + "/" + this.dataset.expName
