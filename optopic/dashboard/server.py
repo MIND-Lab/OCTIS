@@ -8,7 +8,6 @@ from flask import Flask, render_template, request
 import os
 
 
-
 app = Flask(__name__)
 queueManager = ""
 
@@ -40,6 +39,7 @@ def startExperiment():
         return VisualizeExperiments()
 
     expParams = {}
+    expParams["partitioning"] = ("partitioning" in data)
     expParams["path"] = data["path"][0]
     expParams["dataset"] = data["dataset"][0]
     expParams["model"] = {"name": data["model"][0]}

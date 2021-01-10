@@ -80,10 +80,16 @@ def load_model_output(output_path, vocabulary_path=None, top_words=10):
         topics_output = []
         for topic in output["topic-word-matrix"]:
             top_k = np.argsort(topic)[-top_words:]
-            top_k_words = list(reversed([[index2vocab[str(i)],float(topic[i])] for i in top_k]))
+            top_k_words = list(
+                reversed([[index2vocab[str(i)], float(topic[i])] for i in top_k]))
             topics_output.append(top_k_words)
-        
+
         output["topic-word-matrix"] = output["topic-word-matrix"].tolist()
         output["topic-document-matrix"] = output["topic-document-matrix"].tolist()
+        if "test-topic-word-matrix" in output:
+            output["test-topic-word-matrix"] = output["test-topic-word-matrix"].tolist()
+        if "test-topic-document-matrix" in output:
+            output["test-topic-document-matrix"] = output["test-topic-document-matrix"].tolist()
+
         output["topics"] = topics_output
     return output

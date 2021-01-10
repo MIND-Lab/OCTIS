@@ -103,7 +103,7 @@ def startExperiment(parameters):
         model = modelClass()
 
         model.hyperparameters.update(parameters["model"]["parameters"])
-        model.partitioning(False)
+        model.partitioning(parameters["partitioning"])
 
         search_space = {}
 
@@ -254,11 +254,11 @@ def singleInfo(path):
         if type_of_problem == 'Maximize':
             best_seen = max(values)
             worse_seen = min(values)
-            best_index=np.argmax(values)
+            best_index = np.argmax(values)
         else:
             best_seen = min(values)
             worse_seen = max(values)
-            best_index=np.argin(values)
+            best_index = np.argin(values)
         median_seen = np.median(values)
         mean_seen = np.mean(values)
 
@@ -276,7 +276,8 @@ def singleInfo(path):
         name_hyp = list(hyperparameters.keys())
         best_hyperparameter_configuration = dict()
         for name in name_hyp:
-            best_hyperparameter_configuration.update({name: hyperparameters[name][best_index]})
+            best_hyperparameter_configuration.update(
+                {name: hyperparameters[name][best_index]})
 
         # dizionaro di output
         dict_return = dict()
@@ -289,26 +290,31 @@ def singleInfo(path):
         dict_return.update({"current_iteration": result["current_call"],
                             "total_iterations": result["number_of_call"]})
         dict_return.update({"hyperparameter_configurations": hyperparameters})
-        dict_return.update({"hyperparameter_configuration": best_hyperparameter_configuration})
+        dict_return.update(
+            {"hyperparameter_configuration": best_hyperparameter_configuration})
         dict_return.update({"optimized_metric": result["metric_name"]})
 
         dict_values_extra_metrics = dict()
-        dict_stats_extra_metrics=dict()
-        if len(result['extra_metric_names'])>0:
-            dict_return.update({"metric_names": name_metrics[1:]})  # nome delle metriche
-            extra_metrics_names=list(result['dict_model_runs'].keys())
+        dict_stats_extra_metrics = dict()
+        if len(result['extra_metric_names']) > 0:
+            # nome delle metriche
+            dict_return.update({"metric_names": name_metrics[1:]})
+            extra_metrics_names = list(result['dict_model_runs'].keys())
 
             for name in extra_metrics_names[1:]:
-                values=[]
-                dict_values=result['dict_model_runs'][name]
+                values = []
+                dict_values = result['dict_model_runs'][name]
                 iterations = list(dict_values.keys())
                 for iter in iterations:
                     values.append(np.median(dict_values[iter]))
-                dict_values_extra_metrics.update({name:values})
-                val_stats=[np.max(values),np.min(values),np.median(values),np.mean(values)]
-                dict_stats_extra_metrics.update({name:val_stats})
-            dict_return.update({"extra_metric_vals": dict_values_extra_metrics})
-            dict_return.update({"extra_metric_stats": dict_stats_extra_metrics})
+                dict_values_extra_metrics.update({name: values})
+                val_stats = [np.max(values), np.min(
+                    values), np.median(values), np.mean(values)]
+                dict_stats_extra_metrics.update({name: val_stats})
+            dict_return.update(
+                {"extra_metric_vals": dict_values_extra_metrics})
+            dict_return.update(
+                {"extra_metric_stats": dict_stats_extra_metrics})
         else:
             dict_return.update({"metric_names": 0})
             dict_return.update({"extra_metric_vals": dict()})
