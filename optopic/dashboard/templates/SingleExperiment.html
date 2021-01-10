@@ -66,14 +66,11 @@
                 </div>
 
             </div>
-            <div class="row ">
-                 <div class="col-sm-3 offset-sm-1">
-                    <H5> Summary of the optimization  </H5>
-                </div>
-            </div>
+
             <div class="row ">
                  <div class="col-sm-2 offset-sm-1">
                      <div style="height: 5%"></div>
+                     <H5> Summary of the optimization  </H5>
                      <div style="height: 50%;margin-left: 5% ;" id="optInfo"></div>
                 </div>
                  <div class="col-sm-8">
@@ -81,17 +78,18 @@
                 </div>
             </div>
             <hr>
-            <div class="row ">
+            <div class="row " id="Row_extra_metric1">
                  <div class="col-sm-3 offset-sm-1">
                     <H4> Choose the extra-metric to inspect</H4>
                 </div>
                  <div class="col-sm-2 ">
-                     <select id="extraMetricSelector" style="width:100%" class="coolSelect" onchange="updateExtraMetricSelector()"></select>
+                     <select id="ExtraMetricSelector" style="width:100%" class="coolSelect" onchange="updateExtraMetricSelector()"></select>
                 </div>
             </div>
-            <div class="row ">
+            <div class="row" id="Row_extra_metric2">
                  <div class="col-sm-2 offset-sm-1">
-                     <H5> Summary of the metric  </H5>
+                     <H5> Summary of the extra-metric  </H5>
+                     <div style="height: 50%;margin-left: 5% ;" id="optInfoExtra"></div>
                 </div>
                  <div class="col-sm-8">
                     <div id="generic_extra" ></div>
@@ -166,6 +164,13 @@
         </div>
     </div>
 
+    <div class="footer">
+        <div class="container">
+            <h4>OpTopic</h4>
+            <p class="white">Optimizing topic models made simple.</p>
+        </div>
+    </div>
+
     <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
@@ -176,10 +181,14 @@
 
 </body>
 <script>
+    //document.getElementById("Row_extra_metric1").style.display = "none";
+    //document.getElementById("Row_extra_metric2").style.display = "none";
+
+
     function getParams(vars) {
         return vars;
     }
-
+    /* Function to update the DropDown Menu*/
     function updateDropdownIndex(dropdownId, value) {
         dropDown = document.getElementById(dropdownId)
         for (var i, j = 0; i = dropDown.options[j]; j++) {
@@ -210,7 +219,7 @@
     expName = getParams({{ experimentName| tojson}});
     var vocabulary = getParams({{ vocabulary| tojson}});
 
-
+    /*Function to write information */
     function writeInfo(elementId, info) {
         ele = document.getElementById(elementId)
         ele.innerHTML = ''
@@ -248,6 +257,29 @@
 
         ele.appendChild(node)
     }
+    //function to write information on extra metrics
+    function writeInfo_Extra(elementId, info) {
+
+        ExtraMetricSelector = document.getElementById("ExtraMetricSelector")
+        metric_name=ExtraMetricSelector.value
+
+        //select the values of the extra_metric
+        dict_metrics_values=globalInfo["extra_metric_stats"]
+        stats=dict_metrics_values[metric_name]
+
+        ele = document.getElementById(elementId)
+        ele.innerHTML = ''
+
+        node = document.createElement("p")
+        node.innerHTML ="<br><b>Metric name:</b> " +metric_name +
+            "<br><b>Max value:</b> " + stats[0].toFixed(4)+
+            "<br><b>Min value:</b> " + stats[1].toFixed(4)+
+            "<br><b>Median value:</b> " + stats[2].toFixed(4)+
+            "<br><b>Mean value:</b> " + stats[3].toFixed(4)
+
+        ele.appendChild(node)
+    }
+
 
 
     selectExp = document.createElement("select")
@@ -268,7 +300,6 @@
 
     document.getElementById("expSelector").appendChild(selectExp)
     updateDropdownIndex(selectExp.id, expName)
-
 
     sel = document.getElementById("iterationSelector")
 
@@ -308,10 +339,6 @@
     sel.appendChild(runSelect)
 
 
-
-
-
-
     function updateTopicSelector() {
         topicSelector = document.getElementById("topicSelector")
         topicSelector.innerHTML = ''
@@ -337,6 +364,34 @@
     }
 
     updateTopicSelector()
+
+
+    //Code for extra metrics*
+    ExtraMetricSelector = document.getElementById("ExtraMetricSelector");
+    json_data=globalInfo['metric_names']
+    var array = [];
+    for(var i in json_data)
+        if (i>=1){
+            array.push([json_data [i]]);
+        }
+    //Create and append the options
+    for (var i = 0; i < array.length; i++) {
+        var option = document.createElement("option");
+        option.setAttribute("value", array[i]);
+        option.text = array[i];
+        ExtraMetricSelector.appendChild(option);
+    }
+
+
+    function updateExtraMetricSelector() {
+        ExtraMetricSelector = document.getElementById("ExtraMetricSelector")
+        writeInfo_Extra("optInfoExtra", globalInfo)
+        draw3(ExtraMetricSelector.value)
+    }
+    updateExtraMetricSelector()
+
+
+
 
 
     but = document.createElement("BUTTON")
@@ -441,6 +496,7 @@
 
 
     if (globalInfo != false) writeInfo("optInfo", globalInfo)
+    if (globalInfo != false) writeInfo_Extra("optInfoExtra", globalInfo)
     if (iterationInfo != false) writeInfo("expInfo", iterationInfo)
 
 
@@ -584,7 +640,7 @@
                 showlegend: false
             };
 
-            dict_metrics_values=globalInfo["extra_metris_vals"]
+            dict_metrics_values=globalInfo["extra_metric_vals"]
             values=dict_metrics_values[metric_name]
 
             var trace1 = {
