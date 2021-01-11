@@ -210,8 +210,6 @@ def SingleExperiment(batch="", exp_id=""):
                                    "models",
                                    "vocabulary.json")
     vocabulary = fs.getVocabulary(vocabulary_path)
-    sorted_tuples = sorted(vocabulary.items(), key=lambda x: x[1]) #sort dictionary by values
-    vocabulary_order = {k: v for k, v in sorted_tuples}
 
     return render_template("SingleExperiment.html",
                            batchName=batch,
