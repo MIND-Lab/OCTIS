@@ -428,16 +428,18 @@
                     cell = document.getElementById(row.toString() + "_" + col.toString())
                     cell.appendChild(dict[i]["div"])
 
-
                     if (document.getElementById("graphType").checked) {
                         data = []
                         for (j = 0; j < dict[i]["graph_info"][2][2].length; j++) {
                             var trace = {
                                 y: dict[i]["graph_info"][2][2][j],
-                                type: 'box'
+                                type: 'box',
+                                name: j
                             }
                             data.push(trace)
                         }
+                        dict[i]["graph_info"][1]["showlegend"]= false
+                        dict[i]["graph_info"][1]["xaxis"]={title:"iterations"}
 
                         Plotly.newPlot(dict[i]["graph_info"][0], data, dict[i]["graph_info"][1]);
                     }
@@ -448,6 +450,8 @@
                             y: dict[i]["graph_info"][2][0],
                             type: 'scatter'
                         }
+                        dict[i]["graph_info"][1]["xaxis"]={title:"Iterations"}
+
                         Plotly.newPlot(dict[i]["graph_info"][0], [trace], dict[i]["graph_info"][1]);
                     }
 
