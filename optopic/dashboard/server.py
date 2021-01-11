@@ -221,7 +221,7 @@ def SingleExperiment(batch="", exp_id=""):
                            expIds=exp_ids,
                            datasetMetadata=fs.getDatasetMetadata(
                                exp_info["dataset"]),
-                           vocabulary=vocabulary_order)
+                           vocabulary=vocabulary)
 
 
 @app.route("/getIterationData", methods=["POST"])
