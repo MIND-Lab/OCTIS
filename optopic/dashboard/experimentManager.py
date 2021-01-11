@@ -202,7 +202,6 @@ def retrieveIterationBoResults(path, iteration):
             result = json.load(file)
         values = result["f_val"]
 
-        print(values)
         type_of_problem = result['optimization_type']
         hyperparameters = result['x_iters']
         name_hyp = list(hyperparameters.keys())
@@ -221,6 +220,15 @@ def retrieveIterationBoResults(path, iteration):
         for name in extra_metric_names:
             values = result['dict_model_runs'][name]['iteration_' + str(iteration)]
             dict_return.update({name+"_values": values})
+
+        dict_metrics = result['dict_model_runs']
+        model_runs=result['model_runs']
+        name_metrics = list(dict_metrics.keys())
+        if len(result['extra_metric_names']) > 0:
+            # nome delle metriche
+            dict_return.update({"metric_names": name_metrics[1:]})
+        else:
+            dict_return.update({"metric_names": 0})
 
         dict_return.update({"optimized_metric": result["metric_name"]})
         dict_return.update({"optimized_metric_values": values})
@@ -296,6 +304,7 @@ def singleInfo(path):
 
         dict_values_extra_metrics = dict()
         dict_stats_extra_metrics = dict()
+
         if len(result['extra_metric_names']) > 0:
             # nome delle metriche
             dict_return.update({"metric_names": name_metrics[1:]})
