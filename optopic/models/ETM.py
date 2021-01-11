@@ -15,7 +15,8 @@ class ETM(Abstract_Model):
 
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
-                 wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None):
+                 wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
+                 use_partitions=False):
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = num_topics
@@ -39,7 +40,7 @@ class ETM(Abstract_Model):
         self.test_tokens, self.test_counts = None, None
         self.valid_tokens, self.valid_counts = None, None
         self.train_tokens, self.train_counts, self.vocab = None, None, None
-        self.use_partitions = False
+        self.use_partitions = use_partitions
         self.model = None
         self.optimizer = None
         self.embeddings = None

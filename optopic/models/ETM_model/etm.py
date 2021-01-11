@@ -5,6 +5,7 @@ import math
 
 from torch import nn
 
+
 class ETM(nn.Module):
     def __init__(self, num_topics, vocab_size, t_hidden_size, rho_size, emb_size,
                  theta_act, embeddings=None, train_embeddings=True, enc_drop=0.5):
