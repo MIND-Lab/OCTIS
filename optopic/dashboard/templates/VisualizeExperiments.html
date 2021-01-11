@@ -41,7 +41,7 @@
         }
 
         .slick-slide img {
-            width: 100%;
+            width: 50%;
         }
 
         .slick-prev:before,
@@ -72,87 +72,93 @@
             padding: 3px;
             border-style: groove;
         }
+
+
     </style>
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 
 <body>
-    <div>
-        <ul class="navbar">
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
-                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                    EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-            </li>
-            <!--<li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
-            </li>
-            -->
-        </ul>
-    </div>
-    <header id="header">
-        <div>
-            <h1 style="text-align: center">Visualize experiments
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+<div>
+    <ul class="navbar">
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                                                                    src="{{ url_for('static', filename='images/logo.png') }}"
+                                                                    alt="alternative"></a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+        </li>
+        <!--<li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+        </li>
+        -->
+    </ul>
+</div>
+<header id="header">
+    <div><br>
+        <h1 style="text-align: center">Visualize experiments
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
                     aria-expanded="false" aria-controls="collapseExample">
-                    Click here to read the instructions!
-                </button>
-            </h1>
-        </div>
-    </header>
+                Click here to read the instructions!
+            </button>
+        </h1>
+    </div>
+</header>
 
-    <div class="outContainer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-container">
-                        <div class="collapse" id="collapseExample">
-                            <div class="card card-body">
-                                <p class="lead"> In this page, you can ....
-                                </p>
-                            </div>
+<div class="outContainer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-container">
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            <p class="lead"> In this page, you can ....
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <br>
+        <hr>
+        <div class="container">
+            <h4>Select one or multiple batches to analyze</h4>
+        </div>
     </div>
-
     <section id="batchSelector" class="regular slider"></section>
     <div class="row" style="padding-left: 70%;">
-        <p class="col-lg-3"> <b> Line chart </b> </p>
+        <p class="col-lg-3"><b> Line chart </b></p>
 
         <p id="labelGraphType"></p>
         <label class="switch">
             <input type="checkbox" id="graphType" name="graphType">
             <span class="slidercheck round"></span>
         </label>
-        <p class="col-lg-3"> <b> Box Plot</b></p>
+        <p class="col-lg-3"><b> Box Plot</b></p>
 
     </div>
 
     <div id="projects">
         <div class="container">
             <div class="row">
-                <p><b>Filter by:</b></p>
+                <h4>Filter the experiments by the following features:</h4>
             </div>
             <div class="row">
                 <p>Dataset: </p>
                 <div id="datasetfilters" class="button-group"></div>
             </div>
-            <div class=" row">
+            <div class="row">
                 <p>Model: </p>
                 <div id="modelfilters" class="button-group"></div>
             </div>
@@ -162,17 +168,17 @@
             </div>
 
             <div class="row">
-                <p><b>sort by:</b></p>
+                <h4>Sort the experiments by the columns and rows:</h4>
             </div>
 
             <div class="row">
-                <p>row:</p>
+                <p>Row:</p>
                 <a id="sortRowDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
                 <a id="sortRowModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
                 <a id="sortRowMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
             </div>
             <div class="row">
-                <p>column:</p>
+                <p>Column:</p>
                 <a id="sortColDataset" class="button coolButtonDiv" data-what="dataset"><span>Dataset</span></a>
                 <a id="sortColModel" class="button coolButtonDiv" data-what="model"><span>Models</span></a>
                 <a id="sortColMetric" class="button coolButtonDiv" data-what="metric"><span>Metrics</span></a>
@@ -180,26 +186,29 @@
             <div class="row">
 
             </div>
-
+            <br>
             <div class="row" style="overflow: scroll;">
                 <div id="theCanvas"></div>
             </div>
         </div>
     </div>
-    <div class="footer">
-        <div class="container">
-            <h4>OpTopic</h4>
-            <p class="white">Optimizing topic models made simple.</p>
-        </div>
-    </div>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='slick.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
-    <script>
+</div>
+
+<div class="footer">
+    <div class="container">
+        <h4>OpTopic</h4>
+        <p class="white">Optimizing topic models made simple.</p>
+    </div>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='slick.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+<script>
         function getParams(vars) {
             return vars;
         }
@@ -232,9 +241,12 @@
                 refreshCanvas(batchToShow)
 
             });
-
-            batchname = document.createElement("p")
-            batchname.innerHTML = batchId
+            batchname = document.createElement("h4")
+            batchlabel = document.createElement("span")
+            batchlabel.classList.add("badge")
+            batchlabel.classList.add("badge-primary")
+            batchlabel.innerHTML = batchId
+            batchname.appendChild(batchlabel)
             batchDiv.appendChild(img)
             batchDiv.appendChild(batchname)
             document.getElementById("batchSelector").appendChild(batchDiv)
@@ -378,6 +390,7 @@
                 for (y = 0; y <= cols; y++) {
 
                     col = document.createElement('td')
+                    col.style="text-align: center; vertical-align: middle;"
 
                     col.id = x.toString() + "_" + y.toString()
 
@@ -398,12 +411,14 @@
 
                 for (i = 0; i < list1.length; i++) {
                     cell = document.getElementById((i + 1).toString() + "_0")
-                    cell.innerHTML = cell.innerHTML + "<b>" + list1[i] + "</b>"
+                    cell.innerHTML = cell.innerHTML + "<h5><span class=\"badge badge-secondary\">"+
+                    list1[i] + "</span></h5>"
                 }
 
                 for (i = 0; i < list2.length; i++) {
                     cell = document.getElementById("0_" + (i + 1).toString())
-                    cell.innerHTML = cell.innerHTML + "<b>" + list2[i] + "</b>"
+                    cell.innerHTML = cell.innerHTML + "<h5><span class=\"badge badge-secondary\">"+
+                    list2[i] + "</span></h5>"
                 }
 
                 for (i = 0; i < dict.length; i++) {
@@ -604,19 +619,19 @@
                         heading = document.createElement("div")
                         heading.classList.add("row");
                         title = document.createElement("div")
-                        title.classList.add("col-6")
-                        title.innerHTML = "<span>" + item["batchId"] +
-                            " " +
-                            item["experimentId"] + "</span>";
+                        title.classList.add("col-8")
+                        title.innerHTML = "<button type=\"button\" class=\"btn btn-dark\" disabled>Batch: <b>" +
+                        item["batchId"] + "</b> Experiment: <b>" + item["experimentId"] + "</b></button>"
+
 
 
                         col2 = document.createElement("div")
-                        col2.classList.add("col-6")
+                        col2.classList.add("col-4")
                         buttonlink = document.createElement("button")
                         buttonlink.dataset.expName = item["experimentId"]
                         buttonlink.dataset.batchName = item["batchId"]
                         buttonlink.classList.add("btn")
-                        buttonlink.classList.add("btn-info")
+                        buttonlink.classList.add("btn-outline-info")
                         buttonlink.innerHTML = "Click here to inspect the results"
 
                         buttonlink.addEventListener('click', function () {
@@ -788,7 +803,9 @@
 
 
 
-    </script>
+
+
+</script>
 
 </body>
 
