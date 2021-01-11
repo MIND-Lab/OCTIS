@@ -75,6 +75,7 @@
                 </div>
                  <div class="col-sm-8">
                     <div id="generic" ></div>
+                     <p id="model_runs"> </p>
                 </div>
             </div>
             <hr>
@@ -94,6 +95,7 @@
                     </div>
                      <div class="col-sm-8">
                         <div id="generic_extra" ></div>
+                        <p id="model_runs2"> </p>
                     </div>
                 </div>
             </div>
@@ -233,13 +235,15 @@
         hyperparams = ''
         if ("hyperparameter_configuration" in info) {
             if (elementId=='optInfo'){
-                information="<br><b>Best configuration:</b>"
+                information="<br><b>Best hyperparameter values:</b>"
             }else{
-                information="<br><b>Current configuration:</b>"
+                information="<br><b>Current hyperparameter configuration:</b>"
             }
             hyperparams = hyperparams+information
             hyperparams=hyperparams+"<ul>"
 
+
+            var NameOtHyp=[]
             $.each(info["hyperparameter_configuration"], function (key, value) {
                 val = value
                 if (isFloat(value)) {
@@ -247,23 +251,55 @@
                     val = val.toFixed(4)
                 }
                 hyperparams = hyperparams + "<li><b>" + key + ": </b>" + val +"</li>"
+                NameOtHyp.push(key)
             });
             hyperparams=hyperparams+"</ul>"
         }
         node = document.createElement("p")
         node.innerHTML=""
-        if ("optimized_metric" in info){
-            node.innerHTML=node.innerHTML+"<b><b>Optimized metric:</b> " +info["optimized_metric"] +"<br>"
+        node.innerHTML=node.innerHTML+"<b>Optimized metric:</b> " +info["optimized_metric"] +"<br>"
+
+        if (elementId=="expInfo"){
+            value=info["optimized_metric_values"][runSelect.value]
+            node.innerHTML =node.innerHTML+"<b>Metric value:</b> " +value.toFixed(4)+
+                hyperparams;
+        }else{
+            node.innerHTML =node.innerHTML+
+                "<b>Model: </b>"+ info["model_name"]+
+                "<br><b>Number of iterations: </b>"+ info["current_iteration"]+
+                "<br><b>Number of model runs: </b>"+ info["model_runs"]+
+                "<br><b>Best seen (median) :</b> " + info["best_seen"].toFixed(4) +
+                "<br><b>Mean (median):</b> " + info["mean_seen"].toFixed(4) +
+                "<br><b>Worst seen (median):</b> " + info["worse_seen"].toFixed(4) +
+                hyperparams;
         }
 
-        node.innerHTML =node.innerHTML+"<b><b>Best seen:</b> " + info["best_seen"].toFixed(4) +
-            "<br><b>Mean:</b> " + info["mean_seen"].toFixed(4) +
-            "<br><b>Median:</b> " + info["median_seen"].toFixed(4) +
-            "<br><b>Worst seen:</b> " + info["worse_seen"].toFixed(4) +
-            hyperparams;
+        //other model attributes
+        other_hyperparams = ''
+
+        information="<br><b>Other hyperparameters values:</b>"
+        other_hyperparams = other_hyperparams+information
+        other_hyperparams=other_hyperparams+"<ul>"
+
+        $.each(info["model_attributes"], function (key, value) {
+            val = value
+            if (isFloat(value)) {
+                val = parseFloat(value)
+                val = val.toFixed(4)
+            }
+            if (NameOtHyp.includes(key)){
+            }else{
+                other_hyperparams = other_hyperparams + "<li><b>" + key + ": </b>" + val +"</li>"
+            }
+        });
+        other_hyperparams=other_hyperparams+"</ul>"
+
+        node.innerHTML =node.innerHTML+other_hyperparams
 
         ele.appendChild(node)
     }
+
+
 
     //function to write information on extra metrics
     function writeInfo_Extra(elementId, info) {
@@ -733,7 +769,18 @@
         updateDropdownIndex("wordSelector", Object.keys(vocabulary)[0])
     updateWordGraph()
 
-
+    function specifyModelRuns(){
+        ele = document.getElementById('model_runs')
+        ele.innerHTML = ''
+        ele2 = document.getElementById('model_runs2')
+        ele2.innerHTML = ''
+        node = document.createElement("p")
+        node.innerHTML= "Every function evaluation is the median of the metric function over "+
+        globalInfo["model_runs"]+" different model runs";
+        ele.appendChild(node)
+        ele.appendChild(node2)
+    }
+    specifyModelRuns()
 
 
 </script>

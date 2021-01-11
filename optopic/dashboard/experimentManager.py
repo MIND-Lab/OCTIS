@@ -185,7 +185,6 @@ def retrieveBoResults(result_path):
         return dict_return
     return False
 
-
 def retrieveIterationBoResults(path, iteration):
     """
     Function to load the results_old of BO until iteration
@@ -201,18 +200,10 @@ def retrieveIterationBoResults(path, iteration):
         # open json file
         with open(path, 'rb') as file:
             result = json.load(file)
-            values = [result["f_val"][0]]
-        if iteration > 0:
-            values = result['f_val'][0:iteration + 1]
+        values = result["f_val"]
+
+        print(values)
         type_of_problem = result['optimization_type']
-        if type_of_problem == 'Maximize':
-            best_seen = max(values)
-            worse_seen = min(values)
-        else:
-            best_seen = min(values)
-            worse_seen = max(values)
-        median_seen = np.median(values)
-        mean_seen = np.mean(values)
         hyperparameters = result['x_iters']
         name_hyp = list(hyperparameters.keys())
         hyperparameters_iter = list()
@@ -222,10 +213,20 @@ def retrieveIterationBoResults(path, iteration):
         hyperparameters_config = dict(zip(name_hyp, hyperparameters_iter))
         # dizionaro di output
         dict_return = dict()
-        dict_return.update({"best_seen": best_seen})
-        dict_return.update({"worse_seen": worse_seen})
-        dict_return.update({"median_seen": median_seen})
-        dict_return.update({"mean_seen": mean_seen})
+
+        metric_name = result["metric_name"]
+        values=result['dict_model_runs'][metric_name]['iteration_' + str(iteration)]
+
+        extra_metric_names=result["extra_metric_names"]
+        for name in extra_metric_names:
+            values = result['dict_model_runs'][name]['iteration_' + str(iteration)]
+            dict_return.update({name+"_values": values})
+
+        dict_return.update({"optimized_metric": result["metric_name"]})
+        dict_return.update({"optimized_metric_values": values})
+        dict_model_attributes=result['model_attributes']
+        dict_return.update({"model_attributes": dict_model_attributes})
+        dict_return.update({"model_name": result["model_name"]})
         dict_return.update(
             {"hyperparameter_configuration": hyperparameters_config})
         return dict_return
@@ -256,6 +257,7 @@ def singleInfo(path):
         mean_seen = np.mean(values)
 
         dict_metrics = result['dict_model_runs']
+        model_runs=result['model_runs']
         name_metrics = list(dict_metrics.keys())
         dict_results = dict()
         for name in name_metrics:
@@ -271,7 +273,6 @@ def singleInfo(path):
         for name in name_hyp:
             best_hyperparameter_configuration.update(
                 {name: hyperparameters[name][best_index]})
-
         # dizionaro di output
         dict_return = dict()
         dict_return.update({"model_runs": dict_results})
@@ -280,12 +281,18 @@ def singleInfo(path):
         dict_return.update({"worse_seen": worse_seen})
         dict_return.update({"median_seen": median_seen})
         dict_return.update({"mean_seen": mean_seen})
+        dict_return.update({"model_runs": model_runs})
         dict_return.update({"current_iteration": result["current_call"],
                             "total_iterations": result["number_of_call"]})
         dict_return.update({"hyperparameter_configurations": hyperparameters})
         dict_return.update(
             {"hyperparameter_configuration": best_hyperparameter_configuration})
         dict_return.update({"optimized_metric": result["metric_name"]})
+
+        #other hyper-parameter values
+        dict_model_attributes=result['model_attributes']
+        dict_return.update({"model_attributes": dict_model_attributes})
+        dict_return.update({"model_name": result["model_name"]})
 
         dict_values_extra_metrics = dict()
         dict_stats_extra_metrics = dict()
