@@ -289,7 +289,7 @@ def singleInfo(path):
         dict_return.update({"worse_seen": worse_seen})
         dict_return.update({"median_seen": median_seen})
         dict_return.update({"mean_seen": mean_seen})
-        dict_return.update({"model_runs": model_runs})
+        dict_return.update({"number_of_model_runs": model_runs})
         dict_return.update({"current_iteration": result["current_call"],
                             "total_iterations": result["number_of_call"]})
         dict_return.update({"hyperparameter_configurations": hyperparameters})
