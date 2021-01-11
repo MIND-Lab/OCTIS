@@ -429,8 +429,6 @@
                     cell.appendChild(dict[i]["div"])
 
 
-
-
                     if (document.getElementById("graphType").checked) {
                         data = []
                         for (j = 0; j < dict[i]["graph_info"][2][2].length; j++) {
@@ -620,8 +618,8 @@
                         heading.classList.add("row");
                         title = document.createElement("div")
                         title.classList.add("col-8")
-                        title.innerHTML = "<button type=\"button\" class=\"btn btn-dark\" disabled>Batch: <b>" +
-                        item["batchId"] + "</b> Experiment: <b>" + item["experimentId"] + "</b></button>"
+                        title.innerHTML = "<button type=\"button\" class=\"btn btn-dark\" disabled><b>Batch:</b> " +
+                        item["batchId"] + "</br><b> Experiment: </b>" + item["experimentId"] + "</button>"
 
 
 
