@@ -20,13 +20,15 @@
     <script>
         function destroy() {
             li = this.parentElement
+            if (li.parentElement.id == "metricsList") document.getElementById("addedMetric").checked = false
             li.parentElement.removeChild(li);
         }
         function newListElement(listToUpdate, identifier, content) {
-            if (listToUpdate == "optimizeMetrics") {
+            if (listToUpdate == "metricsList") {
                 content.type = "optimize";
                 lastChild = document.getElementById(listToUpdate).lastChild;
                 if (lastChild.tagName == "LI" || lastChild.tagName == "li") lastChild.remove()
+                document.getElementById("addedMetric").checked = true
             } else {
                 content.type = "track";
             }
@@ -211,6 +213,12 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="separator">
+                                    <ul>
+                                    </ul>
+                                </div>
+
                                 <div id="services" class="metricBlock">
                                     <div class="container">
                                         <div class="row">
@@ -220,15 +228,25 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <input class="invisibleRadioBtn" type="checkbox" id="addedMetric"
+                                                name="test" required>
                                             <div class="col-lg-12" id="optimizeMetrics">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div id="Metrics">
+                                                <ul id="metricsList">
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="Metrics">
-                                    <ul class="list-unstyled li-space-lg" id="metricsList">
+
+                                <div class="separator">
+                                    <ul>
                                     </ul>
                                 </div>
+
                                 <div id="services-2" class="metricBlock">
                                     <div class="container">
                                         <div class="row">
@@ -241,12 +259,20 @@
                                             <div class="col-lg-12" id="trackMetrics">
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div id="trackedMetrics">
+                                                <ul id="trackmetricsList">
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="trackedMetrics">
-                                    <ul class="list-unstyled li-space-lg" id="trackmetricsList">
+
+                                <div class="separator">
+                                    <ul>
                                     </ul>
                                 </div>
+
                                 <div class="customContainer">
                                     <div class="container">
                                         <div class="row">
@@ -545,7 +571,11 @@
                 }
 
                 //newListElement(where, name, JSON.stringify(content))
-                newListElement(where, name, content)
+                where2 = where;
+                if (where == "optimizeMetrics") where2 = "metricsList"
+                if (where == "trackMetrics") where2 = "trackmetricsList"
+
+                newListElement(where2, name, content)
 
             })
 
