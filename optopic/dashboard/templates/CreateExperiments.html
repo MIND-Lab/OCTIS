@@ -207,8 +207,8 @@
                                         <div class="row">
                                             <div id="modelForm" class="col-lg-12">
                                             </div>
+                                            <input class="invisibleRadioBtn" type="checkbox" id="addedParameter" name="choosedparam" required>
                                             <div id="modelParameters" class="col-lg-12">
-
                                             </div>
                                         </div>
                                     </div>
@@ -678,6 +678,8 @@
             }
         }
 
+        var numOfParams = 0;
+
         function gestoreContenutiExtra(nomi, id) {
             if (nomi == "model") {
 
@@ -718,6 +720,7 @@
                                     fat.appendChild(document.createTextNode("Optimize parameter"))
 
                                     if (this.checked == true) {
+                                        numOfParams = numOfParams + 1;
                                         switch (param["type"]) {
                                             case "Categorical":
                                                 newInput = document.createElement("select")
@@ -899,6 +902,7 @@
                                             }.bind(this, idd)
                                         });
                                     } else {
+                                        numOfParams = numOfParams - 1;
                                         switch (param["type"]) {
                                             case "Categorical":
                                                 newInput = document.createElement("select")
@@ -1004,6 +1008,12 @@
                                                 return $("#newDiv" + idd).html();
                                             }.bind(this, idd)
                                         });
+                                    }
+                                    if (numOfParams > 0) {
+                                        document.getElementById("addedParameter").checked = true
+                                    }
+                                    else {
+                                        document.getElementById("addedParameter").checked = false
                                     }
                                 });
                                 divInput.appendChild(document.createTextNode("Optimize parameter"));
