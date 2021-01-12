@@ -57,20 +57,36 @@
         -->
         <div style="float: left;width: 100%;">
             <h5> What is OpTopic?</h5>
-            <p>OpTopic is an open-source evaluation and optimization framework
+            <p> OpTopic is an open-source evaluation and optimization framework
                 that allows you to optimize the hyperparameters of state-of-the-art Topic Models and
                 compare their performance with respect to several evaluation metrics on several datasets.</p>
+            <h5> Why optimizing the hyperparameters of a model?</h5>
+            <p>Topic models are usually controlled by hyperparameters that have a huge impact on the performance
+                of the model itself. The value of these hyperparameters are dependent on your task and on the dataset.
+                To solve the problem of finding an optimal hyperparameter configuration of a topic model,
+                we can run an optimization algorithm (in our case, we use Bayesian Optimization) that automatically
+                and efficiently discovers an optimal configuration without a lot of effort. Just select the
+                hyperparameters of the model you want to optimize, your objective evaluation metric and the iterations of the Bayesian Optimization algorithm and OpTopic
+                will do the rest of the job! </p>
         </div>
     </div>
 
     <div class="container" style="overflow: hidden;">
         <div style="float: left;width: 100%;">
             <h5>Main Features </h5>
-            <p>You can (1) define your experiments directly from this dashboard (link ..)
-                and (2) compare their optimization progress ( link...) and
-                (3) inspect the output of each topic model (link...) </p>
-            <p> <h5> Contribute</h5>
-            .... </p>
+            <ul>You can
+                <li> define and start your optimization experiments (link ..)</li>
+                <li> compare their optimization progress ( link...) </li>
+                <li>inspect the output of each topic model (link...)</li>
+            <li> manage the queue of the defined experiments</li></ul>
+
+             <h5> Open-sourceness </h5><p>
+            OpTopic has been realized for educational purposes and
+            it will be freely released to the NLP community. We collected open-source implementations of topic models,
+            we used open-source libraries and freely available data. NOTE: We do not own the data. We just downloaded
+            and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or
+            fairness, or claim that you have license to use the dataset. If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, please get in touch through a GitHub issue.
+        </p>
         </div>
         <!---
         <div style="float: left;width: 50%;">

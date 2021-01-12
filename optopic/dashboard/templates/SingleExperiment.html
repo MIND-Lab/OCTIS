@@ -20,168 +20,172 @@
             margin: 0;
             padding: 0;
         }
+
     </style>
 </head>
 
 <body>
+<div>
+    <ul class="navbar">
+        <li claa="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                                                                    src="{{ url_for('static', filename='images/logo.png') }}"
+                                                                    alt="alternative"></a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                EXPERIMENTS</a>
+        </li>
+        <li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+        </li>
+        <!--<li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+        </li>
+        -->
+    </ul>
+</div>
+<header id="header">
     <div>
-        <ul class="navbar">
-            <li claa="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
-                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
-                    EXPERIMENTS</a>
-            </li>
-            <li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
-            </li>
-            <!--<li class="navbarEl">
-                <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
-            </li>
-            -->
-        </ul>
+        <h1 style="text-align: center">{{experimenName}}</h1>
     </div>
-    <header id="header">
-        <div>
-            <h1 style="text-align: center">{{experimenName}}</h1>
+</header>
+<h2 style="text-align: center;">Overview of the experiments</h2>
+
+<div id="projects" class=container-fluid">
+    <div class="row ">
+        <div class="col-sm-3 offset-sm-1">
+            <H3> Select an experiment to analyze </H3>
         </div>
-    </header>
-    <h2 style="text-align: center;">Overview of the experiments</h2>
+        <div class="col-sm-2 ">
+            <div style="height: 10%;width: 100%;" id="expSelector"></div>
+        </div>
 
-    <div id="projects" class=container-fluid">
-            <div class="row ">
-                 <div class="col-sm-3 offset-sm-1">
-                    <H3> Select an experiment to analyze </H3>
-                </div>
-                 <div class="col-sm-2 ">
-                    <div style="height: 10%;width: 100%;" id="expSelector"></div>
-                </div>
-
-            </div>
-
-            <div class="row ">
-                 <div class="col-sm-2 offset-sm-1">
-                     <div style="height: 5%"></div>
-                     <H5> Summary of the optimization  </H5>
-                     <div style="height: 50%;margin-left: 5% ;" id="optInfo"></div>
-                </div>
-                 <div class="col-sm-8">
-                    <div id="generic" ></div>
-                     <p id="model_runs"> </p>
-                </div>
-            </div>
-            <hr>
-            <div class="container-fluid" id="Row_extra_metric1" >
-                <div class="row " >
-                     <div class="col-sm-3 offset-sm-1">
-                        <H4> Choose the extra-metric to inspect</H4>
-                    </div>
-                     <div class="col-sm-2 ">
-                         <select id="ExtraMetricSelector" style="width:100%" class="coolSelect" onchange="updateExtraMetricSelector()"></select>
-                    </div>
-                </div>
-                <div class="row" >
-                     <div class="col-sm-2 offset-sm-1">
-                         <H5> Summary of the extra-metric  </H5>
-                         <div style="height: 50%;margin-left: 5% ;" id="optInfoExtra"></div>
-                    </div>
-                     <div class="col-sm-8">
-                        <div id="generic_extra" ></div>
-                        <p id="model_runs2"> </p>
-                    </div>
-                </div>
-            </div>
     </div>
 
-
+    <div class="row ">
+        <div class="col-sm-2 offset-sm-1">
+            <div style="height: 5%"></div>
+            <H5> Summary of the optimization </H5>
+            <div style="height: 50%;margin-left: 5% ;" id="optInfo"></div>
+        </div>
+        <div class="col-sm-8">
+            <div id="generic"></div>
+            <p id="model_runs"></p>
+        </div>
+    </div>
     <hr>
-     <h2 style="text-align: center;">Focus on selected experiment </h2>
-    <div class=container-fluid">
-        <div class="row ">
-            <div class="col-sm-2 offset-sm-1">
-                <p> Select an iteration and run to inspect</p>
-            </div>
-        </div>
+    <div class="container-fluid" id="Row_extra_metric1">
         <div class="row ">
             <div class="col-sm-3 offset-sm-1">
-                <div style="height: 10%;" id="iterationSelector"></div>
+                <H4> Choose the extra-metric to inspect</H4>
             </div>
-         </div>
-    </div>
-    <div class=container-fluid">
-        <div class="row ">
-             <div class="col-sm-3 offset-sm-5 text-right">
-                <b> Visualize the Wordcloud of topic number </b>
-            </div>
-              <div class="col-sm-1 ">
-                 <div style="width: 100%" id="topicSelector"></div>
+            <div class="col-sm-2 ">
+                <select id="ExtraMetricSelector" style="width:100%" class="coolSelect"
+                        onchange="updateExtraMetricSelector()"></select>
             </div>
         </div>
-        <div class="row ">
-             <div class="col-sm-3 offset-sm-1">
-                 <b>Summary of the single iteration </b>
-                <div style="margin-left: 5%" id="expInfo"></div>
+        <div class="row">
+            <div class="col-sm-2 offset-sm-1">
+                <H5> Summary of the extra-metric </H5>
+                <div style="height: 50%;margin-left: 5% ;" id="optInfoExtra"></div>
             </div>
-             <div class="col-sm-7 ">
+            <div class="col-sm-8">
+                <div id="generic_extra"></div>
+                <p id="model_runs2"></p>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div  id="container"></div>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div style="width:100%" class="container-fluid">
-         <div class="row ">
-            <div class="col-sm-4 offset-sm-1">
-                <b>Topic distribution of document number  </b>
-                <input type="number" value="0" id="docSelector" min="0" max="{{ datasetMetadata['total_documents'] }}" onchange="updateDocViewer()">
-            </div>
-             <div class="col-sm-2 text-right">
-                <b> Weight of the word</b>
-            </div>
-             <div class="col-sm-2">
-                <select id="wordSelector" style="width:100%" class="coolSelect" onchange="updateWordGraph()"></select>
-            </div>
-              <div class="col-sm-1 text-left">
-                <b>for each topic</b>
-            </div>
-        </div>
-        <div class="row ">
-             <div class="col-sm-5 offset-sm-1">
-                <div id="docTopic" style="height: 100%;width: 90%"></div>
-            </div>
-             <div class="col-sm-5 ">
-                <div id="wordTopic" style="height: 100%;width: 90%"></div>
-            </div>
-        </div>
-        <div class="row ">
-            <div class="col-sm-5 offset-sm-1 ">
-                <div id="docPreview" style="height: 100%;"></div>
-            </div>
-        </div>
-    </div>
 
-    <div class="footer">
-        <div class="container">
-            <h4>OpTopic</h4>
-            <p class="white">Optimizing topic models made simple.</p>
+<hr>
+<h2 style="text-align: center;">Focus on selected experiment </h2>
+<div class=container-fluid">
+    <div class="row ">
+        <div class="col-sm-2 offset-sm-1">
+            <p> Select an iteration and run to inspect</p>
         </div>
     </div>
+    <div class="row ">
+        <div class="col-sm-3 offset-sm-1">
+            <div style="height: 10%;" id="iterationSelector"></div>
+        </div>
+    </div>
+</div>
+<div class=container-fluid">
+    <div class="row ">
+        <div class="col-sm-3 offset-sm-5 text-right">
+            <b> Visualize the Wordcloud of topic number </b>
+        </div>
+        <div class="col-sm-1 ">
+            <div style="width: 100%" id="topicSelector"></div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-sm-3 offset-sm-1">
+            <b>Summary of the single iteration </b>
+            <div style="margin-left: 5%" id="expInfo"></div>
+        </div>
+        <div class="col-sm-7 ">
 
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
-    <script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+            <div id="container"></div>
+        </div>
+    </div>
+</div>
+<hr>
+<div style="width:100%" class="container-fluid">
+    <div class="row ">
+        <div class="col-sm-4 offset-sm-1">
+            <b>Topic distribution of document number </b>
+            <input type="number" value="0" id="docSelector" min="0" max="{{ datasetMetadata['total_documents'] }}"
+                   onchange="updateDocViewer()">
+        </div>
+        <div class="col-sm-2 text-right">
+            <b> Weight of the word</b>
+        </div>
+        <div class="col-sm-2">
+            <select id="wordSelector" style="width:100%" class="coolSelect" onchange="updateWordGraph()"></select>
+        </div>
+        <div class="col-sm-1 text-left">
+            <b>for each topic</b>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-sm-5 offset-sm-1">
+            <div id="docTopic" style="height: 100%;width: 90%"></div>
+        </div>
+        <div class="col-sm-5 ">
+            <div id="wordTopic" style="height: 100%;width: 90%"></div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-sm-5 offset-sm-1 ">
+            <div id="docPreview" style="height: 100%;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="container">
+        <h4>OpTopic</h4>
+        <p class="white">Optimizing topic models made simple.</p>
+    </div>
+</div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
 
 </body>
 <script>
@@ -225,6 +229,7 @@
 
     //load the input parameters
     var output = getParams({{ output| tojson}});
+    models = getParams({{ models| tojson}});
     globalInfo = getParams({{ globalInfo| tojson}});
     iterationInfo = getParams({{ iterationInfo| tojson}});
     var expInfo = getParams({{ expInfo| tojson}});
@@ -251,18 +256,53 @@
                 information="<br><b>Current hyperparameter configuration:</b>"
             }
             hyperparams = hyperparams+information
-            hyperparams=hyperparams+"<ul>"
+            hyperparams = hyperparams +"<ul>"
 
             var NameOtHyp=[]
-            $.each(info["hyperparameter_configuration"], function (key, value) {
+            var models = getParams({{ models| tojson}});
+
+            for ( const [key,value] of Object.entries(info["hyperparameter_configuration"]) ) {
+                //check if hyperparameter is in the list of hyperparameters (configuration/defaults.py)
+                if (key in models[info["model_name"]]){
+
+                    // if the hyperparameter has an alternative name, we consider that
+                    if ('alternative_name' in models[info["model_name"]][key]){
+                        hyperparams = hyperparams + "<li><b>" +
+                        models[info["model_name"]][key]['alternative_name'] + ": </b>"
+                    } else{
+                        hyperparams = hyperparams + "<li><b>" + key + ": </b>"
+                    }
+                    // if we know the type of the hyperparameter, we use that
+                    if ('type' in models[info["model_name"]][key]){
+                        val = value
+                        if (models[info["model_name"]][key]['type'] == "Integer"){
+                            val = parseInt(value)
+                        }else{
+                            if (isFloat(value)) {
+                                val = parseFloat(value)
+                                val = val.toFixed(4)
+                            }
+                        }
+                        hyperparams = hyperparams + val +"</li>"
+
+                    }else{
+                        val = value
+                        if (isFloat(value)) {
+                            val = parseFloat(value)
+                            val = val.toFixed(4)
+                        }
+                        hyperparams = hyperparams + val +"</li>"
+                    }
+
+                }else{
                 val = value
                 if (isFloat(value)) {
                     val = parseFloat(value)
                     val = val.toFixed(4)
                 }
-                hyperparams = hyperparams + "<li><b>" + key + ": </b>" + val +"</li>"
+                hyperparams = hyperparams + "<li><b>" + key + ": </b>" + val +"</li>"}
                 NameOtHyp.push(key)
-            });
+            }
             hyperparams=hyperparams+"</ul>"
         }
         node = document.createElement("p")
@@ -302,17 +342,52 @@
         other_hyperparams = other_hyperparams+information
         other_hyperparams=other_hyperparams+"<ul>"
 
-        $.each(info["model_attributes"], function (key, value) {
-            val = value
-            if (isFloat(value)) {
-                val = parseFloat(value)
-                val = val.toFixed(4)
-            }
+        for ( const [key,value] of Object.entries(info["model_attributes"]) ) {
             if (NameOtHyp.includes(key)){
             }else{
-                other_hyperparams = other_hyperparams + "<li><b>" + key + ": </b>" + val +"</li>"
+                //check if hyperparameter is in the list of hyperparameters (configuration/defaults.py)
+                if (key in models[info["model_name"]]){
+
+                    // if the hyperparameter has an alternative name, we consider that
+                    if ('alternative_name' in models[info["model_name"]][key]){
+                        other_hyperparams = other_hyperparams + "<li><b>" +
+                        models[info["model_name"]][key]['alternative_name'] + ": </b>"
+                    } else{
+                        other_hyperparams = other_hyperparams + "<li><b>" + key + ": </b>"
+                    }
+                    // if we know the type of the hyperparameter, we use that
+                    if ('type' in models[info["model_name"]][key]){
+                        val = value
+                        if (models[info["model_name"]][key]['type'] == "Integer"){
+                            val = parseInt(value)
+                        }else{
+                            if (isFloat(value)) {
+                                val = parseFloat(value)
+                                val = val.toFixed(4)
+                            }
+                        }
+                        other_hyperparams = other_hyperparams + val +"</li>"
+
+                    }else{
+                        val = value
+                        if (isFloat(value)) {
+                            val = parseFloat(value)
+                            val = val.toFixed(4)
+                        }
+                        other_hyperparams = other_hyperparams + val +"</li>"
+                    }
+
+                }else{
+                val = value
+                if (isFloat(value)) {
+                    val = parseFloat(value)
+                    val = val.toFixed(4)
+                }
+                other_hyperparams = other_hyperparams + "<li><b>" + key + ": </b>" + val +"</li>"}
+                NameOtHyp.push(key)
             }
-        });
+
+        }
         other_hyperparams=other_hyperparams+"</ul>"
 
         node.innerHTML =node.innerHTML+other_hyperparams
@@ -793,6 +868,7 @@
         ele2.appendChild(node2)
     }
     specifyModelRuns()
+
 
 
 </script>
