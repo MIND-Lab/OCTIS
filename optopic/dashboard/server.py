@@ -7,7 +7,6 @@ import json
 from flask import Flask, render_template, request
 import os
 
-
 app = Flask(__name__)
 queueManager = ""
 
@@ -31,7 +30,6 @@ def home():
 
 @app.route('/startExperiment', methods=['POST'])
 def startExperiment():
-
     data = request.form.to_dict(flat=False)
     batch = data["batchId"][0]
     experimentId = data["expId"][0]
@@ -123,7 +121,7 @@ def getBatchExperiments():
     return json.dumps(experiments)
 
 
-@ app.route('/CreateExperiments')
+@app.route('/CreateExperiments')
 def CreateExperiments():
     models = defaults.model_hyperparameters
     datasets = fs.scanDatasets()
@@ -136,14 +134,14 @@ def CreateExperiments():
                            optimization=optimization)
 
 
-@ app.route('/VisualizeExperiments')
+@app.route('/VisualizeExperiments')
 def VisualizeExperiments():
     batch_names = queueManager.getBatchNames()
     return render_template("VisualizeExperiments.html",
                            batchNames=batch_names)
 
 
-@ app.route('/ManageExperiments')
+@app.route('/ManageExperiments')
 def ManageExperiments():
     exp_list = queueManager.getToRun()
     for exp in exp_list:
@@ -198,8 +196,9 @@ def getDocPreview():
     return json.dumps({"doc": fs.getDocPreview(data["dataset"], int(data["document"]))})
 
 
-@ app.route('/SingleExperiment/<batch>/<exp_id>')
+@app.route('/SingleExperiment/<batch>/<exp_id>')
 def SingleExperiment(batch="", exp_id=""):
+    models = defaults.model_hyperparameters
     output = queueManager.getModel(batch, exp_id, 0, 0)
     global_info = queueManager.getExperimentInfo(batch, exp_id)
     iter_info = queueManager.getExperimentIterationInfo(batch, exp_id, 0)
@@ -211,28 +210,18 @@ def SingleExperiment(batch="", exp_id=""):
                                    "vocabulary.json")
     vocabulary = fs.getVocabulary(vocabulary_path)
 
-    return render_template("SingleExperiment.html",
-                           batchName=batch,
-                           experimentName=exp_id,
-                           output=output,
-                           globalInfo=global_info,
-                           iterationInfo=iter_info,
-                           expInfo=exp_info,
-                           expIds=exp_ids,
-                           datasetMetadata=fs.getDatasetMetadata(
-                               exp_info["dataset"]),
-                           vocabulary=vocabulary)
+    return render_template("SingleExperiment.html", batchName=batch, experimentName=exp_id,
+                           output=output, globalInfo=global_info, iterationInfo=iter_info,
+                           expInfo=exp_info, expIds=exp_ids, datasetMetadata=fs.getDatasetMetadata(
+            exp_info["dataset"]), vocabulary=vocabulary, models=models)
 
 
 @app.route("/getIterationData", methods=["POST"])
 def getIterationData():
     data = request.json['data']
-    output = queueManager.getModel(data["batchId"],
-                                   data["experimentId"],
-                                   int(data["iteration"]),
-                                   data["model_run"])
-    iter_info = queueManager.getExperimentIterationInfo(data["batchId"],
-                                                        data["experimentId"],
+    output = queueManager.getModel(data["batchId"], data["experimentId"],
+                                   int(data["iteration"]), data["model_run"])
+    iter_info = queueManager.getExperimentIterationInfo(data["batchId"], data["experimentId"],
                                                         int(data["iteration"]))
     return {"iterInfo": iter_info, "output": output}
 
@@ -258,6 +247,7 @@ def shutdown_server():
 
 if __name__ == '__main__':
     from optopic.dashboard.queueManager import QueueManager
+
     queueManager = QueueManager()
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, help="port", default=5000)
