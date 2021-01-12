@@ -186,11 +186,21 @@
 </body>
 <script>
 
-
+    //function to sort dictionary by value
+    function sortByValue(jsObj){
+        var sortedArray = [];
+        for(var i in jsObj)
+        {
+            // Push each JSON Object entry in array by [value, key]
+            sortedArray.push([jsObj[i], i]);
+        }
+        return sortedArray.sort();
+    }
 
     function getParams(vars) {
         return vars;
     }
+
     //Function to update the DropDown Menu
     function updateDropdownIndex(dropdownId, value) {
         dropDown = document.getElementById(dropdownId)
@@ -222,7 +232,7 @@
     expName = getParams({{ experimentName| tojson}});
     var vocabulary= getParams({{ vocabulary| tojson}});
 
-    //sort vocabulary
+    //show or nor extra metric panel
     if (globalInfo["metric_names"]==0){
       document.getElementById("Row_extra_metric1").style.display = "none";
     }else{
@@ -258,8 +268,6 @@
         node = document.createElement("p")
         node.innerHTML=""
         node.innerHTML=node.innerHTML+"<b>Optimized metric:</b> " +info["optimized_metric"] +"<br>"
-
-
 
         if (elementId=="expInfo"){
             value=info["optimized_metric_values"][runSelect.value]
@@ -312,8 +320,6 @@
         ele.appendChild(node)
     }
 
-
-
     //function to write information on extra metrics
     function writeInfo_Extra(elementId, info) {
 
@@ -359,8 +365,9 @@
     document.getElementById("expSelector").appendChild(selectExp)
     updateDropdownIndex(selectExp.id, expName)
 
-    sel = document.getElementById("iterationSelector")
 
+    //Part about update of iterationSelector
+    sel = document.getElementById("iterationSelector")
     iterSelect = document.createElement("input")
     iterSelect.id = "iterselect"
     iterSelect.setAttribute("type", "number");
@@ -378,24 +385,22 @@
     sel.appendChild(bold)
     sel.appendChild(iterSelect)
 
-
+    //Part about update of RunSelector
     runSelect = document.createElement("input")
     runSelect.id = "runselect"
     runSelect.setAttribute("type", "number");
     runSelect.setAttribute("min", 0);
     if (expInfo != false) {
-        runSelect.setAttribute("max", expInfo["optimization"]["model_runs"] - 1);
+        runSelect.setAttribute("max", globalInfo["number_of_model_runs"] - 1);
     } else {
         runSelect.setAttribute("max", 0);
     }
     runSelect.defaultValue = 0
 
-
     bold = document.createElement('strong')
     bold.appendChild(document.createTextNode(" Model run: "))
     sel.appendChild(bold)
     sel.appendChild(runSelect)
-
 
     function updateTopicSelector() {
         topicSelector = document.getElementById("topicSelector")
@@ -409,7 +414,6 @@
         })
 
         if (output != false) {
-
             for (i = 0; i < output["topic-word-matrix"].length; i++) {
                 var option = document.createElement("option");
                 option.text = i;
@@ -417,16 +421,12 @@
                 topicSelect.appendChild(option)
             }
         }
-
         topicSelector.appendChild(topicSelect)
     }
-
     updateTopicSelector()
 
-
     //Code for extra metrics*
-    if (globalInfo["metric_names"]==0){
-    }else{
+    if (globalInfo["metric_names"]!=0){
         ExtraMetricSelector = document.getElementById("ExtraMetricSelector");
         json_data=globalInfo['metric_names']
         var array = [];
@@ -451,7 +451,7 @@
         updateExtraMetricSelector()
     }
 
-
+    //part about botton "ok"
     but = document.createElement("BUTTON")
     but.innerHTML = "ok"
     but.addEventListener("click", function () {
@@ -475,7 +475,9 @@
                         writeInfo("expInfo", data["iterInfo"])
                         output = data["output"]
                         updateTopicSelector()
-                        draw(0)
+                        updateDocViewer()
+                        updateWordGraph()
+                        draw(0);
                     }
                 }
             })
@@ -496,6 +498,7 @@
                     }
                 }),
                 success: function (data) {
+
                     preview = document.getElementById("docPreview")
                     if (data["doc"] == false) data["doc"] = "document not found"
                     preview.innerHTML = "<b>Document preview</b><br>" + data["doc"]
@@ -560,12 +563,10 @@
         draw(0)
     });
 
-
-
+    //function to update the worldGraph Plot
     function draw(topic) {
 
         document.getElementById("container").innerHTML = ''
-
         var data = []
 
         if (output != false) {
@@ -574,7 +575,6 @@
                 data.push({ "x": output["topics"][topic][i][0], "value": output["topics"][topic][i][1], category: topic })
             }
         }
-
 
         var chart = anychart.tagCloud(data);
         chart.angles([0])
@@ -585,7 +585,7 @@
     }
 
 
-
+    //function to function evaluation plot
     function draw2() {
 
         if (globalInfo != false) {
@@ -626,7 +626,6 @@
                 showlegend: false
             };
 
-
             var trace1 = {
                 x: second_axe,
                 y: globalInfo["f_val"],
@@ -649,9 +648,9 @@
 
         }
     }
-
     draw2()
 
+    //function to update the Extra Metric Plot
     function draw3(metric_name) {
         if (globalInfo != false) {
 
@@ -715,22 +714,22 @@
         }
     }
 
-
     wordselector = document.getElementById("wordSelector")
 
     if (vocabulary != false) {
 
-        Object.keys(vocabulary).forEach(function (key) {
+        var sortedbyValueJSONArray = sortByValue(vocabulary);
 
-                option = document.createElement("option")
-                option.text = vocabulary[key];
-                option.value = key;
-                wordselector.appendChild(option)
-        });
+        for (var i=0;i<sortedbyValueJSONArray.length;i++){
+            option = document.createElement("option")
+            option.text = sortedbyValueJSONArray[i][0];
+            option.value = sortedbyValueJSONArray[i][1];
+            wordselector.appendChild(option)
+        }
+
     }
 
-
-
+    //function to update the worldGraph Barplot
     function updateWordGraph() {
         if (vocabulary != false && output != false) {
             wordselector = document.getElementById("wordSelector")
