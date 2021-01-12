@@ -15,7 +15,7 @@ class LDA(Abstract_Model):
 
     def __init__(self, num_topics=100, distributed=False, chunksize=2000, passes=1, update_every=1, alpha="symmetric",
                  eta=None, decay=0.5, offset=1.0, eval_every=10, iterations=50, gamma_threshold=0.001,
-                 minimum_probability=0.0, random_state=None, minimum_phi_value=0.1, per_word_topics=False):
+                 random_state=None, minimum_phi_value=0.1):
         """
         Initialize LDA model
 
@@ -78,18 +78,11 @@ class LDA(Abstract_Model):
         gamma_threshold (float, optional) – Minimum change in the value of the
         gamma parameters to continue iterating.
 
-        minimum_probability (float, optional) – Topics with a probability lower
-        than this threshold will be filtered out.
-
         random_state ({np.random.RandomState, int}, optional) – Either a
         randomState object or a seed to generate one. Useful for reproducibility.
 
         minimum_phi_value (float, optional) – if per_word_topics is True, this
         represents a lower bound on the term probabilities.
-
-        per_word_topics (bool) – If True, the model also computes a list of
-        topics, sorted in descending order of most likely topics for each
-        word, along with their phi values multiplied by the feature length.
 
         """
         super().__init__()
@@ -106,10 +99,8 @@ class LDA(Abstract_Model):
         self.hyperparameters["eval_every"] = eval_every
         self.hyperparameters["iterations"] = iterations
         self.hyperparameters["gamma_threshold"] = gamma_threshold
-        self.hyperparameters["minimum_probability"] = minimum_probability
         self.hyperparameters["random_state"] = random_state
         self.hyperparameters["minimum_phi_value"] = minimum_phi_value
-        self.hyperparameters["per_word_topics"] = per_word_topics
 
     def info(self):
         """
