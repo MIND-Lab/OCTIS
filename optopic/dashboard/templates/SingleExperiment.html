@@ -526,10 +526,7 @@
         updateExtraMetricSelector()
     }
 
-    //part about botton "ok"
-    but = document.createElement("BUTTON")
-    but.innerHTML = "ok"
-    but.addEventListener("click", function () {
+    iterSelect.addEventListener("click", function () {
         $.ajax(
             {
                 type: 'POST',
@@ -558,6 +555,37 @@
             })
 
     })
+
+    runSelect.addEventListener("click", function () {
+        $.ajax(
+            {
+                type: 'POST',
+                url: "/getIterationData",
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    "data": {
+                        "batchId": expInfo["batchId"],
+                        "experimentId": expInfo["experimentId"],
+                        "iteration": document.getElementById("iterselect").value,
+                        "model_run": document.getElementById("runselect").value,
+                    }
+                }),
+                success: function (data) {
+                    console.log(data["iterInfo"])
+                    if (data["iterinfo"] != false && data["expinfo"] != false) {
+                        writeInfo("expInfo", data["iterInfo"])
+                        output = data["output"]
+                        updateTopicSelector()
+                        updateDocViewer()
+                        updateWordGraph()
+                        draw(0);
+                    }
+                }
+            })
+
+    })
+
 
     function updateDocViewer() {
         $.ajax(
@@ -625,7 +653,6 @@
 
     updateDocViewer()
 
-    sel.appendChild(but)
 
     if (globalInfo != false) writeInfo("optInfo", globalInfo)
     if (globalInfo["metric_names"]==0){
