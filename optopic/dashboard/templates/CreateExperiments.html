@@ -774,6 +774,7 @@
                                             case "Categorical":
                                                 newInput = document.createElement("select")
                                                 newInput.setAttribute("multiple", "");
+                                                newInput.style.height = "100%"
                                                 newInput.classList.add("coolSelect");
                                                 newInput.name = "model." + key;
                                                 newInput.id = key
