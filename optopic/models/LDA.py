@@ -15,7 +15,7 @@ class LDA(Abstract_Model):
 
     def __init__(self, num_topics=100, distributed=False, chunksize=2000, passes=1, update_every=1, alpha="symmetric",
                  eta=None, decay=0.5, offset=1.0, eval_every=10, iterations=50, gamma_threshold=0.001,
-                 random_state=None, minimum_phi_value=0.1):
+                 random_state=None):
         """
         Initialize LDA model
 
@@ -81,8 +81,6 @@ class LDA(Abstract_Model):
         random_state ({np.random.RandomState, int}, optional) – Either a
         randomState object or a seed to generate one. Useful for reproducibility.
 
-        minimum_phi_value (float, optional) – if per_word_topics is True, this
-        represents a lower bound on the term probabilities.
 
         """
         super().__init__()
@@ -100,7 +98,6 @@ class LDA(Abstract_Model):
         self.hyperparameters["iterations"] = iterations
         self.hyperparameters["gamma_threshold"] = gamma_threshold
         self.hyperparameters["random_state"] = random_state
-        self.hyperparameters["minimum_phi_value"] = minimum_phi_value
 
     def info(self):
         """
