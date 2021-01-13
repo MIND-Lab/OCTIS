@@ -115,7 +115,7 @@ def startExperiment(parameters):
                     search_space[key] = Integer(
                         low=value["low"], high=value["high"])
             else:
-                search_space[key]: Categorical(value)
+                search_space[key] = Categorical(value)
 
         metric_parameters = parameters["optimize_metrics"][0]["parameters"]
         for key in metric_parameters:

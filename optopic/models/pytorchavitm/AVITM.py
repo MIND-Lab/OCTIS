@@ -93,22 +93,22 @@ class AVITM(Abstract_Model):
 
     def set_params(self, hyperparameters):
         self.hyperparameters['num_topics'] = \
-            hyperparameters.get('num_topics', self.hyperparameters['num_topics'])
+            int(hyperparameters.get('num_topics', self.hyperparameters['num_topics']))
         self.hyperparameters['model_type'] = \
             hyperparameters.get('model_type', self.hyperparameters['model_type'])
         self.hyperparameters['activation'] = \
             hyperparameters.get('activation', self.hyperparameters['activation'])
-        self.hyperparameters['dropout'] = hyperparameters.get('dropout', self.hyperparameters['dropout'])
+        self.hyperparameters['dropout'] = float(hyperparameters.get('dropout', self.hyperparameters['dropout']))
         self.hyperparameters['learn_priors'] = \
             hyperparameters.get('learn_priors', self.hyperparameters['learn_priors'])
         self.hyperparameters['batch_size'] = \
-            hyperparameters.get('batch_size', self.hyperparameters['batch_size'])
-        self.hyperparameters['lr'] = hyperparameters.get('lr', self.hyperparameters['lr'])
+            int(hyperparameters.get('batch_size', self.hyperparameters['batch_size']))
+        self.hyperparameters['lr'] = float(hyperparameters.get('lr', self.hyperparameters['lr']))
         self.hyperparameters['momentum'] = \
-            hyperparameters.get('momentum', self.hyperparameters['momentum'])
+            float(hyperparameters.get('momentum', self.hyperparameters['momentum']))
         self.hyperparameters['solver'] = hyperparameters.get('solver', self.hyperparameters['solver'])
         self.hyperparameters['num_epochs'] = \
-            hyperparameters.get('num_epochs', self.hyperparameters['num_epochs'])
+            int(hyperparameters.get('num_epochs', self.hyperparameters['num_epochs']))
         self.hyperparameters['reduce_on_plateau'] = \
             hyperparameters.get('reduce_on_plateau', self.hyperparameters['reduce_on_plateau'])
         self.hyperparameters["prior_mean"] = \
@@ -117,9 +117,9 @@ class AVITM(Abstract_Model):
             hyperparameters.get('prior_variance', self.hyperparameters['prior_variance'])
 
         self.hyperparameters["num_layers"] = \
-            hyperparameters.get('num_layers', self.hyperparameters['num_layers'])
+            int(hyperparameters.get('num_layers', self.hyperparameters['num_layers']))
         self.hyperparameters["num_neurons"] = \
-            hyperparameters.get('num_neurons', self.hyperparameters['num_neurons'])
+            int(hyperparameters.get('num_neurons', self.hyperparameters['num_neurons']))
 
         self.hyperparameters['hidden_sizes'] = tuple(
             [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])

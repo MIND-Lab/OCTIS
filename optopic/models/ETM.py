@@ -19,20 +19,20 @@ class ETM(Abstract_Model):
                  use_partitions=False):
         super(ETM, self).__init__()
         self.hyperparameters = dict()
-        self.hyperparameters['num_topics'] = num_topics
-        self.hyperparameters['num_epochs'] = num_epochs
-        self.hyperparameters['t_hidden_size'] = t_hidden_size
-        self.hyperparameters['rho_size'] = rho_size
-        self.hyperparameters['embedding_size'] = embedding_size
+        self.hyperparameters['num_topics'] = int(num_topics)
+        self.hyperparameters['num_epochs'] = int(num_epochs)
+        self.hyperparameters['t_hidden_size'] = int(t_hidden_size)
+        self.hyperparameters['rho_size'] = int(rho_size)
+        self.hyperparameters['embedding_size'] = int(embedding_size)
         self.hyperparameters['activation'] = activation
-        self.hyperparameters['dropout'] = dropout
-        self.hyperparameters['lr'] = lr
+        self.hyperparameters['dropout'] = float(dropout)
+        self.hyperparameters['lr'] = float(lr)
         self.hyperparameters['optimizer'] = optimizer
-        self.hyperparameters['batch_size'] = batch_size
-        self.hyperparameters['clip'] = clip
-        self.hyperparameters['wdecay'] = wdecay
-        self.hyperparameters['bow_norm'] = bow_norm
-        self.hyperparameters['train_embeddings'] = train_embeddings
+        self.hyperparameters['batch_size'] = int(batch_size)
+        self.hyperparameters['clip'] = float(clip)
+        self.hyperparameters['wdecay'] = float(wdecay)
+        self.hyperparameters['bow_norm'] = int(bow_norm)
+        self.hyperparameters['train_embeddings'] = bool(train_embeddings)
         self.hyperparameters['embeddings_path'] = embeddings_path
         self.top_word = top_word
         self.early_stopping = None
@@ -95,9 +95,9 @@ class ETM(Abstract_Model):
         self.load_embeddings()
         ## define model and optimizer
         self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'], vocab_size=len(self.vocab.keys()),
-                             t_hidden_size=self.hyperparameters['t_hidden_size'],
-                             rho_size=self.hyperparameters['rho_size'],
-                             emb_size=self.hyperparameters['embedding_size'],
+                             t_hidden_size=int(self.hyperparameters['t_hidden_size']),
+                             rho_size=int(self.hyperparameters['rho_size']),
+                             emb_size=int(self.hyperparameters['embedding_size']),
                              theta_act=self.hyperparameters['activation'],
                              embeddings=self.embeddings,
                              train_embeddings=self.hyperparameters['train_embeddings'],
@@ -107,6 +107,8 @@ class ETM(Abstract_Model):
         self.optimizer = self.set_optimizer()
 
     def set_optimizer(self):
+        self.hyperparameters['lr'] = float(self.hyperparameters['lr'])
+        self.hyperparameters['wdecay'] = float(self.hyperparameters['wdecay'])
         if self.hyperparameters['optimizer'] == 'adam':
             optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparameters['lr'],
                                    weight_decay=self.hyperparameters['wdecay'])
