@@ -124,14 +124,12 @@ def getBatchExperiments():
 @app.route('/CreateExperiments')
 def CreateExperiments():
     models = defaults.model_hyperparameters
+    models_descriptions = defaults.model_descriptions
     datasets = fs.scanDatasets()
     metrics = defaults.metric_parameters
     optimization = defaults.optimization_parameters
-    return render_template("CreateExperiments.html",
-                           datasets=datasets,
-                           models=models,
-                           metrics=metrics,
-                           optimization=optimization)
+    return render_template("CreateExperiments.html",  datasets=datasets, models=models, metrics=metrics,
+                           optimization=optimization, models_descriptions=models_descriptions)
 
 
 @app.route('/VisualizeExperiments')

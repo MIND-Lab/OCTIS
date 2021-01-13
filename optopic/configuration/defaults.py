@@ -35,6 +35,26 @@ em_f1_score = {'average': 'micro', 'use_log': False}
 '''
 # MODELS PARAMETERS #
 '''
+model_descriptions = {'LDA': {'name': 'Latent Dirichlet Allocation (LDA)',
+                              'citation': 'David M. Blei, Andrew Y. Ng, Michael I. Jordan: Latent Dirichlet Allocation. '
+                                          'NIPS 2001: 601-608'},
+                      'ETM': {'name': 'Embedded Topic Models (ETM)',
+                              'citation': 'Adji Bousso Dieng, Francisco J. R. Ruiz, David M. Blei: Topic Modeling in '
+                                          'Embedding Spaces. Trans. Assoc. Comput. Linguistics 8: 439-453 (2020)'},
+                      'LSI': {'name': 'Latent Semantic Indexing',
+                              'citation': 'Deerwester, S., et al, Improving Information Retrieval with Latent Semantic '
+                                          'Indexing, Proceedings of the 51st Annual Meeting of the American Society for '
+                                          'Information Science 25, 1988, pp. 36–40'},
+                      'ProdLDA': {'name': 'Product-of-Experts LDA',
+                                  'citation': 'Akash Srivastava, Charles Sutton: Autoencoding Variational Inference For '
+                                              'Topic Models. ICLR (Poster) 2017'},
+                      'NeuralLDA': {'name': 'Neural LDA',
+                                    'citation': 'Akash Srivastava, Charles Sutton: Autoencoding Variational Inference For '
+                                                'Topic Models. ICLR (Poster) 2017'},
+                      'NMF': {'name': 'Non-negative Matrix Factorization',
+                              'citation': 'Daniel D. Lee & H. Sebastian Seung (2001). Algorithms for Non-negative Matrix '
+                                          'Factorization. Advances in Neural Information Processing Systems 13: '
+                                          'Proceedings of the 2000 Conference. MIT Press. pp. 556–562.'}}
 
 model_hyperparameters = {
     'LDA': {
@@ -247,48 +267,48 @@ model_hyperparameters = {
 # METRIC PARAMETERS #
 '''
 metric_parameters = {
-                        # coherence
-                        "Coherence": {
-                            "name": "Coherence", "module": "coherence_metrics",
-                            "texts": {"type": "String", "default_value": "use dataset texts"},
-                            "topk": {"type": "Integer", "default_value": 10, "min_value": 5, "max_value": 30},
-                            "measure": {"type": "Categorical", "default_value": "c_npmi",
-                                        "possible_values": ['u_mass', 'c_v', 'c_uci', 'c_npmi']}},
-                        # diversity
-                        "TopicDiversity": {
-                            "name": "% Unique words",
-                            "module": "diversity_metrics",
-                            "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
-                                     "max_value": 30}},
+    # coherence
+    "Coherence": {
+        "name": "Coherence", "module": "coherence_metrics",
+        "texts": {"type": "String", "default_value": "use dataset texts"},
+        "topk": {"type": "Integer", "default_value": 10, "min_value": 5, "max_value": 30},
+        "measure": {"type": "Categorical", "default_value": "c_npmi",
+                    "possible_values": ['u_mass', 'c_v', 'c_uci', 'c_npmi']}},
+    # diversity
+    "TopicDiversity": {
+        "name": "% Unique words",
+        "module": "diversity_metrics",
+        "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
+                 "max_value": 30}},
 
-                        "InvertedRBO": {"name": "IRBO", "module": "diversity_metrics",
-                                        "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
-                                                 "max_value": 30},
-                                        "weight": {"type": "Real", "default_value": 0.9, "min_value": 0.0,
-                                                   "max_value": 1.0}},
-                        # divergences
-                        "KL_uniform": {"name": "KL-U", "module": "topic_significance_metrics",
-                                       "description": "KL-Uniform: It measures the distance (measured using the KL-divergence) "
-                                                      "of each topic-word distribution "
-                                                      "from the uniform distribution over the words. Significant topics are "
-                                                      "supposed to be skewed towards a few coherent and related words and "
-                                                      "distant from the uniform distribution."},
-                        "KL_background": {"name": "KL-B", "module": "topic_significance_metrics",
-                                          "description": "It measures the distance of a topic k to a “background” topic, which is a "
-                                                         "generic topic that is found equally probable in all the documents. Meaningful"
-                                                         " topics appear in a small subset of the data,thus higher values of KL–B are"
-                                                         " preferred"},
-                        "KL_vacuous": {"name": "KL-V", "module": "topic_significance_metrics",
-                                       "description": "It measures the distance between each topic-word distribution and the "
-                                                      "empirical word distribution of the whole dataset, also called “vacuous” "
-                                                      "distribution. The closer the word-topic distribution is to the empirical "
-                                                      "distribution of the sample, the less its significance is expected to be"},
+    "InvertedRBO": {"name": "IRBO", "module": "diversity_metrics",
+                    "topk": {"type": "Integer", "default_value": 10, "min_value": 5,
+                             "max_value": 30},
+                    "weight": {"type": "Real", "default_value": 0.9, "min_value": 0.0,
+                               "max_value": 1.0}},
+    # divergences
+    "KL_uniform": {"name": "KL-U", "module": "topic_significance_metrics",
+                   "description": "KL-Uniform: It measures the distance (measured using the KL-divergence) "
+                                  "of each topic-word distribution "
+                                  "from the uniform distribution over the words. Significant topics are "
+                                  "supposed to be skewed towards a few coherent and related words and "
+                                  "distant from the uniform distribution."},
+    "KL_background": {"name": "KL-B", "module": "topic_significance_metrics",
+                      "description": "It measures the distance of a topic k to a “background” topic, which is a "
+                                     "generic topic that is found equally probable in all the documents. Meaningful"
+                                     " topics appear in a small subset of the data,thus higher values of KL–B are"
+                                     " preferred"},
+    "KL_vacuous": {"name": "KL-V", "module": "topic_significance_metrics",
+                   "description": "It measures the distance between each topic-word distribution and the "
+                                  "empirical word distribution of the whole dataset, also called “vacuous” "
+                                  "distribution. The closer the word-topic distribution is to the empirical "
+                                  "distribution of the sample, the less its significance is expected to be"},
 
-# classification
-"F1Score": {"name": "F1Score", "module": "classification_metrics", 'average': {"type": "Categorical", "default_value": "micro",
-                        "possible_values": [ 'binary', 'micro', None,
-                                            'macro', 'samples', 'weighted']
-                        }}
+    # classification
+    "F1Score": {"name": "F1Score", "module": "classification_metrics",
+                'average': {"type": "Categorical", "default_value": "micro",
+                            "possible_values": ['binary', 'micro', None, 'macro', 'samples', 'weighted']
+                            }}
 
 }
 
@@ -297,11 +317,11 @@ metric_parameters = {
 '''
 
 optimization_parameters = {
-"surrogate_models": [{"name": "Gaussian process", "id": "GP"},
-                     {"name": "Random forest", "id": "RF"},
-                     {"name": "Random search", "id": "RS"}],
-"acquisition_functions": [{"name": "Upper confidence bound", "id": "LCB"},
-                          {"name": "Expected improvement", "id": "EI"}]
+    "surrogate_models": [{"name": "Gaussian process", "id": "GP"},
+                         {"name": "Random forest", "id": "RF"},
+                         {"name": "Random search", "id": "RS"}],
+    "acquisition_functions": [{"name": "Upper confidence bound", "id": "LCB"},
+                              {"name": "Expected improvement", "id": "EI"}]
 }
 
 '''
