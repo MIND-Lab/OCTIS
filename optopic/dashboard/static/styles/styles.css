@@ -234,10 +234,10 @@ select::-ms-expand {
 	}
 
 	.customContainer .singleObject {
-		width: 9rem;
+		width: 13rem;
 		max-width: 100%;
-		margin-right: 0.60rem;
-		margin-left: 0.60rem;
+		margin-right: 0.2rem;
+		margin-left: 0.2rem;
 	}
 
 	.outContainer {
@@ -248,9 +248,9 @@ select::-ms-expand {
 @media (min-width: 1200px) {
 
 	.customContainer .singleObject {
-		width: 10rem;
-		margin-right: 0.8rem;
-		margin-left: 0.8rem;
+		width: 15.5rem;
+		margin-right: 0.3rem;
+		margin-left: 0.3rem;
 	}
 
 	.outContainer .customFormSection{
