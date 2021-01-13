@@ -694,12 +694,10 @@
                     DataName += ">"+  data[i] + "</p>";
                 }
 
-                //var DataName = document.createElement("p");
-                //DataName.classList.add("job-title");
+                var dn = document.createElement("p");
+                dn.innerHTML = DataName
 
-                //DataName.innerHTML = data[i];
-
-                box.innerHTML += DataName
+                box.appendChild(dn)
 
                 father.appendChild(slide);
 
