@@ -72,17 +72,24 @@
                 <div class="text-container">
                     <div class="collapse" id="collapseExample">
                         <div class="card card-body">
-                            <p> In this page, you can analyze the results of the experiments.</p>
-                            <lu> For each experiment, the main results about the optimization process are showed, among which:
-                                <li> a summary of the main statistics about the optimization.</li>
-                                <li> the line chart and the boxplot of every function evaluation.</li>
-                                <li>a summary of the main statistics about the extra-metrics (if exist).</li>
-                                <li>the line chart and the boxplot of extra metric evaluation (if exist).</li>
-                            </lu>
-                             <lu> Moreover, fixing a specific iteration and model run, you can visualize:
-                                 <li> the <b>wordcloud</b> of every topic model.</li>
-                                 <li> the <b>topic distribution</b> of a specific document. </li>
-                                <li>The <b>weight</b> of every word of the dataset, for each topic.</li>
+                            <p class="lead"> In this page, you can inspect the results of a single experiment.</p>
+
+                            <h3><span class="badge badge-primary">Quick start:</span></h3>
+
+                            <ul> You can see the optimization process for the selected experiments, in particular:
+                                <li> a summary of the main statistics of the optimization performed with the selected optimized metric.</li>
+                                <li> the line chart representing the median of the model runs for each iteration of the optimization .</li>
+                                <li> a box plot summarizing all the evaluation functions across all the iterations .</li>
+
+                                <li> a summary of the main statistics of the other metrics that have been selected to evaluate (if it exists).</li>
+                                <li> the line chart and the boxplot of the other metrics that have been selected to evaluate (if it exists).</li>
+                            </ul>
+                            <br>
+                             <ul> Moreover, you can select a specific iteration and model run and visualize:
+                                 <li> the <b>wordcloud</b> of the selected model run for each topic.</li>
+                                 <li> the <b>topic distribution</b> of a selected document and its preview. </li>
+                                <li>The <b>weight</b> of every word of vocabulary for each topic.</li>
+                             </ul>
                         </div>
                     </div>
                 </div>
