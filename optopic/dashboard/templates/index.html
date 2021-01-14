@@ -45,43 +45,40 @@
 </div>
 
 <header id="header">
+    <br>
     <div>
         <h1 style="text-align: center">Welcome to OpTopic! </h1>
     </div>
 </header>
+<hr>
 <div class="outContainer">
     <div class="container" style="overflow: hidden;">
-        <!---<div style="float: left;width: 50%;">
-            <img id="pic1" class="picAligned" src="{{url_for('static', filename='images/pic1.jpg')}}">
-        </div>
-        -->
-        <div style="float: left;width: 100%;">
-            <h5> What is OpTopic?</h5>
-            <p> OpTopic is an open-source evaluation and optimization framework
+        <img src="{{url_for('static', filename='images/pic1.png')}}" align="right" style="width:400px;margin:20px 50px"/>
+            <h3> What is OpTopic?</h3>
+            <p class="lead"> OpTopic is an open-source evaluation and optimization framework
                 that allows you to optimize the hyperparameters of state-of-the-art Topic Models and
                 compare their performance with respect to several evaluation metrics on several datasets.</p>
-            <h5> Why optimizing the hyperparameters of a model?</h5>
-            <p>Topic models are usually controlled by hyperparameters that have a huge impact on the performance
+        <br>
+            <h3> Why optimizing the hyperparameters of a topic model?</h3>
+            <p class="lead">Topic models are usually controlled by hyperparameters that have a huge impact on the performance
                 of the model itself. The value of these hyperparameters are dependent on your task and on the dataset.
                 To solve the problem of finding an optimal hyperparameter configuration of a topic model,
                 we can run an optimization algorithm (in our case, we use Bayesian Optimization) that automatically
                 and efficiently discovers an optimal configuration without a lot of effort. Just select the
                 hyperparameters of the model you want to optimize, your objective evaluation metric and the iterations of the Bayesian Optimization algorithm and OpTopic
                 will do the rest of the job! </p>
-        </div>
-    </div>
-
-    <div class="container" style="overflow: hidden;">
-        <div style="float: left;width: 100%;">
-            <h5>Main Features </h5>
-            <ul>You can
-                <li> define and start your optimization experiments (link ..)</li>
-                <li> compare their optimization progress ( link...) </li>
-                <li>inspect the output of each topic model (link...)</li>
-            <li> manage the queue of the defined experiments</li></ul>
-
-             <h5> Open-sourceness </h5><p>
-            OpTopic has been realized for educational purposes and
+        <br>
+            <h3>Main Features </h3>
+            <p class="lead"> OpTopic allows you to:
+            <ul>
+                <li style="font-size:20px"> define and start your optimization experiments by selecting a dataset, a model, its hyperparameters and
+                an evaluation metric to optimize;</li>
+                <li style="font-size:20px"> compare the optimization progress of your designed experiments </li>
+                <li style="font-size:20px">easily inspect the output of each topic model and the summary of the optimization</li>
+            <li style="font-size:20px"> manage the queue of the designed experiments, by changing their priority or pausing/restarting their execution.</li></ul>
+</p>
+             <h3> Open-sourceness </h3><p class="lead">
+            OpTopic has been realized for research purposes and
             it will be freely released to the NLP community. We collected open-source implementations of topic models,
             we used open-source libraries and freely available data. NOTE: We do not own the data. We just downloaded
             and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or
