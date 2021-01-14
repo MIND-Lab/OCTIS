@@ -8,6 +8,7 @@
     <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/slick.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/slick.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles/slick-theme.css') }}" rel="stylesheet">
     <style type="text/css">
         html,
@@ -123,8 +124,15 @@
                 <div class="text-container">
                     <div class="collapse" id="collapseExample">
                         <div class="card card-body">
-                            <p class="lead"> In this page, you can ....
-                            </p>
+                            <lu> In this page, you can compare the experiments.
+                                <li> Select one or more batches of experiments. </li>
+                                <li> Filter the batches as a functions of dataset, model or optimized metric.  </li>
+                            </lu>
+                            <lu>It is possible to inspect each selected batch though two possible plots:
+                                <li>a line chart which shows the evolution of the "best seen" during the optimization.</li>
+                                <li>a box-plot of the all the model runs computed for each iteration
+                            </lu>
+                            <p>For more details about an optimization experiment, you can use "click here to inspect the results"</p>
                         </div>
                     </div>
                 </div>
