@@ -810,7 +810,25 @@
 
                                                 break;
                                             case "Real":
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                                else { newHTML += "<b>" + key + "</b>"; }
+                                                newHTML += "</p>"
+
+                                                hyper_label = document.createElement("div")
+                                                hyper_label.innerHTML= newHTML
+                                                fat.appendChild(hyper_label)
+
+
+                                                ///
                                                 row = document.createElement("div")
+
                                                 row.classList.add("row")
 
                                                 col1 = document.createElement("div")
@@ -827,7 +845,6 @@
                                                 if ("step" in value) {
                                                     newInput.setAttribute("step", value["step"]);
                                                     newInput.defaultValue = value["min_value"];
-
                                                 } else {
                                                     newInput.setAttribute("step", "any");
                                                 }
@@ -835,20 +852,12 @@
                                                 newInput.setAttribute("max", param["max_value"]);
                                                 newInput.name = "model." + key + "_xminx";
 
-
                                                 var label = document.createElement("div");
                                                 label.htmlFor = "model." + key + "_xminx";
                                                 label.style.padding = "5px";
                                                 var idd = "param_" + key
-                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
-                                                if ('description' in value) {
-                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
-                                                }
-                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
-
-                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + " from</b>"; }
-                                                else { newHTML += "<b>" + key + " from</b>"; }
-                                                newHTML += "</p>"
+                                                var newHTML = "";
+                                                newHTML += "<p><b>from</b></p>";
 
                                                 label.innerHTML = newHTML;
 
@@ -883,6 +892,21 @@
                                                 break;
 
                                             case "Integer":
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                                else { newHTML += "<b>" + key + "</b>"; }
+                                                newHTML += "</p>"
+
+                                                hyper_label = document.createElement("div")
+                                                hyper_label.innerHTML= newHTML
+                                                fat.appendChild(hyper_label)
+                                                ////
                                                 row = document.createElement("div")
                                                 row.classList.add("row")
 
@@ -913,15 +937,8 @@
 
                                                 ////
                                                 var idd = "param_" + key
-                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
-                                                if ('description' in value) {
-                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
-                                                }
-                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
-
-                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + " from</b>"; }
-                                                else { newHTML += "<b>" + key + " from</b>"; }
-                                                newHTML += "</p>"
+                                                var newHTML = "";
+                                                newHTML += "<p><b>from</b></p>";
 
                                                 label.innerHTML = newHTML;
 
