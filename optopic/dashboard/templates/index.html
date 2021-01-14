@@ -47,15 +47,15 @@
 <header id="header">
     <br>
     <div>
-        <h1 style="text-align: center">Welcome to OpTopic! </h1>
+        <h1 style="text-align: center">Welcome to OCTIS! </h1>
     </div>
 </header>
 <hr>
 <div class="outContainer">
     <div class="container" style="overflow: hidden;">
         <img src="{{url_for('static', filename='images/pic1.png')}}" align="right" style="width:400px;margin:20px 50px"/>
-            <h3> What is OpTopic?</h3>
-            <p class="lead"> OpTopic is an open-source evaluation and optimization framework
+            <h3> What is OCTIS?</h3>
+            <p class="lead"> OCTIS is an open-source evaluation and optimization framework
                 that allows you to optimize the hyperparameters of state-of-the-art Topic Models and
                 compare their performance with respect to several evaluation metrics on several datasets.</p>
         <br>
@@ -65,11 +65,11 @@
                 To solve the problem of finding an optimal hyperparameter configuration of a topic model,
                 we can run an optimization algorithm (in our case, we use Bayesian Optimization) that automatically
                 and efficiently discovers an optimal configuration without a lot of effort. Just select the
-                hyperparameters of the model you want to optimize, your objective evaluation metric and the iterations of the Bayesian Optimization algorithm and OpTopic
+                hyperparameters of the model you want to optimize, your objective evaluation metric and the iterations of the Bayesian Optimization algorithm and OCTIS
                 will do the rest of the job! </p>
         <br>
             <h3>Main Features </h3>
-            <p class="lead"> OpTopic allows you to:
+            <p class="lead"> OCTIS allows you to:
             <ul>
                 <li style="font-size:20px"> define and start your optimization experiments by selecting a dataset, a model, its hyperparameters and
                 an evaluation metric to optimize;</li>
@@ -78,7 +78,7 @@
             <li style="font-size:20px"> manage the queue of the designed experiments, by changing their priority or pausing/restarting their execution.</li></ul>
 </p>
              <h3> Open-sourceness </h3><p class="lead">
-            OpTopic has been realized for research purposes and
+            OCTIS has been realized for research purposes and
             it will be freely released to the NLP community. We collected open-source implementations of topic models,
             we used open-source libraries and freely available data. NOTE: We do not own the data. We just downloaded
             and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or
@@ -97,8 +97,8 @@
 
 <div class="footer">
     <div class="container">
-        <h4>OpTopic</h4>
-        <p class="white">Optimizing topic models made simple.</p>
+        <h4 style="color:white;">OCTIS</h4>
+        <p class="white" style="color:white;">Optimizing and Comparing Topic Models is Simple!</p>
     </div>
 </div>
 
@@ -106,16 +106,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
-<script>
-        document.getElementById("pic1").onclick = function () {
-            window.location.href = "{{ url_for('CreateExperiments') }}";
-        }
 
-        document.getElementById("pic2").onclick = function () {
-            window.location.href = "{{ url_for('VisualizeExperiments') }}";
-        }
-
-</script>
 </body>
 
 </html>
