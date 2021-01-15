@@ -1,10 +1,11 @@
-from optopic.evaluation_metrics.metrics import Abstract_Metric
-import optopic.configuration.citations as citations
-import optopic.configuration.defaults as defaults
+from octis.evaluation_metrics.metrics import Abstract_Metric
+import octis.configuration.citations as citations
+import octis.configuration.defaults as defaults
 import itertools
 import numpy as np
-from optopic.evaluation_metrics.rbo import rbo
-from optopic.evaluation_metrics.word_embeddings_rbo import word_embeddings_rbo
+from octis.evaluation_metrics.rbo import rbo
+from octis.evaluation_metrics.word_embeddings_rbo import word_embeddings_rbo
+from octis.evaluation_metrics.word_embeddings_rbo_centroid import word_embeddings_rbo as weirbo_centroid
 
 
 class TopicDiversity(Abstract_Metric):
@@ -131,6 +132,7 @@ class WordEmbeddingsInvertedRBO(Abstract_Metric):
         self.parameters = parameters
         self.topk = metric_parameters["topk"]
         self.weight = metric_parameters["weight"]
+        self.norm = metric_parameters["norm"]
         self.word_embedding_model = metric_parameters['embedding_model']
 
     def score(self, model_output):
@@ -152,7 +154,51 @@ class WordEmbeddingsInvertedRBO(Abstract_Metric):
                 rbo_val = word_embeddings_rbo(indexed_list1[:self.topk],
                                               indexed_list2[:self.topk], p=self.weight,
                                               index2word=index2word,
-                                              word2vec=self.word_embedding_model)[2]
+                                              word2vec=self.word_embedding_model,
+                                              norm=self.norm)[2]
+                collect.append(rbo_val)
+            return 1 - np.mean(collect)
+
+    def get_word2index(self, list1, list2):
+        words = set(list1)
+        words = words.union(set(list2))
+        word2index = {w: i for i, w in enumerate(words)}
+        return word2index
+
+
+class WordEmbeddingsInvertedRBOCentroid(Abstract_Metric):
+    def __init__(self, metric_parameters=None):
+        super().__init__(metric_parameters)
+        if metric_parameters is None:
+            metric_parameters = {}
+        parameters = defaults.em_word_embeddings_invertedRBO.copy()
+        parameters.update(metric_parameters)
+        self.parameters = parameters
+        self.topk = metric_parameters["topk"]
+        self.weight = metric_parameters["weight"]
+        self.norm = metric_parameters["norm"]
+        self.word_embedding_model = metric_parameters['embedding_model']
+
+    def score(self, model_output):
+        """
+        :return: rank_biased_overlap over the topics
+        """
+        topics = model_output['topics']
+        if topics is None:
+            return 0
+        if self.topk > len(topics[0]):
+            raise Exception('Words in topics are less than topk')
+        else:
+            collect = []
+            for list1, list2 in itertools.combinations(topics, 2):
+                word2index = self.get_word2index(list1, list2)
+                index2word = {v: k for k, v in word2index.items()}
+                indexed_list1 = [word2index[word] for word in list1]
+                indexed_list2 = [word2index[word] for word in list2]
+                rbo_val = weirbo_centroid(indexed_list1[:self.topk],
+                                          indexed_list2[:self.topk], p=self.weight,
+                                          index2word=index2word,
+                                          word2vec=self.word_embedding_model, norm=self.norm)[2]
                 collect.append(rbo_val)
             return 1 - np.mean(collect)
 

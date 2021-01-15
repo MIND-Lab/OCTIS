@@ -1,6 +1,6 @@
-from optopic.evaluation_metrics.metrics import Abstract_Metric
-import optopic.configuration.citations as citations
-import optopic.configuration.defaults as defaults
+from octis.evaluation_metrics.metrics import Abstract_Metric
+import octis.configuration.citations as citations
+import octis.configuration.defaults as defaults
 from sklearn.metrics import f1_score, confusion_matrix
 import numpy as np
 from sklearn import svm

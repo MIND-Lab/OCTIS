@@ -11,6 +11,7 @@ RBO.min.__doc__ = "Lower bound estimate"
 RBO.res.__doc__ = "Residual corresponding to min; min + res is an upper bound estimate"
 RBO.ext.__doc__ = "Extrapolated point estimate"
 
+
 def _round(obj):
     if isinstance(obj, RBO):
         return RBO(_round(obj.min), _round(obj.res), _round(obj.ext))
@@ -28,9 +29,9 @@ def set_at_depth(lst, depth):
     return ans
 
 
-def embeddings_overlap(list1, list2, depth, index2word, word2vec):
-    #set1, set2 = set_at_depth(list1, depth), set_at_depth(list2, depth)
-    #return len(set1.intersection(set2)), len(set1), len(set2)
+def embeddings_overlap(list1, list2, depth, index2word, word2vec, norm=True):
+    # set1, set2 = set_at_depth(list1, depth), set_at_depth(list2, depth)
+    # return len(set1.intersection(set2)), len(set1), len(set2)
 
     set1, set2 = set_at_depth(list1, depth), set_at_depth(list2, depth)
     word_list1 = [index2word[index] for index in list1]
@@ -39,7 +40,17 @@ def embeddings_overlap(list1, list2, depth, index2word, word2vec):
     similarities = {}
     for w1 in word_list1[:depth]:
         for w2 in word_list2[:depth]:
-            similarities[(w1,w2)] = word2vec.similarity(w1, w2)
+            cos_sim = word2vec.similarity(w1, w2)
+            if cos_sim > 1:
+                cos_sim = 1
+            elif cos_sim < -1:
+                cos_sim = -1
+
+            if norm:
+                similarities[(w1, w2)] = 1 - (math.acos(cos_sim) / math.pi)
+            else:
+                similarities[(w1, w2)] = cos_sim  # + 1)/2
+            # similarities[(w1,w2)] = (word2vec.similarity(w1, w2) + 1)/2
 
     similarities = OrderedDict(sorted(similarities.items(), key=lambda x: -x[1]))
 
@@ -47,39 +58,40 @@ def embeddings_overlap(list1, list2, depth, index2word, word2vec):
     key_list = list(similarities.keys())
     for k in key_list:
         if k in similarities.keys():
-            #print(k, similarities[k])
+            # print(k, similarities[k])
             e_ov = e_ov + similarities[k]
             similarities = {save_k: v for save_k, v in similarities.items()
                             if save_k[0] != k[0] and save_k[1] != k[1]}
-    #e_ov = 1
-    #print("****")
+    # e_ov = 1
+    # print("****")
     return e_ov, len(set1), len(set2)
 
 
-def overlap(list1, list2, depth, index2word, word2vec):
-    #return agreement(list1, list2, depth) * min(depth, len(list1), len(list2))
+def overlap(list1, list2, depth, index2word, word2vec, norm):
+    # return agreement(list1, list2, depth) * min(depth, len(list1), len(list2))
     # NOTE: comment the preceding and uncomment the following line if you want
     # to stick to the algorithm as defined by the paper
-    ov = embeddings_overlap(list1, list2, depth, index2word, word2vec)[0]
-    print("overlap", ov)
+    ov = embeddings_overlap(list1, list2, depth, index2word, word2vec, norm)[0]
+    # print("overlap", ov)
     return ov
 
 
-def agreement(list1, list2, depth, index2word, word2vec):
+def agreement(list1, list2, depth, index2word, word2vec, norm):
     """Proportion of shared values between two sorted lists at given depth."""
-    len_intersection, len_set1, len_set2 = embeddings_overlap(list1, list2, depth, index2word, word2vec)
+    len_intersection, len_set1, len_set2 = embeddings_overlap(list1, list2, depth, index2word, word2vec, norm)
     return 2 * len_intersection / (len_set1 + len_set2)
 
 
-def cumulative_agreement(list1, list2, depth, index2word, word2vec):
-    return (agreement(list1, list2, d, index2word, word2vec) for d in range(1, depth + 1))
+def cumulative_agreement(list1, list2, depth, index2word, word2vec, norm):
+    return (agreement(list1, list2, d, index2word, word2vec, norm) for d in range(1, depth + 1))
 
 
+'''
 def average_overlap(list1, list2, index2word, word2vec, depth=None):
     """Calculate average overlap between ``list1`` and ``list2``.
     """
     depth = min(len(list1), len(list2)) if depth is None else depth
-    return sum(cumulative_agreement(list1, list2, depth, index2word=index2word, word2vec=word2vec)) / depth
+    return sum(cumulative_agreement(list1, list2, depth, index2word=index2word, word2vec=word2vec, norm)) / depth
 
 
 def rbo_at_k(list1, list2, p, index2word, word2vec, depth=None):
@@ -88,22 +100,24 @@ def rbo_at_k(list1, list2, p, index2word, word2vec, depth=None):
     depth = min(len(list1), len(list2)) if depth is None else depth
     d_a = enumerate(cumulative_agreement(list1, list2, depth, index2word=index2word, word2vec=word2vec))
     return (1 - p) * sum(p ** d * a for (d, a) in d_a)
+'''
 
 
-def rbo_min(list1, list2, p, index2word, word2vec, depth=None):
+def rbo_min(list1, list2, p, index2word, word2vec, depth=None, norm=True):
     """Tight lower bound on RBO.
     See equation (11) in paper.
     """
     depth = min(len(list1), len(list2)) if depth is None else depth
-    x_k = overlap(list1, list2, depth, index2word, word2vec)
+    x_k = overlap(list1, list2, depth, index2word, word2vec, norm)
     log_term = x_k * math.log(1 - p)
     sum_term = sum(
-        p ** d / d * (overlap(list1, list2, d, index2word, word2vec=word2vec) - x_k) for d in range(1, depth + 1)
+        p ** d / d * (overlap(list1, list2, d, index2word, word2vec=word2vec, norm=norm) - x_k) for d in
+        range(1, depth + 1)
     )
     return (1 - p) / p * (sum_term - log_term)
 
 
-def rbo_res(list1, list2, p, index2word, word2vec):
+def rbo_res(list1, list2, p, index2word, word2vec, norm):
     """Upper bound on residual overlap beyond evaluated depth.
     See equation (30) in paper.
     NOTE: The doctests weren't verified against manual computations but seem
@@ -112,7 +126,7 @@ def rbo_res(list1, list2, p, index2word, word2vec):
     """
     S, L = sorted((list1, list2), key=len)
     s, l = len(S), len(L)
-    x_l = overlap(list1, list2, l, index2word, word2vec)
+    x_l = overlap(list1, list2, l, index2word, word2vec, norm)
     # since overlap(...) can be fractional in the general case of ties and f
     # must be an integer --> math.ceil()
     f = int(math.ceil(l + s - x_l))
@@ -123,7 +137,7 @@ def rbo_res(list1, list2, p, index2word, word2vec):
     return p ** s + p ** l - p ** f - (1 - p) / p * (term1 + term2 + term3)
 
 
-def rbo_ext(list1, list2, p, index2word, word2vec):
+def rbo_ext(list1, list2, p, index2word, word2vec, norm):
     """RBO point estimate based on extrapolating observed overlap.
     See equation (32) in paper.
     NOTE: The doctests weren't verified against manual computations but seem
@@ -135,13 +149,13 @@ def rbo_ext(list1, list2, p, index2word, word2vec):
     """
     S, L = sorted((list1, list2), key=len)
     s, l = len(S), len(L)
-    x_l = overlap(list1, list2, l, index2word, word2vec)
-    x_s = overlap(list1, list2, s, index2word, word2vec)
+    x_l = overlap(list1, list2, l, index2word, word2vec, norm)
+    x_s = overlap(list1, list2, s, index2word, word2vec, norm)
     # the paper says overlap(..., d) / d, but it should be replaced by
     # agreement(..., d) defined as per equation (28) so that ties are handled
     # properly (otherwise values > 1 will be returned)
     # sum1 = sum(p**d * overlap(list1, list2, d)[0] / d for d in range(1, l + 1))
-    sum1 = sum(p ** d * agreement(list1, list2, d, index2word=index2word, word2vec=word2vec)
+    sum1 = sum(p ** d * agreement(list1, list2, d, index2word=index2word, word2vec=word2vec, norm=norm)
                for d in range(1, l + 1))
     sum2 = sum(p ** d * x_s * (d - s) / s / d for d in range(s + 1, l + 1))
     term1 = (1 - p) / p * (sum1 + sum2)
@@ -149,7 +163,7 @@ def rbo_ext(list1, list2, p, index2word, word2vec):
     return term1 + term2
 
 
-def word_embeddings_rbo(list1, list2, p, index2word, word2vec):
+def word_embeddings_rbo(list1, list2, p, index2word, word2vec, norm):
     """Complete RBO analysis (lower bound, residual, point estimate).
     ``list`` arguments should be already correctly sorted iterables and each
     item should either be an atomic value or a set of values tied for that
@@ -162,7 +176,7 @@ def word_embeddings_rbo(list1, list2, p, index2word, word2vec):
     """
     if not 0 <= p <= 1:
         raise ValueError("The ``p`` parameter must be between 0 and 1.")
-    args = (list1, list2, p, index2word, word2vec)
+    args = (list1, list2, p, index2word, word2vec, norm)
 
     return RBO(rbo_min(*args), rbo_res(*args), rbo_ext(*args))
 
@@ -203,7 +217,7 @@ def sort_dict(dct, *, ascending=False):
     return items
 
 
-def rbo_dict(dict1, dict2, p, index2word, word2vec, *, sort_ascending=False):
+def rbo_dict(dict1, dict2, p, index2word, word2vec, norm, *, sort_ascending=False):
     """Wrapper around ``rbo()`` for dict input.
     Each dict maps items to be sorted to the score according to which
     they should be sorted. The RBO analysis is then performed on the
@@ -216,4 +230,4 @@ def rbo_dict(dict1, dict2, p, index2word, word2vec, *, sort_ascending=False):
         sort_dict(dict1, ascending=sort_ascending),
         sort_dict(dict2, ascending=sort_ascending),
     )
-    return word_embeddings_rbo(list1, list2, p, index2word, word2vec)
+    return word_embeddings_rbo(list1, list2, p, index2word, word2vec, norm)
