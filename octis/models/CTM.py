@@ -1,21 +1,27 @@
 from sklearn.feature_extraction.text import CountVectorizer
 
-from optopic.models.model import Abstract_Model
-from optopic.models.pytorchavitm import datasets
-from optopic.models.pytorchavitm.avitm import avitm_model
+from octis.models.model import Abstract_Model
+from octis.models.contextualized_topic_models.datasets import dataset
+from octis.models.contextualized_topic_models.models import ctm
+from octis.models.contextualized_topic_models.utils.data_preparation import bert_embeddings_from_list
+
+import os
+import pickle as pkl
 
 
-class AVITM(Abstract_Model):
+class CTM(Abstract_Model):
 
     def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
-                 prior_variance=None, num_layers=2, num_neurons=100):
-        super(Abstract_Model).__init__()
+                 prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
+                 inference_type="combined"):
+        super().__init__()
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
         self.hyperparameters['activation'] = activation
         self.hyperparameters['dropout'] = dropout
+        self.hyperparameters['inference_type'] = inference_type
         self.hyperparameters['learn_priors'] = learn_priors
         self.hyperparameters['batch_size'] = batch_size
         self.hyperparameters['lr'] = lr
@@ -27,6 +33,7 @@ class AVITM(Abstract_Model):
         self.hyperparameters["prior_variance"] = prior_variance
         self.hyperparameters["num_neurons"] = num_neurons
         self.hyperparameters["num_layers"] = num_layers
+        self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
 
@@ -67,59 +74,65 @@ class AVITM(Abstract_Model):
                 self.preprocess(self.vocab, data_corpus_train, test=data_corpus_test,
                                 validation=data_corpus_validation)
         else:
-            self.vocab = dataset.get_vocabulary()
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             self.X_train, input_size = self.preprocess(self.vocab, train=data_corpus)
 
-        self.model = avitm_model.AVITM_model(
-            input_size=input_size, num_topics=self.hyperparameters['num_topics'],
-            model_type=self.hyperparameters['model_type'], hidden_sizes=self.hyperparameters['hidden_sizes'],
-            activation=self.hyperparameters['activation'], dropout=self.hyperparameters['dropout'],
-            learn_priors=self.hyperparameters['learn_priors'], batch_size=self.hyperparameters['batch_size'],
-            lr=self.hyperparameters['lr'], momentum=self.hyperparameters['momentum'],
-            solver=self.hyperparameters['solver'], num_epochs=self.hyperparameters['num_epochs'],
-            reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
-            topic_prior_mean=self.hyperparameters["prior_mean"], topic_prior_variance=self.hyperparameters[
-                "prior_variance"]
-        )
+        self.model = ctm.CTM(input_size=input_size,
+                             num_topics=self.hyperparameters['num_topics'],
+                             model_type='prodLDA',
+                             inference_type=self.hyperparameters['inference_type'],
+                             hidden_sizes=self.hyperparameters['hidden_sizes'],
+                             activation=self.hyperparameters['activation'],
+                             dropout=self.hyperparameters['dropout'],
+                             learn_priors=self.hyperparameters['learn_priors'],
+                             batch_size=self.hyperparameters['batch_size'],
+                             lr=self.hyperparameters['lr'],
+                             momentum=self.hyperparameters['momentum'],
+                             solver=self.hyperparameters['solver'],
+                             num_epochs=self.hyperparameters['num_epochs'],
+                             reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
+                             #topic_prior_mean=self.hyperparameters["prior_mean"],
+                             #topic_prior_variance=self.hyperparameters["prior_variance"]
+                             )
+
+        self.model.fit(self.X_train, self.X_valid)
 
         if self.use_partitions:
-            self.model.fit(self.X_train, self.X_valid)
             result = self.inference()
         else:
-            self.model.fit(self.X_train, None)
             result = self.model.get_info()
         return result
 
     def set_params(self, hyperparameters):
         self.hyperparameters['num_topics'] = \
-            int(hyperparameters.get('num_topics', self.hyperparameters['num_topics']))
+            hyperparameters.get('num_topics', self.hyperparameters['num_topics'])
         self.hyperparameters['model_type'] = \
             hyperparameters.get('model_type', self.hyperparameters['model_type'])
         self.hyperparameters['activation'] = \
             hyperparameters.get('activation', self.hyperparameters['activation'])
-        self.hyperparameters['dropout'] = float(hyperparameters.get('dropout', self.hyperparameters['dropout']))
+        self.hyperparameters['dropout'] = hyperparameters.get('dropout', self.hyperparameters['dropout'])
         self.hyperparameters['learn_priors'] = \
             hyperparameters.get('learn_priors', self.hyperparameters['learn_priors'])
         self.hyperparameters['batch_size'] = \
-            int(hyperparameters.get('batch_size', self.hyperparameters['batch_size']))
-        self.hyperparameters['lr'] = float(hyperparameters.get('lr', self.hyperparameters['lr']))
+            hyperparameters.get('batch_size', self.hyperparameters['batch_size'])
+        self.hyperparameters['lr'] = hyperparameters.get('lr', self.hyperparameters['lr'])
         self.hyperparameters['momentum'] = \
-            float(hyperparameters.get('momentum', self.hyperparameters['momentum']))
+            hyperparameters.get('momentum', self.hyperparameters['momentum'])
         self.hyperparameters['solver'] = hyperparameters.get('solver', self.hyperparameters['solver'])
         self.hyperparameters['num_epochs'] = \
-            int(hyperparameters.get('num_epochs', self.hyperparameters['num_epochs']))
+            hyperparameters.get('num_epochs', self.hyperparameters['num_epochs'])
         self.hyperparameters['reduce_on_plateau'] = \
             hyperparameters.get('reduce_on_plateau', self.hyperparameters['reduce_on_plateau'])
         self.hyperparameters["prior_mean"] = \
             hyperparameters.get('prior_mean', self.hyperparameters['prior_mean'])
         self.hyperparameters["prior_variance"] = \
             hyperparameters.get('prior_variance', self.hyperparameters['prior_variance'])
-
+        self.hyperparameters["inference_type"] = \
+            hyperparameters.get('inference_type', self.hyperparameters['inference_type'])
         self.hyperparameters["num_layers"] = \
-            int(hyperparameters.get('num_layers', self.hyperparameters['num_layers']))
+            hyperparameters.get('num_layers', self.hyperparameters['num_layers'])
         self.hyperparameters["num_neurons"] = \
-            int(hyperparameters.get('num_neurons', self.hyperparameters['num_neurons']))
+            hyperparameters.get('num_neurons', self.hyperparameters['num_neurons'])
 
         self.hyperparameters['hidden_sizes'] = tuple(
             [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])
@@ -139,7 +152,8 @@ class AVITM(Abstract_Model):
             print('No partitioned dataset, please apply test_set method = True')
 
     @staticmethod
-    def preprocess(vocab, train, test=None, validation=None):
+    def preprocess(vocab, train, test=None, validation=None,
+                   bert_train_path=None, bert_test_path=None, bert_val_path=None):
         vocab2id = {w: i for i, w in enumerate(vocab)}
         vec = CountVectorizer(
             vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
@@ -151,23 +165,43 @@ class AVITM(Abstract_Model):
 
         vec.fit(entire_dataset)
         idx2token = {v: k for (k, v) in vec.vocabulary_.items()}
-        X_train = vec.transform(train)
-        train_data = datasets.BOWDataset(X_train.toarray(), idx2token)
+
+        x_train = vec.transform(train)
+        b_train = CTM.load_bert_data(bert_train_path, train)
+
+        train_data = dataset.CTMDataset(x_train.toarray(), b_train, idx2token)
         input_size = len(idx2token.keys())
 
         if test is not None and validation is not None:
             x_test = vec.transform(test)
-            test_data = datasets.BOWDataset(x_test.toarray(), idx2token)
+            b_test = CTM.load_bert_data(bert_test_path, test)
+            test_data = dataset.CTMDataset(x_test.toarray(), b_test, idx2token)
+
             x_valid = vec.transform(validation)
-            valid_data = datasets.BOWDataset(x_valid.toarray(), idx2token)
+            b_val = CTM.load_bert_data(bert_val_path, validation)
+            valid_data = dataset.CTMDataset(x_valid.toarray(), b_val, idx2token)
             return train_data, test_data, valid_data, input_size
         if test is None and validation is not None:
             x_valid = vec.transform(validation)
-            valid_data = datasets.BOWDataset(x_valid.toarray(), idx2token)
+            b_val = CTM.load_bert_data(bert_val_path, validation)
+            valid_data = dataset.CTMDataset(x_valid.toarray(), b_val, idx2token)
             return train_data, valid_data, input_size
         if test is not None and validation is None:
             x_test = vec.transform(test)
-            test_data = datasets.BOWDataset(x_test.toarray(), idx2token)
+            b_test = CTM.load_bert_data(bert_test_path, test)
+            test_data = dataset.CTMDataset(x_test.toarray(), b_test, idx2token)
             return train_data, test_data, input_size
         if test is None and validation is None:
             return train_data, input_size
+
+    @staticmethod
+    def load_bert_data(bert_path, texts):
+        if bert_path is not None:
+            if os.path.exists(bert_path):
+                bert_ouput = pkl.load(open(bert_path, 'r'))
+            else:
+                bert_ouput = bert_embeddings_from_list(texts)
+                pkl.dump(bert_ouput, open(bert_path, 'w'))
+        else:
+            bert_ouput = bert_embeddings_from_list(texts)
+        return bert_ouput

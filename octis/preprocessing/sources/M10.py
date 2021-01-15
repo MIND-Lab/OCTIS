@@ -1,5 +1,5 @@
-import optopic.preprocessing.sources.source_tools as nu
-import optopic.configuration.citations as citations
+import octis.preprocessing.sources.source_tools as nu
+import octis.configuration.citations as citations
 
 
 def retrieve_m10():

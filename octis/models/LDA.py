@@ -1,9 +1,9 @@
-from optopic.models.model import Abstract_Model
+from octis.models.model import Abstract_Model
 import numpy as np
 from gensim.models import ldamodel
 import gensim.corpora as corpora
-import optopic.configuration.citations as citations
-import optopic.configuration.defaults as defaults
+import octis.configuration.citations as citations
+import octis.configuration.defaults as defaults
 
 
 class LDA(Abstract_Model):

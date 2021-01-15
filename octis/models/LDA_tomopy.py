@@ -1,4 +1,4 @@
-from optopic.models.model import Abstract_Model
+from octis.models.model import Abstract_Model
 import numpy as np
 import tomotopy as tp
 

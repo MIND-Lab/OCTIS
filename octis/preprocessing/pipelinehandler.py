@@ -1,4 +1,4 @@
-import optopic.preprocessing.tools as tools
+import octis.preprocessing.tools as tools
 from nltk.corpus import stopwords as nltk_stopwords
 
 

@@ -8,16 +8,16 @@ import json
 from sklearn.gaussian_process.kernels import *
 from skopt.space.space import *
 
-from optopic.dataset.dataset import Dataset
+from octis.dataset.dataset import Dataset
 # utils from other files of the framework
-from optopic.models.model import save_model_output
-from optopic.optimization.optimizer_tool import BestEvaluation
-from optopic.optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
-from optopic.optimization.optimizer_tool import early_condition
-from optopic.optimization.optimizer_tool import choose_optimizer
-from optopic.optimization.optimizer_tool import select_metric
-from optopic.optimization.optimizer_tool import load_model
-from optopic.optimization.optimizer_tool import load_search_space
+from octis.models.model import save_model_output
+from octis.optimization.optimizer_tool import BestEvaluation
+from octis.optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
+from octis.optimization.optimizer_tool import early_condition
+from octis.optimization.optimizer_tool import choose_optimizer
+from octis.optimization.optimizer_tool import select_metric
+from octis.optimization.optimizer_tool import load_model
+from octis.optimization.optimizer_tool import load_search_space
 
 
 class Optimizer:

@@ -1,7 +1,7 @@
 import gensim
 from sklearn.model_selection import train_test_split
 from gensim.utils import simple_preprocess
-from optopic.dataset.dataset import Dataset
+from octis.dataset.dataset import Dataset
 import multiprocessing as mp
 import spacy
 import string

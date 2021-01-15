@@ -1,13 +1,13 @@
 from __future__ import print_function
-from optopic.models.early_stopping.pytorchtools import EarlyStopping
+from octis.models.early_stopping.pytorchtools import EarlyStopping
 
 import torch
 import numpy as np
-from optopic.models.ETM_model import data
+from octis.models.ETM_model import data
 from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
-from optopic.models.ETM_model import etm
-from optopic.models.model import Abstract_Model
+from octis.models.ETM_model import etm
+from octis.models.model import Abstract_Model
 import gensim
 import pickle as pkl
 

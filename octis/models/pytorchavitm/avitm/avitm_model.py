@@ -4,7 +4,7 @@ import os
 from collections import defaultdict
 import multiprocessing as mp
 import requests
-from optopic.models.early_stopping.pytorchtools import EarlyStopping
+from octis.models.early_stopping.pytorchtools import EarlyStopping
 
 import numpy as np
 import datetime
@@ -14,7 +14,7 @@ from torch import optim
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
-from optopic.models.pytorchavitm.avitm.decoder_network import DecoderNetwork
+from octis.models.pytorchavitm.avitm.decoder_network import DecoderNetwork
 
 
 class AVITM_model(object):

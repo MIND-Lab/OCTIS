@@ -1,4 +1,4 @@
-from optopic.models.model import Abstract_Model
+from octis.models.model import Abstract_Model
 
 class CRTM_Model(Abstract_Model):
     """

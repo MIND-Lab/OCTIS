@@ -1,8 +1,8 @@
-from optopic.models.model import Abstract_Model
+from octis.models.model import Abstract_Model
 import numpy as np
 from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
-import optopic.configuration.defaults as defaults
+import octis.configuration.defaults as defaults
 
 class NMF_scikit(Abstract_Model):
 

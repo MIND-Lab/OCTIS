@@ -8,7 +8,7 @@ from skopt.utils import dimensions_aslist
 import os
 import importlib
 import sys
-import optopic.configuration.defaults as defaults
+import octis.configuration.defaults as defaults
 
 from pathlib import Path
 
@@ -55,8 +55,8 @@ def load_model(optimization_object):
     """
 
     model_parameters = optimization_object['model_attributes']
-    use_partitioning=optimization_object['use_partitioning']
-    
+    use_partitioning = optimization_object['use_partitioning']
+
     model_name = optimization_object['model_name']
     module_path = os.path.join(framework_path, "models")
     module_path = os.path.join(module_path, model_name + ".py")
