@@ -3,8 +3,8 @@ import time
 import json
 from pathlib import Path
 from collections import namedtuple
-from optopic.dashboard.experimentManager import startExperiment
-import optopic.dashboard.experimentManager as expManager
+from octis.dashboard.experimentManager import startExperiment
+import octis.dashboard.experimentManager as expManager
 import multiprocessing as mp
 from subprocess import Popen
 import signal

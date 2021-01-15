@@ -26,7 +26,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: #4059AD;
+	background-color: #011638;
 	-webkit-transition: .4s;
 	transition: .4s;
 }
@@ -44,11 +44,11 @@
 }
 
 input:checked+.slidercheck {
-	background-color: #4059AD;
+	background-color: #011638;
 }
 
 input:focus+.slidercheck {
-	box-shadow: 0 0 1px #4059AD;
+	box-shadow: 0 0 1px #011638;
 }
 
 input:checked+.slidercheck:before {
@@ -88,7 +88,7 @@ input:checked+.slidercheck:before {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #4059AD;
+	background-color: #011638;
 }
 
 .navbarEl{
@@ -108,7 +108,7 @@ input:checked+.slidercheck:before {
 }
 
 .footer{
-	background-color: #4059AD;
+	background-color: #011638;
 	padding-top: 5rem;
 	padding-bottom: 2rem;
 	overflow: hidden;
@@ -116,8 +116,8 @@ input:checked+.slidercheck:before {
 
 .coolButton{
 	display: inline-block;
-	border: 0.125rem solid #4059AD;
-	background-color: #4059AD;
+	border: 0.125rem solid #011638;
+	background-color: #011638;
 	color: #fff;
 	border-bottom: 5px;
 	padding: 5px;
@@ -126,21 +126,21 @@ input:checked+.slidercheck:before {
 
 .coolButton:hover {
 	background-color: white;
-	color:#4059AD;
+	color:#011638;
 }
 
 .send-button {
 	display: inline-block;
 	height: 3.125rem;
-	border: 0.125rem solid #4059AD;
-	background-color:#4059AD;
+	border: 0.125rem solid #011638;
+	background-color:#011638;
 	color: #fff;
 	cursor: pointer;
 }
 
 .send-button:hover {
 	background-color: transparent;
-	color:#4059AD;
+	color:#011638;
 }
 
 .coolInput,

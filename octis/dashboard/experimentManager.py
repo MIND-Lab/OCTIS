@@ -8,16 +8,16 @@ import importlib
 from pathlib import Path
 from importlib import util
 import gensim.corpora as corpora
-import optopic.configuration.defaults as defaults
+import octis.configuration.defaults as defaults
 from skopt.space.space import Real, Categorical, Integer
-from optopic.models.model import load_model_output
+from octis.models.model import load_model_output
 
 path = Path(os.path.dirname(os.path.realpath(__file__)))
 path = str(path.parent)
 
-# Import optopic module
+# Import octis module
 spec = importlib.util.spec_from_file_location(
-    "optopic", str(os.path.join(path, "__init__.py")), submodule_search_locations=[])
+    "octis", str(os.path.join(path, "__init__.py")), submodule_search_locations=[])
 module = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = module
 spec.loader.exec_module(module)

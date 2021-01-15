@@ -1,7 +1,7 @@
 import argparse
 import webbrowser
-import optopic.dashboard.frameworkScanner as fs
-import optopic.configuration.defaults as defaults
+import octis.dashboard.frameworkScanner as fs
+import octis.configuration.defaults as defaults
 from multiprocessing import Process, Pool
 import json
 from flask import Flask, render_template, request
@@ -244,7 +244,7 @@ def shutdown_server():
 
 
 if __name__ == '__main__':
-    from optopic.dashboard.queueManager import QueueManager
+    from octis.dashboard.queueManager import QueueManager
 
     queueManager = QueueManager()
     parser = argparse.ArgumentParser()
