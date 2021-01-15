@@ -1,1 +1,1 @@
-"""Unit test package for optopic."""
+"""Unit test package for octis."""

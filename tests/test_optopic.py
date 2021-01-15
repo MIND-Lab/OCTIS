@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
-"""Tests for `optopic` package."""
+"""Tests for `octis` package."""
 
 import pytest
 
 from click.testing import CliRunner
 
-from optopic.evaluation_metrics.coherence_metrics import *
-from optopic.dataset.dataset import Dataset
-from optopic.models.LDA import LDA
+from octis.evaluation_metrics.coherence_metrics import *
+from octis.dataset.dataset import Dataset
+from octis.models.LDA import LDA
 
-from optopic import cli
+from octis import cli
 
 import os
 
@@ -21,11 +21,11 @@ def root_dir():
 
 @pytest.fixture
 def data_dir(root_dir):
-    return root_dir + "/../optopic/preprocessed_datasets/"
+    return root_dir + "/../octis/preprocessed_datasets/"
 
 def test_coherence_measures(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/m10')
+    dataset.load(data_dir + '/M10')
 
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)
