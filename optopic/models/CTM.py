@@ -14,12 +14,14 @@ class CTM(Abstract_Model):
     def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
-                 prior_variance=None, num_layers=2, num_neurons=100):
+                 prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
+                 inference_type="combined"):
         super().__init__()
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
         self.hyperparameters['activation'] = activation
         self.hyperparameters['dropout'] = dropout
+        self.hyperparameters['inference_type'] = inference_type
         self.hyperparameters['learn_priors'] = learn_priors
         self.hyperparameters['batch_size'] = batch_size
         self.hyperparameters['lr'] = lr
@@ -31,6 +33,7 @@ class CTM(Abstract_Model):
         self.hyperparameters["prior_variance"] = prior_variance
         self.hyperparameters["num_neurons"] = num_neurons
         self.hyperparameters["num_layers"] = num_layers
+        self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
 
@@ -77,6 +80,7 @@ class CTM(Abstract_Model):
         self.model = ctm.CTM(input_size=input_size,
                              num_topics=self.hyperparameters['num_topics'],
                              model_type='prodLDA',
+                             inference_type=self.hyperparameters['inference_type'],
                              hidden_sizes=self.hyperparameters['hidden_sizes'],
                              activation=self.hyperparameters['activation'],
                              dropout=self.hyperparameters['dropout'],
@@ -123,7 +127,8 @@ class CTM(Abstract_Model):
             hyperparameters.get('prior_mean', self.hyperparameters['prior_mean'])
         self.hyperparameters["prior_variance"] = \
             hyperparameters.get('prior_variance', self.hyperparameters['prior_variance'])
-
+        self.hyperparameters["inference_type"] = \
+            hyperparameters.get('inference_type', self.hyperparameters['inference_type'])
         self.hyperparameters["num_layers"] = \
             hyperparameters.get('num_layers', self.hyperparameters['num_layers'])
         self.hyperparameters["num_neurons"] = \
