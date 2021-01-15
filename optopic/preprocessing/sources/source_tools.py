@@ -4,7 +4,7 @@ import re
 
 def _retrieve(corpus_path, labels_path, edges_path):
     """
-    Retrieve M10 or dblp corpus and labels
+    Retrieve M10 or DBLP corpus and labels
     given their path
 
     Parameters
@@ -66,7 +66,7 @@ def _retrieve(corpus_path, labels_path, edges_path):
         partitioned_corpus.append(corpus[doc])
         partitioned_labels.append(labels[doc])
         partitioned_edges.append(edges_list[doc])
-    
+
     result = {}
     result["corpus"] = partitioned_corpus
     result["edges"] = partitioned_edges

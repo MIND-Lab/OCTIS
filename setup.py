@@ -19,14 +19,13 @@ test_requirements = ['pytest>=3', ]
 setup(
     author="Silvia Terragni",
     author_email='s.terragni4@campus.unimib.it',
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
@@ -51,3 +50,4 @@ setup(
     version='0.1.0',
     zip_safe=False,
 )
+#python3 -m spacy download en_core_web_sm
