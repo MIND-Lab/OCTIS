@@ -10,7 +10,7 @@ class PipelineHandler:
     """
 
     def __init__(self, dataset, min_words_for_doc=0, words_min_freq = 0, words_max_freq = 1,
-                 num_processes=1, stopwords='english', pos=['NOUN', 'ADJ', 'VERB', 'ADV'],
+                 num_processes=1, stopwords='english', pos=None,
                  remove_punctuation=True, remove_stopwords=True, lemmatize=True,
                  filter_words=True, display_progress=False):
         """
@@ -21,7 +21,8 @@ class PipelineHandler:
         dataset : dictionary with corpus, labels and other data
                   about the dataset
         """
-        self.words_max_freq = len(dataset["corpus"])
+        if pos is None:
+            pos = ['NOUN', 'ADJ', 'VERB', 'ADV']
         self.dataset = dataset
 
         self.min_words_for_doc = min_words_for_doc
