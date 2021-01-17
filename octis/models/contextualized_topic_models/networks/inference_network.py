@@ -26,8 +26,10 @@ class ContextualInferenceNetwork(nn.Module):
         assert isinstance(output_size, int), "output_size must be type int."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu'], \
-            "activation must be 'softplus' or 'relu'."
+        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                              'rrelu', 'elu', 'selu'], \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            " 'rrelu', 'elu', 'selu' or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
 
         self.input_size = input_size
@@ -39,6 +41,20 @@ class ContextualInferenceNetwork(nn.Module):
             self.activation = nn.Softplus()
         elif activation == 'relu':
             self.activation = nn.ReLU()
+        elif activation == 'sigmoid':
+            self.activation = nn.Sigmoid()
+        elif activation == 'tanh':
+            self.activation = nn.Tanh()
+        elif activation == 'leakyrelu':
+            self.activation = nn.LeakyReLU()
+        elif activation == 'swish':
+            self.activation = Swish()
+        elif activation == 'rrelu':
+            self.activation = nn.RReLU()
+        elif activation == 'elu':
+            self.activation = nn.ELU()
+        elif activation == 'selu':
+            self.activation = nn.SELU()
 
         self.input_layer = nn.Linear(input_size+input_size, hidden_sizes[0])
         self.adapt_bert = nn.Linear(bert_size, hidden_sizes[0])
@@ -91,8 +107,11 @@ class CombinedInferenceNetwork(nn.Module):
         assert isinstance(output_size, int), "output_size must be type int."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu'], \
-            "activation must be 'softplus' or 'relu'."
+        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+                              'rrelu', 'elu', 'selu'], \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            " 'rrelu', 'elu', 'selu' or 'tanh'."
+
         assert dropout >= 0, "dropout must be >= 0."
 
         self.input_size = input_size
@@ -104,6 +123,20 @@ class CombinedInferenceNetwork(nn.Module):
             self.activation = nn.Softplus()
         elif activation == 'relu':
             self.activation = nn.ReLU()
+        elif activation == 'sigmoid':
+            self.activation = nn.Sigmoid()
+        elif activation == 'tanh':
+            self.activation = nn.Tanh()
+        elif activation == 'leakyrelu':
+            self.activation = nn.LeakyReLU()
+        elif activation == 'swish':
+            self.activation = Swish()
+        elif activation == 'rrelu':
+            self.activation = nn.RReLU()
+        elif activation == 'elu':
+            self.activation = nn.ELU()
+        elif activation == 'selu':
+            self.activation = nn.SELU()
 
         self.input_layer = nn.Linear(input_size+input_size, hidden_sizes[0])
         self.adapt_bert = nn.Linear(bert_size, input_size)
