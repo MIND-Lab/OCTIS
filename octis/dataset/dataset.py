@@ -280,4 +280,4 @@ class Dataset:
             self._load_edges(path+"/edges.txt")
             self._load_metadata(path+"/metadata.json")
         except:
-            raise Exception("error in loading the dataset")
+            raise Exception("error in loading the dataset:" + path)
