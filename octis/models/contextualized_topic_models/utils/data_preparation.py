@@ -27,7 +27,7 @@ def bert_embeddings_from_file(text_file, sbert_model_to_load, batch_size=200):
     return np.array(model.encode(train_text, show_progress_bar=True, batch_size=batch_size))
 
 
-def bert_embeddings_from_list(texts, sbert_model_to_load, batch_size=200):
+def bert_embeddings_from_list(texts, sbert_model_to_load="bert-base-nli-mean-tokens", batch_size=100):
     """
     Creates SBERT Embeddings from a list
     """
@@ -135,14 +135,12 @@ class TextHandler:
         data = []
         vocabulary = {}
 
-
-
-        if self.sentences == None and self.file_name == None:
+        if self.sentences is None and self.file_name is None:
             raise Exception("Sentences and file_names cannot both be none")
 
-        if self.sentences != None:
+        if self.sentences is not None:
             docs = self.sentences
-        elif self.file_name != None:
+        elif self.file_name is not None:
             with open(self.file_name, encoding="utf-8") as filino:
                 docs = filino.readlines()
         else:

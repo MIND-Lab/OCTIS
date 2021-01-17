@@ -34,7 +34,7 @@ class CTM(object):
         :param num_data_loader_workers: int, number of data loader workers (default cpu_count). set it to 0 if you are using Windows
     """
 
-    def __init__(self, input_size, bert_input_size, inference_type="combined", num_topics=10, model_type='prodLDA',
+    def __init__(self, input_size, bert_input_size, inference_type="zeroshot", num_topics=10, model_type='prodLDA',
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
                  learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False,
@@ -314,12 +314,10 @@ class CTM(object):
                     X_bert = X_bert.cuda()
                 # forward pass
                 self.model.zero_grad()
-                _, _, _, _, _, _, _, topic_document = self.model(X)
+                _, _, _, _, _, _, _, topic_document = self.model(X, X_bert)
                 topic_document_mat.append(topic_document)
 
         results = self.get_info()
-        results['test-topic-document-matrix2'] = np.vstack(
-            np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
         results['test-topic-document-matrix'] = np.asarray(self.get_thetas(dataset)).T
 
         return results
@@ -361,7 +359,6 @@ class CTM(object):
         topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
 
-        info['topic-document-matrix2'] = topic_document_dist.T
         info['topic-document-matrix'] = np.asarray(self.get_thetas(self.train_data)).T
 
         info['topic-word-matrix'] = topic_word_dist
