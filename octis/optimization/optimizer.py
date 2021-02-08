@@ -25,12 +25,12 @@ class Optimizer:
     Class Optimizer to perform Bayesian Optimization on Topic Model
     """
 
-    def optimize(self, model, dataset, metric, search_space, extra_metrics=[],
+    def optimize(self, model, dataset, metric, search_space, extra_metrics=None,
                  number_of_call=5, n_random_starts=1,
                  initial_point_generator="lhs",  # work only for version skopt 8.0!!!
                  optimization_type='Maximize', model_runs=5, surrogate_model="RF",
                  kernel=1.0 * Matern(length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5),
-                 acq_func="LCB", random_state=False, x0=dict(), y0=[],
+                 acq_func="LCB", random_state=False, x0=None, y0=None,
                  save_models=True, save_step=1, save_name="result", save_path="results/", early_stop=False,
                  early_step=5,
                  plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False, topk=10):
@@ -72,6 +72,12 @@ class Optimizer:
 
         """
         # Set the attributes
+        if extra_metrics is None:
+            extra_metrics = []
+        if y0 is None:
+            y0 = []
+        if x0 is None:
+            x0 = dict()
         self.model = model
         self.dataset = dataset
         self.metric = metric
@@ -382,7 +388,7 @@ class Optimizer:
         for i in range(self.number_of_previous_calls):
             next_x = [optimization_object["x_iters"][key][i] for key in self.hyperparameters]
             f_val = -optimization_object["f_val"][i] if self.optimization_type == 'Maximize' else \
-            optimization_object["f_val"][i]
+                optimization_object["f_val"][i]
             res = opt.tell(next_x, f_val)
 
             # Create the directory where the results are saved
