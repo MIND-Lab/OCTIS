@@ -1,8 +1,6 @@
 =======
 OCTIS
 =======
-
-
 .. image:: https://img.shields.io/pypi/v/octis.svg
         :target: https://pypi.python.org/pypi/octis
 
@@ -16,6 +14,10 @@ OCTIS
 .. image:: https://pyup.io/repos/github/silviatti/octis/shield.svg
      :target: https://pyup.io/repos/github/silviatti/octis/
      :alt: Updates
+
+.. image:: octis/dashboard/static/images/logo.png
+  :width: 400
+  :alt: Alternative text
 
 OCTIS (Optimizing and Comparing Topic models Is Simple) aims at training, analyzing and comparing
 Topic Models, whose optimal hyper-parameters are estimated by means of a Bayesian Optimization approach.
@@ -145,8 +147,6 @@ To optimize a model you need to select a dataset, a metric and the search space 
                                     save_path=save_path)
     #save the results of th optimization in a csv file
     OptObject.save_to_csv("results.csv")
-
-
 
 The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you have to set 'plot' attribute of Bayesian_optimization to True.
 
