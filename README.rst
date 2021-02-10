@@ -15,8 +15,8 @@ OCTIS
      :target: https://pyup.io/repos/github/silviatti/octis/
      :alt: Updates
 
-.. image:: octis/dashboard/static/images/logo.png
-  :width: 400
+.. image:: logo.png
+  :width: 100
   :alt: Alternative text
 
 OCTIS (Optimizing and Comparing Topic models Is Simple) aims at training, analyzing and comparing
