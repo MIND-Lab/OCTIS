@@ -8,13 +8,13 @@ Installation
 Stable release
 --------------
 
-To install opTopic, run this command in your terminal:
+To install OCTIS, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install optopic
+    $ pip install octis
 
-This is the preferred method to install opTopic, as it will always install the most recent stable release.
+This is the preferred method to install OCTIS, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -26,19 +26,19 @@ you through the process.
 From sources
 ------------
 
-The sources for opTopic can be downloaded from the `Github repo`_.
+The sources for OCTIS can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/silviatti/optopic
+    $ git clone git://github.com/silviatti/octis
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl -OJL https://github.com/silviatti/optopic/tarball/master
+    $ curl -OJL https://github.com/silviatti/octis/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/silviatti/optopic
-.. _tarball: https://github.com/silviatti/optopic/tarball/master
+.. _Github repo: https://github.com/silviatti/octis
+.. _tarball: https://github.com/silviatti/octis/tarball/master

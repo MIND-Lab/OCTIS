@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=optopic
+set SPHINXPROJ=octis
 
 if "%1" == "" goto help
 

@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'opTopic'
+project = 'OCTIS'
 copyright = "2020, Silvia Terragni"
 author = "Silvia Terragni"
 
@@ -100,7 +100,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'optopicdoc'
+htmlhelp_basename = 'octisdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------
@@ -128,7 +128,7 @@ latex_elements = {
 # [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'octis.tex',
-     'opTopic Documentation',
+     'OCTIS Documentation',
      'Silvia Terragni', 'manual'),
 ]
 
@@ -139,7 +139,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'octis',
-     'opTopic Documentation',
+     'OCTIS Documentation',
      [author], 1)
 ]
 
@@ -151,7 +151,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'octis',
-     'opTopic Documentation',
+     'OCTIS Documentation',
      author,
      'octis',
      'One line description of project.',

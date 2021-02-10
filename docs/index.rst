@@ -1,4 +1,4 @@
-Welcome to opTopic's documentation!
+Welcome to OCTIS's documentation!
 ======================================
 
 .. toctree::

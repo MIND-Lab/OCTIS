@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use opTopic in a project::
+To use OCTIS in a project::
 
-    import optopic
+    import octis
