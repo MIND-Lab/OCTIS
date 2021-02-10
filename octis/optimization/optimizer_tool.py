@@ -436,6 +436,8 @@ class BestEvaluation:
         df['acquisition function'] = [self.info["acq_func"]] * n_row
         df['num_iteration'] = [i for i in range(n_row)]
         df['time'] = [self.info['time_eval'][i] for i in range(n_row)]
+        df['Median(model_runs)'] = [np.median(
+            self.info['dict_model_runs'][self.info['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
         df['Mean(model_runs)'] = [np.mean(
             self.info['dict_model_runs'][self.info['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
         df['Standard_Deviation(model_runs)'] = [np.std(
