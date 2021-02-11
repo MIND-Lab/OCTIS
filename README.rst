@@ -150,7 +150,7 @@ To optimize a model you need to select a dataset, a metric and the search space 
 
 The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you have to set 'plot' attribute of Bayesian_optimization to True.
 
-You can find more [Here](https://github.com/anonymous-submission000/OCTIS/blob/master/octis/optimization/README.md)
+You can find more [Here](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/develop-package/octis/optimization/README.md)
 
 Available Models
 ----------------
@@ -249,22 +249,25 @@ In the dashboard you can:
 * Visualize a custom experiment
 * Manage the experiment queue
 
-Project and Development Lead
-------------------------------
+Team
+------
 
-* `Silvia Terragni`_ <s.terragni4@campus.unimib.it> University of Milano-Bicocca
-* Elisabetta Fersini <elisabetta.fersini@unimib.it> University of Milano-Bicocca
-* Antonio Candelieri <antonio.candelieri@unimib.it> University of Milano-Bicocca
+Project and Development Lead
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* `Silvia Terragni`_ <s.terragni4@campus.unimib.it>
+* Elisabetta Fersini <elisabetta.fersini@unimib.it>
+* Antonio Candelieri <antonio.candelieri@unimib.it>
 
 Current Contributors
-------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 * Pietro Tropeano <p.tropeano1@campus.unimib.it> Framework architecture, Preprocessing, Topic Models, Evaluation metrics and Web Dashboard
 * Bruno Galuzzi <bruno.galuzzi@unimib.it> Bayesian Optimization
 * Silvia Terragni <s.terragni4@campus.unimib.it> Overall project
 
 Past Contributors
-------------------
+~~~~~~~~~~~~~~~~~~~~
 * Lorenzo Famiglini <l.famiglini@campus.unimib.it> Neural models integration
 * Davide Pietrasanta <d.pietrasanta@campus.unimib.it> Bayesian Optimization
 
