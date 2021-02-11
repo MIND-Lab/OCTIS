@@ -150,7 +150,7 @@ To optimize a model you need to select a dataset, a metric and the search space 
 
 The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you have to set 'plot' attribute of Bayesian_optimization to True.
 
-You can find more [Here](https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/develop-package/octis/optimization/README.md)
+You can find more here: `optimizer README`_
 
 Available Models
 ----------------
@@ -173,9 +173,10 @@ Available Datasets
 * DBLP
 * M10
 
-### Disclaimer
+Disclaimer
+~~~~~~~~~~~~~
 
-Similarly to [ `TensorFlow Datasets` ](https://github.com/tensorflow/datasets) and HuggingFace's [ `nlp` ](https://github.com/huggingface/nlp) library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
+Similarly to `TensorFlow Datasets`_ and HuggingFace's `nlp`_ library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
 
 If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, please get in touch through a GitHub issue.
 
@@ -204,8 +205,6 @@ The following step is the `train_model()` override:
 .. code-block:: python
 
     def train_model(self, dataset, hyperparameters={}, top_words=10):
-
-
 
 The LDA method requires a dataset, the hyperparameters dictionary and an extra (optional) argument used to select how many of the most significative words track for each topic.
 
@@ -279,3 +278,6 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _Silvia Terragni: https://silviatti.github.io/
+.. _Optimizer README: https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/develop-package/octis/optimization/README.md
+.. _TensorFlow Datasets: https://github.com/tensorflow/datasets
+.. _nlp: https://github.com/huggingface/nlp
