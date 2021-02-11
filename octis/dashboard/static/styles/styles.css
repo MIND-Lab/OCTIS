@@ -1,0 +1,259 @@
+.centeredText{
+    height: 100%;
+    width: 100%;
+    opacity: 0.8;
+	text-align: center;
+	padding-top: 10%;
+}
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+}
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slidercheck {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #011638;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slidercheck:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked+.slidercheck {
+	background-color: #011638;
+}
+
+input:focus+.slidercheck {
+	box-shadow: 0 0 1px #011638;
+}
+
+input:checked+.slidercheck:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+
+.slidercheck.round {
+	border-radius: 34px;
+}
+
+.slidercheck.round:before {
+	border-radius: 50%;
+}
+
+.picAligned {
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+}
+
+.buttonsfilters {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border-style: groove;
+}
+
+.buttonsfilters.clicked {
+    background-color: #ccd4f2;
+    border-radius: 10px;
+    border-style: groove;
+}
+
+.navbar{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #011638;
+}
+
+.navbarEl{
+	float: left;
+}
+
+.navbarLink{
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+.navbarLink:hover{
+	background-color: #6B9AC4
+}
+
+.footer{
+	background-color: #011638;
+	padding-top: 5rem;
+	padding-bottom: 2rem;
+	overflow: hidden;
+}
+
+.coolButton{
+	display: inline-block;
+	border: 0.125rem solid #011638;
+	background-color: #011638;
+	color: #fff;
+	border-bottom: 5px;
+	padding: 5px;
+	transition: all 0.2s;
+}
+
+.coolButton:hover {
+	background-color: white;
+	color:#011638;
+}
+
+.send-button {
+	display: inline-block;
+	height: 3.125rem;
+	border: 0.125rem solid #011638;
+	background-color:#011638;
+	color: #fff;
+	cursor: pointer;
+}
+
+.send-button:hover {
+	background-color: transparent;
+	color:#011638;
+}
+
+.coolInput,
+.coolSelect {
+	display: block; /* needed for proper display of the label in Firefox, IE, Edge */
+	width: 100%;
+	border-radius: 5px;
+	background-color: #fff;
+}
+
+.coolSelect {
+	height: 3rem;
+}
+
+select {
+    appearance: none;
+    background-image: url('../images/down-arrow.png');
+    background-position: 96% 50%;
+    background-repeat: no-repeat;
+    outline: none;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.metricBlock {
+	padding-top: 10px;
+	padding-bottom: 4px;
+	background-color: #e5e9ec;
+}
+
+.metricBlock .metric-name {
+	text-align: center;
+}
+
+.metricBlock h2 {
+	margin-bottom: 1rem;
+	text-align: center;
+}
+
+.metricBlock .singleMetric {
+	padding: 3px;
+	margin-bottom: 2rem;
+	border: none;
+	display: inline-block;
+	vertical-align: top;
+	background-color: transparent;
+}
+
+.metricBlock .singleMetricBody {
+	padding: 2.25rem 2rem 2.125rem 2rem;
+	border: 1px solid #ebe8e8;
+	border-bottom-left-radius: 0.375rem;
+	border-bottom-right-radius: 0.375rem;
+	background-color: #fff;
+}
+
+.metricButton {
+	margin-top: -2rem;
+    display: inline-block;
+    text-align: center;
+}
+
+.singleSection .item {
+	margin-bottom: 2rem;
+}
+
+.customContainer {
+	padding-top: 1rem;
+	background-color: #e5e9ec;
+	text-align: center;
+}
+
+.customContainer .singleObject {
+	display: inline-block;
+	max-width: 5rem;
+}
+
+@media (min-width: 768px) {
+
+	.outContainer .customFormSection {
+		margin-top: 0.5rem;
+	}
+}
+
+@media (min-width: 992px) {
+
+	.singleSection {
+		height: 34.625rem;
+	}
+
+	.customContainer .singleObject {
+		width: 13rem;
+		max-width: 100%;
+		margin-right: 0.2rem;
+		margin-left: 0.2rem;
+	}
+
+	.outContainer {
+		padding-bottom: 5rem;
+	}
+}
+
+@media (min-width: 1200px) {
+
+	.customContainer .singleObject {
+		width: 15.5rem;
+		margin-right: 0.3rem;
+		margin-left: 0.3rem;
+	}
+
+	.outContainer .customFormSection{
+		margin-left: 1.75rem;
+	}
+}

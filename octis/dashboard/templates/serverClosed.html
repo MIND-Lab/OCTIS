@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>OCTIS - Server Closed</title>
+
+    <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+</head>
+
+<body>
+
+    <header id="header">
+        <div>
+            <h1 style="text-align: center">Server closed</h1>
+        </div>
+    </header>
+
+    <div class="footer">
+        <div class="container">
+            <h4 style="color:white;">OCTIS</h4>
+            <p class="white" style="color:white;">Optimizing and Comparing Topic Models is Simple!</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: "/shutdown",
+                    success: function (data) { }
+                });
+        })
+    </script>
+</body>
+
+</html>
