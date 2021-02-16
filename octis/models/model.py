@@ -71,9 +71,9 @@ def load_model_output(output_path, vocabulary_path=None, top_words=10):
     top_words: top k words to retrieve for each topic
             (in case a vocabulary path is given)
     """
-    output = dict(np.load(output_path))
+    output = dict(np.load(output_path, allow_pickle=True))
     if vocabulary_path is not None:
-        vocabulary_file = open(vocabulary_path,)
+        vocabulary_file = open(vocabulary_path, 'r')
         vocabulary = json.load(vocabulary_file)
         index2vocab = vocabulary
 
