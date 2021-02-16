@@ -1,9 +1,11 @@
 sale 0.1447
 boost 0.0782
+time 0.422
 profit 0.0571
 medium 0.0876
 jump 0.031
 month 0.2697
+year 0.6517
 early 0.2216
 firm 0.2085
 big 0.2413
@@ -149,6 +151,7 @@ improve 0.0809
 worry 0.0427
 remain 0.1425
 fall 0.1348
+make 0.5353
 chinese 0.0162
 export 0.0378
 price 0.1101
