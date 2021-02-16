@@ -16,14 +16,12 @@ speed 0.0463
 internet 0.0701
 connection 0.0337
 advert 0.0121
-say 0.8822
 fourth 0.0566
 quarter 0.0849
 rise 0.1551
 gain 0.0548
 offset 0.0103
 dip 0.0148
-less 0.107
 user 0.0872
 search 0.0328
 engine 0.0189
@@ -33,7 +31,6 @@ fortune 0.0135
 lose 0.156
 subscriber 0.0126
 low 0.1267
-however 0.1874
 company 0.2373
 item 0.0148
 back 0.2867
@@ -47,28 +44,22 @@ online 0.0706
 service 0.1528
 free 0.0854
 customer 0.0526
-try 0.1699
 sign 0.1002
 exist 0.0508
 broadband 0.0292
-also 0.5685
 result 0.133
 follow 0.1906
 probe 0.0103
 close 0.1299
 conclude 0.0189
 slightly 0.0261
-well 0.3389
 analyst 0.1178
 expectation 0.0324
 film 0.1249
 division 0.0261
-see 0.3524
 slump 0.0108
-help 0.2058
 sharp 0.0193
 contrast 0.0216
-third 0.1551
 final 0.116
 ring 0.0211
 full 0.0944
@@ -88,7 +79,6 @@ project 0.0607
 operate 0.0449
 earning 0.027
 growth 0.1029
-around 0.0297
 expect 0.2243
 wide 0.0575
 margin 0.0144
@@ -99,7 +89,6 @@ resolve 0.0166
 inquiry 0.0202
 market 0.1874
 regulator 0.0184
-already 0.1681
 pay 0.1348
 settle 0.0279
 charge 0.0998
@@ -108,15 +97,12 @@ review 0.0404
 unable 0.0189
 estimate 0.0539
 amount 0.0625
-need 0.2396
 set 0.2517
-aside 0.013
 legal 0.0724
 reserve 0.013
 previously 0.0472
 intend 0.0369
 adjust 0.0112
-way 0.2665
 german 0.04
 music 0.1043
 publisher 0.0108
@@ -124,12 +110,10 @@ report 0.191
 book 0.0634
 stake 0.0274
 loss 0.0499
-value 0.0706
 dollar 0.0575
 hit 0.1649
 level 0.1133
 euro 0.0238
-almost 0.0935
 trade 0.071
 deficit 0.0216
 highlight 0.0346
@@ -139,7 +123,6 @@ spend 0.1074
 household 0.0198
 saving 0.0184
 factor 0.0315
-may 0.2288
 reduce 0.0575
 late 0.1542
 trading 0.0283
@@ -155,9 +138,6 @@ tumble 0.0058
 bad 0.0778
 job 0.1034
 datum 0.0598
-think 0.2512
-take 0.4638
-much 0.2063
 view 0.0697
 current 0.0966
 head 0.1016
@@ -168,11 +148,9 @@ term 0.1173
 lay 0.0153
 condition 0.0328
 improve 0.0809
-next 0.2351
 worry 0.0427
 remain 0.1425
 fall 0.1348
-therefore 0.0144
 make 0.5353
 chinese 0.0162
 export 0.0378
@@ -186,7 +164,6 @@ ear 0.0063
 comment 0.0796
 major 0.0998
 newspaper 0.0521
-unlikely 0.0328
 produce 0.0773
 movement 0.018
 decision 0.1326
@@ -195,17 +172,11 @@ rate 0.0849
 point 0.1515
 sixth 0.0202
 move 0.2031
-many 0.2369
 open 0.1551
 european 0.0822
 half 0.1088
 window 0.0274
-believe 0.1685
-could 0.3933
-enough 0.0845
-keep 0.1429
 asset 0.0274
-look 0.2476
 attractive 0.0085
 partly 0.0171
 budget 0.053
@@ -222,9 +193,7 @@ claim 0.169
 owner 0.0328
 russian 0.0247
 oil 0.0494
-ask 0.1231
 buyer 0.0139
-former 0.1492
 production 0.0598
 state 0.1083
 rosneft 0.0072
@@ -238,7 +207,6 @@ demand 0.1047
 bank 0.0476
 expert 0.049
 purchase 0.0261
-would 0.5151
 include 0.2643
 obligation 0.0085
 pledge 0.0409
@@ -253,7 +221,6 @@ case 0.1092
 group 0.1587
 manage 0.0575
 director 0.1348
-tell 0.3052
 agency 0.0369
 default 0.0063
 fight 0.0778
@@ -276,8 +243,6 @@ prevent 0.0369
 main 0.0804
 arm 0.0238
 sell 0.1164
-little 0.0971
-know 0.2225
 shell 0.0054
 turn 0.1285
 punishment 0.0076
@@ -293,9 +258,7 @@ airline 0.0184
 pre 0.0503
 compare 0.0607
 cost 0.138
-still 0.2144
 aviation 0.0054
-last 0.4166
 introduce 0.053
 passenger 0.0094
 flight 0.0148
@@ -326,7 +289,6 @@ describe 0.0508
 quarterly 0.0085
 pretty 0.0351
 modest 0.0085
-quite 0.053
 good 0.3178
 side 0.1142
 show 0.2643
@@ -339,7 +301,6 @@ drive 0.0989
 focus 0.0656
 invest 0.0216
 product 0.0742
-example 0.0499
 delivery 0.0117
 aircraft 0.0072
 start 0.2009
@@ -359,9 +320,7 @@ takeover 0.0207
 suggest 0.1047
 french 0.0319
 spirit 0.0139
-consider 0.0849
 bid 0.0598
-yet 0.093
 contact 0.0234
 slip 0.018
 seek 0.0719
@@ -377,7 +336,6 @@ luxury 0.0067
 home 0.1744
 brand 0.0422
 wine 0.0076
-name 0.1164
 chain 0.0117
 consolidation 0.0076
 portfolio 0.0054
@@ -389,7 +347,6 @@ economy 0.0908
 technical 0.0292
 figure 0.1245
 revise 0.0103
-indicate 0.0216
 sized 0.0054
 basis 0.031
 recovery 0.0301
@@ -428,21 +385,15 @@ push 0.0625
 unemployment 0.0216
 accord 0.1506
 add 0.3178
-non 0.0436
 farm 0.009
-new 0.3708
-nevertheless 0.0072
-mean 0.1573
 celebrate 0.0162
 fine 0.04
 net 0.089
-first 0.3533
 office 0.0854
 presidential 0.0094
 election 0.1016
 president 0.0449
 creation 0.0184
-become 0.1838
 key 0.0966
 issue 0.1631
 administration 0.013
@@ -454,8 +405,6 @@ employment 0.0184
 expand 0.0261
 moderate 0.0054
 pace 0.0256
-get 0.2404
-relatively 0.0184
 environment 0.0274
 satisfy 0.0076
 limited 0.0135
@@ -493,11 +442,8 @@ renew 0.0135
 pressure 0.0625
 abandon 0.0117
 fix 0.0211
-particular 0.0404
 surge 0.0162
 cheap 0.0315
-use 0.2966
-wish 0.0225
 judgement 0.0103
 separately 0.0085
 large 0.1299
@@ -520,8 +466,6 @@ southern 0.0153
 kill 0.031
 recommend 0.0148
 local 0.071
-far 0.1348
-possible 0.0796
 assist 0.0076
 farmer 0.0072
 information 0.0764
@@ -551,7 +495,6 @@ ignore 0.0252
 research 0.0787
 contrary 0.0054
 prosecutor 0.0153
-want 0.2791
 impose 0.0225
 tough 0.0602
 legislation 0.0234
@@ -566,8 +509,6 @@ tip 0.0261
 revival 0.0076
 leading 0.0058
 week 0.258
-thank 0.0346
-nearly 0.0436
 triple 0.0117
 web 0.0431
 player 0.1712
@@ -602,16 +543,13 @@ disaster 0.0274
 sum 0.0135
 excess 0.0081
 original 0.0431
-come 0.3627
 power 0.0966
 intention 0.0171
 planning 0.0081
 hike 0.0058
 suitable 0.0072
 moment 0.0593
-soon 0.0566
 correspondent 0.0171
-likely 0.111
 reaction 0.013
 question 0.0881
 protest 0.0198
@@ -630,9 +568,7 @@ agreement 0.0409
 spring 0.0162
 alliance 0.0144
 badly 0.0175
-several 0.0733
 build 0.093
-mainly 0.0121
 capacity 0.0238
 chance 0.1052
 slide 0.0135
@@ -685,13 +621,10 @@ period 0.0593
 require 0.04
 plan 0.2076
 complete 0.0431
-right 0.1798
 member 0.1061
 observe 0.0072
 title 0.0849
-currently 0.1011
 employ 0.0189
-especially 0.0382
 format 0.0207
 suffer 0.0607
 independent 0.0436
@@ -733,13 +666,10 @@ stop 0.0737
 operator 0.0279
 oblige 0.0076
 deliberately 0.0085
-often 0.0508
-later 0.1074
 happen 0.1025
 addition 0.0157
 cancel 0.0153
 hour 0.0679
-must 0.0908
 due 0.0957
 extraordinary 0.0085
 circumstance 0.0126
@@ -777,7 +707,6 @@ transfer 0.0274
 journey 0.0085
 vice 0.0247
 commissioner 0.0058
-necessary 0.0175
 boom 0.0225
 travel 0.04
 accompany 0.009
@@ -804,12 +733,9 @@ energy 0.0301
 sky 0.0139
 insist 0.0737
 shape 0.0216
-seem 0.062
-thus 0.0054
 resist 0.009
 break 0.1074
 link 0.0593
-least 0.0787
 extent 0.0103
 industrial 0.0139
 output 0.0243
@@ -819,11 +745,9 @@ double 0.0607
 italian 0.0193
 centre 0.0733
 scandal 0.0193
-welcome 0.0369
 violate 0.0085
 ago 0.0867
 disclose 0.0058
-overall 0.0351
 slowly 0.0081
 overseas 0.0198
 perform 0.0431
@@ -864,18 +788,14 @@ officer 0.04
 community 0.0422
 huge 0.0809
 couple 0.0445
-really 0.1146
 industry 0.1155
 dominate 0.0396
 quick 0.0247
 hang 0.0121
 survey 0.0378
 message 0.0593
-second 0.204
 listen 0.0279
 idea 0.0701
-always 0.0939
-available 0.0733
 society 0.0346
 dimension 0.0054
 commission 0.027
@@ -884,8 +804,6 @@ phone 0.0683
 pick 0.0616
 multiple 0.0121
 option 0.0373
-even 0.1596
-rather 0.0836
 wait 0.0476
 reason 0.0562
 lack 0.0418
@@ -914,7 +832,6 @@ specialist 0.0112
 suggestion 0.0189
 wrong 0.0517
 difference 0.0346
-anywhere 0.0135
 process 0.0589
 operation 0.0503
 consideration 0.0081
@@ -933,13 +850,11 @@ depth 0.0099
 continent 0.0063
 experience 0.0634
 happy 0.0485
-immediate 0.0153
 response 0.0481
 work 0.2791
 prepare 0.0373
 rank 0.0238
 unveil 0.0387
-formerly 0.0063
 famous 0.022
 expose 0.013
 shake 0.0198
@@ -993,7 +908,6 @@ scheme 0.0355
 formal 0.0117
 affect 0.0512
 statistic 0.0184
-probably 0.0396
 mixed 0.009
 signal 0.0225
 apparent 0.0103
@@ -1001,11 +915,9 @@ mark 0.0584
 health 0.0454
 noise 0.0054
 eurozone 0.0058
-whole 0.0593
 release 0.1052
 rebound 0.0058
 import 0.013
-ever 0.0849
 single 0.0751
 monthly 0.0234
 narrow 0.0085
@@ -1017,11 +929,9 @@ manufacturer 0.0189
 rapidly 0.0063
 advantage 0.0315
 competitor 0.0135
-meanwhile 0.0557
 reflect 0.0382
 rest 0.0476
 spur 0.0085
-allow 0.1353
 proportion 0.0099
 choose 0.0584
 harm 0.0126
@@ -1058,7 +968,6 @@ bankrupt 0.0063
 forum 0.0117
 abide 0.0058
 acknowledge 0.0189
-appear 0.0926
 act 0.0778
 manner 0.0085
 role 0.0962
@@ -1083,7 +992,6 @@ normal 0.018
 injure 0.0202
 leak 0.0076
 steer 0.0054
-cause 0.0616
 crash 0.0166
 properly 0.0166
 extremely 0.0238
@@ -1104,8 +1012,6 @@ holding 0.0067
 dutch 0.0108
 combination 0.0121
 sustainable 0.0081
-particularly 0.0548
-alone 0.031
 trigger 0.0121
 crude 0.0081
 barrel 0.0103
@@ -1155,7 +1061,6 @@ enormous 0.013
 historical 0.0103
 senior 0.0575
 bit 0.0503
-course 0.0526
 comeback 0.0121
 balance 0.0202
 sheet 0.0067
@@ -1210,9 +1115,7 @@ education 0.0404
 midland 0.0072
 source 0.0391
 negotiation 0.0198
-away 0.1002
 repeat 0.0153
-none 0.0144
 award 0.0827
 salary 0.0067
 quote 0.0193
@@ -1221,7 +1124,6 @@ operating 0.022
 communication 0.0229
 young 0.0791
 present 0.0692
-near 0.0175
 strength 0.0243
 governance 0.0054
 regulation 0.0157
@@ -1229,12 +1131,10 @@ deadline 0.0067
 burden 0.0108
 clean 0.0252
 section 0.0139
-one 0.0818
 list 0.0818
 originally 0.0189
 middle 0.0193
 expensive 0.0243
-let 0.0944
 heart 0.0387
 remind 0.0072
 note 0.0243
@@ -1311,7 +1211,6 @@ promise 0.0652
 significant 0.0422
 afford 0.0153
 spending 0.0458
-elsewhere 0.0126
 red 0.0297
 gather 0.0274
 income 0.0373
@@ -1339,7 +1238,6 @@ university 0.0166
 educate 0.0085
 proud 0.0148
 mention 0.0198
-shall 0.0072
 affair 0.0234
 officially 0.013
 slowdown 0.013
@@ -1356,6 +1254,7 @@ fiscal 0.0144
 assess 0.0175
 disappointing 0.0198
 healthy 0.0085
+shouldn 0.0063
 stretch 0.0103
 sweet 0.0058
 track 0.0517
@@ -1381,7 +1280,6 @@ assessment 0.0112
 date 0.0629
 plane 0.0103
 exclude 0.0126
-able 0.1155
 carry 0.0616
 overtake 0.0108
 bust 0.0076
@@ -1402,14 +1300,11 @@ summer 0.0571
 initially 0.0247
 convince 0.0126
 website 0.1011
-different 0.0813
-old 0.187
 building 0.0207
 rumour 0.0207
 shop 0.0234
 equally 0.0108
 impressive 0.0243
-indeed 0.0175
 raw 0.0081
 material 0.0315
 swiss 0.0085
@@ -1424,7 +1319,6 @@ overhaul 0.0058
 restructure 0.0063
 settlement 0.0144
 step 0.0787
-together 0.0589
 paper 0.036
 dominant 0.0054
 race 0.0553
@@ -1475,7 +1369,6 @@ korean 0.0081
 african 0.0193
 social 0.0274
 individual 0.0571
-respectively 0.0099
 housing 0.0171
 parliament 0.0355
 personal 0.08
@@ -1500,7 +1393,6 @@ substantially 0.0072
 surround 0.0216
 true 0.0319
 error 0.013
-sure 0.0629
 committee 0.0234
 remark 0.0135
 tricky 0.0054
@@ -1526,7 +1418,6 @@ jury 0.0103
 external 0.0076
 green 0.0198
 unaware 0.0067
-brief 0.0099
 answer 0.0315
 convict 0.0126
 attorney 0.0126
@@ -1537,7 +1428,6 @@ longer 0.0126
 lawsuit 0.0189
 allegation 0.0211
 explain 0.0449
-certainly 0.0369
 underline 0.0067
 stadium 0.0202
 australian 0.0324
@@ -1561,13 +1451,11 @@ arrival 0.0099
 check 0.022
 pursue 0.0135
 traffic 0.0198
-instead 0.0674
 distance 0.0198
 central 0.0333
 tour 0.0431
 restriction 0.0094
 knock 0.0265
-certain 0.0333
 jet 0.0072
 propose 0.036
 terrorist 0.0117
@@ -1611,7 +1499,6 @@ premise 0.0063
 square 0.0063
 foot 0.0279
 compromise 0.0117
-self 0.027
 generate 0.0207
 pocket 0.0126
 capable 0.018
@@ -1619,18 +1506,14 @@ fly 0.0427
 mile 0.009
 super 0.018
 rid 0.0085
-fifth 0.0306
 efficiency 0.0099
 worldwide 0.0319
 editor 0.0229
 niche 0.0058
 attract 0.0265
-somewhere 0.0108
 hub 0.0063
 circuit 0.0067
 bill 0.0602
-best 0.0067
-like 0.0701
 alternative 0.0184
 draft 0.0126
 disguise 0.0067
@@ -1670,7 +1553,6 @@ friendly 0.0144
 climate 0.0103
 split 0.0175
 unusual 0.0085
-clearly 0.0301
 important 0.0993
 interested 0.0279
 guarantee 0.0198
@@ -1682,7 +1564,6 @@ pile 0.0081
 theft 0.0081
 complain 0.018
 identity 0.0112
-else 0.0274
 steal 0.0216
 crime 0.0391
 complaint 0.0238
@@ -1691,7 +1572,6 @@ abuse 0.0247
 rip 0.0058
 field 0.0427
 failure 0.0274
-sub 0.0103
 catalogue 0.0085
 shopping 0.0076
 computer 0.0796
@@ -1735,7 +1615,6 @@ miss 0.0764
 pound 0.0166
 metal 0.0085
 oversee 0.0108
-never 0.102
 client 0.0175
 cross 0.0247
 aware 0.0279
@@ -1770,7 +1649,6 @@ reputation 0.0157
 gold 0.0261
 drag 0.0144
 suit 0.022
-serious 0.0431
 widely 0.0481
 victim 0.0315
 altogether 0.0058
@@ -1798,7 +1676,6 @@ exploration 0.0054
 successfully 0.0094
 grant 0.0252
 investigate 0.0261
-apart 0.0166
 declaration 0.0054
 regard 0.0252
 weigh 0.0067
@@ -1825,9 +1702,9 @@ command 0.009
 frequently 0.0058
 conversation 0.009
 rarely 0.0112
-usually 0.0193
 corruption 0.0058
 practise 0.0063
+wasn 0.0067
 benchmark 0.0054
 shortly 0.0108
 ill 0.0117
@@ -1873,7 +1750,6 @@ hint 0.0144
 sideline 0.0103
 secretary 0.0409
 trip 0.0198
-sensible 0.0117
 borrowing 0.009
 pundit 0.0081
 mission 0.009
@@ -1907,17 +1783,14 @@ scrutiny 0.0108
 respond 0.0319
 wholesale 0.0058
 motion 0.0085
-though 0.0139
 hole 0.0126
 relation 0.018
-willing 0.0202
 copy 0.0346
 treatment 0.018
 disappoint 0.0108
 discussion 0.0247
 closely 0.0189
 engage 0.0175
-various 0.0153
 smart 0.0126
 determined 0.0103
 exciting 0.018
@@ -1934,11 +1807,9 @@ hijack 0.0054
 village 0.0094
 tech 0.0166
 technique 0.0103
-twice 0.0243
 victory 0.0652
 pave 0.0063
 gradually 0.0063
-contain 0.0297
 era 0.0144
 consistently 0.0094
 stamp 0.0067
@@ -2025,6 +1896,7 @@ assume 0.0112
 serve 0.0431
 primary 0.0067
 age 0.0647
+hasn 0.0058
 style 0.0279
 seat 0.0306
 traditional 0.0274
@@ -2048,13 +1920,12 @@ excitement 0.0054
 summit 0.0126
 equal 0.0121
 tone 0.0058
-seriously 0.0153
 lag 0.0054
 dry 0.0058
+weren 0.0058
 knowledge 0.0144
 fighting 0.0058
 association 0.0121
-actually 0.0396
 habit 0.0099
 environmental 0.0117
 inclusion 0.0063
@@ -2070,7 +1941,6 @@ innovative 0.009
 thinking 0.0076
 reality 0.018
 priority 0.0166
-along 0.0058
 assembly 0.0085
 replace 0.0607
 insult 0.0067
@@ -2091,7 +1961,6 @@ fold 0.0063
 finish 0.0458
 minute 0.0827
 evolve 0.0063
-obviously 0.031
 watch 0.0602
 northern 0.0108
 borrow 0.0126
@@ -2102,8 +1971,6 @@ speculate 0.0094
 suspicion 0.0126
 data 0.0175
 familiar 0.0108
-truly 0.0103
-normally 0.0139
 improved 0.0054
 screen 0.058
 associate 0.0153
@@ -2144,7 +2011,6 @@ quiet 0.0054
 celebration 0.0076
 oppose 0.0265
 zone 0.0072
-mostly 0.0085
 mature 0.0058
 station 0.0261
 sister 0.0139
@@ -2173,7 +2039,6 @@ permission 0.0063
 expression 0.0072
 sponsor 0.0054
 organise 0.0238
-otherwise 0.0117
 tourist 0.009
 briton 0.0207
 taste 0.0081
@@ -2183,7 +2048,6 @@ town 0.0139
 english 0.0193
 pit 0.0054
 imagine 0.009
-perhaps 0.0256
 totally 0.0175
 fan 0.0719
 strange 0.0058
@@ -2223,7 +2087,6 @@ preserve 0.0054
 update 0.0189
 globe 0.0121
 surpass 0.0094
-entirely 0.0148
 flourish 0.0054
 spotlight 0.0058
 conversion 0.0063
@@ -2234,7 +2097,6 @@ embrace 0.0103
 tourism 0.0067
 permanent 0.0067
 expire 0.0072
-exactly 0.0193
 deprive 0.0067
 maximum 0.0099
 provision 0.0067
@@ -2357,7 +2219,6 @@ learn 0.0319
 bone 0.0081
 guy 0.018
 attachment 0.0076
-maybe 0.022
 revenge 0.0054
 working 0.0103
 click 0.0144
@@ -2366,8 +2227,6 @@ read 0.0306
 personality 0.0081
 motivate 0.0085
 virtual 0.0094
-useful 0.0189
-outside 0.0076
 loose 0.0081
 busy 0.0099
 wall 0.0085
@@ -2378,6 +2237,7 @@ vary 0.0058
 extensive 0.0058
 setting 0.0058
 wireless 0.0229
+haven 0.0157
 firewall 0.0067
 laptop 0.0094
 mouse 0.0072
@@ -2398,7 +2258,6 @@ angry 0.0153
 constitutional 0.0103
 capture 0.0103
 waste 0.0234
-hardly 0.0117
 fantasy 0.0058
 routine 0.0081
 elderly 0.0094
@@ -2427,7 +2286,6 @@ everyday 0.0063
 circle 0.0058
 symbol 0.0063
 dream 0.0153
-definitely 0.0207
 burst 0.0081
 verge 0.0058
 spill 0.0054
@@ -2447,7 +2305,6 @@ translate 0.0103
 undermine 0.0103
 feeling 0.0135
 related 0.0072
-behind 0.0121
 song 0.0472
 police 0.0467
 taxation 0.0072
@@ -2460,11 +2317,9 @@ analysis 0.0121
 blur 0.0054
 overlook 0.0058
 collection 0.0171
-wonder 0.0171
 icon 0.0072
 technically 0.0076
 dot 0.0058
-com 0.0135
 eligible 0.0054
 instant 0.0054
 minimum 0.0121
@@ -2484,7 +2339,6 @@ premiership 0.0324
 attendance 0.0054
 arsenal 0.0153
 constantly 0.0085
-sometimes 0.0198
 stream 0.013
 deeply 0.0126
 audience 0.0458
@@ -2500,7 +2354,6 @@ muslim 0.0058
 tradition 0.0072
 assistant 0.0126
 guide 0.0144
-known 0.0054
 importance 0.0139
 consultant 0.0103
 excellent 0.0162
@@ -2518,7 +2371,6 @@ fish 0.0067
 daughter 0.0153
 ceremony 0.0346
 remarkable 0.009
-unfortunately 0.0103
 immigration 0.0274
 possibly 0.0117
 semi 0.0184
@@ -2553,6 +2405,7 @@ uphold 0.0063
 preference 0.0054
 closing 0.0054
 wonderful 0.0126
+couldn 0.0094
 suppose 0.0099
 regularly 0.0148
 hot 0.018
@@ -2597,7 +2450,6 @@ seventh 0.0148
 guideline 0.0067
 feud 0.0076
 inappropriate 0.0063
-appropriate 0.013
 offence 0.0229
 radio 0.0472
 ethnic 0.0063
@@ -2636,7 +2488,6 @@ insider 0.0054
 instance 0.0175
 plenty 0.0139
 personally 0.0099
-hopefully 0.018
 herald 0.0072
 urban 0.0072
 designer 0.0067
@@ -2650,6 +2501,7 @@ husband 0.0094
 automatically 0.0144
 celebrity 0.0175
 attraction 0.0067
+aren 0.0081
 explore 0.0126
 rugby 0.0247
 spot 0.0391
@@ -2713,7 +2565,6 @@ theatre 0.0103
 singer 0.0449
 shortlist 0.0094
 finalist 0.0058
-novel 0.0157
 adaptation 0.009
 actress 0.0261
 premiere 0.0058
@@ -2861,7 +2712,6 @@ immigrant 0.0076
 runner 0.0153
 sing 0.0072
 band 0.0413
-appreciate 0.0067
 master 0.0081
 reunite 0.0063
 diversity 0.0058
@@ -2905,7 +2755,6 @@ arena 0.0058
 pen 0.0054
 upset 0.013
 midfield 0.0081
-somewhat 0.0058
 nice 0.0162
 meaning 0.0058
 cell 0.0103
@@ -2920,7 +2769,6 @@ duet 0.0054
 athlete 0.0252
 ordinate 0.0054
 genuinely 0.0067
-sorry 0.0067
 joy 0.0054
 stuff 0.018
 specially 0.0054
@@ -2949,7 +2797,6 @@ shadow 0.0207
 captain 0.0225
 lover 0.0076
 breakfast 0.0094
-afterwards 0.0121
 remote 0.009
 lab 0.0081
 surely 0.0067
