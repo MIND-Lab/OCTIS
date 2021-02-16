@@ -1,7 +1,6 @@
 # Utils
 import time
 from pathlib import Path
-import numpy as np
 import json
 
 # utils from skopt and sklearn
@@ -164,8 +163,7 @@ class Optimizer:
 
         # Check if there are other iterations to do
         if self.number_of_previous_calls == self.number_of_call:
-            print("No other evaluations to do!!!")
-            return -1
+            return BestEvaluation(self, resultsBO=res)
 
         # Control about the correctness of BO parameters
         if self._check_BO_parameters() == -1:
