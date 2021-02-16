@@ -13,7 +13,7 @@ class LDA(Abstract_Model):
     use_partitions = True
     update_with_test = False
 
-    def __init__(self, num_topics=100, distributed=False, chunksize=2000, passes=1, update_every=1, alpha="symmetric",
+    def __init__(self, dataset=None, num_topics=100, distributed=False, chunksize=2000, passes=1, update_every=1, alpha="symmetric",
                  eta=None, decay=0.5, offset=1.0, eval_every=10, iterations=50, gamma_threshold=0.001,
                  random_state=None):
         """
@@ -99,6 +99,19 @@ class LDA(Abstract_Model):
         self.hyperparameters["gamma_threshold"] = gamma_threshold
         self.hyperparameters["random_state"] = random_state
 
+        if dataset is not None:
+            if self.use_partitions:
+                self.train_corpus, self.test_corpus = dataset.get_partitioned_corpus(use_validation=False)
+            else:
+                self.train_corpus = dataset.get_corpus()
+
+            if self.id2word is None:
+                self.id2word = corpora.Dictionary(dataset.get_corpus())
+
+            if self.id_corpus is None:
+                self.id_corpus = [self.id2word.doc2bow(document)
+                                  for document in self.train_corpus]
+
     def info(self):
         """
         Returns model informations
@@ -123,8 +136,8 @@ class LDA(Abstract_Model):
         if "alpha" in kwargs:
             if isinstance(kwargs["alpha"], float):
                 self.hyperparameters["alpha"] = [
-                    kwargs["alpha"]
-                ] * self.hyperparameters["num_topics"]
+                                                    kwargs["alpha"]
+                                                ] * self.hyperparameters["num_topics"]
 
     def partitioning(self, use_partitions, update_with_test=False):
         """
@@ -143,7 +156,7 @@ class LDA(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparams=None, top_words=10):
+    def train_model(self, hyperparams=None, top_words=10):
         """
         Train the model and return output
 
@@ -163,18 +176,6 @@ class LDA(Abstract_Model):
         if hyperparams is None:
             hyperparams = {}
 
-        if self.use_partitions:
-            train_corpus, test_corpus = dataset.get_partitioned_corpus(use_validation=False)
-        else:
-            train_corpus = dataset.get_corpus()
-
-        if self.id2word is None:
-            self.id2word = corpora.Dictionary(dataset.get_corpus())
-
-        if self.id_corpus is None:
-            self.id_corpus = [self.id2word.doc2bow(document)
-                              for document in train_corpus]
-
         if "num_topics" not in hyperparams:
             hyperparams["num_topics"] = self.hyperparameters["num_topics"]
 
@@ -182,8 +183,8 @@ class LDA(Abstract_Model):
         if "alpha" in hyperparams:
             if isinstance(hyperparams["alpha"], float):
                 hyperparams["alpha"] = [
-                    hyperparams["alpha"]
-                ] * hyperparams["num_topics"]
+                                           hyperparams["alpha"]
+                                       ] * hyperparams["num_topics"]
 
         hyperparams["corpus"] = self.id_corpus
         hyperparams["id2word"] = self.id2word
@@ -207,7 +208,7 @@ class LDA(Abstract_Model):
 
         if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
-                document) for document in test_corpus]
+                document) for document in self.test_corpus]
             if self.update_with_test:
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)
