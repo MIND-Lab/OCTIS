@@ -39,7 +39,7 @@ class CTM(object):
                  learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False,
                  topic_prior_mean=0.0, topic_prior_variance=None,
-                 num_data_loader_workers=mp.cpu_count()):
+                 num_data_loader_workers=0):
 
         assert isinstance(input_size, int) and input_size > 0, \
             "input_size must by type int > 0."
