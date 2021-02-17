@@ -11,7 +11,7 @@ import pickle as pkl
 
 class CTM(Abstract_Model):
 
-    def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
+    def __init__(self, dataset, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
@@ -41,13 +41,30 @@ class CTM(Abstract_Model):
 
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
-    def train_model(self, dataset, hyperparameters, top_words=10):
+        if self.use_partitions:
+            train, validation, test = dataset.get_partitioned_corpus(use_validation=True)
+
+            data_corpus_train = [' '.join(i) for i in train]
+            data_corpus_test = [' '.join(i) for i in test]
+            data_corpus_validation = [' '.join(i) for i in validation]
+
+            self.vocab = dataset.get_vocabulary()
+            self.X_train, self.X_test, self.X_valid, self.input_size = \
+                self.preprocess(self.vocab, data_corpus_train, test=data_corpus_test,
+                                validation=data_corpus_validation,
+                                bert_train_path=self.hyperparameters['bert_path'] + "_train.pkl",
+                                bert_test_path=self.hyperparameters['bert_path'] + "_test.pkl",
+                                bert_val_path=self.hyperparameters['bert_path'] + "_val.pkl",
+                                bert_model=self.hyperparameters["bert_model"])
+        else:
+            data_corpus = [' '.join(i) for i in dataset.get_corpus()]
+            self.X_train, self.input_size = self.preprocess(self.vocab, train=data_corpus)
+
+    def train_model(self, hyperparameters, top_words=10):
         """
             Args
-                dataset: list of sentences for training the model
-                hyparameters: dict, with the below information:
+                hyperparameters: dict, with the below information:
 
-                input_size : int, dimension of input
                 num_topics : int, number of topic components, (default 10)
                 model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
                 hidden_sizes : tuple, length = n_layers, (default (100, 100))
@@ -64,26 +81,7 @@ class CTM(Abstract_Model):
 
         self.set_params(hyperparameters)
 
-        if self.use_partitions:
-            train, validation, test = dataset.get_partitioned_corpus(use_validation=True)
-
-            data_corpus_train = [' '.join(i) for i in train]
-            data_corpus_test = [' '.join(i) for i in test]
-            data_corpus_validation = [' '.join(i) for i in validation]
-
-            self.vocab = dataset.get_vocabulary()
-            self.X_train, self.X_test, self.X_valid, input_size = \
-                self.preprocess(self.vocab, data_corpus_train, test=data_corpus_test,
-                                validation=data_corpus_validation,
-                                bert_train_path=self.hyperparameters['bert_path'] + "_train.pkl",
-                                bert_test_path=self.hyperparameters['bert_path'] + "_test.pkl",
-                                bert_val_path=self.hyperparameters['bert_path'] + "_val.pkl",
-                                bert_model=self.hyperparameters["bert_model"])
-        else:
-            data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            self.X_train, input_size = self.preprocess(self.vocab, train=data_corpus)
-
-        self.model = ctm.CTM(input_size=input_size,
+        self.model = ctm.CTM(input_size=self.input_size,
                              bert_input_size=self.X_train.X_bert.shape[1],
                              num_topics=self.hyperparameters['num_topics'],
                              model_type='prodLDA',
