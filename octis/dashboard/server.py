@@ -13,11 +13,17 @@ queueManager = ""
 
 @app.route("/serverClosed")
 def serverClosed():
+    """
+    Reroute to the serverClosed page before server shutdown
+    """
     return render_template("serverClosed.html")
 
 
 @app.route("/shutdown")
 def shutdown():
+    """
+    Save the state of the QueueManager and perform server shutdown
+    """
     queueManager.stop()
     shutdown_server()
     return {"DONE": "YES"}
@@ -25,11 +31,17 @@ def shutdown():
 
 @app.route('/')
 def home():
+    """
+    Return the OCTIS landing page
+    """
     return render_template("index.html")
 
 
 @app.route('/startExperiment', methods=['POST'])
 def startExperiment():
+    """
+    Add a new experiment to the queue
+    """
     data = request.form.to_dict(flat=False)
     batch = data["batchId"][0]
     experimentId = data["expId"][0]
@@ -108,6 +120,9 @@ def startExperiment():
 
 @app.route("/getBatchExperiments", methods=['POST'])
 def getBatchExperiments():
+    """
+    return the information related to the experiments of a batch
+    """
     data = request.json['data']
     experiments = []
     for key in data:
@@ -123,6 +138,9 @@ def getBatchExperiments():
 
 @app.route('/CreateExperiments')
 def CreateExperiments():
+    """
+    Serve the experiment creation page
+    """
     models = defaults.model_hyperparameters
     models_descriptions = defaults.model_descriptions
     datasets = fs.scanDatasets()
@@ -134,6 +152,9 @@ def CreateExperiments():
 
 @app.route('/VisualizeExperiments')
 def VisualizeExperiments():
+    """
+    Serve the experiments visualization page
+    """
     batch_names = queueManager.getBatchNames()
     return render_template("VisualizeExperiments.html",
                            batchNames=batch_names)
@@ -141,6 +162,9 @@ def VisualizeExperiments():
 
 @app.route('/ManageExperiments')
 def ManageExperiments():
+    """
+    Serve the ManageExperiments page
+    """
     exp_list = queueManager.getToRun()
     for exp in exp_list:
         exp_info = queueManager.getExperimentInfo(
@@ -157,12 +181,18 @@ def ManageExperiments():
 
 @app.route("/pauseExp", methods=["POST"])
 def pauseExp():
+    """
+    Pause the current experiment
+    """
     queueManager.pause()
     return {"DONE": "YES"}
 
 
 @app.route("/startExp", methods=["POST"])
 def startExp():
+    """
+    Start the next experiment in the queue
+    """
     print(queueManager.getRunning())
     if queueManager.getRunning() == None:
         queueManager.next()
@@ -171,6 +201,9 @@ def startExp():
 
 @app.route("/deleteExp", methods=["POST"])
 def deleteExp():
+    """
+    Delete the selected experiment from the queue
+    """
     data = request.json['data']
     print(queueManager.getRunning())
     if queueManager.getRunning() != None and queueManager.getRunning() == data:
@@ -183,6 +216,9 @@ def deleteExp():
 
 @app.route("/updateOrder", methods=["POST"])
 def updateOrder():
+    """
+    Update the order of the experiments in the queue
+    """
     data = request.json['data']
     queueManager.editOrder(data)
     return {"DONE": "YES"}
@@ -190,12 +226,18 @@ def updateOrder():
 
 @app.route("/getDocPreview", methods=["POST"])
 def getDocPreview():
+    """
+    Returns the first 40 words of the selected document
+    """
     data = request.json['data']
     return json.dumps({"doc": fs.getDocPreview(data["dataset"], int(data["document"]))})
 
 
 @app.route('/SingleExperiment/<batch>/<exp_id>')
 def SingleExperiment(batch="", exp_id=""):
+    """
+    Serve the single experiment page
+    """
     models = defaults.model_hyperparameters
     output = queueManager.getModel(batch, exp_id, 0, 0)
     global_info = queueManager.getExperimentInfo(batch, exp_id)
@@ -216,6 +258,9 @@ def SingleExperiment(batch="", exp_id=""):
 
 @app.route("/getIterationData", methods=["POST"])
 def getIterationData():
+    """
+    Return data of a single iteration and model run of an experiment 
+    """
     data = request.json['data']
     output = queueManager.getModel(data["batchId"], data["experimentId"],
                                    int(data["iteration"]), data["model_run"])
@@ -225,6 +270,9 @@ def getIterationData():
 
 
 def typed(value):
+    """
+    Handles typing of data
+    """
     try:
         t = int(value)
         return t
@@ -237,6 +285,9 @@ def typed(value):
 
 
 def shutdown_server():
+    """
+    Perform server shutdown
+    """
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:
         raise RuntimeError('Not running with the Werkzeug Server')
@@ -244,6 +295,9 @@ def shutdown_server():
 
 
 if __name__ == '__main__':
+    """
+    Initialize the server
+    """
     from octis.dashboard.queueManager import QueueManager
 
     queueManager = QueueManager()

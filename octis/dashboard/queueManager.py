@@ -11,6 +11,9 @@ import signal
 
 
 class QueueManager:
+    """
+    The QueueManager class is used to track old, ongoing and new experiments
+    """
     running = None
     toRun = None
     order = None
@@ -242,6 +245,9 @@ class QueueManager:
 
     @staticmethod
     def _execute_and_update(toRun, running, busy):
+        """
+        start an experiment using a static method
+        """
         startExperiment(toRun[running[0]])
         busy[0] = False
 
@@ -375,5 +381,8 @@ class QueueManager:
         self.order.extend(FinalOrder)
 
     def deleteFromOrder(self, experimentId):
+        """
+        Delete and experiment from the queue of experiments to run
+        """
         self.order = list(filter(lambda a: a != experimentId, self.order))
         del self.toRun[experimentId]
