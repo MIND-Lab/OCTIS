@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.insert(0,os.getcwd())
+
 import argparse
 import webbrowser
 import octis.dashboard.frameworkScanner as fs
@@ -6,9 +10,22 @@ from multiprocessing import Process, Pool
 import json
 from flask import Flask, render_template, request
 import os
+import tkinter as tk
+from tkinter import filedialog
 
 app = Flask(__name__)
 queueManager = ""
+
+
+@app.route("/selectPath", methods=['POST'])
+def selectPath():
+    """
+    Select a path from the server and return it to the page
+    """
+    window = tk.Tk();
+    path = filedialog.askdirectory()
+    window.destroy()
+    return {"path": path}
 
 
 @app.route("/serverClosed")
