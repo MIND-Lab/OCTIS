@@ -9,3 +9,4 @@ torch
 numpy
 libsvm
 flask
+git+https://github.com/MIND-Lab/dragonfly#egg=Dragonfly

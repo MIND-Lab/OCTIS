@@ -140,7 +140,7 @@ class CTM(Abstract_Model):
             hyperparameters.get('num_neurons', self.hyperparameters['num_neurons'])
 
         self.hyperparameters['hidden_sizes'] = tuple(
-            [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])
+            [int(self.hyperparameters["num_neurons"]) for _ in range(self.hyperparameters["num_layers"])])
 
     def inference(self):
         assert isinstance(self.use_partitions, bool) and self.use_partitions
