@@ -156,14 +156,14 @@ class LDA(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, hyperparams=None, top_words=10):
+    def train_model(self, hyperparameters=None, top_words=10):
         """
         Train the model and return output
 
         Parameters
         ----------
         dataset : dataset to use to build the model
-        hyperparams : hyperparameters to build the model
+        hyperparameters : hyperparameters to build the model
         top_words : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
@@ -173,22 +173,22 @@ class LDA(Abstract_Model):
                  'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
-        if hyperparams is None:
-            hyperparams = {}
+        if hyperparameters is None:
+            hyperparameters = {}
 
-        if "num_topics" not in hyperparams:
-            hyperparams["num_topics"] = self.hyperparameters["num_topics"]
+        if "num_topics" not in hyperparameters:
+            hyperparameters["num_topics"] = self.hyperparameters["num_topics"]
 
         # Allow alpha to be a float in case of symmetric alpha
-        if "alpha" in hyperparams:
-            if isinstance(hyperparams["alpha"], float):
-                hyperparams["alpha"] = [
-                                           hyperparams["alpha"]
-                                       ] * hyperparams["num_topics"]
+        if "alpha" in hyperparameters:
+            if isinstance(hyperparameters["alpha"], float):
+                hyperparameters["alpha"] = [
+                                           hyperparameters["alpha"]
+                                       ] * hyperparameters["num_topics"]
 
-        hyperparams["corpus"] = self.id_corpus
-        hyperparams["id2word"] = self.id2word
-        self.hyperparameters.update(hyperparams)
+        hyperparameters["corpus"] = self.id_corpus
+        hyperparameters["id2word"] = self.id2word
+        self.hyperparameters.update(hyperparameters)
 
         self.trained_model = ldamodel.LdaModel(**self.hyperparameters)
 
