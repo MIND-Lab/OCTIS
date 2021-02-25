@@ -1,20 +1,53 @@
-import os
-import sys
-sys.path.insert(0,os.getcwd())
-
 import argparse
 import webbrowser
 import octis.dashboard.frameworkScanner as fs
 import octis.configuration.defaults as defaults
 from multiprocessing import Process, Pool
 import json
-from flask import Flask, render_template, request
-import os
+from flask import Flask, render_template, request, send_file
 import tkinter as tk
 from tkinter import filedialog
+import os
+
 
 app = Flask(__name__)
 queueManager = ""
+
+
+@app.route('/downloadSingleExp',
+           methods=['GET'])
+def downloadSingleExp():
+
+    experimentId = request.args.get("experimentId")
+    batchId = request.args.get("batchId")
+    pathToExp = request.args.get("pathToExp")
+
+    expPath = ""
+    createdPath = os.path.join(
+        pathToExp,
+        experimentId,
+        experimentId)
+    info = {}
+    if os.path.isfile(createdPath+".json"):
+        expPath = createdPath
+
+    if (experimentId + batchId) == queueManager.running:
+        queueManager.pause()
+        with open(expPath+".json") as p:
+            info = json.load(p)
+
+        # TODO, CREATE CSV AND SAVE IT
+        queueManager.start()
+    else:
+        with open(expPath+".json") as p:
+            info = json.load(p)
+
+        # TODO, CREATE CSV AND SAVE IT
+
+    return send_file(expPath+".json",
+                     mimetype="text/json",
+                     attachment_filename="report.json",
+                     as_attachment=True)
 
 
 @app.route("/selectPath", methods=['POST'])
@@ -22,7 +55,7 @@ def selectPath():
     """
     Select a path from the server and return it to the page
     """
-    window = tk.Tk();
+    window = tk.Tk()
     path = filedialog.askdirectory()
     window.destroy()
     return {"path": path}
@@ -270,7 +303,7 @@ def SingleExperiment(batch="", exp_id=""):
     return render_template("SingleExperiment.html", batchName=batch, experimentName=exp_id,
                            output=output, globalInfo=global_info, iterationInfo=iter_info,
                            expInfo=exp_info, expIds=exp_ids, datasetMetadata=fs.getDatasetMetadata(
-            exp_info["dataset"]), vocabulary=vocabulary, models=models)
+                               exp_info["dataset"]), vocabulary=vocabulary, models=models)
 
 
 @app.route("/getIterationData", methods=["POST"])
