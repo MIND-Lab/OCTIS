@@ -45,7 +45,8 @@ class MOOptimizer:
             self.options.progress_save_every = 2
             if os.path.exists(progress_file):
                 prog = pickle.load(open(progress_file, 'rb'))
-                self.current_call= len(prog['config'])+1
+                if 'config' in prog.keys():
+                    self.current_call = len(prog['config']) + 1
 
     #@staticmethod
     def objective(self, x):
