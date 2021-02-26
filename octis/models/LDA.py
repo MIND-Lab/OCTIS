@@ -15,7 +15,7 @@ class LDA(Abstract_Model):
 
     def __init__(self, dataset=None, num_topics=100, distributed=False, chunksize=2000, passes=1, update_every=1, alpha="symmetric",
                  eta=None, decay=0.5, offset=1.0, eval_every=10, iterations=50, gamma_threshold=0.001,
-                 random_state=None):
+                 random_state=None, alpha_log=None, beta_log = None):
         """
         Initialize LDA model
 
@@ -92,6 +92,8 @@ class LDA(Abstract_Model):
         self.hyperparameters["update_every"] = update_every
         self.hyperparameters["alpha"] = alpha
         self.hyperparameters["eta"] = eta
+        self.hyperparameters["alpha_log"] = alpha_log
+        self.hyperparameters["beta_log"] = beta_log
         self.hyperparameters["decay"] = decay
         self.hyperparameters["offset"] = offset
         self.hyperparameters["eval_every"] = eval_every
@@ -133,11 +135,19 @@ class LDA(Abstract_Model):
         """
         super().set_hyperparameters(**kwargs)
         # Allow alpha to be a float in case of symmetric alpha
+        if "alpha_log" in kwargs:
+            if kwargs["alpha_log"] is not None:
+                self.hyperparameters["alpha"] = [np.power(10, kwargs["alpha_log"])] \
+                                                * self.hyperparameters["num_topics"]
+
         if "alpha" in kwargs:
             if isinstance(kwargs["alpha"], float):
-                self.hyperparameters["alpha"] = [
-                                                    kwargs["alpha"]
-                                                ] * self.hyperparameters["num_topics"]
+                self.hyperparameters["alpha"] = [kwargs["alpha"]] * self.hyperparameters["num_topics"]
+
+        if "beta_log" in kwargs:
+            if kwargs["beta_log"] is not None:
+                self.hyperparameters["eta"] = np.power(10, kwargs["beta_log"])
+
 
     def partitioning(self, use_partitions, update_with_test=False):
         """
@@ -174,21 +184,31 @@ class LDA(Abstract_Model):
                  'topic-document-matrix'
         """
         if hyperparameters is None:
-            hyperparameters = {}
+            hyperparams = {}
+        else:
+            hyperparams = hyperparameters.copy()
 
-        if "num_topics" not in hyperparameters:
-            hyperparameters["num_topics"] = self.hyperparameters["num_topics"]
+        if "num_topics" not in hyperparams:
+            hyperparams["num_topics"] = self.hyperparameters["num_topics"]
 
         # Allow alpha to be a float in case of symmetric alpha
-        if "alpha" in hyperparameters:
-            if isinstance(hyperparameters["alpha"], float):
-                hyperparameters["alpha"] = [
-                                           hyperparameters["alpha"]
-                                       ] * hyperparameters["num_topics"]
+        if "alpha_log" in hyperparams:
+            if isinstance(hyperparams["alpha_log"], float):
+                hyperparams["alpha"] = [np.power(10, hyperparams["alpha_log"])]\
+                                           * hyperparams["num_topics"]
+        elif "alpha" in hyperparams:
+            if isinstance(hyperparams["alpha"], float):
+                hyperparams["alpha"] = [hyperparams["alpha"] * hyperparams["num_topics"]]
 
-        hyperparameters["corpus"] = self.id_corpus
-        hyperparameters["id2word"] = self.id2word
-        self.hyperparameters.update(hyperparameters)
+        if "beta_log" in hyperparams:
+            if isinstance(hyperparams["beta_log"], float):
+                hyperparams["eta"] = np.power(10, hyperparams["beta_log"])
+
+        hyperparams["corpus"] = self.id_corpus
+        hyperparams["id2word"] = self.id2word
+        self.hyperparameters.update(hyperparams)
+        self.hyperparameters.pop('beta_log')
+        self.hyperparameters.pop('alpha_log')
 
         self.trained_model = ldamodel.LdaModel(**self.hyperparameters)
 

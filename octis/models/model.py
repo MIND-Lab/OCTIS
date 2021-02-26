@@ -25,7 +25,7 @@ class Abstract_Model(ABC):
             self.hyperparameters[key] = value
 
     @abstractmethod
-    def train_model(self, dataset, hyperparameters, top_words=10):
+    def train_model(self, hyperparameters, top_words=10):
         """
         Train the model.
         Return a dictionary with up to 3 entries,
