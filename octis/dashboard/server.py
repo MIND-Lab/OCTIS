@@ -1,3 +1,8 @@
+import os
+import sys
+sys.path.insert(0,os.getcwd())
+
+
 import argparse
 import webbrowser
 import octis.dashboard.frameworkScanner as fs
@@ -6,6 +11,8 @@ from multiprocessing import Process, Pool
 import json
 from flask import Flask, render_template, request, send_file
 import tkinter as tk
+import pandas as pd
+import numpy as np
 from tkinter import filedialog
 import os
 
@@ -17,40 +24,65 @@ queueManager = ""
 @app.route('/downloadSingleExp',
            methods=['GET'])
 def downloadSingleExp():
-
     experimentId = request.args.get("experimentId")
     batchId = request.args.get("batchId")
-    pathToExp = request.args.get("pathToExp")
+
+    paused = False
+    if (experimentId + batchId) == queueManager.running:
+        paused = True
+        queueManager.pause()
 
     expPath = ""
     createdPath = os.path.join(
-        pathToExp,
+        queueManager.getExperiment(batchId, experimentId)["path"],
         experimentId,
         experimentId)
-    info = {}
+    jsonReport = {}
     if os.path.isfile(createdPath+".json"):
         expPath = createdPath
 
-    if (experimentId + batchId) == queueManager.running:
-        queueManager.pause()
-        with open(expPath+".json") as p:
-            info = json.load(p)
+    with open(expPath+".json") as p:
+        jsonReport = json.load(p)
 
-        # TODO, CREATE CSV AND SAVE IT
+    info = queueManager.getExperimentInfo(batchId, experimentId)
+
+    n_row = info["current_iteration"]
+    n_extra_metrics = len(jsonReport["extra_metric_names"])
+
+    df = pd.DataFrame()
+    df['dataset'] = [jsonReport["dataset_name"]] * n_row
+    df['surrogate model'] = [jsonReport["surrogate_model"]] * n_row
+    df['acquisition function'] = [jsonReport["acq_func"]] * n_row
+    df['num_iteration'] = [i for i in range(n_row)]
+    df['time'] = [jsonReport['time_eval'][i] for i in range(n_row)]
+    df['Median(model_runs)'] = [np.median(
+        jsonReport['dict_model_runs'][jsonReport['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
+    df['Mean(model_runs)'] = [np.mean(
+        jsonReport['dict_model_runs'][jsonReport['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
+    df['Standard_Deviation(model_runs)'] = [np.std(
+        jsonReport['dict_model_runs'][jsonReport['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
+
+    for hyperparameter in list(jsonReport["x_iters"]):
+        df[hyperparameter] = jsonReport["x_iters"][hyperparameter][0:n_row]
+
+    for metric, i in zip(jsonReport["extra_metric_names"], range(n_extra_metrics)):
+        df[metric + '(not optimized)'] = [np.median(
+            jsonReport["dict_model_runs"][metric]['iteration_' + str(i)]) for i in range(n_row)]
+
+    name_file = expPath + ".csv"
+
+    df.to_csv(name_file, index=False, na_rep='Unkown')
+
+    if paused:
         queueManager.start()
-    else:
-        with open(expPath+".json") as p:
-            info = json.load(p)
 
-        # TODO, CREATE CSV AND SAVE IT
-
-    return send_file(expPath+".json",
-                     mimetype="text/json",
-                     attachment_filename="report.json",
+    return send_file(expPath+".csv",
+                     mimetype="text/csv",
+                     attachment_filename="report.csv",
                      as_attachment=True)
 
 
-@app.route("/selectPath", methods=['POST'])
+@ app.route("/selectPath", methods=['POST'])
 def selectPath():
     """
     Select a path from the server and return it to the page
@@ -61,7 +93,7 @@ def selectPath():
     return {"path": path}
 
 
-@app.route("/serverClosed")
+@ app.route("/serverClosed")
 def serverClosed():
     """
     Reroute to the serverClosed page before server shutdown
@@ -69,7 +101,7 @@ def serverClosed():
     return render_template("serverClosed.html")
 
 
-@app.route("/shutdown")
+@ app.route("/shutdown")
 def shutdown():
     """
     Save the state of the QueueManager and perform server shutdown
@@ -79,7 +111,7 @@ def shutdown():
     return {"DONE": "YES"}
 
 
-@app.route('/')
+@ app.route('/')
 def home():
     """
     Return the OCTIS landing page
@@ -87,7 +119,7 @@ def home():
     return render_template("index.html")
 
 
-@app.route('/startExperiment', methods=['POST'])
+@ app.route('/startExperiment', methods=['POST'])
 def startExperiment():
     """
     Add a new experiment to the queue
@@ -168,7 +200,7 @@ def startExperiment():
     return CreateExperiments()
 
 
-@app.route("/getBatchExperiments", methods=['POST'])
+@ app.route("/getBatchExperiments", methods=['POST'])
 def getBatchExperiments():
     """
     return the information related to the experiments of a batch
@@ -186,7 +218,7 @@ def getBatchExperiments():
     return json.dumps(experiments)
 
 
-@app.route('/CreateExperiments')
+@ app.route('/CreateExperiments')
 def CreateExperiments():
     """
     Serve the experiment creation page
@@ -200,7 +232,7 @@ def CreateExperiments():
                            optimization=optimization, models_descriptions=models_descriptions)
 
 
-@app.route('/VisualizeExperiments')
+@ app.route('/VisualizeExperiments')
 def VisualizeExperiments():
     """
     Serve the experiments visualization page
@@ -210,7 +242,7 @@ def VisualizeExperiments():
                            batchNames=batch_names)
 
 
-@app.route('/ManageExperiments')
+@ app.route('/ManageExperiments')
 def ManageExperiments():
     """
     Serve the ManageExperiments page
@@ -229,7 +261,7 @@ def ManageExperiments():
                            running=running)
 
 
-@app.route("/pauseExp", methods=["POST"])
+@ app.route("/pauseExp", methods=["POST"])
 def pauseExp():
     """
     Pause the current experiment
@@ -238,7 +270,7 @@ def pauseExp():
     return {"DONE": "YES"}
 
 
-@app.route("/startExp", methods=["POST"])
+@ app.route("/startExp", methods=["POST"])
 def startExp():
     """
     Start the next experiment in the queue
@@ -249,7 +281,7 @@ def startExp():
     return {"DONE": "YES"}
 
 
-@app.route("/deleteExp", methods=["POST"])
+@ app.route("/deleteExp", methods=["POST"])
 def deleteExp():
     """
     Delete the selected experiment from the queue
@@ -264,7 +296,7 @@ def deleteExp():
     return {"DONE": "YES"}
 
 
-@app.route("/updateOrder", methods=["POST"])
+@ app.route("/updateOrder", methods=["POST"])
 def updateOrder():
     """
     Update the order of the experiments in the queue
@@ -274,7 +306,7 @@ def updateOrder():
     return {"DONE": "YES"}
 
 
-@app.route("/getDocPreview", methods=["POST"])
+@ app.route("/getDocPreview", methods=["POST"])
 def getDocPreview():
     """
     Returns the first 40 words of the selected document
@@ -283,7 +315,7 @@ def getDocPreview():
     return json.dumps({"doc": fs.getDocPreview(data["dataset"], int(data["document"]))})
 
 
-@app.route('/SingleExperiment/<batch>/<exp_id>')
+@ app.route('/SingleExperiment/<batch>/<exp_id>')
 def SingleExperiment(batch="", exp_id=""):
     """
     Serve the single experiment page
@@ -306,10 +338,10 @@ def SingleExperiment(batch="", exp_id=""):
                                exp_info["dataset"]), vocabulary=vocabulary, models=models)
 
 
-@app.route("/getIterationData", methods=["POST"])
+@ app.route("/getIterationData", methods=["POST"])
 def getIterationData():
     """
-    Return data of a single iteration and model run of an experiment 
+    Return data of a single iteration and model run of an experiment
     """
     data = request.json['data']
     output = queueManager.getModel(data["batchId"], data["experimentId"],

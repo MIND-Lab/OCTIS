@@ -283,7 +283,7 @@
     var vocabulary = getParams({{ vocabulary| tojson}});
 
 
-    url_for = "/downloadSingleExp?experimentId=" + expInfo["experimentId"] + "&batchId=" + expInfo["batchId"] + "&pathToExp=" + expInfo["path"].replaceAll('/', "%2F")
+    url_for = "/downloadSingleExp?experimentId=" + expInfo["experimentId"] + "&batchId=" + expInfo["batchId"]
     document.getElementById("downloadZone").innerHTML = '<a href="' + url_for + '">Download report</a>'
 
 
@@ -309,8 +309,7 @@
             hyperparams = hyperparams + "<ul>"
 
             var NameOtHyp = []
-            var models = getParams({{ models| tojson}
-    });
+            var models = getParams({{ models| tojson}});
 
     for (const [key, value] of Object.entries(info["hyperparameter_configuration"])) {
         //check if hyperparameter is in the list of hyperparameters (configuration/defaults.py)
