@@ -61,7 +61,13 @@ def downloadSingleExp():
         df[hyperparameter] = jsonReport["x_iters"][hyperparameter][0:n_row]
 
     for metric, i in zip(jsonReport["extra_metric_names"], range(n_extra_metrics)):
-        df[metric + '(not optimized)'] = [np.median(
+        df[metric + '(median, not optimized)'] = [np.median(
+            jsonReport["dict_model_runs"][metric]['iteration_' + str(i)]) for i in range(n_row)]
+
+        df[metric + '(Mean, not optimized)'] = [np.mean(
+            jsonReport["dict_model_runs"][metric]['iteration_' + str(i)]) for i in range(n_row)]
+
+        df[metric + '(Standard_Deviation, not optimized)'] = [np.std(
             jsonReport["dict_model_runs"][metric]['iteration_' + str(i)]) for i in range(n_row)]
 
     name_file = expPath + ".csv"

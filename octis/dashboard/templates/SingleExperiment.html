@@ -284,8 +284,7 @@
 
 
     url_for = "/downloadSingleExp?experimentId=" + expInfo["experimentId"] + "&batchId=" + expInfo["batchId"]
-    document.getElementById("downloadZone").innerHTML = '<a href="' + url_for + '">Download report</a>'
-
+    document.getElementById("downloadZone").innerHTML = '<div class="coolButton" onclick="window.open(\'' + url_for + '\')" style="cursor: pointer;">Download report</div>'
 
     //show or nor extra metric panel
     if (globalInfo["metric_names"] == 0) {
