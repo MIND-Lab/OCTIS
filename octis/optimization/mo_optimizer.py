@@ -42,7 +42,7 @@ class MOOptimizer:
 
         if self.progress_file is not None:
             self.options.progress_load_from_and_save_to = progress_file
-            self.options.progress_save_every = 2
+            self.options.progress_save_every = 1
             if os.path.exists(progress_file):
                 prog = pickle.load(open(progress_file, 'rb'))
                 if 'config' in prog.keys():
@@ -51,6 +51,17 @@ class MOOptimizer:
     #@staticmethod
     def objective(self, x):
         metrics_results = [[] for _ in self.metrics]
+        if os.path.exists(self.progress_file):
+            prog = pickle.load(open(self.progress_file, 'rb'))
+            if 'raw_points' in prog:
+                if self.config.domain.get_type() == 'euclidean':
+                    ordered_x = [x[name] for name in self.config.domain_orderings.raw_name_ordering]
+                else:
+                    ordered_x = [x[name] for name in self.config.domain.raw_name_ordering]
+
+                for i, p in enumerate(prog['raw_points']):
+                    if tuple(ordered_x) == tuple(p):
+                        return prog['true_vals'][i]
 
         for i in range(self.model_runs):
             model_output = self.model.train_model(hyperparameters=x)
