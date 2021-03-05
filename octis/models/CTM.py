@@ -4,7 +4,7 @@ from octis.models.model import Abstract_Model
 from octis.models.contextualized_topic_models.datasets import dataset
 from octis.models.contextualized_topic_models.models import ctm
 from octis.models.contextualized_topic_models.utils.data_preparation import bert_embeddings_from_list
-
+import numpy
 import os
 import pickle as pkl
 
@@ -12,7 +12,7 @@ import pickle as pkl
 class CTM(Abstract_Model):
 
     def __init__(self, dataset, num_topics=10, model_type='prodLDA', activation='softplus',
-                 dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
+                 dropout=0.2, learn_priors=True, batch_size=64, log_lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
                  inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens"):
@@ -24,7 +24,7 @@ class CTM(Abstract_Model):
         self.hyperparameters['inference_type'] = inference_type
         self.hyperparameters['learn_priors'] = learn_priors
         self.hyperparameters['batch_size'] = batch_size
-        self.hyperparameters['lr'] = lr
+        self.hyperparameters['log_lr'] = log_lr
         self.hyperparameters['momentum'] = momentum
         self.hyperparameters['solver'] = solver
         self.hyperparameters['num_epochs'] = num_epochs
@@ -72,7 +72,7 @@ class CTM(Abstract_Model):
                 dropout : float, dropout to use (default 0.2)
                 learn_priors : bool, make priors a learnable parameter (default True)
                 batch_size : int, size of batch to use for training (default 64)
-                lr : float, learning rate to use for training (default 2e-3)
+                log_lr : float, learning rate to use for training (default 2e-3)
                 momentum : float, momentum to use for training (default 0.99)
                 solver : string, optimizer 'adam' or 'sgd' (default 'adam')
                 num_epochs : int, number of epochs to train for, (default 100)
@@ -91,7 +91,7 @@ class CTM(Abstract_Model):
                              dropout=self.hyperparameters['dropout'],
                              learn_priors=self.hyperparameters['learn_priors'],
                              batch_size=self.hyperparameters['batch_size'],
-                             lr=self.hyperparameters['lr'],
+                             lr=10**self.hyperparameters['log_lr'],
                              momentum=self.hyperparameters['momentum'],
                              solver=self.hyperparameters['solver'],
                              num_epochs=self.hyperparameters['num_epochs'],
@@ -120,7 +120,7 @@ class CTM(Abstract_Model):
             hyperparameters.get('learn_priors', self.hyperparameters['learn_priors'])
         self.hyperparameters['batch_size'] = \
             hyperparameters.get('batch_size', self.hyperparameters['batch_size'])
-        self.hyperparameters['lr'] = hyperparameters.get('lr', self.hyperparameters['lr'])
+        self.hyperparameters['log_lr'] = hyperparameters.get('log_lr', self.hyperparameters['log_lr'])
         self.hyperparameters['momentum'] = \
             hyperparameters.get('momentum', self.hyperparameters['momentum'])
         self.hyperparameters['solver'] = hyperparameters.get('solver', self.hyperparameters['solver'])
