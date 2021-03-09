@@ -163,8 +163,8 @@ class LDA(Abstract_Model):
         """
         self.use_partitions = use_partitions
         self.update_with_test = update_with_test
-        self.id2word = None
-        self.id_corpus = None
+        #self.id2word = None
+        #self.id_corpus = None
 
     def train_model(self, hyperparameters=None, top_words=10):
         """

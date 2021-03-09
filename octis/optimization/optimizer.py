@@ -191,8 +191,10 @@ class Optimizer:
         for i in range(self.model_runs):
 
             # Prepare model
-            model_output = self.model.train_model(self.dataset, params,
-                                                  self.topk)
+            #model_output = self.model.train_model(self.dataset, params,self.topk)
+
+            model_output = self.model.train_model(params, self.topk)
+
             # Score of the model
             score = self.metric.score(model_output)
             different_model_runs.append(score)
