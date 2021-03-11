@@ -11,12 +11,13 @@ from octis.models.model import Abstract_Model
 import gensim
 import pickle as pkl
 
+
 class ETM(Abstract_Model):
 
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
-                 use_partitions=False):
+                 use_partitions=True):
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = int(num_topics)
@@ -45,7 +46,9 @@ class ETM(Abstract_Model):
         self.optimizer = None
         self.embeddings = None
 
-    def train_model(self, dataset, hyperparameters, top_words=10):
+    def train_model(self, dataset, hyperparameters=None, top_words=10):
+        if hyperparameters is None:
+            hyperparameters = {}
         self.set_model(dataset, hyperparameters)
         self.top_word = top_words
         self.early_stopping = EarlyStopping(patience=5, verbose=True)
@@ -67,8 +70,7 @@ class ETM(Abstract_Model):
 
     def set_model(self, dataset, hyperparameters):
         if self.use_partitions:
-            train_data, validation_data, testing_data = \
-                dataset.get_partitioned_corpus(use_validation=True)
+            train_data, validation_data, testing_data = dataset.get_partitioned_corpus(use_validation=True)
 
             data_corpus_train = [' '.join(i) for i in train_data]
             data_corpus_test = [' '.join(i) for i in testing_data]
@@ -311,7 +313,7 @@ class ETM(Abstract_Model):
         vec = CountVectorizer(
             vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
 
-        dataset = train_corpus
+        dataset = train_corpus.copy()
         if test_corpus is not None:
             dataset.extend(test_corpus)
         if validation_corpus is not None:
