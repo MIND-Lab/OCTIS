@@ -26,9 +26,9 @@ class ContextualInferenceNetwork(nn.Module):
         assert isinstance(output_size, int), "output_size must be type int."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+        assert activation in ['softplus', 'relu', 'sigmoid', 'tanh', 'leakyrelu',
                               'rrelu', 'elu', 'selu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'leakyrelu'," \
             " 'rrelu', 'elu', 'selu' or 'tanh'."
         assert dropout >= 0, "dropout must be >= 0."
 
@@ -47,8 +47,6 @@ class ContextualInferenceNetwork(nn.Module):
             self.activation = nn.Tanh()
         elif activation == 'leakyrelu':
             self.activation = nn.LeakyReLU()
-        elif activation == 'swish':
-            self.activation = Swish()
         elif activation == 'rrelu':
             self.activation = nn.RReLU()
         elif activation == 'elu':
@@ -107,9 +105,9 @@ class CombinedInferenceNetwork(nn.Module):
         assert isinstance(output_size, int), "output_size must be type int."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+        assert activation in ['softplus', 'relu', 'sigmoid', 'tanh', 'leakyrelu',
                               'rrelu', 'elu', 'selu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
+            "activation must be 'softplus', 'relu', 'sigmoid', 'leakyrelu'," \
             " 'rrelu', 'elu', 'selu' or 'tanh'."
 
         assert dropout >= 0, "dropout must be >= 0."
@@ -129,8 +127,6 @@ class CombinedInferenceNetwork(nn.Module):
             self.activation = nn.Tanh()
         elif activation == 'leakyrelu':
             self.activation = nn.LeakyReLU()
-        elif activation == 'swish':
-            self.activation = Swish()
         elif activation == 'rrelu':
             self.activation = nn.RReLU()
         elif activation == 'elu':
