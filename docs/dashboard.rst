@@ -1,14 +1,16 @@
 Local dashboard
 ================
 
-The local dashboard is a user friendly graphical interface for creating, monitoring and viewing experiments.
-Following the implementation standards of datasets, models and metrics the dashboard will automatically update and allow you to use your own custom implementations.
+The local dashboard is a user-friendly graphical interface for creating, monitoring, and viewing experiments.
+Following the implementation standards of datasets, models, and metrics the dashboard will automatically update and allow you to use your custom implementations.
 
-To run rhe dashboard, while in the project directory run the following command:
+To run the dashboard, while in the project directory run the following command:
 
 .. code-block:: bash
 
-    python OCTIS/dashboard/server.py
+    python OCTIS/dashboard/server.py --port [port number]
+
+The port parameter is optional and the selected port number will be used to host the dashboard server, the default port is 5000.
 
 The browser will open and you will be redirected to the dashboard.
 In the dashboard you can:
@@ -17,6 +19,7 @@ In the dashboard you can:
 * Visualize and compare all the experiments
 * Visualize a custom experiment
 * Manage the experiment queue
+
 
 Using the Dashboard
 -------------------
@@ -46,20 +49,38 @@ After that you can click on ``Start Experiment`` and the experiment will be adde
 Visualize and compare all the experiments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 To visualize the experiments click on the ``VISUALIZE EXPERIMENTS`` tab.
-In this tab you can choose which bach (or set of batchs) to visualize.
+In this tab, you can choose which batch (or set of batches) to visualize.
 
-The experiments will be shown in a grid, where it will be possible to decide in which order to show them and apply some filters.
+A plot of each experiment that contains the best-seen evaluation at each iteration is visualized in a grid.
+Alternatively, you can visualize a box plot at each iteration to understand if a given hyper-parameter configuration is noisy (high variance) or not. 
 
-You can interact with the single experiment graphic or choose to have a look to the single experiment by clickig on ``Click here to inspect the results``.
+You can interact with the single experiment graphic or choose to have a look at the single experiment by clicking on ``Click here to inspect the results``.
+
+It is possible to decide in which order to show the experiments and apply some filters to have a more intuitive visualization of the experiments.
 
 
 Visualize a custom experiment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In the ``VISUALIZE EXPERIMENTS`` tab, after clicking on the ``Click here to inspect the results`` button, you will be redirected to the single experiment tab.
-In this tab you can look to the collected data of each iteration and model run of each experiment.
+In this tab, you can visualize all the information and statistics related to the experiment, including the best hyper-parameter configuration and the best value of the optimized metric. You can also have an outline of the statistics of the tracked metrics. 
+
+It is also possible to have a look at a word cloud obtained from the most relevant words of a given topic, scaled by their probability; the topic distribution on each document (and a preview of the document), and the weight of each word of the vocabulary for each topic. 
+
 
 Manage the experiment queue
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 To manage the experiment queue click on the ``MANAGE EXPERIMENTS`` tab.
-In this tab you can pause or resume the execution of an experiment.
-You can also change the order of the experiments to perform, or delete the ones you are no longer interested in.
+In this tab, you can pause or resume the execution of an experiment.
+You can also change the order of the experiments to perform or delete the ones you are no longer interested in.
+
+
+Frequently used terms
+---------------------
+
+Batch
+^^^^^
+A batch of experiments is a set of related experiments that can be recognized using a keyword referred to as batch ``name``.
+
+Model runs
+^^^^^^^^^^
+In the optimization context of the framework, since the performance estimated by the evaluation metrics can be affected by noise, the objective function is computed as the median of a given number of ``model runs`` (i.e., topic models run with the same hyperparameter configuration)
