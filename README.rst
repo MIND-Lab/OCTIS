@@ -4,20 +4,16 @@ OCTIS
 .. image:: https://img.shields.io/pypi/v/octis.svg
         :target: https://pypi.python.org/pypi/octis
 
-.. image:: https://img.shields.io/travis/silviatti/octis.svg
-        :target: https://travis-ci.com/silviatti/octis
+.. image:: https://github.com/MIND-Lab/OCTIS/workflows/Python%20package/badge.svg
+        :target: https://github.com/MIND-Lab/OCTIS/actions
 
 .. image:: https://readthedocs.org/projects/octis/badge/?version=latest
         :target: https://octis.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/silviatti/octis/shield.svg
-     :target: https://pyup.io/repos/github/silviatti/octis/
-     :alt: Updates
-
-.. image:: logo.png
+.. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png
   :width: 100
-  :alt: Alternative text
+  :alt: Logo
 
 OCTIS (Optimizing and Comparing Topic models Is Simple) aims at training, analyzing and comparing
 Topic Models, whose optimal hyper-parameters are estimated by means of a Bayesian Optimization approach.
