@@ -115,7 +115,7 @@ def shutdown():
 @ app.route('/')
 def home():
     """
-    Return the OCTIS landing page
+    Return the octis landing page
     """
     return render_template("index.html")
 
