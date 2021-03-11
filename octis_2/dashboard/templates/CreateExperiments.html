@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>OpTopic - Create Experiments</title>
+    <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <style>
+        .invisibleRadioBtn {
+            width: 0px;
+            height: 0px;
+            background: transparent;
+            border: none;
+        }
+
+        .invisibleRadioBtn:focus {
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function destroy() {
+            li = this.parentElement
+            if (li.parentElement.id == "metricsList") document.getElementById("addedMetric").checked = false
+            li.parentElement.removeChild(li);
+        }
+        function newListElement(listToUpdate, identifier, content) {
+            if (listToUpdate == "metricsList") {
+                content.type = "optimize";
+                lastChild = document.getElementById(listToUpdate).lastChild;
+                if (lastChild.tagName == "LI" || lastChild.tagName == "li") lastChild.remove()
+                document.getElementById("addedMetric").checked = true
+            } else {
+                content.type = "track";
+            }
+            content = JSON.stringify(content);
+
+            var li = document.createElement("li");
+            li.classList.add("media")
+
+            var t = document.createElement("div")
+            t.classList.add("media-body")
+            t.innerHTML = "<b>" + identifier + "</b> " + content
+
+            var data = document.createElement("input")
+
+            data.setAttribute("type", "hidden");
+            data.setAttribute("name", "metric." + identifier)
+            data.setAttribute("value", content);
+
+
+            document.getElementById(listToUpdate).appendChild(li);
+
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+
+
+            li.appendChild(t);
+            li.appendChild(data);
+            li.appendChild(span);
+
+            span.addEventListener("click", destroy)
+
+        }
+
+
+    </script>
+
+    <div>
+        <ul class="navbar">
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                    EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+            </li>
+            <!--<li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+        </li>
+        -->
+        </ul>
+    </div>
+
+    <header id="header">
+        <div>
+            </br>
+            <h1 style="text-align: center">Experiment creation
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Click here to read the instructions!
+                </button>
+            </h1>
+        </div>
+    </header>
+    <hr>
+    <div class="outContainer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-container">
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <p class="lead"> In this page, you can define and start the optimization experiments.
+                                    An optimization experiment is an experiment that involves a chosen
+                                    dataset and topic modeling algorithm whose hyperparameters (or a subset
+                                    of hyperparameters) are optimized with respect of a chosen evaluation metric.
+                                </p>
+
+                                </br>
+                                <h3><span class="badge badge-primary">Quick start:</span></h3>
+                                <ul>
+                                    <li> Select the folder in which you will save your experiments.
+                                        For each experiment you need to specify the <strong>name of the
+                                            experiment</strong>
+                                        and the name for the set of experiments (<strong>batch name</strong>). The
+                                        "batch" allows
+                                        you to organize experiments in the same cluster. This will be useful later for
+                                        visualization purposes.
+                                    </li>
+                                    <li> Select a <strong>Dataset</strong> among our preprocessed datasets. You can just
+                                        train a model, or you can train and test the model (we have already splitted
+                                        the datasets).
+                                    </li>
+                                    <li>
+                                        Select a <strong>Model</strong> among our predefined topic models. You can
+                                        choose
+                                        among a selection of classical topic models and neural topic models.
+                                    </li>
+                                    <li>
+                                        Select the <strong>hyperparameters</strong> of the model that you want to
+                                        optimize
+                                        and/or fix the value of the hyperpararameters that you like.
+                                        If you optimize a hyperparameter, you need to select the <strong>value
+                                            range</strong>
+                                        for the selected hyperparameter.
+                                    </li>
+                                    <li>
+                                        Select the <strong>Metric</strong> that you want to optimize (just one for now,
+                                        but we
+                                        plan to do multi-objective hyperparameter optimization soon) and its
+                                        corresponding
+                                        parameters.
+                                    </li>
+                                    <li>
+                                        Select the configuration of the <strong>parameters of Bayesian
+                                            Optimization</strong>.
+                                    </li>
+                                </ul>
+                                <h3><span class="badge badge-primary">Hint:</span></h3>
+                                Click on names of the hyperparameters, the models or the metrics for obtaining
+                                additional information.
+                            </div>
+                        </div>
+
+                        <div class="customFormSection">
+                            <form id="experimentForm" data-focus="false" method="post"
+                                action="{{ url_for('startExperiment') }}">
+                                <div>
+                                    <label>Select the path where you want to save the experiments</label>
+                                    <div class="coolButton" id="selpath">Select Path</div>
+                                    <input type="text" class="invisibleRadioBtn" id="path" name="path" required>
+                                    <p id="showPath">No path choosen</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>Name of the batch</label>
+                                        <input type="text" class="coolInput" id="batchId" name="batchId" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Name of the experiment</label>
+                                        <input type="text" class="coolInput" id="expId" name="expId" required>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="customContainer">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2>Choose a Dataset</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-left: 70%;">
+                                            <p class="col-lg-3"><b> Only training </b></p>
+                                            <label class="switch">
+                                                <input type="checkbox" id="partitioning" name="partitioning">
+                                                <span class="slidercheck round"></span>
+                                            </label>
+                                            <p class="col-lg-3"><b> Training and Testing</b></p>
+                                        </div>
+                                        <div class="row">
+                                            <div id="datasetSelector" class="col-lg-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </br>
+                                <div class="customContainer">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2>Choose a Model</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div id="modelForm" class="col-lg-12">
+                                            </div>
+                                            <input class="invisibleRadioBtn" type="checkbox" id="addedParameter"
+                                                name="choosedparam" required
+                                                oninvalid="this.setCustomValidity('Select at least one hyperparameter to optimize')"
+                                                onblur="this.setCustomValidity('')">
+                                            <div id="modelParameters" class="col-lg-12">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="separator">
+                                    <ul>
+                                    </ul>
+                                </div>
+
+                                <div id="services" class="metricBlock">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="metric-name"></div>
+                                                <h2>Choose the Evaluation Metric to optimize</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <input class="invisibleRadioBtn" type="checkbox" id="addedMetric"
+                                                name="test" required
+                                                oninvalid="this.setCustomValidity('Select a metric to optimize')"
+                                                onblur="this.setCustomValidity('')">
+                                            <div class="col-lg-12" id="optimizeMetrics">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div id="Metrics">
+                                                <ul id="metricsList">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="separator">
+                                    <ul>
+                                    </ul>
+                                </div>
+
+                                <div id="services-2" class="metricBlock">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="metric-name"></div>
+                                                <h2>Choose one or more metrics to evaluate</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12" id="trackMetrics">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div id="trackedMetrics">
+                                                <ul id="trackmetricsList">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="separator">
+                                    <ul>
+                                    </ul>
+                                </div>
+
+                                <div class="customContainer">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h2>Optimization parameters</h2>
+                                            </div>
+                                        </div>
+                                        <div id="boSelector" class="col-lg-12">
+                                            <div id="boRow" class="row col-lg-12">
+                                                <div class="col-lg-2">
+                                                    <div class="row" style="height: 60%;">
+                                                        <p data-toggle="popover" title="Parameter description"
+                                                            data-placement="top"
+                                                            data-content="Number of iterations of the Bayesian Optimization (including the random points)">
+                                                            <b>Number of iterations</b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="row">
+                                                        <input type="number" class="coolInput" value="5" id="iterations"
+                                                            name="iterations" required style="margin: 2%;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="row" style="height: 60%;">
+                                                        <p data-toggle="popover" title="Parameter description"
+                                                            data-placement="top"
+                                                            data-content="Number of runs of the model with the same hyperparameter configuration.
+                                                        This allows us to have a more accurate estimate of the evaluated function.">
+                                                            <b>Model runs</b>
+                                                        </p>
+                                                    </div>
+                                                    <div class="row">
+                                                        <input type="number" class="coolInput" value="3" id="runs"
+                                                            name="runs" required style="margin: 2%;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="row" style="height: 60%;">
+                                                        <p data-toggle="popover" title="Parameter description"
+                                                            data-placement="top" data-content="Number of initial random points. Bayesian optimization needs
+                                                    initial random points to fit the initial surrogate model. As a rule of thumb,
+                                                    a good number of initial random points is equal to the number of hyperparameters
+                                                       + 2. "><b>Initial random points</b></p>
+                                                    </div>
+                                                    <div class="row">
+                                                        <input type="number" class="coolInput" value="3"
+                                                            id="n_random_starts" name="n_random_starts" required
+                                                            style="margin: 2%;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="send-button">Start Experiment</button>
+                                </div>
+                                <div class="form-message">
+                                    <div id="pmsgSubmit" class="h3 text-center hidden"></div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <h4 style="color:white;">OCTIS</h4>
+            <p class="white" style="color:white;">Optimizing and Comparing Topic Models is Simple!</p>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script>
+        function getParams(vars) {
+            return vars;
+        }
+
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        });
+
+        $(document).ready(function () {
+
+
+            document.getElementById("selpath").addEventListener("click", selectPath)
+
+            function selectPath() {
+                $.ajax(
+                    {
+                        type: 'POST',
+                        url: "/selectPath",
+                        success: function (data) {
+
+                            console.log(data)
+
+                            document.getElementById("path").value = data["path"]
+                            document.getElementById("showPath").innerHTML = data["path"]
+
+                        }
+                    });
+            }
+
+
+            //Get dataset names
+            dataset = getParams({{ datasets| tojson}});
+        imgPath = "{{ url_for('static', filename='images/dataset.png') }}";
+        rBtnName = "dataset"
+        father = document.getElementById("datasetSelector");
+        createCoolSelection(dataset, imgPath, rBtnName, father)
+
+
+        model = getParams({{ models| tojson}});
+        father = document.getElementById("modelForm");
+
+        modelNames = []
+        for (const [key, value] of Object.entries(model)) {
+            modelNames.push(key)
+        }
+        rBtnName = "model"
+        imgPath = "{{ url_for('static', filename='images/model.png') }}";
+        createCoolSelection(modelNames, imgPath, rBtnName, father)
+
+        metrics = getParams({{ metrics| tojson}});
+
+        for (const [key, value] of Object.entries(metrics)) {
+            addMetricBox(key, value, "optimizeMetrics")
+            addMetricBox(key, value, "trackMetrics")
+        }
+
+
+        BO = getParams({{ optimization| tojson}});
+
+        boSelector = document.getElementById("boSelector");
+
+        surrogateModelInput = document.createElement("select")
+        surrogateModelInput.classList.add("coolSelect")
+        surrogateModelInput.name = "surrogateModel"
+
+        for (const val of BO["surrogate_models"]) {
+            var option = document.createElement("option");
+            option.text = val["name"];
+            option.value = val["id"]
+            surrogateModelInput.appendChild(option)
+        }
+
+
+        div = document.getElementById("boRow");
+        //div = document.createElement("div")
+        //div.classList.add("form-group")
+        //div.classList.add("col-lg-1")
+
+        new_div = document.createElement("div")
+        new_div.classList.add("form-group")
+        new_div.classList.add("col-lg-3")
+
+        new_div.innerHTML = new_div.innerHTML + "<p data-toggle=\"popover\" data-content=\"a probabilistic surrogate model aimed at approximating the performance metrics to optimize. It is fitted using all the past evaluations of the objective function. \" data-original-title=\"Description of the parameter\" data-placement=\"top\"><b>Surrogate model</b> </p>"
+        new_div.appendChild(surrogateModelInput)
+
+        div.appendChild(new_div)
+        boSelector.appendChild(div)
+
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        });
+
+        AcqFuncInput = document.createElement("select")
+        AcqFuncInput.classList.add("coolSelect")
+        AcqFuncInput.name = "acquisitionFunction"
+
+        for (const val of BO["acquisition_functions"]) {
+            var option = document.createElement("option");
+            option.text = val["name"];
+            option.value = val["id"]
+            AcqFuncInput.appendChild(option)
+        }
+
+        div = document.getElementById("boRow");
+        new_div = document.createElement("div")
+        new_div.classList.add("form-group")
+        new_div.classList.add("col-lg-3")
+
+        new_div.innerHTML = new_div.innerHTML + "<p data-toggle=\"popover\" data-content=\"The acquisition function (or utility function) uses the estimate of the mean and the confidence returned by the surrogate model to select the next configuration\" data-original-title=\"Description of the parameter\" data-placement=\"top\"><b>Acquisition function</b> </p>"
+        new_div.appendChild(AcqFuncInput)
+
+        div.appendChild(new_div)
+
+        boSelector.appendChild(div)
+
+
+        function addMetricBox(name, info, where) {
+
+            fat = document.getElementById(where)
+
+            box = document.createElement("div")
+            box.classList.add("singleMetric")
+            fat.appendChild(box)
+
+            box_body = document.createElement("div")
+            box_body.classList.add("singleMetricBody")
+            box.appendChild(box_body)
+
+            box_title = "<h3 id=\"" + name +
+                "\" data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" data-content=\"" +
+                info['description'] + "\" data-original-title=\"Description of the metric\" "
+            box_title += "data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">" + info["name"] + "</h3>"
+
+
+            //box_title.innerHTML = info["name"]
+            //box_title.id = name
+            box_body.innerHTML += box_title
+
+            for (const [key, value] of Object.entries(info)) {
+                if (key != "name") {
+
+                    switch (value["type"]) {
+
+                        case "Categorical":
+                            newInput = document.createElement("select")
+                            newInput.classList.add("coolSelect")
+                            newInput.id = key + "input"
+
+                            for (const val of value["possible_values"]) {
+                                var option = document.createElement("option");
+                                option.text = val;
+                                newInput.appendChild(option)
+                            }
+
+                            label = document.createElement("p")
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            box_body.appendChild(information)
+                            updateDropdownIndex(newInput.id, value["default_value"]);
+
+                            break;
+                        case "Real":
+                            newInput = document.createElement("input")
+                            newInput.setAttribute("type", "number");
+                            if ("step" in value) {
+                                newInput.setAttribute("step", value["step"]);
+                            } else {
+                                newInput.setAttribute("step", "any");
+                            }
+                            newInput.defaultValue = value["default_value"];
+
+                            var label = document.createElement("p");
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            box_body.appendChild(information)
+
+
+                            break;
+                        case "Integer":
+                            newInput = document.createElement("input")
+                            newInput.setAttribute("type", "number");
+                            if ("step" in value) {
+                                newInput.setAttribute("step", value["step"]);
+                            }
+                            newInput.defaultValue = value["default_value"];
+
+                            var label = document.createElement("p");
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            box_body.appendChild(information)
+                            break;
+
+                        case "String":
+                            newInput = document.createElement("input")
+                            newInput.setAttribute("type", "text");
+                            newInput.defaultValue = value["default_value"];
+
+                            var label = document.createElement("p");
+                            label.innerHTML = key;
+
+                            information = document.createElement("div")
+                            information.classList.add("information")
+                            information.appendChild(label)
+                            information.appendChild(newInput)
+                            box_body.appendChild(information)
+                            break;
+
+                    }
+
+
+                }
+            }
+
+            button_container = document.createElement("div")
+            button_container.classList.add("button-container")
+            box.appendChild(button_container)
+
+            button = document.createElement("div")
+            button.classList.add("coolButton")
+            button.classList.add("metricButton")
+            button.classList.add("page-scroll")
+            button.innerHTML = "ADD"
+
+            button.addEventListener("click", function () {
+
+                thebox = this.parentElement.parentElement
+
+                content = {}
+                name = ""
+
+
+                for (var i = 0; i < thebox.childNodes.length; i++) {
+                    if (thebox.childNodes[i].className == "singleMetricBody") {
+                        TheBody = thebox.childNodes[i];
+
+                        for (var j = 0; j < TheBody.childNodes.length; j++) {
+                            if (TheBody.childNodes[j].className == "information") {
+                                theDiv = TheBody.childNodes[j];
+
+                                if (theDiv.childNodes[0].nodeName == "P") {
+                                    content[theDiv.childNodes[0].innerHTML] = theDiv.childNodes[1].value
+                                } else {
+                                    content[theDiv.childNodes[1].innerHTML] = theDiv.childNodes[0].value
+                                }
+                            } else {
+                                content.metric = TheBody.childNodes[j].innerHTML
+                                name = TheBody.childNodes[j].id
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                //newListElement(where, name, JSON.stringify(content))
+                where2 = where;
+                if (where == "optimizeMetrics") where2 = "metricsList"
+                if (where == "trackMetrics") where2 = "trackmetricsList"
+
+                newListElement(where2, name, content)
+
+            })
+
+            button_container.appendChild(button)
+        }
+
+        function createCoolSelection(data, imagePath, rBtnName, father) {
+
+            var model = document.createElement("div")
+            model.style.display = "none";
+            model.id = "selected_model"
+            model.innerHTML = ""
+
+            father.appendChild(model)
+
+            dataLength = data.length;
+            model_citations = getParams({{ models_descriptions| tojson}});
+        for (i = 0; i < dataLength; i++) {
+
+            var slide = document.createElement("div");
+            slide.className = "col-sm-1";
+            slide.classList.add("singleObject");
+
+            var box = document.createElement("div");
+            box.classList.add("objectImage");
+
+
+            var img = document.createElement("img");
+            img.classList.add("img-fluid");
+            img.classList.add("img-thumbnail");
+            img.classList.add(rBtnName)
+            img.id = data[i]
+            img.src = imagePath;
+            img.alt = "alternative";
+            img.addEventListener("click", function () {
+                document.getElementById("selected_model").innerHTML = this.id
+
+                elementImage = this.src;
+                n = elementImage.indexOf("static") - 1
+                totlen = elementImage.length
+                elImg = elementImage.substring(n, totlen)
+
+                if (elImg.includes("selected")) {
+                    n = elImg.indexOf("_selected")
+                    this.src = elImg.substring(0, n).concat(".png")
+
+                    rbtnId = this.id.concat("rBtn");
+                    rbtn = document.getElementById(rbtnId)
+                    rbtn.checked = false;
+
+                } else {
+
+                    $(".".concat(rBtnName)).each(function (i, obj) {
+                        DisplayedImage = obj.src;
+                        n = DisplayedImage.indexOf("static") - 1
+                        totlen = DisplayedImage.length
+                        pathImg = DisplayedImage.substring(n, totlen)
+
+                        if (pathImg.includes("selected")) {
+                            n = pathImg.indexOf("_selected")
+                            obj.src = pathImg.substring(0, n).concat(".png")
+
+                            rbtnId = obj.id.concat("rBtn");
+                            rbtn = document.getElementById(rbtnId)
+                            rbtn.checked = false;
+                        }
+
+                    })
+
+                    n = elImg.length - 4
+                    this.src = pathImg.substring(0, n).concat("_selected.png")
+                    rbtnId = this.id.concat("rBtn");
+                    rbtn = document.getElementById(rbtnId)
+                    rbtn.checked = true;
+                }
+
+                gestoreContenutiExtra(rBtnName, rbtnId);
+
+            });
+            img.style.borderRadius = "50%";
+
+            var radioBtn = document.createElement("input");
+            radioBtn.type = "radio"
+            radioBtn.value = data[i];
+            radioBtn.id = data[i].concat("rBtn")
+            radioBtn.name = rBtnName
+            radioBtn.required = true
+            radioBtn.classList.add("invisibleRadioBtn")
+
+
+
+            slide.appendChild(box)
+            box.appendChild(radioBtn)
+            box.appendChild(img)
+
+            DataName = "<p class='job-title' "
+            if (data[i] in model_citations && 'citation' in model_citations[data[i]] && 'name' in model_citations[data[i]]) {
+                DataName += "data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" data-content=\"" +
+                    model_citations[data[i]]['citation'] + "\" data-original-title=\"" +
+                    model_citations[data[i]]['name'] + "\" "
+                DataName += "data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">" + data[i] + "</p>";
+            }
+            else {
+                DataName += ">" + data[i] + "</p>";
+            }
+
+            var dn = document.createElement("p");
+            dn.innerHTML = DataName
+
+            box.appendChild(dn)
+
+            father.appendChild(slide);
+
+        }
+        }
+
+        var numOfParams = 0;
+
+        function gestoreContenutiExtra(nomi, id) {
+            if (nomi == "model") {
+
+                $(".".concat(nomi)).each(function () {
+
+                    if (this.id == id.substring(0, id.length - 4)) {
+                        toShow = model[this.id];
+                        parametersDiv = document.getElementById("modelParameters")
+                        parametersDiv.innerHTML = "<hr><h5>Set the Hyperparameters' Values</h5>"
+                        parametersDiv.name = this.id + "pd"
+
+                        if (document.getElementById(id).checked == true) {
+
+                            for (const [key, value] of Object.entries(toShow)) {
+                                modelNames.push(key)
+
+                                divInput = document.createElement("div");
+                                divInput.classList.add("form-group")
+                                divInput.classList.add("col-sm-1")
+                                divInput.classList.add("singleObject")
+
+                                checkbox = document.createElement("input")
+                                checkbox.setAttribute("type", "checkbox");
+                                checkbox.id = key + "_check"
+                                checkbox.name = "model." + key + "_check"
+                                divInput.appendChild(checkbox)
+                                $(document).off('change', '#'.concat(checkbox.id));
+                                $(document).on('change', '#'.concat(checkbox.id), function () {
+
+                                    mdl = parametersDiv.name.substring(0, parametersDiv.name.length - 2)
+                                    param = model[mdl]
+                                    param = param[this.id.substring(0, this.id.length - 6)]
+
+                                    fat = this.parentElement
+                                    check = this.cloneNode(true);
+                                    fat.innerHTML = ""
+                                    fat.appendChild(check)
+                                    fat.appendChild(document.createTextNode("Optimize parameter"))
+
+                                    if (this.checked == true) {
+                                        numOfParams = numOfParams + 1;
+                                        switch (param["type"]) {
+                                            case "Categorical":
+                                                newInput = document.createElement("select")
+                                                newInput.setAttribute("multiple", "");
+                                                newInput.style.height = "100%"
+                                                newInput.classList.add("coolSelect");
+                                                newInput.name = "model." + key;
+                                                newInput.id = key
+
+                                                for (const val of param["possible_values"]) {
+                                                    var option = document.createElement("option");
+                                                    option.text = val;
+                                                    newInput.appendChild(option)
+                                                }
+
+                                                var label = document.createElement("div");
+
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" " +
+                                                        "data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" +
+                                                        value["description"] + "\" data-original-title=\"Hyperparameter description\" " +
+                                                        "data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                                else { newHTML += "<b>" + key + "</b>"; }
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+                                                break;
+                                            case "Real":
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                                else { newHTML += "<b>" + key + "</b>"; }
+                                                newHTML += "</p>"
+
+                                                hyper_label = document.createElement("div")
+                                                hyper_label.innerHTML = newHTML
+                                                fat.appendChild(hyper_label)
+
+
+                                                ///
+                                                row = document.createElement("div")
+
+                                                row.classList.add("row")
+
+                                                col1 = document.createElement("div")
+                                                col1.classList.add("col-6")
+
+                                                col2 = document.createElement("div")
+                                                col2.classList.add("col-6")
+
+                                                row.appendChild(col1)
+                                                row.appendChild(col2)
+
+                                                newInput = document.createElement("input")
+                                                newInput.setAttribute("type", "number");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                    newInput.defaultValue = value["min_value"];
+                                                } else {
+                                                    newInput.setAttribute("step", "any");
+                                                }
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = "model." + key + "_xminx";
+
+                                                var label = document.createElement("div");
+                                                label.htmlFor = "model." + key + "_xminx";
+                                                label.style.padding = "5px";
+                                                var idd = "param_" + key
+                                                var newHTML = "";
+                                                newHTML += "<p><b>from</b></p>";
+
+                                                label.innerHTML = newHTML;
+
+                                                col1.appendChild(label);
+                                                col1.appendChild(newInput);
+
+                                                newInput = document.createElement("input")
+
+                                                newInput.setAttribute("type", "number");
+
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                } else {
+                                                    newInput.setAttribute("step", "any");
+                                                }
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.defaultValue = value["max_value"];
+                                                newInput.name = "model." + key + "_xmaxx";
+
+
+                                                var label = document.createElement("div");
+                                                label.htmlFor = "model." + key + "_xmaxx";
+                                                label.style.padding = "5px";
+
+                                                label.innerHTML = "<p><b>to</b></p>";
+
+                                                col2.appendChild(label);
+                                                col2.appendChild(newInput);
+
+                                                fat.appendChild(row)
+                                                break;
+
+                                            case "Integer":
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                                else { newHTML += "<b>" + key + "</b>"; }
+                                                newHTML += "</p>"
+
+                                                hyper_label = document.createElement("div")
+                                                hyper_label.innerHTML = newHTML
+                                                fat.appendChild(hyper_label)
+                                                ////
+                                                row = document.createElement("div")
+                                                row.classList.add("row")
+
+                                                col1 = document.createElement("div")
+                                                col1.classList.add("col-6")
+
+                                                col2 = document.createElement("div")
+                                                col2.classList.add("col-6")
+
+                                                row.appendChild(col1)
+                                                row.appendChild(col2)
+
+                                                newInput = document.createElement("input")
+
+                                                newInput.setAttribute("type", "number");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                }
+                                                newInput.defaultValue = value["min_value"];
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = "model." + key + "_xminx";
+
+
+                                                var label = document.createElement("div");
+                                                label.htmlFor = "model." + key + "_xminx";
+                                                label.style.padding = "5px";
+
+                                                ////
+                                                var idd = "param_" + key
+                                                var newHTML = "";
+                                                newHTML += "<p><b>from</b></p>";
+
+                                                label.innerHTML = newHTML;
+
+                                                col1.appendChild(label);
+                                                col1.appendChild(newInput);
+
+                                                newInput = document.createElement("input")
+                                                newInput.setAttribute("type", "number");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                }
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.defaultValue = value["max_value"];
+                                                newInput.name = "model." + key + "_xmaxx";
+
+
+                                                var label = document.createElement("label");
+                                                label.htmlFor = "model." + key + "_xmaxx";
+                                                label.style.padding = "5px";
+                                                label.innerHTML = "<p><b>to</b></p>";
+
+                                                col2.appendChild(label);
+                                                col2.appendChild(newInput);
+
+                                                fat.appendChild(row)
+                                                break;
+                                        }
+                                        $("#" + idd).popover({
+                                            html: true,
+                                            content: function (idd) {
+                                                return $("#newDiv" + idd).html();
+                                            }.bind(this, idd)
+                                        });
+                                    } else {
+                                        numOfParams = numOfParams - 1;
+                                        switch (param["type"]) {
+                                            case "Categorical":
+                                                newInput = document.createElement("select")
+                                                newInput.classList.add("coolSelect");
+                                                newInput.name = "model." + key;
+                                                newInput.id = key
+
+                                                for (const val of param["possible_values"]) {
+                                                    var option = document.createElement("option");
+                                                    option.text = val;
+                                                    newInput.appendChild(option)
+                                                }
+
+                                                var label = document.createElement("div");
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                                else { newHTML += "<b>" + key + "</b>"; }
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+                                                updateDropdownIndex(newInput.id, param["default_value"]);
+
+
+                                                break;
+                                            case "Real":
+                                                newInput = document.createElement("input")
+
+                                                newInput.setAttribute("type", "number");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                } else {
+                                                    newInput.setAttribute("step", "any");
+                                                }
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = "model." + key;
+                                                newInput.id = key
+                                                newInput.defaultValue = param["default_value"]
+
+                                                var label = document.createElement("div");
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                                else { newHTML += "<b>" + key + "</b>"; }
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+                                                break;
+
+                                            case "Integer":
+
+                                                newInput = document.createElement("input")
+
+                                                newInput.setAttribute("type", "number");
+                                                if ("step" in value) {
+                                                    newInput.setAttribute("step", value["step"]);
+                                                }
+                                                newInput.setAttribute("min", param["min_value"]);
+                                                newInput.setAttribute("max", param["max_value"]);
+                                                newInput.name = "model." + key;
+                                                newInput.id = key
+                                                newInput.defaultValue = param["default_value"]
+
+                                                var label = document.createElement("div");
+                                                var idd = "param_" + key
+                                                var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                                if ('description' in value) {
+                                                    newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                                }
+                                                else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                                if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + " from</b>"; }
+                                                else { newHTML += "<b>" + key + " from</b>"; }
+                                                newHTML += "</p>"
+
+                                                label.innerHTML = newHTML;
+
+                                                fat.appendChild(label);
+                                                fat.appendChild(newInput);
+
+                                                break;
+
+                                        }
+                                        $("#" + idd).popover({
+                                            html: true,
+                                            content: function (idd) {
+                                                return $("#newDiv" + idd).html();
+                                            }.bind(this, idd)
+                                        });
+                                    }
+                                    if (numOfParams > 0) {
+                                        document.getElementById("addedParameter").checked = true
+                                    }
+                                    else {
+                                        document.getElementById("addedParameter").checked = false
+                                    }
+                                });
+                                divInput.appendChild(document.createTextNode("Optimize parameter"));
+                                parametersDiv.appendChild(divInput);
+
+                                switch (value["type"]) {
+                                    case "Categorical":
+                                        newInput = document.createElement("select")
+                                        newInput.classList.add("coolSelect");
+                                        newInput.name = "model." + key;
+                                        newInput.id = key
+
+                                        for (const val of value["possible_values"]) {
+                                            var option = document.createElement("option");
+                                            option.text = val;
+                                            newInput.appendChild(option)
+                                        }
+
+                                        var label = document.createElement("div");
+                                        var idd = "param_" + key
+                                        var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                        if ('description' in value) {
+                                            newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                        }
+                                        else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                        if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                        else { newHTML += "<b>" + key + "</b>"; }
+                                        newHTML += "</p>"
+
+                                        label.innerHTML = newHTML;
+
+                                        divInput.appendChild(label);
+                                        divInput.appendChild(newInput);
+                                        updateDropdownIndex(newInput.id, value["default_value"]);
+
+                                        break;
+                                    case "Real":
+                                        newInput = document.createElement("input")
+
+                                        newInput.setAttribute("type", "number");
+                                        if ("step" in value) {
+                                            newInput.setAttribute("step", value["step"]);
+                                        } else {
+                                            newInput.setAttribute("step", "any");
+                                        }
+                                        newInput.setAttribute("min", value["min_value"]);
+                                        newInput.setAttribute("max", value["max_value"]);
+                                        newInput.name = "model." + key;
+                                        newInput.id = key
+                                        newInput.defaultValue = value["default_value"]
+
+                                        var label = document.createElement("div");
+
+                                        var idd = "param_" + key
+                                        var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                        if ('description' in value) {
+                                            newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                        }
+                                        else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                        if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                        else { newHTML += "<b>" + key + "</b>"; }
+                                        newHTML += "</p>"
+
+                                        label.innerHTML = newHTML;
+
+                                        divInput.appendChild(label);
+                                        divInput.appendChild(newInput);
+                                        break;
+
+                                    case "Integer":
+
+                                        newInput = document.createElement("input")
+
+                                        newInput.setAttribute("type", "number");
+                                        if ("step" in value) {
+                                            newInput.setAttribute("step", value["step"]);
+                                        }
+                                        newInput.setAttribute("min", value["min_value"]);
+                                        newInput.setAttribute("max", value["max_value"]);
+                                        newInput.name = "model." + key;
+                                        newInput.id = key
+                                        newInput.defaultValue = value["default_value"]
+
+                                        var label = document.createElement("div");
+
+                                        var idd = "param_" + key
+                                        var newHTML = "<div style='display:none' id ='newDiv" + idd + "'>";
+                                        if ('description' in value) {
+                                            newHTML += "</div><p data-toggle=\"popover\" tabindex=\"-1\" data-trigger=\"focus\" id=\"" + idd + "\" data-content=\"" + value["description"] + "\" data-original-title=\"Hyperparameter description\" data-html=\"true\" data-placement=\"bottom\" aria-label=\"Left Align\">";
+                                        }
+                                        else { newHTML += "</div><p id=\"" + idd + "\" data-html=\"true\">"; }
+
+                                        if ("alternative_name" in value) { newHTML += "<b>" + value["alternative_name"] + "</b>"; }
+                                        else { newHTML += "<b>" + key + "</b>"; }
+                                        newHTML += "</p>"
+
+                                        label.innerHTML = newHTML;
+
+                                        divInput.appendChild(label);
+                                        divInput.appendChild(newInput);
+
+                                        break;
+                                }
+                                $("#" + idd).popover({
+                                    html: true,
+                                    content: function (idd) {
+                                        return $("#newDiv" + idd).html();
+                                    }.bind(this, idd)
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        function updateDropdownIndex(dropdownId, value) {
+            dropDown = document.getElementById(dropdownId)
+            for (var i, j = 0; i = dropDown.options[j]; j++) {
+                if (i.value == value) {
+                    dropDown.selectedIndex = j;
+                    break;
+                }
+            }
+        }
+        });
+
+
+
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+</body>
+
+</html>

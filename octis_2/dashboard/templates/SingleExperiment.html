@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>OpTopic - {{experimentName}}</title>
+
+    <link href="{{ url_for('static', filename='styles/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <ul class="navbar">
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}"><img style="width:20%"
+                        src="{{ url_for('static', filename='images/logo.png') }}" alt="alternative"></a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('home') }}">HOME</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('CreateExperiments') }}">CREATE EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('VisualizeExperiments') }}">VISUALIZE
+                    EXPERIMENTS</a>
+            </li>
+            <li class="navbarEl">
+                <a class="navbarLink" href="{{ url_for('ManageExperiments') }}">MANAGE EXPERIMENTS</a>
+            </li>
+            <!--<li class="navbarEl">
+            <a class="navbarLink" href="{{ url_for('serverClosed') }}">CLOSE DASHBOARD</a>
+        </li>
+        -->
+        </ul>
+    </div>
+    <header id="header">
+        <div>
+            <h1 style="text-align: center">{{experimenName}}
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Click here to read the instructions!
+                </button>
+            </h1>
+        </div>
+    </header>
+
+    <div class="outContainer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-container">
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <p class="lead"> In this page, you can inspect the results of a single experiment.</p>
+
+                                <h3><span class="badge badge-primary">Quick start:</span></h3>
+
+                                <ul> You can see the optimization process for the selected experiments, in particular:
+                                    <li> a summary of the main statistics of the optimization performed with the
+                                        selected optimized metric.</li>
+                                    <li> the line chart representing the median of the model runs for each iteration of
+                                        the optimization .</li>
+                                    <li> a box plot summarizing all the evaluation functions across all the iterations .
+                                    </li>
+
+                                    <li> a summary of the main statistics of the other metrics that have been selected
+                                        to evaluate (if it exists).</li>
+                                    <li> the line chart and the boxplot of the other metrics that have been selected to
+                                        evaluate (if it exists).</li>
+                                </ul>
+                                <br>
+                                <ul> Moreover, you can select a specific iteration and model run and visualize:
+                                    <li> the <b>wordcloud</b> of the selected model run for each topic.</li>
+                                    <li> the <b>topic distribution</b> of a selected document and its preview. </li>
+                                    <li>The <b>weight</b> of every word of vocabulary for each topic.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <h2 style="text-align: center;">Overview of the experiments</h2>
+
+        <div id="projects" class=container-fluid">
+            <div class="row ">
+                <div class="col-sm-3 offset-sm-1">
+                    <H3> Select an experiment to analyze </H3>
+                </div>
+                <div class="col-sm-2 ">
+                    <div style="height: 10%;width: 100%;" id="expSelector"></div>
+                </div>
+                <div class="col-sm-2" id="downloadZone">
+                </div>
+
+            </div>
+
+            <div class="row ">
+                <div class="col-sm-2 offset-sm-1 card card-body">
+                    <div style="height: 5%"></div>
+                    <H5> Summary of the optimization </H5>
+                    <div style="height: 50%;margin-left: 5% ;" id="optInfo"></div>
+                </div>
+                <div class="col-sm-8">
+                    <div id="generic"></div>
+                    <p id="model_runs"></p>
+                </div>
+            </div>
+            <hr>
+            <div class="container-fluid" id="Row_extra_metric1">
+                <div class="row ">
+                    <div class="col-sm-3 offset-sm-1">
+                        <H4> Choose the extra-metric to inspect</H4>
+                    </div>
+                    <div class="col-sm-2 ">
+                        <select id="ExtraMetricSelector" style="width:100%" class="coolSelect"
+                            onchange="updateExtraMetricSelector()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 offset-sm-1 card card-body">
+                        <H5> Summary of the extra-metric </H5>
+                        <div style="height: 50%;margin-left: 5% ;" id="optInfoExtra"></div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div id="generic_extra"></div>
+                        <p id="model_runs2"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr>
+        <h2 style="text-align: center;">Focus on selected experiment </h2>
+        <div class=container-fluid">
+            <div class="row ">
+                <div class="col-sm-2 offset-sm-1">
+                    <p> Select an iteration and run to inspect</p>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-3 offset-sm-1">
+                    <div style="height: 10%;" id="iterationSelector"></div>
+                </div>
+            </div>
+        </div>
+        <div class=container-fluid">
+            <div class="row ">
+                <div class="col-sm-3 offset-sm-5 text-right">
+                    <b> Visualize the Wordcloud of topic number </b>
+                </div>
+                <div class="col-sm-1 ">
+                    <div style="width: 100%" id="topicSelector"></div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-3 offset-sm-1 card card-body">
+                    <b>Summary of the single iteration </b>
+                    <div style="margin-left: 5%" id="expInfo"></div>
+                </div>
+                <div class="col-sm-7 ">
+
+                    <div id="container"></div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div style="width:100%" class="container-fluid">
+            <div class="row ">
+                <div class="col-sm-4 offset-sm-1">
+                    <b>Topic distribution of document number </b>
+                    <input type="number" value="0" id="docSelector" min="0"
+                        max="{{ datasetMetadata['total_documents'] }}" onchange="updateDocViewer()">
+                </div>
+                <div class="col-sm-2 text-right">
+                    <b> Weight of the word</b>
+                </div>
+                <div class="col-sm-2">
+                    <select id="wordSelector" style="width:100%" class="coolSelect"
+                        onchange="updateWordGraph()"></select>
+                </div>
+                <div class="col-sm-1 text-left">
+                    <b>for each topic</b>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-5 offset-sm-1">
+                    <div id="docTopic" style="height: 100%;width: 90%"></div>
+                </div>
+                <div class="col-sm-5 ">
+                    <div id="wordTopic" style="height: 100%;width: 90%"></div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-5 offset-sm-1 ">
+                    <div id="docPreview" class="card card-body" style="height: 100%;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="footer">
+        <div class="container">
+            <h4 style="color:white;">OCTIS</h4>
+            <p class="white" style="color:white;">Optimizing and Comparing Topic Models is Simple!</p>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.easing.min.js') }}"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+
+</body>
+<script>
+
+    //function to sort dictionary by value
+    function sortByValue(jsObj) {
+        var sortedArray = [];
+        for (var i in jsObj) {
+            // Push each JSON Object entry in array by [value, key]
+            sortedArray.push([jsObj[i], i]);
+        }
+        return sortedArray.sort();
+    }
+
+    function getParams(vars) {
+        return vars;
+    }
+
+    //Function to update the DropDown Menu
+    function updateDropdownIndex(dropdownId, value) {
+        dropDown = document.getElementById(dropdownId)
+        for (var i, j = 0; i = dropDown.options[j]; j++) {
+            if (i.text == value) {
+                dropDown.selectedIndex = j;
+                break;
+            }
+        }
+    }
+
+    function isFloat(val) {
+        var floatRegex = /^-?\d+(?:[.,]\d*?)?$/;
+        if (!floatRegex.test(val))
+            return false;
+
+        val = parseFloat(val);
+        if (isNaN(val))
+            return false;
+        return true;
+    }
+
+    //load the input parameters
+    var output = getParams({{ output| tojson}});
+    models = getParams({{ models| tojson}});
+    globalInfo = getParams({{ globalInfo| tojson}});
+    iterationInfo = getParams({{ iterationInfo| tojson}});
+    var expInfo = getParams({{ expInfo| tojson}});
+    expIds = getParams({{ expIds| tojson}});
+    expName = getParams({{ experimentName| tojson}});
+    var vocabulary = getParams({{ vocabulary| tojson}});
+
+
+    url_for = "/downloadSingleExp?experimentId=" + expInfo["experimentId"] + "&batchId=" + expInfo["batchId"]
+    document.getElementById("downloadZone").innerHTML = '<div class="coolButton" onclick="window.open(\'' + url_for + '\')" style="cursor: pointer;">Download report</div>'
+
+    //show or nor extra metric panel
+    if (globalInfo["metric_names"] == 0) {
+        document.getElementById("Row_extra_metric1").style.display = "none";
+    } else {
+        document.getElementById("Row_extra_metric1").style.display = "inline";
+    }
+
+    //Function to write statistics of the optimized metric
+    function writeInfo(elementId, info) {
+        ele = document.getElementById(elementId)
+        ele.innerHTML = ''
+        hyperparams = ''
+        if ("hyperparameter_configuration" in info) {
+            if (elementId == 'optInfo') {
+                information = "<br><b>Best hyperparameter values:</b>"
+            } else {
+                information = "<br><b>Current hyperparameter configuration:</b>"
+            }
+            hyperparams = hyperparams + information
+            hyperparams = hyperparams + "<ul>"
+
+            var NameOtHyp = []
+            var models = getParams({{ models| tojson}});
+
+    for (const [key, value] of Object.entries(info["hyperparameter_configuration"])) {
+        //check if hyperparameter is in the list of hyperparameters (configuration/defaults.py)
+        if (key in models[info["model_name"]]) {
+
+            // if the hyperparameter has an alternative name, we consider that
+            if ('alternative_name' in models[info["model_name"]][key]) {
+                hyperparams = hyperparams + "<li><b>" +
+                    models[info["model_name"]][key]['alternative_name'] + ": </b>"
+            } else {
+                hyperparams = hyperparams + "<li><b>" + key + ": </b>"
+            }
+            // if we know the type of the hyperparameter, we use that
+            if ('type' in models[info["model_name"]][key]) {
+                val = value
+                if (models[info["model_name"]][key]['type'] == "Integer") {
+                    val = parseInt(value)
+                } else {
+                    if (isFloat(value)) {
+                        val = parseFloat(value)
+                        val = val.toFixed(4)
+                    }
+                }
+                hyperparams = hyperparams + val + "</li>"
+
+            } else {
+                val = value
+                if (isFloat(value)) {
+                    val = parseFloat(value)
+                    val = val.toFixed(4)
+                }
+                hyperparams = hyperparams + val + "</li>"
+            }
+
+        } else {
+            val = value
+            if (isFloat(value)) {
+                val = parseFloat(value)
+                val = val.toFixed(4)
+            }
+            hyperparams = hyperparams + "<li><b>" + key + ": </b>" + val + "</li>"
+        }
+        NameOtHyp.push(key)
+    }
+    hyperparams = hyperparams + "</ul>"
+        }
+    node = document.createElement("p")
+    node.innerHTML = ""
+    node.innerHTML = node.innerHTML + "<b>Optimized metric:</b> " + info["optimized_metric"] + "<br>"
+
+    if (elementId == "expInfo") {
+        value = info["optimized_metric_values"][runSelect.value]
+        node.innerHTML = node.innerHTML + "<b>Metric value:</b> " + value.toFixed(4)
+        if (info["metric_names"] != 0) {
+            information = "<br><b> Extra-metric values:</b>" + "<ul>"
+            extra_values_string = ''
+            for (var i in info["metric_names"]) {
+                var metric_name = info["metric_names"][i].substring(2, 999)
+                var value = info[info["metric_names"][i] + "_values"][runSelect.value].toFixed(4)
+                extra_values_string = extra_values_string + "<li><b>" + metric_name + "</b>: " + value + "</li>"
+            }
+            node.innerHTML = node.innerHTML + information + extra_values_string + "</ul>"
+        }
+        node.innerHTML = node.innerHTML + hyperparams
+
+    } else {
+        node.innerHTML = node.innerHTML +
+            "<b>Model: </b>" + info["model_name"] +
+            "<br><b>Total number of iterations: </b>" + info["current_iteration"] +
+            "<br><b>Total number of model runs: </b>" + info["number_of_model_runs"] +
+            "<br><b>Best seen (median) :</b> " + info["best_seen"].toFixed(4) +
+            "<br><b>Mean (median):</b> " + info["mean_seen"].toFixed(4) +
+            "<br><b>Worst seen (median):</b> " + info["worse_seen"].toFixed(4) +
+            hyperparams;
+    }
+
+    //other model attributes
+    other_hyperparams = ''
+
+    information = "<br><b>Other hyperparameters values:</b>"
+    other_hyperparams = other_hyperparams + information
+    other_hyperparams = other_hyperparams + "<ul>"
+
+    for (const [key, value] of Object.entries(info["model_attributes"])) {
+        if (NameOtHyp.includes(key)) {
+        } else {
+            //check if hyperparameter is in the list of hyperparameters (configuration/defaults.py)
+            if (key in models[info["model_name"]]) {
+
+                // if the hyperparameter has an alternative name, we consider that
+                if ('alternative_name' in models[info["model_name"]][key]) {
+                    other_hyperparams = other_hyperparams + "<li><b>" +
+                        models[info["model_name"]][key]['alternative_name'] + ": </b>"
+                } else {
+                    other_hyperparams = other_hyperparams + "<li><b>" + key + ": </b>"
+                }
+                // if we know the type of the hyperparameter, we use that
+                if ('type' in models[info["model_name"]][key]) {
+                    val = value
+                    if (models[info["model_name"]][key]['type'] == "Integer") {
+                        val = parseInt(value)
+                    } else {
+                        if (isFloat(value)) {
+                            val = parseFloat(value)
+                            val = val.toFixed(4)
+                        }
+                    }
+                    other_hyperparams = other_hyperparams + val + "</li>"
+
+                } else {
+                    val = value
+                    if (isFloat(value)) {
+                        val = parseFloat(value)
+                        val = val.toFixed(4)
+                    }
+                    other_hyperparams = other_hyperparams + val + "</li>"
+                }
+
+            } else {
+                val = value
+                if (isFloat(value)) {
+                    val = parseFloat(value)
+                    val = val.toFixed(4)
+                }
+                other_hyperparams = other_hyperparams + "<li><b>" + key + ": </b>" + val + "</li>"
+            }
+            NameOtHyp.push(key)
+        }
+
+    }
+    other_hyperparams = other_hyperparams + "</ul>"
+
+    node.innerHTML = node.innerHTML + other_hyperparams
+
+    ele.appendChild(node)
+    }
+
+    //function to write information on extra metrics
+    function writeInfo_Extra(elementId, info) {
+
+        ExtraMetricSelector = document.getElementById("ExtraMetricSelector")
+        metric_name = ExtraMetricSelector.value
+
+        //select the values of the extra_metric
+        dict_metrics_values = globalInfo["extra_metric_stats"]
+        stats = dict_metrics_values[metric_name]
+
+        ele = document.getElementById(elementId)
+        ele.innerHTML = ''
+
+        node = document.createElement("p")
+        node.innerHTML = "<br><b>Metric name:</b> " + metric_name.substring(2, 999) +
+            "<br><b>Max value:</b> " + stats[0].toFixed(4) +
+            "<br><b>Min value:</b> " + stats[1].toFixed(4) +
+            "<br><b>Median value:</b> " + stats[2].toFixed(4) +
+            "<br><b>Mean value:</b> " + stats[3].toFixed(4)
+
+        ele.appendChild(node)
+    }
+
+
+    //select the specific experiment
+    selectExp = document.createElement("select")
+    selectExp.classList.add("coolSelect")
+    selectExp.id = "selecExp"
+
+    selectExp.addEventListener("click", function () {
+        infoSelector = JSON.parse(this.value)
+        location.href = "../../SingleExperiment/" + infoSelector["batchId"] + "/" + infoSelector["expId"]
+    })
+
+    for (const val of expIds) {
+        var option = document.createElement("option");
+        option.text = val[0];
+        option.value = JSON.stringify({ "expId": val[1][1], "batchId": val[1][0] })
+        selectExp.appendChild(option)
+    }
+
+    //load on the menu of the experiments all the possible experiments
+    document.getElementById("expSelector").appendChild(selectExp)
+    updateDropdownIndex(selectExp.id, expName)
+
+
+    //Part about update of iterationSelector
+    sel = document.getElementById("iterationSelector")
+    iterSelect = document.createElement("input")
+    iterSelect.id = "iterselect"
+    iterSelect.setAttribute("type", "number");
+    iterSelect.setAttribute("min", 0);
+    if (globalInfo != false) {
+        iterSelect.setAttribute("max", globalInfo["f_val"].length - 1);
+    }
+    else {
+        iterSelect.setAttribute("max", 0);
+    }
+    iterSelect.defaultValue = 0
+
+    bold = document.createElement('strong')
+    bold.appendChild(document.createTextNode("Iteration: "))
+    sel.appendChild(bold)
+    sel.appendChild(iterSelect)
+
+    //Part about update of RunSelector
+    runSelect = document.createElement("input")
+    runSelect.id = "runselect"
+    runSelect.setAttribute("type", "number");
+    runSelect.setAttribute("min", 0);
+    if (expInfo != false) {
+        runSelect.setAttribute("max", globalInfo["number_of_model_runs"] - 1);
+    } else {
+        runSelect.setAttribute("max", 0);
+    }
+    runSelect.defaultValue = 0
+
+    bold = document.createElement('strong')
+    bold.appendChild(document.createTextNode(" Model run: "))
+    sel.appendChild(bold)
+    sel.appendChild(runSelect)
+
+    function updateTopicSelector() {
+        topicSelector = document.getElementById("topicSelector")
+        topicSelector.innerHTML = ''
+
+        topicSelect = document.createElement("select")
+        topicSelect.classList.add("coolSelect")
+        topicSelect.id = "selecTopic"
+        topicSelect.addEventListener("click", function () {
+            draw(this.value)
+        })
+
+        if (output != false) {
+            for (i = 0; i < output["topic-word-matrix"].length; i++) {
+                var option = document.createElement("option");
+                option.text = i;
+                option.value = i;
+                topicSelect.appendChild(option)
+            }
+        }
+        topicSelector.appendChild(topicSelect)
+    }
+    updateTopicSelector()
+
+    //Code for extra metrics*
+    if (globalInfo["metric_names"] != 0) {
+        ExtraMetricSelector = document.getElementById("ExtraMetricSelector");
+        json_data = globalInfo['metric_names']
+        var array = [];
+        for (var i in json_data) array.push([json_data[i]]);
+        //Create and append the options
+        for (var i = 0; i < array.length; i++) {
+            var option = document.createElement("option");
+            option.setAttribute("value", array[i]);
+            option.text = array[i];
+            ExtraMetricSelector.appendChild(option);
+        }
+    }
+
+    //function to update the plots of the extra metrics and the summary information
+    function updateExtraMetricSelector() {
+        ExtraMetricSelector = document.getElementById("ExtraMetricSelector")
+        writeInfo_Extra("optInfoExtra", globalInfo)
+        draw3(ExtraMetricSelector.value)
+    }
+    if (globalInfo["metric_names"] == 0) {
+    } else {
+        updateExtraMetricSelector()
+    }
+
+    iterSelect.addEventListener("click", function () {
+        $.ajax(
+            {
+                type: 'POST',
+                url: "/getIterationData",
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    "data": {
+                        "batchId": expInfo["batchId"],
+                        "experimentId": expInfo["experimentId"],
+                        "iteration": document.getElementById("iterselect").value,
+                        "model_run": document.getElementById("runselect").value,
+                    }
+                }),
+                success: function (data) {
+                    console.log(data["iterInfo"])
+                    if (data["iterinfo"] != false && data["expinfo"] != false) {
+                        writeInfo("expInfo", data["iterInfo"])
+                        output = data["output"]
+                        updateTopicSelector()
+                        updateDocViewer()
+                        updateWordGraph()
+                        draw(0);
+                    }
+                }
+            })
+
+    })
+
+    runSelect.addEventListener("click", function () {
+        $.ajax(
+            {
+                type: 'POST',
+                url: "/getIterationData",
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    "data": {
+                        "batchId": expInfo["batchId"],
+                        "experimentId": expInfo["experimentId"],
+                        "iteration": document.getElementById("iterselect").value,
+                        "model_run": document.getElementById("runselect").value,
+                    }
+                }),
+                success: function (data) {
+                    console.log(data["iterInfo"])
+                    if (data["iterinfo"] != false && data["expinfo"] != false) {
+                        writeInfo("expInfo", data["iterInfo"])
+                        output = data["output"]
+                        updateTopicSelector()
+                        updateDocViewer()
+                        updateWordGraph()
+                        draw(0);
+                    }
+                }
+            })
+
+    })
+
+
+    function updateDocViewer() {
+        $.ajax(
+            {
+                type: 'POST',
+                url: "/getDocPreview",
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    "data": {
+                        "dataset": expInfo["dataset"],
+                        "document": document.getElementById("docSelector").value
+                    }
+                }),
+                success: function (data) {
+
+                    preview = document.getElementById("docPreview")
+                    if (data["doc"] == false) data["doc"] = "document not found"
+                    preview.innerHTML = "<b>Preview of the selected document:</b><br>" + data["doc"]
+
+                    datax = []
+                    datay = []
+
+                    if (output != false) {
+
+                        for (var i = 0; i < output["topic-document-matrix"].length; i++) {
+                            datax.push(i)
+                            datay.push(output["topic-document-matrix"][i][document.getElementById("docSelector").value])
+                        }
+                    }
+
+                    var bardata = [
+                        {
+                            x: datax,
+                            y: datay,
+                            type: 'bar'
+                        }
+                    ];
+
+                    var layout = {
+                        margin: {
+                            l: 40,
+                            r: 40,
+                            b: 40,
+                            t: 40,
+                            pad: 2
+                        },
+                        xaxis: {
+                            title: 'Topic'
+                        },
+                        yaxis: {
+                            title: 'Distribution',
+                            automargin: true
+                        },
+                        paper_bgcolor: 'rgba(256,256,256,1)'
+                    };
+
+                    document.getElementById("docTopic").innerHTML = ""
+                    //create the plot
+                    Plotly.newPlot('docTopic', bardata, layout);
+
+                }
+            })
+    }
+
+    updateDocViewer()
+
+
+    if (globalInfo != false) writeInfo("optInfo", globalInfo)
+    if (globalInfo["metric_names"] == 0) {
+    } else {
+        if (globalInfo != false) writeInfo_Extra("optInfoExtra", globalInfo)
+    }
+    if (iterationInfo != false) writeInfo("expInfo", iterationInfo)
+
+    anychart.onDocumentReady(function () {
+        draw(0)
+    });
+
+    //function to update the worldGraph Plot
+    function draw(topic) {
+
+        document.getElementById("container").innerHTML = ''
+        var data = []
+
+        if (output != false) {
+
+            for (i = 0; i < output["topics"][topic].length; i++) {
+                data.push({ "x": output["topics"][topic][i][0], "value": output["topics"][topic][i][1], category: topic })
+            }
+        }
+
+        var chart = anychart.tagCloud(data);
+        chart.angles([0])
+        chart.colorRange(true);
+        chart.colorRange().length('80%');
+        chart.container("container");
+        chart.draw();
+    }
+
+
+    //function to function evaluation plot
+    function draw2() {
+
+        if (globalInfo != false) {
+
+            cont = document.getElementById("generic");
+
+            second_axe = [0]
+
+            for (i = 1; i < globalInfo["f_val"].length; i++) {
+                second_axe.push(i);
+            }
+
+            var layout = {
+                margin: {
+                    l: 50,
+                    r: 50,
+                    b: 40,
+                    t: 40,
+                    pad: 4,
+                    grid: { rows: 1, columns: 2, pattern: 'independent' }
+                },
+                paper_bgcolor: 'rgba(256,256,256,1)',
+                xaxis: {
+                    domain: [0, 0.7],
+                    title: 'Iteration'
+                },
+                yaxis: {
+                    title: globalInfo["optimized_metric"],
+                    automargin: true
+                },
+                yaxis2: {
+                    anchor: 'x2',
+                    title: globalInfo["optimized_metric"],
+                    automargin: true
+                },
+                xaxis2: {
+                    domain: [0.8, 1]
+                },
+                showlegend: false
+            };
+
+            var trace1 = {
+                x: second_axe,
+                y: globalInfo["f_val"],
+                type: 'scatter'
+            }
+
+            var trace2 = {
+                y: globalInfo["f_val"],
+                type: 'box',
+                marker: {
+                    color: 'rgb(10,140,208)'
+                },
+                name: '',
+                xaxis: 'x2',
+                yaxis: 'y2'
+            }
+            var data = [trace1, trace2]
+
+            Plotly.newPlot("generic", data, layout);
+
+        }
+    }
+    draw2()
+
+    //function to update the Extra Metric Plot
+    function draw3(metric_name) {
+        if (globalInfo != false) {
+
+            second_axe = [0]
+
+            for (i = 1; i < globalInfo["f_val"].length; i++) {
+                second_axe.push(i);
+            }
+
+            var layout = {
+                margin: {
+                    l: 50,
+                    r: 50,
+                    b: 40,
+                    t: 40,
+                    pad: 4,
+                    grid: { rows: 1, columns: 2, pattern: 'independent' }
+                },
+                paper_bgcolor: 'rgba(256,256,256,1)',
+                xaxis: {
+                    domain: [0, 0.7],
+                    title: 'Iteration'
+                },
+                yaxis: {
+                    title: metric_name.substring(2, 999),
+                    automargin: true
+                },
+                yaxis2: {
+                    anchor: 'x2',
+                    title: metric_name.substring(2, 999),
+                    automargin: true
+                },
+                xaxis2: {
+                    domain: [0.8, 1]
+                },
+                showlegend: false
+            };
+
+            dict_metrics_values = globalInfo["extra_metric_vals"]
+            values = dict_metrics_values[metric_name]
+
+            var trace1 = {
+                x: second_axe,
+                y: values,
+                type: 'scatter'
+            }
+
+            var trace2 = {
+                y: values,
+                type: 'box',
+                marker: {
+                    color: 'rgb(10,140,208)'
+                },
+                name: '',
+                xaxis: 'x2',
+                yaxis: 'y2'
+            }
+            var data = [trace1, trace2]
+
+            Plotly.newPlot("generic_extra", data, layout);
+
+        }
+    }
+
+    wordselector = document.getElementById("wordSelector")
+
+    if (vocabulary != false) {
+
+        var sortedbyValueJSONArray = sortByValue(vocabulary);
+
+        for (var i = 0; i < sortedbyValueJSONArray.length; i++) {
+            option = document.createElement("option")
+            option.text = sortedbyValueJSONArray[i][0];
+            option.value = sortedbyValueJSONArray[i][1];
+            wordselector.appendChild(option)
+        }
+
+    }
+
+    //function to update the worldGraph Barplot
+    function updateWordGraph() {
+        if (vocabulary != false && output != false) {
+            wordselector = document.getElementById("wordSelector")
+            word = vocabulary[wordselector.text]
+
+            datax = []
+            datay = []
+
+            for (var i = 0; i < output["topic-word-matrix"].length; i++) {
+                datax.push(i)
+                datay.push(output["topic-word-matrix"][i][wordselector.value])
+            }
+
+            var bardata = [
+                {
+                    x: datax,
+                    y: datay,
+                    type: 'bar'
+                }
+            ];
+
+            var layout = {
+                margin: {
+                    l: 40,
+                    r: 40,
+                    b: 40,
+                    t: 40,
+                    pad: 2
+                },
+                xaxis: {
+                    title: 'Topic',
+                },
+                yaxis: {
+                    title: 'Weight',
+                    automargin: true
+                },
+                paper_bgcolor: 'rgba(256,256,256,1)'
+            };
+
+            document.getElementById("wordTopic").innerHTML = ""
+
+            Plotly.newPlot('wordTopic', bardata, layout);
+        }
+    }
+    if (vocabulary != false)
+        updateDropdownIndex("wordSelector", Object.keys(vocabulary)[0])
+    updateWordGraph()
+
+    function specifyModelRuns() {
+        ele = document.getElementById('model_runs')
+        ele.innerHTML = ''
+        ele2 = document.getElementById('model_runs2')
+        ele2.innerHTML = ''
+        node = document.createElement("p")
+        node.classList.add("card")
+        node.classList.add("card-body")
+        var text = "Every function evaluation is the median of the metric function over " +
+            globalInfo["number_of_model_runs"] + " different model runs";
+        node.innerHTML = text;
+        node2 = document.createElement("p")
+        node2.innerHTML = text;
+        ele.appendChild(node)
+        ele2.appendChild(node2)
+    }
+    specifyModelRuns()
+
+
+
+
+
+
+</script>
+
+</html>

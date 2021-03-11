@@ -30,7 +30,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="OCTIS: a library for Optimizing and Comparing Topic Models.",
+    description="octis_2: a library for Optimizing and Comparing Topic Models.",
     entry_points={
         'console_scripts': [
             'octis=octis.cli:main',
