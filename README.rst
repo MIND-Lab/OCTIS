@@ -11,7 +11,7 @@ OCTIS
         :target: https://octis.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png
+.. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png?raw=true
   :width: 100
   :alt: Logo
 
