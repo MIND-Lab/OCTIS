@@ -21,9 +21,9 @@ Our Colab Tutorials:
 +--------------------------------------------------------------------------------+------------------+
 | Name                                                                           | Link             |
 +================================================================================+==================+
-| How to build a topic model and evaluate the results.                           | |colab1|      |
+| How to build a topic model and evaluate the results.                           | |colab1|         |
 +--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|       |
+| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|         |
 +--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with LDA and M10)                            | |colab3|       |
+| Optimizing a topic model (Example with LDA and M10)                            | |colab3|         |
 +--------------------------------------------------------------------------------+------------------+
