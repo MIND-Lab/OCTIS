@@ -166,7 +166,7 @@ The result will provide best-seen value of the metric with the corresponding hyp
 You can find more here: `optimizer README`_
 
 Examples and Tutorials
---------------------
+-----------------------
 
 Our Colab Tutorials:
 
