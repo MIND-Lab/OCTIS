@@ -1,6 +1,19 @@
 =======
 OCTIS
 =======
+
+.. |colab1| image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/models/LDA_training_only.ipynb
+    :alt: Open In Colab
+
+.. |colab2| image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_ETM.ipynb
+    :alt: Open In Colab
+
+.. |colab3| image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_LDA.ipynb
+    :alt: Open In Colab
+
 .. image:: https://img.shields.io/pypi/v/octis.svg
         :target: https://pypi.python.org/pypi/octis
 
@@ -10,6 +23,8 @@ OCTIS
 .. image:: https://readthedocs.org/projects/octis/badge/?version=latest
         :target: https://octis.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
+
+|colab2| 
 
 .. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png?raw=true
   :width: 100
@@ -147,6 +162,21 @@ To optimize a model you need to select a dataset, a metric and the search space 
 The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you have to set 'plot' attribute of Bayesian_optimization to True.
 
 You can find more here: `optimizer README`_
+
+Examples and Tutorials
+--------------------
+
+Our Colab Tutorials:
+
++--------------------------------------------------------------------------------+------------------+
+| Name                                                                           | Link             |
++================================================================================+==================+
+| How to build a topic model and evaluate the results.                           | |colab1|         |
++--------------------------------------------------------------------------------+------------------+
+| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|         |
++--------------------------------------------------------------------------------+------------------+
+| Optimizing a topic model (Example with LDA and M10)                            | |colab3|         |
++--------------------------------------------------------------------------------+------------------+
 
 Available Models
 ----------------
