@@ -1,3 +1,7 @@
+Examples and Tutorials
+--------------------
+
+Our Colab Tutorials:
 
 
 .. |colab1| image:: https://colab.research.google.com/assets/colab-badge.svg
@@ -23,4 +27,3 @@
 +--------------------------------------------------------------------------------+------------------+
 | Optimizing a topic model (Example with LDA and M10)                            | |colab3|       |
 +--------------------------------------------------------------------------------+------------------+
-  |
