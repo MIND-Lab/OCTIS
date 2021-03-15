@@ -24,7 +24,9 @@ OCTIS
         :target: https://octis.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-|colab2| 
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+        :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_ETM.ipynb
+        :alt: Open In Colab
 
 .. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png?raw=true
   :width: 100
