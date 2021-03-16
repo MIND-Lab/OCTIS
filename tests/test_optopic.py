@@ -13,6 +13,7 @@ from octis.models.ETM import ETM
 from octis.models.CTM import CTM
 from octis.models.NMF import NMF
 from octis.models.NMF_scikit import NMF_scikit
+from octis.models.ProdLDA import ProdLDA
 
 import os
 
@@ -179,6 +180,33 @@ def test_model_output_ctm_combined(data_dir):
     dataset.load(data_dir + '/M10')
     num_topics = 3
     model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined')
+    output = model.train_model(dataset)
+    assert 'topics' in output.keys()
+    assert 'topic-word-matrix' in output.keys()
+    assert 'test-topic-document-matrix' in output.keys()
+
+    # check topics format
+    assert type(output['topics']) == list
+    assert len(output['topics']) == num_topics
+
+    # check topic-word-matrix format
+    assert type(output['topic-word-matrix']) == np.ndarray
+    assert output['topic-word-matrix'].shape == (num_topics, len(dataset.get_vocabulary()))
+
+    # check topic-document-matrix format
+    assert type(output['topic-document-matrix']) == np.ndarray
+    assert output['topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[0]))
+
+    # check test-topic-document-matrix format
+    assert type(output['test-topic-document-matrix']) == np.ndarray
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+
+
+def test_model_output_prodlda(data_dir):
+    dataset = Dataset()
+    dataset.load(data_dir + '/M10')
+    num_topics = 3
+    model = ProdLDA(num_topics=num_topics, num_epochs=5)
     output = model.train_model(dataset)
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
