@@ -32,7 +32,7 @@ class AVITM(Abstract_Model):
 
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
-    def train_model(self, dataset, hyperparameters, top_words=10):
+    def train_model(self, dataset, hyperparameters=None, top_words=10):
         """
             Args
                 dataset: list of sentences for training the model
@@ -52,7 +52,8 @@ class AVITM(Abstract_Model):
                 num_epochs : int, number of epochs to train for, (default 100)
                 reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
             """
-
+        if hyperparameters is None:
+            hyperparameters = {}
         self.set_params(hyperparameters)
 
         if self.use_partitions:

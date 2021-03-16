@@ -11,5 +11,5 @@ class ProdLDA(AVITM):
                          prior_mean=prior_mean, prior_variance=prior_variance, num_layers=num_layers,
                          num_neurons=num_neurons)
 
-    def train_model(self, dataset, hyperparameters, top_words=10):
+    def train_model(self, dataset, hyperparameters=None, top_words=10):
         return super().train_model(dataset, hyperparameters, top_words)
