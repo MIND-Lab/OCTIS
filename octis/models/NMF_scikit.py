@@ -4,16 +4,10 @@ from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
 import octis.configuration.defaults as defaults
 
+
 class NMF_scikit(Abstract_Model):
 
-    id2word = None
-    id_corpus = None
-    use_partitions = True
-    update_with_test = False
-    hyperparameters = {"num_topics": 100,
-                       "init": "random", "alpha": 0, "l1_ratio": 0}
-
-    def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0):
+    def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0, use_partitions=True):
         """
         Initialize NMF model
 
@@ -49,10 +43,16 @@ class NMF_scikit(Abstract_Model):
         elementwise L1 penalty. For 0 < l1_ratio < 1, the penalty
         is a combination of L1 and L2.
         """
+        super().__init__()
         self.hyperparameters["num_topics"] = num_topics
         self.hyperparameters["init"] = init
         self.hyperparameters["alpha"] = alpha
         self.hyperparameters["l1_ratio"] = l1_ratio
+        self.use_partitions = use_partitions
+
+        self.id2word = None
+        self.id_corpus = None
+        self.update_with_test = False
 
     def hyperparameters_info(self):
         """
@@ -77,7 +77,7 @@ class NMF_scikit(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, topics=10):
+    def train_model(self, dataset, hyperparameters=None, topics=10):
         """
         Train the model and return output
 
@@ -96,33 +96,39 @@ class NMF_scikit(Abstract_Model):
                  'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
-        if self.id2word == None or self.id_corpus == None:
-            vectorizer = TfidfVectorizer(min_df=0.0)
-            corpus = dataset.get_corpus()
-            real_corpus = []
-            for document in corpus:
-                real_corpus.append(" ".join(document))
+        if hyperparameters is None:
+            hyperparameters = {}
+
+        if self.id2word is None or self.id_corpus is None:
+            vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b\w+\b",
+                                         vocabulary=list(dataset.get_vocabulary().keys()))
+
+            if self.use_partitions:
+                partition = dataset.get_partitioned_corpus(use_validation=False)
+                corpus = partition[0]
+            else:
+                corpus = dataset.get_corpus()
+
+            real_corpus = [" ".join(document) for document in corpus]
             X = vectorizer.fit_transform(real_corpus)
 
-            lista = vectorizer.get_feature_names()
-            self.id2word = {i: lista[i] for i in range(0, len(lista))}
+            self.id2word = {i: k for i, k in enumerate(vectorizer.get_feature_names())}
             if self.use_partitions:
-                ltd = dataset.get_metadata()[
-                    "last-training-doc"]
-                self.id_corpus = X[0:ltd]
-                self.new_corpus = X[ltd:]
+                test_corpus = []
+                for document in partition[1]:
+                    test_corpus.append(" ".join(document))
+                Y = vectorizer.transform(test_corpus)
+                self.id_corpus = X
+                self.new_corpus = Y
             else:
                 self.id_corpus = X
 
-        hyperparameters["corpus"] = self.id_corpus
-        hyperparameters["id2word"] = self.id2word
+        #hyperparameters["corpus"] = self.id_corpus
+        #hyperparameters["id2word"] = self.id2word
         self.hyperparameters.update(hyperparameters)
 
-        model = NMF(
-            n_components=self.hyperparameters["num_topics"],
-            init=self.hyperparameters["init"],
-            alpha=self.hyperparameters["alpha"],
-            l1_ratio=self.hyperparameters["l1_ratio"])
+        model = NMF(n_components=self.hyperparameters["num_topics"], init=self.hyperparameters["init"],
+                    alpha=self.hyperparameters["alpha"], l1_ratio=self.hyperparameters["l1_ratio"])
 
         W = model.fit_transform(self.id_corpus)
         #W = W / W.sum(axis=1, keepdims=True)
@@ -150,8 +156,8 @@ class NMF_scikit(Abstract_Model):
                 result["test-topic-document-matrix"] = H
 
             else:
-                result["test-document-topic-matrix"] = model.transform(
-                    self.new_corpus)
+                result["test-topic-document-matrix"] = model.transform(
+                    self.new_corpus).T
 
         return result
 
