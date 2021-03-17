@@ -49,8 +49,8 @@ You can find the requirements in the `requirements.txt` file.
 Features
 --------
 
-* We provide a set of state-of-the-art preprocessed text datasets (or you can preprocess your own dataset)
-* We provide a set of well-known topic models (both classical and neurals), or you can integrate your own model
+* We provide a set of state-of-the-art preprocessed text datasets (otherwise you can preprocess your own dataset)
+* We provide a set of well-known topic models (both classical and neurals)
 * You can evaluate your model using several state-of-the-art evaluation metrics
 * You can optimize the hyperparameters of the models with respect to a given metric using Bayesian Optimization
 * We provide a simple web dashboard for starting and controlling the optimization experiments
@@ -59,7 +59,7 @@ Features
 Get a preprocessed dataset
 --------------------------
 
-To acquire a dataset you can use one of the built-in sources.
+To get a dataset you can use one of the built-in sources.
 
 .. code-block:: python
 
@@ -75,13 +75,12 @@ Or use your own.
     dataset = source.retrieve("path\to\dataset")
 
 
-A custom dataset must have a document for each line of the file.
-Datasets can be partitioned in train and test sets.
+A custom dataset is represented file a file, where each line represents a document. Additionally, you can provide a label file, where each line represents a label (corresponding to the index of the document). Datasets can be partitioned in train and test sets.
 
 Preprocess
 ----------
 
-To preprocess a dataset Initialize a Pipeline_handler and use the preprocess method.
+To preprocess a dataset, initialize a Pipeline_handler and use the preprocess method.
 
 .. code-block:: python
 
@@ -113,7 +112,7 @@ To build a model, load a preprocessed dataset, customize the model hyperparamete
     model_output = model.train_model(dataset) # Train the model
 
 
-If the dataset is partitioned, you can choose to:
+If the dataset is partitioned, you can:
 
 * Train the model on the training set and test it on the test documents
 * Train the model on the training set and update it with the test set
@@ -144,9 +143,7 @@ To optimize a model you need to select a dataset, a metric and the search space 
 
     from octis.optimization.optimizer import Optimizer
 
-    search_space = {
-    "alpha": Real(low=0.001, high=5.0),
-    "eta": Real(low=0.001, high=5.0)
+    search_space = {"alpha": Real(low=0.001, high=5.0), "eta": Real(low=0.001, high=5.0)
     }
 
     number_of_call=5
@@ -221,8 +218,7 @@ The first step in developing a custom model is to define the dictionary of defau
 
 .. code-block:: python
 
-    hyperparameters = {'corpus': None, 'num_topics': 100,
-        'id2word': None, 'alpha': 'symmetric',
+    hyperparameters = {'corpus': None, 'num_topics': 100, 'id2word': None, 'alpha': 'symmetric',
         'eta': None, # ...
         'callbacks': None}
 
