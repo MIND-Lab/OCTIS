@@ -74,8 +74,8 @@ class F1Score(Abstract_Metric):
         else:
             X_train = self.train_document_representations
             X_test = self.test_document_representations
-        train_labels = [l[0] for l in self.labels[:len(X_train)]]
-        test_labels = [l[0] for l in self.labels[-len(X_test):]]
+        train_labels = [l for l in self.labels[:len(X_train)]]
+        test_labels = [l for l in self.labels[-len(X_test):]]
 
         id2label = {}
         label2id = {}
