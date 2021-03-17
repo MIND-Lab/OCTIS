@@ -22,15 +22,6 @@ class ContextualInferenceNetwork(nn.Module):
             dropout : float, default 0.2, default 0.2
         """
         super(ContextualInferenceNetwork, self).__init__()
-        assert isinstance(input_size, int), "input_size must by type int."
-        assert isinstance(output_size, int), "output_size must be type int."
-        assert isinstance(hidden_sizes, tuple), \
-            "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
-                              'rrelu', 'elu', 'selu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
-            " 'rrelu', 'elu', 'selu' or 'tanh'."
-        assert dropout >= 0, "dropout must be >= 0."
 
         self.input_size = input_size
         self.output_size = output_size
@@ -103,16 +94,6 @@ class CombinedInferenceNetwork(nn.Module):
             dropout : float, default 0.2, default 0.2
         """
         super(CombinedInferenceNetwork, self).__init__()
-        assert isinstance(input_size, int), "input_size must by type int."
-        assert isinstance(output_size, int), "output_size must be type int."
-        assert isinstance(hidden_sizes, tuple), \
-            "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
-                              'rrelu', 'elu', 'selu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
-            " 'rrelu', 'elu', 'selu' or 'tanh'."
-
-        assert dropout >= 0, "dropout must be >= 0."
 
         self.input_size = input_size
         self.output_size = output_size
@@ -129,8 +110,6 @@ class CombinedInferenceNetwork(nn.Module):
             self.activation = nn.Tanh()
         elif activation == 'leakyrelu':
             self.activation = nn.LeakyReLU()
-        elif activation == 'swish':
-            self.activation = Swish()
         elif activation == 'rrelu':
             self.activation = nn.RReLU()
         elif activation == 'elu':
