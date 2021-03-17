@@ -149,8 +149,8 @@ class WordEmbeddingsInvertedRBO(Abstract_Metric):
             for list1, list2 in itertools.combinations(topics, 2):
                 word2index = self.get_word2index(list1, list2)
                 index2word = {v: k for k, v in word2index.items()}
-                indexed_list1 = [word2index[word] for word in list1]
-                indexed_list2 = [word2index[word] for word in list2]
+                indexed_list1 = [word2index[word] for word in list1 if word in self.word_embedding_model.vocab]
+                indexed_list2 = [word2index[word] for word in list2 if word in self.word_embedding_model.vocab]
                 rbo_val = word_embeddings_rbo(indexed_list1[:self.topk],
                                               indexed_list2[:self.topk], p=self.weight,
                                               index2word=index2word,
@@ -193,8 +193,8 @@ class WordEmbeddingsInvertedRBOCentroid(Abstract_Metric):
             for list1, list2 in itertools.combinations(topics, 2):
                 word2index = self.get_word2index(list1, list2)
                 index2word = {v: k for k, v in word2index.items()}
-                indexed_list1 = [word2index[word] for word in list1]
-                indexed_list2 = [word2index[word] for word in list2]
+                indexed_list1 = [word2index[word] for word in list1 if word in self.word_embedding_model.vocab]
+                indexed_list2 = [word2index[word] for word in list2 if word in self.word_embedding_model.vocab]
                 rbo_val = weirbo_centroid(indexed_list1[:self.topk],
                                           indexed_list2[:self.topk], p=self.weight,
                                           index2word=index2word,
