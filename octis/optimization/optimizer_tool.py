@@ -287,11 +287,11 @@ def save_search_space(search_space):
     ss = dict()
     for key in list(search_space.keys()):
         if type(search_space[key]) == Real:
-            ss[key] = ['Real', search_space[key].bounds]
+            ss[key] = ['Real', search_space[key].bounds,search_space[key].prior]
         elif type(search_space[key]) == Integer:
-            ss[key] = ['Integer', search_space[key].bounds]
+            ss[key] = ['Integer', search_space[key].bounds,search_space[key].prior]
         elif type(search_space[key]) == Categorical:
-            ss[key] = ['Categorical', search_space[key].categories]
+            ss[key] = ['Categorical', search_space[key].categories,search_space[key].prior]
 
     return ss
 
@@ -307,9 +307,9 @@ def load_search_space(search_space):
     ss = dict()
     for key in list(search_space.keys()):
         if search_space[key][0] == 'Real':
-            ss[key] = Real(low=search_space[key][1][0], high=search_space[key][1][1])
+            ss[key] = Real(low=search_space[key][1][0], high=search_space[key][1][1],prior=search_space[key][2])
         elif search_space[key][0] == 'Integer':
-            ss[key] = Integer(low=search_space[key][1][0], high=search_space[key][1][1])
+            ss[key] = Integer(low=search_space[key][1][0], high=search_space[key][1][1],prior=search_space[key][2])
         elif search_space[key][0] == 'Categorical':
             ss[key] = Categorical(categories=search_space[key][1])
 
