@@ -5,6 +5,7 @@
 import pytest
 
 from click.testing import CliRunner
+from octis.evaluation_metrics.classification_metrics import F1Score
 
 from octis.evaluation_metrics.coherence_metrics import *
 from octis.dataset.dataset import Dataset
@@ -26,6 +27,17 @@ def root_dir():
 @pytest.fixture
 def data_dir(root_dir):
     return root_dir + "/../octis/preprocessed_datasets/"
+
+
+def test_f1score(data_dir):
+    dataset = Dataset()
+    dataset.load(data_dir + '/M10')
+
+    model = LDA(num_topics=5, iterations=5)
+    output = model.train_model(dataset)
+    metric = F1Score({'dataset': dataset})
+    score = metric.score(output)
+    assert type(score) == np.float64
 
 
 def test_coherence_measures(data_dir):
