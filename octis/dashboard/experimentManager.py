@@ -108,7 +108,7 @@ def startExperiment(parameters):
         dataset = dataset_class()
         dataset_path = str(os.path.join(
             path, "preprocessed_datasets", parameters["dataset"]))
-        dataset.load(dataset_path)
+        dataset.load_custom_dataset(dataset_path)
 
         model_class = importModel(parameters["model"]["name"])
         model = model_class()
@@ -135,7 +135,7 @@ def startExperiment(parameters):
                 metric_parameters[key] = dataset.get_corpus()
             elif os.path.isdir(str(metric_parameters[key])):
                 metricDataset = dataset_class()
-                metricDataset.load(metric_parameters[key])
+                metricDataset.load_custom_dataset(metric_parameters[key])
                 metric_parameters[key] = metricDataset.get_corpus()
 
         metric_class = importMetric(parameters["optimize_metrics"][0]["name"])
@@ -263,11 +263,11 @@ def retrieveIterationBoResults(path, iteration):
 def singleInfo(path):
     """
     Compute average, median, best and worst result of the object function evaluations
-    
+
     Parameters
     ----------
     path :  path of the json file of a single experiment
-    
+
     Returns
     -------
     average, median, best and worst result of the object function evaluations

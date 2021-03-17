@@ -29,7 +29,7 @@ def data_dir(root_dir):
 def test_simple_optimization(data_dir):
     # %% Load dataset
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset(data_dir + '/M10')
 
     # %% Load model
     model = LDA()
@@ -76,7 +76,7 @@ def test_simple_optimization(data_dir):
 # def test_resume_optimization(save_path):
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -114,7 +114,7 @@ def test_simple_optimization(data_dir):
 # def test_optimization_graphics(save_path):
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -150,7 +150,7 @@ def test_simple_optimization(data_dir):
 #     acq_names = ['PI', 'EI', 'LCB']
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -187,7 +187,7 @@ def test_simple_optimization(data_dir):
 #     surrogate_models = ['RF', 'RS', 'GP', 'ET']
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -223,7 +223,7 @@ def test_simple_optimization(data_dir):
 # def test_early_stop(save_path):
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -258,7 +258,7 @@ def test_simple_optimization(data_dir):
 #     initial_point_generators = ['lhs', 'sobol', 'halton', 'hammersly', 'grid', 'random']
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -296,7 +296,7 @@ def test_simple_optimization(data_dir):
 # def test_extra_metrics(save_path):
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -340,7 +340,7 @@ def test_simple_optimization(data_dir):
 # def test_extra_metrics_resume(save_path):
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
@@ -385,7 +385,7 @@ def test_simple_optimization(data_dir):
 # def test_extra_metrics_initial_input_points(save_path):
 #     # %% Load dataset
 #     dataset = Dataset()
-#     dataset.load(data_dir + '/M10')
+#     dataset.load_custom_dataset(data_dir + '/M10')
 #
 #     # %% Load model
 #     model = LDA()
