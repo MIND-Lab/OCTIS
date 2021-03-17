@@ -28,7 +28,7 @@ Install
 You can install OCTIS with the following command:
 ::
 
-    pip install -e .
+    pip install octis
 
 You can find the requirements in the `requirements.txt` file.
 

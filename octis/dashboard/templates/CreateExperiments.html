@@ -12,10 +12,16 @@
     <style>
         .invisibleRadioBtn {
             width: 0px;
+            height: 0px;
+            background: transparent;
+            border: none;
         }
 
         .invisibleRadioBtn:focus {
             width: 1px;
+            height: 1px;
+            background: transparent;
+            border: none;
         }
     </style>
 </head>
@@ -126,8 +132,10 @@
                                 <h3><span class="badge badge-primary">Quick start:</span></h3>
                                 <ul>
                                     <li> Select the folder in which you will save your experiments.
-                                        For each experiment you need to specify the <strong>name of the experiment</strong>
-                                        and the name for the set of experiments (<strong>batch name</strong>). The "batch" allows
+                                        For each experiment you need to specify the <strong>name of the
+                                            experiment</strong>
+                                        and the name for the set of experiments (<strong>batch name</strong>). The
+                                        "batch" allows
                                         you to organize experiments in the same cluster. This will be useful later for
                                         visualization purposes.
                                     </li>
@@ -136,7 +144,8 @@
                                         the datasets).
                                     </li>
                                     <li>
-                                        Select a <strong>Model</strong> among our predefined topic models. You can choose
+                                        Select a <strong>Model</strong> among our predefined topic models. You can
+                                        choose
                                         among a selection of classical topic models and neural topic models.
                                     </li>
                                     <li>
@@ -169,8 +178,10 @@
                             <form id="experimentForm" data-focus="false" method="post"
                                 action="{{ url_for('startExperiment') }}">
                                 <div>
-                                    <label>Insert the path where you want to save the experiments</label>
-                                    <input type="text" class="coolInput" id="path" name="path" required>
+                                    <label>Select the path where you want to save the experiments</label>
+                                    <div class="coolButton" id="selpath">Select Path</div>
+                                    <input type="text" class="invisibleRadioBtn" id="path" name="path" required>
+                                    <p id="showPath">No path choosen</p>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
@@ -373,6 +384,27 @@
         });
 
         $(document).ready(function () {
+
+
+            document.getElementById("selpath").addEventListener("click", selectPath)
+
+            function selectPath() {
+                $.ajax(
+                    {
+                        type: 'POST',
+                        url: "/selectPath",
+                        success: function (data) {
+
+                            console.log(data)
+
+                            document.getElementById("path").value = data["path"]
+                            document.getElementById("showPath").innerHTML = data["path"]
+
+                        }
+                    });
+            }
+
+
             //Get dataset names
             dataset = getParams({{ datasets| tojson}});
         imgPath = "{{ url_for('static', filename='images/dataset.png') }}";
@@ -823,7 +855,7 @@
                                                 newHTML += "</p>"
 
                                                 hyper_label = document.createElement("div")
-                                                hyper_label.innerHTML= newHTML
+                                                hyper_label.innerHTML = newHTML
                                                 fat.appendChild(hyper_label)
 
 
@@ -905,7 +937,7 @@
                                                 newHTML += "</p>"
 
                                                 hyper_label = document.createElement("div")
-                                                hyper_label.innerHTML= newHTML
+                                                hyper_label.innerHTML = newHTML
                                                 fat.appendChild(hyper_label)
                                                 ////
                                                 row = document.createElement("div")

@@ -48,6 +48,9 @@ def importClass(class_name, module_name, module_path):
 
 
 def importModel(model_name):
+    """
+    Import a model runtime based on its name
+    """
     module_path = os.path.join(path, "models")
     module_path = os.path.join(module_path, model_name + ".py")
     model = importClass(model_name, model_name, module_path)
@@ -55,6 +58,9 @@ def importModel(model_name):
 
 
 def importMetric(metric_name):
+    """
+    Import a metric runtime based on its name
+    """
     module_path = os.path.join(path, "evaluation_metrics")
     module_name = defaults.metric_parameters[metric_name]["module"]
     module_path = os.path.join(module_path, module_name + ".py")
@@ -63,6 +69,9 @@ def importMetric(metric_name):
 
 
 def importDataset():
+    """
+    Import the class dataset at runtime
+    """
     module_path = os.path.join(path, "dataset")
     module_path = os.path.join(module_path, "dataset.py")
     dataset_class = importClass("Dataset", "dataset", module_path)
@@ -70,6 +79,9 @@ def importDataset():
 
 
 def importOptimizer():
+    """
+    Import the optimizer at runtime
+    """
     module_path = os.path.join(path, "optimization")
     module_path = os.path.join(module_path, "optimizer.py")
     optimizer_class = importClass("Optimizer", "optimizer", module_path)
@@ -165,9 +177,11 @@ def startExperiment(parameters):
 def retrieveBoResults(result_path):
     """
     Function to load the results_old of BO
+
     Parameters
     ----------
     result_path : path where the results_old are saved (json file).
+
     Returns
     -------
     dict_return :dictionary
@@ -188,10 +202,12 @@ def retrieveBoResults(result_path):
 def retrieveIterationBoResults(path, iteration):
     """
     Function to load the results_old of BO until iteration
+
     Parameters
     ----------
     path : path where the results_old are saved (json file).
     iteration : considered iteration.
+
     Returns
     -------
     dict_return :dictionary
@@ -247,6 +263,14 @@ def retrieveIterationBoResults(path, iteration):
 def singleInfo(path):
     """
     Compute average, median, best and worst result of the object function evaluations
+    
+    Parameters
+    ----------
+    path :  path of the json file of a single experiment
+    
+    Returns
+    -------
+    average, median, best and worst result of the object function evaluations
     """
     if os.path.isfile(path):
         with open(path, 'rb') as file:

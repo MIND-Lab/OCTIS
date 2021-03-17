@@ -30,7 +30,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Python Boilerplate contains all the boilerplate you need to create a Python package.",
+    description="OCTIS: a library for Optimizing and Comparing Topic Models.",
     entry_points={
         'console_scripts': [
             'octis=octis.cli:main',
@@ -50,4 +50,3 @@ setup(
     version='0.1.0',
     zip_safe=False,
 )
-#python3 -m spacy download en_core_web_sm

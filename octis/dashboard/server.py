@@ -4,32 +4,127 @@ import octis.dashboard.frameworkScanner as fs
 import octis.configuration.defaults as defaults
 from multiprocessing import Process, Pool
 import json
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
+import tkinter as tk
+import pandas as pd
+import numpy as np
+from tkinter import filedialog
 import os
+
 
 app = Flask(__name__)
 queueManager = ""
 
 
-@app.route("/serverClosed")
+@app.route('/downloadSingleExp',
+           methods=['GET'])
+def downloadSingleExp():
+    experimentId = request.args.get("experimentId")
+    batchId = request.args.get("batchId")
+
+    paused = False
+    if (experimentId + batchId) == queueManager.running:
+        paused = True
+        queueManager.pause()
+
+    expPath = ""
+    createdPath = os.path.join(
+        queueManager.getExperiment(batchId, experimentId)["path"],
+        experimentId,
+        experimentId)
+    jsonReport = {}
+    if os.path.isfile(createdPath+".json"):
+        expPath = createdPath
+
+    with open(expPath+".json") as p:
+        jsonReport = json.load(p)
+
+    info = queueManager.getExperimentInfo(batchId, experimentId)
+
+    n_row = info["current_iteration"]
+    n_extra_metrics = len(jsonReport["extra_metric_names"])
+
+    df = pd.DataFrame()
+    df['dataset'] = [jsonReport["dataset_name"]] * n_row
+    df['surrogate model'] = [jsonReport["surrogate_model"]] * n_row
+    df['acquisition function'] = [jsonReport["acq_func"]] * n_row
+    df['num_iteration'] = [i for i in range(n_row)]
+    df['time'] = [jsonReport['time_eval'][i] for i in range(n_row)]
+    df['Median(model_runs)'] = [np.median(
+        jsonReport['dict_model_runs'][jsonReport['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
+    df['Mean(model_runs)'] = [np.mean(
+        jsonReport['dict_model_runs'][jsonReport['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
+    df['Standard_Deviation(model_runs)'] = [np.std(
+        jsonReport['dict_model_runs'][jsonReport['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
+
+    for hyperparameter in list(jsonReport["x_iters"]):
+        df[hyperparameter] = jsonReport["x_iters"][hyperparameter][0:n_row]
+
+    for metric, i in zip(jsonReport["extra_metric_names"], range(n_extra_metrics)):
+        df[metric + '(median, not optimized)'] = [np.median(
+            jsonReport["dict_model_runs"][metric]['iteration_' + str(i)]) for i in range(n_row)]
+
+        df[metric + '(Mean, not optimized)'] = [np.mean(
+            jsonReport["dict_model_runs"][metric]['iteration_' + str(i)]) for i in range(n_row)]
+
+        df[metric + '(Standard_Deviation, not optimized)'] = [np.std(
+            jsonReport["dict_model_runs"][metric]['iteration_' + str(i)]) for i in range(n_row)]
+
+    name_file = expPath + ".csv"
+
+    df.to_csv(name_file, index=False, na_rep='Unkown')
+
+    if paused:
+        queueManager.start()
+
+    return send_file(expPath+".csv",
+                     mimetype="text/csv",
+                     attachment_filename="report.csv",
+                     as_attachment=True)
+
+
+@ app.route("/selectPath", methods=['POST'])
+def selectPath():
+    """
+    Select a path from the server and return it to the page
+    """
+    window = tk.Tk()
+    path = filedialog.askdirectory()
+    window.destroy()
+    return {"path": path}
+
+
+@ app.route("/serverClosed")
 def serverClosed():
+    """
+    Reroute to the serverClosed page before server shutdown
+    """
     return render_template("serverClosed.html")
 
 
-@app.route("/shutdown")
+@ app.route("/shutdown")
 def shutdown():
+    """
+    Save the state of the QueueManager and perform server shutdown
+    """
     queueManager.stop()
     shutdown_server()
     return {"DONE": "YES"}
 
 
-@app.route('/')
+@ app.route('/')
 def home():
+    """
+    Return the OCTIS landing page
+    """
     return render_template("index.html")
 
 
-@app.route('/startExperiment', methods=['POST'])
+@ app.route('/startExperiment', methods=['POST'])
 def startExperiment():
+    """
+    Add a new experiment to the queue
+    """
     data = request.form.to_dict(flat=False)
     batch = data["batchId"][0]
     experimentId = data["expId"][0]
@@ -106,8 +201,11 @@ def startExperiment():
     return CreateExperiments()
 
 
-@app.route("/getBatchExperiments", methods=['POST'])
+@ app.route("/getBatchExperiments", methods=['POST'])
 def getBatchExperiments():
+    """
+    return the information related to the experiments of a batch
+    """
     data = request.json['data']
     experiments = []
     for key in data:
@@ -121,8 +219,11 @@ def getBatchExperiments():
     return json.dumps(experiments)
 
 
-@app.route('/CreateExperiments')
+@ app.route('/CreateExperiments')
 def CreateExperiments():
+    """
+    Serve the experiment creation page
+    """
     models = defaults.model_hyperparameters
     models_descriptions = defaults.model_descriptions
     datasets = fs.scanDatasets()
@@ -132,15 +233,21 @@ def CreateExperiments():
                            optimization=optimization, models_descriptions=models_descriptions)
 
 
-@app.route('/VisualizeExperiments')
+@ app.route('/VisualizeExperiments')
 def VisualizeExperiments():
+    """
+    Serve the experiments visualization page
+    """
     batch_names = queueManager.getBatchNames()
     return render_template("VisualizeExperiments.html",
                            batchNames=batch_names)
 
 
-@app.route('/ManageExperiments')
+@ app.route('/ManageExperiments')
 def ManageExperiments():
+    """
+    Serve the ManageExperiments page
+    """
     exp_list = queueManager.getToRun()
     for exp in exp_list:
         exp_info = queueManager.getExperimentInfo(
@@ -155,22 +262,31 @@ def ManageExperiments():
                            running=running)
 
 
-@app.route("/pauseExp", methods=["POST"])
+@ app.route("/pauseExp", methods=["POST"])
 def pauseExp():
+    """
+    Pause the current experiment
+    """
     queueManager.pause()
     return {"DONE": "YES"}
 
 
-@app.route("/startExp", methods=["POST"])
+@ app.route("/startExp", methods=["POST"])
 def startExp():
+    """
+    Start the next experiment in the queue
+    """
     print(queueManager.getRunning())
     if queueManager.getRunning() == None:
         queueManager.next()
     return {"DONE": "YES"}
 
 
-@app.route("/deleteExp", methods=["POST"])
+@ app.route("/deleteExp", methods=["POST"])
 def deleteExp():
+    """
+    Delete the selected experiment from the queue
+    """
     data = request.json['data']
     print(queueManager.getRunning())
     if queueManager.getRunning() != None and queueManager.getRunning() == data:
@@ -181,21 +297,30 @@ def deleteExp():
     return {"DONE": "YES"}
 
 
-@app.route("/updateOrder", methods=["POST"])
+@ app.route("/updateOrder", methods=["POST"])
 def updateOrder():
+    """
+    Update the order of the experiments in the queue
+    """
     data = request.json['data']
     queueManager.editOrder(data)
     return {"DONE": "YES"}
 
 
-@app.route("/getDocPreview", methods=["POST"])
+@ app.route("/getDocPreview", methods=["POST"])
 def getDocPreview():
+    """
+    Returns the first 40 words of the selected document
+    """
     data = request.json['data']
     return json.dumps({"doc": fs.getDocPreview(data["dataset"], int(data["document"]))})
 
 
-@app.route('/SingleExperiment/<batch>/<exp_id>')
+@ app.route('/SingleExperiment/<batch>/<exp_id>')
 def SingleExperiment(batch="", exp_id=""):
+    """
+    Serve the single experiment page
+    """
     models = defaults.model_hyperparameters
     output = queueManager.getModel(batch, exp_id, 0, 0)
     global_info = queueManager.getExperimentInfo(batch, exp_id)
@@ -211,11 +336,14 @@ def SingleExperiment(batch="", exp_id=""):
     return render_template("SingleExperiment.html", batchName=batch, experimentName=exp_id,
                            output=output, globalInfo=global_info, iterationInfo=iter_info,
                            expInfo=exp_info, expIds=exp_ids, datasetMetadata=fs.getDatasetMetadata(
-            exp_info["dataset"]), vocabulary=vocabulary, models=models)
+                               exp_info["dataset"]), vocabulary=vocabulary, models=models)
 
 
-@app.route("/getIterationData", methods=["POST"])
+@ app.route("/getIterationData", methods=["POST"])
 def getIterationData():
+    """
+    Return data of a single iteration and model run of an experiment
+    """
     data = request.json['data']
     output = queueManager.getModel(data["batchId"], data["experimentId"],
                                    int(data["iteration"]), data["model_run"])
@@ -225,6 +353,9 @@ def getIterationData():
 
 
 def typed(value):
+    """
+    Handles typing of data
+    """
     try:
         t = int(value)
         return t
@@ -237,6 +368,9 @@ def typed(value):
 
 
 def shutdown_server():
+    """
+    Perform server shutdown
+    """
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:
         raise RuntimeError('Not running with the Werkzeug Server')
@@ -244,6 +378,9 @@ def shutdown_server():
 
 
 if __name__ == '__main__':
+    """
+    Initialize the server
+    """
     from octis.dashboard.queueManager import QueueManager
 
     queueManager = QueueManager()

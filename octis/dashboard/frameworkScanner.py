@@ -39,6 +39,18 @@ def getDatasetMetadata(datasetName):
 
 
 def getDocPreview(datasetName, documentNumber):
+    """
+    Retrieve the first 40 words of the selected document
+
+    Parameters
+    ----------
+    datasetName: name of the dataset in which the document is located 
+                 (the dataset must be in the preprocessed_datasets folder)
+    documentNumber: number of the document to retrieve
+
+    Returns
+    out: First 40 words in the document
+    """
     datasetPath = str(os.path.join(
         path, "preprocessed_datasets", datasetName, "corpus.txt"))
     corpus = []
