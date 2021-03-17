@@ -1,5 +1,10 @@
+import codecs
 import json
+import pickle
+from os.path import join, exists
 from pathlib import Path
+
+from octis.dataset.downloader import get_data_home, _pkl_filepath, download_dataset
 
 
 class Dataset:
@@ -265,7 +270,7 @@ class Dataset:
         except:
             raise Exception("error in saving the dataset")
 
-    def load(self, path):
+    def load_custom_dataset(self, path):
         """
         Loads all the dataset from a folder
         Parameters
@@ -281,3 +286,46 @@ class Dataset:
             self._load_metadata(path+"/metadata.json")
         except:
             raise Exception("error in loading the dataset:" + path)
+
+    def fetch_dataset(self, dataset_name, data_home=None, download_if_missing=True):
+        """Load the filenames and data from a dataset.
+        Parameters
+        ----------
+        dataset_name: name of the dataset to download or retrieve
+        data_home : optional, default: None
+            Specify a download and cache folder for the datasets. If None,
+            all data is stored in '~/octis' subfolders.
+        download_if_missing : optional, True by default
+            If False, raise an IOError if the data is not locally available
+            instead of trying to download the data from the source site.
+        """
+
+        data_home = get_data_home(data_home=data_home)
+        cache_path = _pkl_filepath(data_home, dataset_name + ".pkz")
+        dataset_home = join(data_home, dataset_name)
+        cache = None
+        if exists(cache_path):
+            try:
+                with open(cache_path, 'rb') as f:
+                    compressed_content = f.read()
+                uncompressed_content = codecs.decode(
+                    compressed_content, 'zlib_codec')
+                cache = pickle.loads(uncompressed_content)
+            except Exception as e:
+                print(80 * '_')
+                print('Cache loading failed')
+                print(80 * '_')
+                print(e)
+
+        if cache is None:
+            if download_if_missing:
+                cache = download_dataset(dataset_name, target_dir=dataset_home,
+                                         cache_path=cache_path)
+            else:
+                raise IOError(dataset_name + ' dataset not found')
+
+
+        self.corpus = cache["corpus"].split("\n")
+        self.__vocabulary = cache["vocabulary"].split("\n")
+        self.__metadata = json.load(cache["metadata"])
+        self.__labels = cache["labels"].split("\n")
