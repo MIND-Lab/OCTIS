@@ -10,7 +10,7 @@ class AVITM(Abstract_Model):
     def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
-                 prior_variance=None, num_layers=2, num_neurons=100):
+                 prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True):
         super(Abstract_Model).__init__()
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
@@ -29,10 +29,10 @@ class AVITM(Abstract_Model):
         self.hyperparameters["num_layers"] = num_layers
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
-
+        self.use_partitions = use_partitions
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
-    def train_model(self, dataset, hyperparameters, top_words=10):
+    def train_model(self, dataset, hyperparameters=None, top_words=10):
         """
             Args
                 dataset: list of sentences for training the model
@@ -52,7 +52,8 @@ class AVITM(Abstract_Model):
                 num_epochs : int, number of epochs to train for, (default 100)
                 reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
             """
-
+        if hyperparameters is None:
+            hyperparameters = {}
         self.set_params(hyperparameters)
 
         if self.use_partitions:

@@ -1,21 +1,26 @@
+import datetime
 import os
 from collections import defaultdict
-import multiprocessing as mp
 
 import numpy as np
-import datetime
 import torch
 from torch import optim
-from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torch.utils.data import DataLoader
+
 from octis.models.contextualized_topic_models.networks.decoding_network import DecoderNetwork
 from octis.models.early_stopping.pytorchtools import EarlyStopping
 
 
 class CTM(object):
-    """Class to train the contextualized topic model. This is the more general class that we are keeping to
-    avoid braking code, user should use the two subclasses ZeroShotTM and CombinedTm to do topic modeling.
+    """Class to train the contextualized topic model
+    """
 
+    def __init__(self, input_size, bert_input_size, inference_type="zeroshot", num_topics=10, model_type='prodLDA',
+                 hidden_sizes=(100, 100), activation='softplus', dropout=0.2, learn_priors=True, batch_size=64,
+                 lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, reduce_on_plateau=False, topic_prior_mean=0.0,
+                 topic_prior_variance=None, num_data_loader_workers=0):
+        """
         :param input_size: int, dimension of input
         :param bert_input_size: int, dimension of input that comes from BERT embeddings
         :param inference_type: string, you can choose between the contextual model and the combined model
@@ -32,14 +37,7 @@ class CTM(object):
         :param num_epochs: int, number of epochs to train for, (default 100)
         :param reduce_on_plateau: bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
         :param num_data_loader_workers: int, number of data loader workers (default cpu_count). set it to 0 if you are using Windows
-    """
-
-    def __init__(self, input_size, bert_input_size, inference_type="zeroshot", num_topics=10, model_type='prodLDA',
-                 hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
-                 learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
-                 solver='adam', num_epochs=100, reduce_on_plateau=False,
-                 topic_prior_mean=0.0, topic_prior_variance=None,
-                 num_data_loader_workers=0):
+        """
 
         self.input_size = input_size
         self.num_topics = num_topics
@@ -166,7 +164,7 @@ class CTM(object):
 
             if self.USE_CUDA:
                 X = X.cuda()
-            X_bert = X_bert.cuda()
+                X_bert = X_bert.cuda()
 
             # forward pass
             self.model.zero_grad()
@@ -190,7 +188,9 @@ class CTM(object):
         Train the CTM model.
 
         :param train_dataset: PyTorch Dataset class for training data.
+        :param validation_dataset: PyTorch Dataset class for validation data
         :param save_dir: directory to save checkpoint models to.
+        :param verbose: verbose
         """
         # Print settings to output file
         if verbose:

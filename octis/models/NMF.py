@@ -8,15 +8,10 @@ import octis.configuration.defaults as defaults
 
 class NMF(Abstract_Model):
 
-    id2word = None
-    id_corpus = None
-    use_partitions = True
-    update_with_test = False
-
     def __init__(self, num_topics=100, chunksize=2000, passes=1, kappa=1.0,
                  minimum_probability=0.01, w_max_iter=200,
                  w_stop_condition=0.0001, h_max_iter=50, h_stop_condition=0.001,
-                 eval_every=10, normalize=True, random_state=None):
+                 eval_every=10, normalize=True, random_state=None, use_partitions=True):
         """
         Initialize NMF model
 
@@ -72,6 +67,11 @@ class NMF(Abstract_Model):
         self.hyperparameters["eval_every"] = eval_every
         self.hyperparameters["normalize"] = normalize
         self.hyperparameters["random_state"] = random_state
+        self.use_partitions = use_partitions
+
+        self.id2word = None
+        self.id_corpus = None
+        self.update_with_test = False
 
     def info(self):
         """
@@ -105,7 +105,7 @@ class NMF(Abstract_Model):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters={}, top_words=10):
+    def train_model(self, dataset, hyperparameters=None, top_words=10):
         """
         Train the model and return output
 
@@ -123,16 +123,16 @@ class NMF(Abstract_Model):
                  'topics', 'topic-word-matrix' and
                  'topic-document-matrix'
         """
-        partition = []
+        if hyperparameters is None:
+            hyperparameters = {}
         if self.use_partitions:
             partition = dataset.get_partitioned_corpus(use_validation=False)
         else:
             partition = [dataset.get_corpus(), []]
 
-        if self.id2word == None:
+        if self.id2word is None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
-
-        if self.id_corpus == None:
+        if self.id_corpus is None:
             self.id_corpus = [self.id2word.doc2bow(
                 document) for document in partition[0]]
 
@@ -175,15 +175,8 @@ class NMF(Abstract_Model):
                     result["test-topics"] = topics_output
 
                 result["test-topic-document-matrix"] = self._get_topic_document_matrix()
-
             else:
-                test_document_topic_matrix = []
-                for document in new_corpus:
-                    test_document_topic_matrix.append(
-                        self.trained_model[document])
-                result["test-document-topic-matrix"] = np.array(
-                    test_document_topic_matrix)
-
+                result["test-topic-document-matrix"] = self._get_topic_document_matrix(new_corpus)
         return result
 
     def _get_topics_words(self, topk):
@@ -198,17 +191,21 @@ class NMF(Abstract_Model):
             topic_terms.append(topic_words_list)
         return topic_terms
 
-    def _get_topic_document_matrix(self):
+    def _get_topic_document_matrix(self, test_corpus=None):
         """
         Return the topic representation of the
         corpus
         """
         doc_topic_tuples = []
-        for document in self.id_corpus:
-            doc_topic_tuples.append(
-                self.trained_model.get_document_topics(document,
-                                                       minimum_probability=0))
 
+        if test_corpus is None:
+            for document in self.id_corpus:
+                doc_topic_tuples.append(
+                    self.trained_model.get_document_topics(document, minimum_probability=0))
+        else:
+            for document in test_corpus:
+                doc_topic_tuples.append(
+                    self.trained_model.get_document_topics(document, minimum_probability=0))
         topic_document = np.zeros((
             self.hyperparameters["num_topics"],
             len(doc_topic_tuples)))

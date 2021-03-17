@@ -24,7 +24,7 @@ class CTM(Abstract_Model):
         self.hyperparameters['inference_type'] = inference_type
         self.hyperparameters['learn_priors'] = learn_priors
         self.hyperparameters['batch_size'] = batch_size
-        self.hyperparameters['log_lr'] = log_lr
+        self.hyperparameters['lr'] = lr
         self.hyperparameters['momentum'] = momentum
         self.hyperparameters['solver'] = solver
         self.hyperparameters['num_epochs'] = num_epochs
@@ -60,7 +60,7 @@ class CTM(Abstract_Model):
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             self.X_train, self.input_size = self.preprocess(self.vocab, train=data_corpus)
 
-    def train_model(self, hyperparameters, top_words=10):
+    def train_model(self, hyperparameters=None, top_words=10):
         """
             Args
                 hyperparameters: dict, with the below information:
@@ -78,6 +78,8 @@ class CTM(Abstract_Model):
                 num_epochs : int, number of epochs to train for, (default 100)
                 reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
             """
+        if hyperparameters is None:
+            hyperparameters = {}
 
         self.set_params(hyperparameters)
 

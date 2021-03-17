@@ -9,6 +9,7 @@ Welcome to OCTIS's documentation!
    installation
    usage
    modules
+   optimization
    dashboard
    contributing
    authors
