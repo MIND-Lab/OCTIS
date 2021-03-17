@@ -28,20 +28,6 @@ class DecoderNetwork(nn.Module):
             topic_prior_variance: double, variance parameter of the prior
         """
         super(DecoderNetwork, self).__init__()
-        assert n_components > 0, \
-            "n_components must be type int > 0."
-        assert model_type in ['prodLDA', 'LDA'], \
-            "model type must be 'prodLDA' or 'LDA'"
-        assert isinstance(hidden_sizes, tuple), \
-            "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
-                              'rrelu', 'elu', 'selu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
-            " 'rrelu', 'elu', 'selu' or 'tanh'."
-        assert dropout >= 0, "dropout must be >= 0."
-        # and topic_prior_variance >= 0, \
-        #assert isinstance(topic_prior_variance, float), \
-        #    "topic prior_variance must be type float"
 
         self.input_size = input_size
         self.n_components = n_components

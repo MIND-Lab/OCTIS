@@ -41,33 +41,6 @@ class CTM(object):
                  topic_prior_mean=0.0, topic_prior_variance=None,
                  num_data_loader_workers=0):
 
-        assert input_size > 0, \
-            "input_size must by type int > 0."
-        assert num_topics > 0, \
-            "num_topics must by type int > 0."
-        assert model_type in ['LDA', 'prodLDA'], \
-            "model must be 'LDA' or 'prodLDA'."
-        assert isinstance(hidden_sizes, tuple), \
-            "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
-                              'rrelu', 'elu', 'selu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
-            " 'rrelu', 'elu', 'selu' or 'tanh'."
-        assert dropout >= 0, "dropout must be >= 0."
-        # assert isinstance(learn_priors, bool), "learn_priors must be boolean."
-        assert isinstance(batch_size, int) and batch_size > 0, \
-            "batch_size must be int > 0."
-        assert lr > 0, "lr must be > 0."
-        assert momentum > 0 and momentum <= 1, \
-            "momentum must be 0 < float <= 1."
-        assert solver in ['adagrad', 'adam', 'sgd', 'adadelta', 'rmsprop'], \
-            "solver must be 'adam', 'adadelta', 'sgd', 'rmsprop' or 'adagrad'"
-        assert isinstance(reduce_on_plateau, bool), \
-            "reduce_on_plateau must be type bool."
-        # and topic_prior_variance >= 0, \
-        # assert isinstance(topic_prior_variance, float), \
-        #    "topic prior_variance must be type float"
-
         self.input_size = input_size
         self.num_topics = num_topics
         self.model_type = model_type
@@ -336,7 +309,6 @@ class CTM(object):
         Args
             k : (int) number of words to return per topic, default 10.
         """
-        assert k <= self.input_size, "k must be <= input size."
         component_dists = self.best_components
         topics = defaultdict(list)
         topics_list = []

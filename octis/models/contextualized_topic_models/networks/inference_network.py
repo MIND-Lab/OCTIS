@@ -38,8 +38,6 @@ class ContextualInferenceNetwork(nn.Module):
             self.activation = nn.Tanh()
         elif activation == 'leakyrelu':
             self.activation = nn.LeakyReLU()
-        elif activation == 'swish':
-            self.activation = Swish()
         elif activation == 'rrelu':
             self.activation = nn.RReLU()
         elif activation == 'elu':
