@@ -34,7 +34,7 @@ class CTM(Abstract_Model):
         self.hyperparameters["num_neurons"] = num_neurons
         self.hyperparameters["bert_path"] = bert_path
         self.hyperparameters["num_layers"] = num_layers
-        self.hyperparameters["bert_model"]=bert_model
+        self.hyperparameters["bert_model"]= bert_model
         self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
@@ -83,7 +83,7 @@ class CTM(Abstract_Model):
 
         self.model = ctm.CTM(input_size=self.input_size,
                              bert_input_size=self.X_train.X_bert.shape[1],
-                             num_topics=self.hyperparameters['num_topics'],
+                             num_topics=int(self.hyperparameters['num_topics']),
                              model_type='prodLDA',
                              inference_type=self.hyperparameters['inference_type'],
                              hidden_sizes=self.hyperparameters['hidden_sizes'],
