@@ -228,9 +228,8 @@ class Dataset:
         data = self.get_vocabulary()
         if data is not None:
             with open(file_name, 'w') as outfile:
-                for word, freq in data.items():
-                    line = word+" "+str(freq)
-                    outfile.write("%s\n" % line)
+                for word in data:
+                    outfile.write(word+"\n")
         else:
             raise Exception("error in saving vocabulary")
 
@@ -241,13 +240,12 @@ class Dataset:
         ----------
         file_name : name of the file to read
         """
-        vocabulary = {}
+        vocabulary = []
         file = Path(file_name)
         if file.is_file():
             with open(file_name, 'r') as vocabulary_file:
                 for line in vocabulary_file:
-                    tmp = line.split()
-                    vocabulary[tmp[0]] = float(tmp[1])
+                    vocabulary.append(line.strip())
             self.__vocabulary = vocabulary
         else:
             raise Exception("error in loading vocabulary")
@@ -325,7 +323,7 @@ class Dataset:
                 raise IOError(dataset_name + ' dataset not found')
 
 
-        self.corpus = cache["corpus"].split("\n")
+        self.__corpus = cache["corpus"].split("\n")
         self.__vocabulary = cache["vocabulary"].split("\n")
-        self.__metadata = json.load(cache["metadata"])
+        self.__metadata = json.loads(cache["metadata"])
         self.__labels = cache["labels"].split("\n")
