@@ -24,7 +24,7 @@ class CTM(Abstract_Model):
         self.hyperparameters['inference_type'] = inference_type
         self.hyperparameters['learn_priors'] = learn_priors
         self.hyperparameters['batch_size'] = batch_size
-        self.hyperparameters['lr'] = lr
+        self.hyperparameters['log_lr'] = log_lr
         self.hyperparameters['momentum'] = momentum
         self.hyperparameters['solver'] = solver
         self.hyperparameters['num_epochs'] = num_epochs
@@ -34,7 +34,7 @@ class CTM(Abstract_Model):
         self.hyperparameters["num_neurons"] = num_neurons
         self.hyperparameters["bert_path"] = bert_path
         self.hyperparameters["num_layers"] = num_layers
-        self.hyperparameters["bert_model"]= bert_model
+        self.hyperparameters["bert_model"] = bert_model
         self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
