@@ -20,7 +20,7 @@ def root_dir():
 
 @pytest.fixture
 def data_dir(root_dir):
-    return root_dir + "/../octis/preprocessed_datasets/"
+    return root_dir + "/../preprocessed_datasets/"
 
 @pytest.fixture
 def data_dir_test():

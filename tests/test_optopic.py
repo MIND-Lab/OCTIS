@@ -26,7 +26,7 @@ def root_dir():
 
 @pytest.fixture
 def data_dir(root_dir):
-    return root_dir + "/../octis/preprocessed_datasets/"
+    return root_dir + "/../preprocessed_datasets/"
 
 
 def test_load_dataset():
