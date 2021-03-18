@@ -7,7 +7,8 @@ import octis.configuration.defaults as defaults
 
 class NMF_scikit(Abstract_Model):
 
-    def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0, use_partitions=True):
+    def __init__(self, dataset, num_topics=100, init=None, alpha=0, l1_ratio=0, max_iter=100, tol=1e-4,
+                 regularization='both', beta_loss='frobenius', solver='cd', use_partitions=True):
         """
         Initialize NMF model
 
@@ -44,15 +45,41 @@ class NMF_scikit(Abstract_Model):
         is a combination of L1 and L2.
         """
         super().__init__()
-        self.hyperparameters["num_topics"] = num_topics
+        self.hyperparameters["n_components"] = num_topics
         self.hyperparameters["init"] = init
         self.hyperparameters["alpha"] = alpha
         self.hyperparameters["l1_ratio"] = l1_ratio
-        self.use_partitions = use_partitions
+        self.hyperparameters["max_iter"] = max_iter
+        self.hyperparameters["tol"] = tol
+        self.hyperparameters["regularization"] = regularization
+        self.hyperparameters["beta_loss"] = beta_loss
+        self.hyperparameters["solver"] = solver
 
-        self.id2word = None
-        self.id_corpus = None
+        self.use_partitions = use_partitions
         self.update_with_test = False
+
+        vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b\w+\b",
+                                     vocabulary=list(dataset.get_vocabulary().keys()))
+
+        if self.use_partitions:
+            partition = dataset.get_partitioned_corpus(use_validation=False)
+            corpus = partition[0]
+        else:
+            corpus = dataset.get_corpus()
+
+        real_corpus = [" ".join(document) for document in corpus]
+        X = vectorizer.fit_transform(real_corpus)
+
+        self.id2word = {i: k for i, k in enumerate(vectorizer.get_feature_names())}
+        if self.use_partitions:
+            test_corpus = []
+            for document in partition[1]:
+                test_corpus.append(" ".join(document))
+            Y = vectorizer.transform(test_corpus)
+            self.train_corpus = X
+            self.test_corpus = Y
+        else:
+            self.train_corpus = X
 
     def hyperparameters_info(self):
         """
@@ -75,9 +102,9 @@ class NMF_scikit(Abstract_Model):
         self.use_partitions = use_partitions
         self.update_with_test = update_with_test
         self.id2word = None
-        self.id_corpus = None
+        self.train_corpus = None
 
-    def train_model(self, dataset, hyperparameters=None, topics=10):
+    def train_model(self, hyperparameters=None, topics=10):
         """
         Train the model and return output
 
@@ -97,67 +124,48 @@ class NMF_scikit(Abstract_Model):
                  'topic-document-matrix'
         """
         if hyperparameters is None:
-            hyperparameters = {}
+            hyperparams = {}
+        else:
+            hyperparams = hyperparameters.copy()
 
-        if self.id2word is None or self.id_corpus is None:
-            vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b\w+\b",
-                                         vocabulary=list(dataset.get_vocabulary().keys()))
+        if "num_topics" not in hyperparams:
+            hyperparams["n_components"] = self.hyperparameters["n_components"]
+        else:
+            hyperparams["n_components"] = hyperparams["num_topics"]
+            hyperparams.pop("num_topics")
 
-            if self.use_partitions:
-                partition = dataset.get_partitioned_corpus(use_validation=False)
-                corpus = partition[0]
-            else:
-                corpus = dataset.get_corpus()
+        self.hyperparameters.update(hyperparams)
+        model = NMF(**self.hyperparameters)
 
-            real_corpus = [" ".join(document) for document in corpus]
-            X = vectorizer.fit_transform(real_corpus)
-
-            self.id2word = {i: k for i, k in enumerate(vectorizer.get_feature_names())}
-            if self.use_partitions:
-                test_corpus = []
-                for document in partition[1]:
-                    test_corpus.append(" ".join(document))
-                Y = vectorizer.transform(test_corpus)
-                self.id_corpus = X
-                self.new_corpus = Y
-            else:
-                self.id_corpus = X
-
-        #hyperparameters["corpus"] = self.id_corpus
-        #hyperparameters["id2word"] = self.id2word
-        self.hyperparameters.update(hyperparameters)
-
-        model = NMF(n_components=self.hyperparameters["num_topics"], init=self.hyperparameters["init"],
-                    alpha=self.hyperparameters["alpha"], l1_ratio=self.hyperparameters["l1_ratio"])
-
-        W = model.fit_transform(self.id_corpus)
+        W = model.fit_transform(self.train_corpus)
         #W = W / W.sum(axis=1, keepdims=True)
         H = model.components_
         #H = H / H.sum(axis=1, keepdims=True)
 
         result = {}
 
-        result["topic-word-matrix"] = H
+        # Find where all values in the columns are zero
+        mask = (H.T == 0).all(0)
+        # Update x to only include the columns where non-zero values occur.
+        masked_H = H[~mask]
 
-        if topics > 0:
-            result["topics"] = self.get_topics(H, topics)
+        result["topic-word-matrix"] = masked_H
 
-        result["topic-document-matrix"] = np.array(W).transpose()
+        result["topics"] = self.get_topics(masked_H, topics)
+
+        result["topic-document-matrix"] = np.array(W).transpose()[~mask]
 
         if self.use_partitions:
             if self.update_with_test:
                # NOT IMPLEMENTED YET
-
                 result["test-topic-word-matrix"] = W
-
                 if topics > 0:
                     result["test-topics"] = self.get_topics(W, topics)
 
                 result["test-topic-document-matrix"] = H
-
             else:
                 result["test-topic-document-matrix"] = model.transform(
-                    self.new_corpus).T
+                    self.test_corpus).T[~mask]
 
         return result
 
@@ -165,7 +173,7 @@ class NMF_scikit(Abstract_Model):
         topic_list = []
         for topic in H:
             words_list = sorted(
-                list(enumerate(topic)), key=lambda x: x[1])
+                list(enumerate(topic)), key=lambda x: -x[1])
             topk = [tup[0] for tup in words_list[0:topics]]
             topic_list.append([self.id2word[i] for i in topk])
         return topic_list
