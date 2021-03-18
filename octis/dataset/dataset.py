@@ -263,7 +263,7 @@ class Dataset:
             self._save_corpus(path+"/corpus.txt")
             self._save_vocabulary(path+"/vocabulary.txt")
             self._save_labels(path+"/labels.txt")
-            self._save_edges(path+"/edges.txt")
+            #self._save_edges(path+"/edges.txt")
             self._save_metadata(path+"/metadata.json")
         except:
             raise Exception("error in saving the dataset")
@@ -280,7 +280,7 @@ class Dataset:
             self._load_corpus(path+"/corpus.txt")
             self._load_vocabulary(path+"/vocabulary.txt")
             self._load_labels(path+"/labels.txt")
-            self._load_edges(path+"/edges.txt")
+            #self._load_edges(path+"/edges.txt")
             self._load_metadata(path+"/metadata.json")
         except:
             raise Exception("error in loading the dataset:" + path)
@@ -326,4 +326,4 @@ class Dataset:
         self.__corpus = cache["corpus"].split("\n")
         self.__vocabulary = cache["vocabulary"].split("\n")
         self.__metadata = json.loads(cache["metadata"])
-        self.__labels = cache["labels"].split("\n")
+        self.__labels = list(set(cache["labels"].strip().split("\n")))

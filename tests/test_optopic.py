@@ -29,11 +29,6 @@ def data_dir(root_dir):
     return root_dir + "/../preprocessed_datasets/"
 
 
-def test_load_dataset():
-    dataset = Dataset()
-    dataset.fetch_dataset("20NewsGroup")
-    assert len(dataset.get_corpus()) == 16310
-
 def test_f1score(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset(data_dir + '/M10')

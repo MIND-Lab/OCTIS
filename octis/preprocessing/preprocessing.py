@@ -16,7 +16,8 @@ language_mapping = {'chinese': 'zh', 'danish': 'nl', 'dutch': 'nl', 'english': '
 class Preprocessing:
     def __init__(self, lowercase=True, vocabulary=None, max_features=None, min_df=0, max_df=1.0,
                  remove_punctuation=True, punctuation=string.punctuation, lemmatize=True, remove_stopwords=True,
-                 stopword_list: Union[str, List[str]] = 'english', min_chars=1, min_words_docs=0, language='english'):
+                 stopword_list: Union[str, List[str]] = 'english', min_chars=1, min_words_docs=0, language='english',
+                 split=True):
         self.vocabulary = vocabulary
         self.lowercase = lowercase
         self.max_features = max_features
@@ -26,6 +27,7 @@ class Preprocessing:
         self.punctuation = punctuation
         self.lemmatize = lemmatize
         self.remove_stopwords = remove_stopwords
+        self.split=split
         if type(stopword_list) == list:
             stopwords = set(stopword_list)
         else:
@@ -80,19 +82,30 @@ class Preprocessing:
         metadata = {"total_documents": len(docs), "vocabulary_length": len(vocabulary),
                     "preprocessing-info": self.preprocessing_steps, "labels": list(set(labels)),
                     "total_labels": len(labels)}
+        if self.split:
+            if len(labels)>0:
+                train, test, y_train, y_test = train_test_split(
+                    range(len(final_docs)), final_labels, test_size=0.15, random_state=1, stratify=final_labels)
 
-        train, test, y_train, y_test = train_test_split(
-            range(len(final_docs)), final_labels, test_size=0.15, random_state=1, stratify=final_labels)
+                train, validation = train_test_split(train, test_size=3 / 17, random_state=1, stratify=y_train)
+                partitioned_labels = [final_labels[doc] for doc in train + validation + test]
+                partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
+                metadata["last-training-doc"] = len(train)
+                metadata["last-validation-doc"] = len(validation) + len(train)
 
-        train, validation = train_test_split(train, test_size=3 / 17, random_state=1, stratify=y_train)
+                return Dataset(partitioned_corpus, vocabulary, metadata, partitioned_labels)
+            else:
 
-        partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
-        partitioned_labels = [final_labels[doc] for doc in train + validation + test]
+                train, test = train_test_split(range(len(final_docs)), test_size=0.15, random_state=1)
+                train, validation = train_test_split(train, test_size=3 / 17, random_state=1)
 
-        metadata["last-training-doc"] = len(train)
-        metadata["last-validation-doc"] = len(validation) + len(train)
+                metadata["last-training-doc"] = len(train)
+                metadata["last-validation-doc"] = len(validation) + len(train)
+                partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
 
-        return Dataset(partitioned_corpus, vocabulary, metadata, partitioned_labels)
+                return Dataset(partitioned_corpus, vocabulary, metadata, labels)
+        else:
+            Dataset(final_docs, vocabulary, metadata, labels)
 
     def filter_other_words(self, docs):
         if self.vocabulary is not None:
