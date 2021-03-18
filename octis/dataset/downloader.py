@@ -66,7 +66,7 @@ def download_dataset(dataset_name, target_dir, cache_path):
     if not exists(target_dir):
         makedirs(target_dir)
 
-    dataset_url = "https://raw.githubusercontent.com/MIND-Lab/OCTIS/master/octis/preprocessed_datasets/" + dataset_name
+    dataset_url = "https://raw.githubusercontent.com/MIND-Lab/OCTIS/master/preprocessed_datasets/" + dataset_name
 
     corpus = requests.get(dataset_url + "/corpus.txt")
     labels = requests.get(dataset_url + "/labels.txt")
