@@ -33,7 +33,7 @@ def data_dir(root_dir):
 def test_preprocessing(data_dir):
     texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
     p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True, punctuation=".,?:",
-                      lemmatize=True, remove_stopwords=True, stopword_list=['am', 'are', 'this', 'that'],
+                      lemmatize=False, remove_stopwords=True, stopword_list=['am', 'are', 'this', 'that'],
                       min_chars=1, min_words_docs=0,)
     dataset = p.preprocess_dataset(
         documents_path=texts_path,
