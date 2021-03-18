@@ -1,18 +1,14 @@
 import os
-
-import octis.preprocessing.sources.reuters as source
-from octis.preprocessing.pipelinehandler import PipelineHandler
-import multiprocessing as mp
-
+import string
+from octis.preprocessing.preprocessing import Preprocessing
 os.chdir(os.path.pardir)
 
-dataset = source.retrieve_reuters()
+p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True, punctuation=string.punctuation,
+                  lemmatize=True, remove_stopwords=True, stopword_list=['am', 'are', 'this', 'that'],
+                  min_chars=1, min_words_docs=0)
+dataset = p.preprocess_dataset(
+    documents_path=r'..\preprocessed_datasets\M10\corpus.txt',
+    labels_path=r'..\preprocessed_datasets\M10\labels.txt',
+)
 
-# All parameters defaults are True
-pipeline_handler = PipelineHandler(dataset, num_processes=mp.cpu_count(), display_progress=True,
-                                   min_words_for_doc=2, words_min_freq=0.01,
-                                   words_max_freq=1, stopwords='english')
-
-preprocessed = pipeline_handler.preprocess()
-
-preprocessed.save("dataset_folder")
+dataset.save('hello_dataset.txt')
