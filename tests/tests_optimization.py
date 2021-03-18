@@ -22,7 +22,11 @@ def root_dir():
 def data_dir(root_dir):
     return root_dir + "/../octis/preprocessed_datasets/"
 
-def test_simple_optimization(data_dir):
+@pytest.fixture
+def data_dir_test():
+    return "tests_optimization/"
+
+def test_simple_optimization(data_dir,data_dir_test):
 
     #Load dataset
     dataset = Dataset()
@@ -45,38 +49,52 @@ def test_simple_optimization(data_dir):
         "eta": Real(low=0.001, high=5.0)
     }
 
+    save_path = data_dir_test+"test_simple_optimization/"
+
     #Choose number of call and number of model_runs
     number_of_call = 5
     model_runs = 3
+    n_random_starts = 3
 
     #Optimize the function npmi using Bayesian Optimization (simple Optimization)
     optimizer = Optimizer()
     BestObject=optimizer.optimize(model, dataset, npmi, search_space,
                        number_of_call=number_of_call,
-                       model_runs=model_runs)
+                       model_runs=model_runs,
+                       n_random_starts = n_random_starts,
+                       save_path=save_path)
 
     #check the integrity of BestObject
-    assert optimizer.name_optimized_metric == npmi.__class__.__name__
+    assert BestObject.info["metric_name"] == npmi.__class__.__name__
+    assert BestObject.info["surrogate_model"] == "RF"
+    assert BestObject.info["acq_func"] == "LCB"
+    assert BestObject.info["optimization_type"] == "Maximize"
+
     assert BestObject.info["model_runs"] == model_runs
     assert BestObject.info["number_of_call"] == number_of_call
+    assert BestObject.info["n_random_starts"] == n_random_starts
+
     assert len(BestObject.func_vals) == number_of_call
     assert len(BestObject.info["x_iters"]) == 2
     assert all([len(BestObject.info["x_iters"][el]) == number_of_call for el in BestObject.info["x_iters"].keys()])
     assert all([len(BestObject.info["dict_model_runs"][npmi.__class__.__name__][el]) == model_runs for el in BestObject.info["dict_model_runs"][npmi.__class__.__name__].keys()])
 
     #check the integrity of the json file
-    assert os.path.isfile("results/result.json")
+    assert os.path.isfile(save_path + "result.json")
 
     for i in range(number_of_call):
         for j in range(model_runs):
-            assert os.path.isfile("results/models/"+str(i)+"_"+str(j)+".npz")
+            assert os.path.isfile(save_path+"models/"+str(i)+"_"+str(j)+".npz")
 
-    f = open("results/result.json")
+    f = open(save_path+"result.json")
     file=json.load(f)
 
     assert len(file) == 37
-
     assert file["metric_name"] == npmi.__class__.__name__
+    assert file["surrogate_model"] == "RF"
+    assert file["acq_func"] == "LCB"
+    assert file["optimization_type"] == "Maximize"
+
     assert len(file["f_val"]) == number_of_call
     assert all([type(el) == float for el in file["f_val"]])
 
@@ -86,7 +104,7 @@ def test_simple_optimization(data_dir):
     assert len(file["dict_model_runs"]) == 1
     assert all([len(file["dict_model_runs"][npmi.__class__.__name__][el]) == model_runs for el in file["dict_model_runs"][npmi.__class__.__name__].keys()])
 
-def test_resume_optimization(data_dir):
+def test_resume_optimization(data_dir,data_dir_test):
     #Load dataset
     dataset = Dataset()
     dataset.load_custom_dataset(data_dir + '/M10')
@@ -109,41 +127,55 @@ def test_resume_optimization(data_dir):
     }
 
     #Choose number of call and number of model_runs
-    number_of_call = 5
+    number_of_call = 4
     model_runs = 3
+    n_random_starts = 3
+
+    save_path = data_dir_test+"test_resume_optimization/"
 
     #Optimize the function npmi using Bayesian Optimization (simple Optimization)
     optimizer = Optimizer()
     BestObject = optimizer.optimize(model, dataset, npmi, search_space,
                                     number_of_call=number_of_call,
-                                    model_runs=model_runs)
-    # %% Resume the optimization
-    extra_evaluations=3
+                                    model_runs=model_runs,
+                                    n_random_starts=n_random_starts,
+                                    save_path=save_path)
+    #Resume the optimization
+    extra_evaluations=2
     path = BestObject.name_json
     optimizer = Optimizer()
-    BestObject=optimizer.resume_optimization(path, extra_evaluations=extra_evaluations)
+    BestObject=optimizer.resume_optimization(path, extra_evaluations = extra_evaluations)
 
     #check the integrity of BestObject
+    assert BestObject.info["metric_name"] == npmi.__class__.__name__
+    assert BestObject.info["surrogate_model"] == "RF"
+    assert BestObject.info["acq_func"] == "LCB"
+    assert BestObject.info["optimization_type"] == "Maximize"
+
     assert BestObject.info["model_runs"] == model_runs
     assert BestObject.info["number_of_call"] == number_of_call+extra_evaluations
+    assert BestObject.info["n_random_starts"] == n_random_starts
+
     assert len(BestObject.func_vals) == number_of_call+extra_evaluations
     assert len(BestObject.info["x_iters"]) == 2
     assert all([len(BestObject.info["x_iters"][el]) == number_of_call+extra_evaluations for el in BestObject.info["x_iters"].keys()])
     assert all([len(BestObject.info["dict_model_runs"][npmi.__class__.__name__][el]) == model_runs for el in BestObject.info["dict_model_runs"][npmi.__class__.__name__].keys()])
 
     #check the integrity of the json file
-    assert os.path.isfile("results/result.json")
+    assert os.path.isfile(save_path + "result.json")
 
-    for i in range(number_of_call+extra_evaluations):
+    for i in range(number_of_call):
         for j in range(model_runs):
-            assert os.path.isfile("results/models/"+str(i)+"_"+str(j)+".npz")
+            assert os.path.isfile(save_path+"models/"+str(i)+"_"+str(j)+".npz")
 
-    f = open("results/result.json")
+    f = open(save_path+"result.json")
     file=json.load(f)
 
     assert len(file) == 37
-
     assert file["metric_name"] == npmi.__class__.__name__
+    assert file["surrogate_model"] == "RF"
+    assert file["acq_func"] == "LCB"
+    assert file["optimization_type"] == "Maximize"
 
     assert len(file["f_val"]) == number_of_call+extra_evaluations
     assert all([type(el) == float for el in file["f_val"]])
@@ -190,79 +222,111 @@ def test_resume_optimization(data_dir):
 #                        plot_best_seen=True)
 #
 #
-# def test_optimization_acq_function(save_path):
-#     acq_names = ['PI', 'EI', 'LCB']
-#     # %% Load dataset
-#     dataset = Dataset()
-#     dataset.load_custom_dataset(data_dir + '/M10')
-#
-#     # %% Load model
-#     model = LDA()
-#
-#     # %% Set model hyperparameters (not optimized by BO)
-#     model.hyperparameters.update({"num_topics": 25, "iterations": 200})
-#     model.partitioning(False)
-#
-#     # %% Choose of the metric function to optimize
-#     metric_parameters = {
-#         'texts': dataset.get_corpus(),
-#         'topk': 10,
-#         'measure': 'c_npmi'
-#     }
-#     npmi = Coherence(metric_parameters)
-#
-#     # %% Create search space for optimization
-#     search_space = {
-#         "alpha": Real(low=0.001, high=5.0),
-#         "eta": Real(low=0.001, high=5.0)
-#     }
-#     # %% Optimize the function npmi using Bayesian Optimization
-#     for acq_name in acq_names:
-#         save_path_specific = save_path + '/' + acq_name
-#         optimizer = Optimizer()
-#         optimizer.optimize(model, dataset, npmi, search_space,
-#                            number_of_call=number_of_call,
-#                            model_runs=model_runs,
-#                            save_path=save_path_specific,
-#                            acq_func=acq_name)
-#
-#
-# def test_optimization_surrogate_model(save_path):
-#     surrogate_models = ['RF', 'RS', 'GP', 'ET']
-#     # %% Load dataset
-#     dataset = Dataset()
-#     dataset.load_custom_dataset(data_dir + '/M10')
-#
-#     # %% Load model
-#     model = LDA()
-#
-#     # %% Set model hyperparameters (not optimized by BO)
-#     model.hyperparameters.update({"num_topics": 25, "iterations": 200})
-#     model.partitioning(False)
-#
-#     # %% Choose of the metric function to optimize
-#     metric_parameters = {
-#         'texts': dataset.get_corpus(),
-#         'topk': 10,
-#         'measure': 'c_npmi'
-#     }
-#     npmi = Coherence(metric_parameters)
-#
-#     # %% Create search space for optimization
-#     search_space = {
-#         "alpha": Real(low=0.001, high=5.0),
-#         "eta": Real(low=0.001, high=5.0)
-#     }
-#     # %% Optimize the function npmi using Bayesian Optimization
-#     for surrogate_model in surrogate_models:
-#         save_path_specific = save_path + '/' + surrogate_model
-#         optimizer = Optimizer()
-#         optimizer.optimize(model, dataset, npmi, search_space,
-#                            number_of_call=number_of_call,
-#                            model_runs=model_runs,
-#                            save_path=save_path_specific,
-#                            surrogate_model=surrogate_model)
-#
+
+def test_optimization_acq_function(data_dir,data_dir_test):
+
+    acq_names = ['PI', 'EI', 'LCB']
+
+    #Load dataset
+    dataset = Dataset()
+    dataset.load_custom_dataset(data_dir + '/M10')
+
+    #Load model
+    model = LDA(num_topics=5, iterations=200)
+
+    #Choose of the metric function to optimize
+    metric_parameters = {
+        'texts': dataset.get_corpus(),
+        'topk': 10,
+        'measure': 'c_npmi'
+    }
+    npmi = Coherence(metric_parameters)
+
+    #Create search space for optimization
+    search_space = {
+        "alpha": Real(low=0.001, high=5.0),
+        "eta": Real(low=0.001, high=5.0)
+    }
+
+    #Choose number of call and number of model_runs
+    number_of_call = 5
+    model_runs = 1
+    n_random_starts = 3
+
+    #Optimize the function npmi using Bayesian Optimization
+    save_path = data_dir_test + "test_acq_fun/"
+
+    for acq_name in acq_names:
+        save_path_specific = save_path + '/' + acq_name
+        optimizer = Optimizer()
+        BestObject=optimizer.optimize(model, dataset, npmi, search_space,
+                           number_of_call=number_of_call,
+                           model_runs=model_runs,
+                           save_path=save_path_specific,
+                           acq_func=acq_name)
+
+        assert os.path.isfile(save_path_specific + "/result.json")
+
+        #check the integrity of BestObject
+        assert BestObject.info["acq_func"] == acq_name
+
+        f = open(save_path_specific+ "/result.json")
+        file=json.load(f)
+
+        assert file["acq_func"] == acq_name
+
+def test_optimization_surrogate_model(data_dir,data_dir_test):
+
+    surrogate_models = ['RF', 'GP', 'ET']
+
+    #Load dataset
+    dataset = Dataset()
+    dataset.load_custom_dataset(data_dir + '/M10')
+
+    #Load model
+    model = LDA(num_topics=5, iterations=200)
+
+    #Choose of the metric function to optimize
+    metric_parameters = {
+        'texts': dataset.get_corpus(),
+        'topk': 10,
+        'measure': 'c_npmi'
+    }
+    npmi = Coherence(metric_parameters)
+
+    #Create search space for optimization
+    search_space = {
+        "alpha": Real(low=0.001, high=5.0),
+        "eta": Real(low=0.001, high=5.0)
+    }
+
+    #Choose number of call and number of model_runs
+    number_of_call = 5
+    model_runs = 1
+    n_random_starts = 3
+
+    #Optimize the function npmi using Bayesian Optimization
+    save_path = data_dir_test + "test_surrogate_fun/"
+
+    for surrogate_model in surrogate_models:
+        save_path_specific = save_path + '/' + surrogate_model
+        optimizer = Optimizer()
+        BestObject=optimizer.optimize(model, dataset, npmi, search_space,
+                           number_of_call=number_of_call,
+                           model_runs=model_runs,
+                           save_path=save_path_specific,
+                           surrogate_model=surrogate_model)
+
+        assert os.path.isfile(save_path_specific + "/result.json")
+
+        #check the integrity of BestObject
+        assert BestObject.info["surrogate_model"] == surrogate_model
+
+        f = open(save_path_specific+"/result.json")
+        file=json.load(f)
+
+        assert file["surrogate_model"] == surrogate_model
+
 #
 # def test_early_stop(save_path):
 #     # %% Load dataset
