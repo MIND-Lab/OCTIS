@@ -10,3 +10,4 @@ numpy
 libsvm
 flask
 sentence_transformers
+requests
