@@ -143,6 +143,7 @@ def test_resume_optimization(data_dir, data_dir_test):
     optimization_result = optimizer.optimize(
         model, dataset, npmi, search_space, number_of_call=number_of_call,
         model_runs=model_runs, n_random_starts=n_random_starts, save_path=save_path)
+
     # Resume the optimization
     extra_evaluations = 2
     path = optimization_result.name_json
@@ -192,43 +193,47 @@ def test_resume_optimization(data_dir, data_dir_test):
     assert all([len(file["dict_model_runs"][npmi.__class__.__name__][el]) == model_runs for el in
                 file["dict_model_runs"][npmi.__class__.__name__].keys()])
 
+def test_optimization_graphics(data_dir, data_dir_test):
 
-# # %%
-# def test_optimization_graphics(save_path):
-#     # %% Load dataset
-#     dataset = Dataset()
-#     dataset.load_custom_dataset(data_dir + '/M10')
-#
-#     # %% Load model
-#     model = LDA()
-#
-#     # %% Set model hyperparameters (not optimized by BO)
-#     model.hyperparameters.update({"num_topics": 25, "iterations": 200})
-#     model.partitioning(False)
-#
-#     # %% Choose of the metric function to optimize
-#     metric_parameters = {
-#         'texts': dataset.get_corpus(),
-#         'topk': 10,
-#         'measure': 'c_npmi'
-#     }
-#     npmi = Coherence(metric_parameters)
-#
-#     # %% Create search space for optimization
-#     search_space = {
-#         "alpha": Real(low=0.001, high=5.0),
-#         "eta": Real(low=0.001, high=5.0)
-#     }
-#     # %% Optimize the function npmi using Bayesian Optimization
-#     optimizer = Optimizer()
-#     optimizer.optimize(model, dataset, npmi, search_space,
-#                        number_of_call=number_of_call,
-#                        model_runs=model_runs,
-#                        save_path=save_path,
-#                        plot_model=True,
-#                        plot_best_seen=True)
-#
-#
+    # Load dataset
+    dataset = Dataset()
+    dataset.load_custom_dataset(data_dir + '/M10')
+
+    # Load model
+    model = LDA(num_topics=5, iterations=200)
+
+    # Choose of the metric function to optimize
+    metric_parameters = {
+        'texts': dataset.get_corpus(),
+        'topk': 10,
+        'measure': 'c_npmi'
+    }
+    npmi = Coherence(metric_parameters)
+
+    # Create search space for optimization
+    search_space = {
+        "alpha": Real(low=0.001, high=5.0),
+        "eta": Real(low=0.001, high=5.0)
+    }
+
+    # Choose number of call and number of model_runs
+    number_of_call = 5
+    model_runs = 1
+    n_random_starts = 3
+
+    # Optimize the function npmi using Bayesian Optimization
+    save_path = data_dir_test + "test_plot_fun/"
+
+    #Optimize the function npmi using Bayesian Optimization
+    optimizer = Optimizer()
+    optimizer.optimize(model, dataset, npmi, search_space,
+                       number_of_call=number_of_call, model_runs=model_runs, save_path=save_path, plot_model=True,
+                       plot_best_seen=True, plot_name="B0_plot")
+
+    assert os.path.isfile(save_path + "result.json")
+    assert os.path.isfile(save_path + "B0_plot_model_runs_Coherence.png")
+    assert os.path.isfile(save_path + "B0_plot_best_seen.png")
+
 
 def test_optimization_acq_function(data_dir, data_dir_test):
     acq_names = ['PI', 'EI', 'LCB']
