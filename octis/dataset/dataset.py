@@ -39,7 +39,7 @@ class Dataset:
     # Partitioned Corpus getter
     def get_partitioned_corpus(self, use_validation=True):
         last_training_doc = self.__metadata["last-training-doc"]
-        #gestire l'eccezione se last_validation_doc non è definito, restituire
+        # gestire l'eccezione se last_validation_doc non è definito, restituire
         # il validation vuoto
         if use_validation:
             last_validation_doc = self.__metadata["last-validation-doc"]
@@ -184,7 +184,7 @@ class Dataset:
         file = Path(file_name)
         if file.is_file():
             with open(file_name, 'r') as edges_file:
-                edges = [line[0:len(line)-1] for line in edges_file]
+                edges = [line[0:len(line) - 1] for line in edges_file]
             self.__edges = edges
 
     def _save_labels(self, file_name):
@@ -229,7 +229,7 @@ class Dataset:
         if data is not None:
             with open(file_name, 'w') as outfile:
                 for word in data:
-                    outfile.write(word+"\n")
+                    outfile.write(word + "\n")
         else:
             raise Exception("error in saving vocabulary")
 
@@ -260,11 +260,11 @@ class Dataset:
         """
         Path(path).mkdir(parents=True, exist_ok=True)
         try:
-            self._save_corpus(path+"/corpus.txt")
-            self._save_vocabulary(path+"/vocabulary.txt")
-            self._save_labels(path+"/labels.txt")
-            #self._save_edges(path+"/edges.txt")
-            self._save_metadata(path+"/metadata.json")
+            self._save_corpus(path + "/corpus.txt")
+            self._save_vocabulary(path + "/vocabulary.txt")
+            self._save_labels(path + "/labels.txt")
+            # self._save_edges(path+"/edges.txt")
+            self._save_metadata(path + "/metadata.json")
         except:
             raise Exception("error in saving the dataset")
 
@@ -276,12 +276,12 @@ class Dataset:
         path : path of the folder to read
         """
         try:
-            self.path=path
-            self._load_corpus(path+"/corpus.txt")
-            self._load_vocabulary(path+"/vocabulary.txt")
-            self._load_labels(path+"/labels.txt")
-            #self._load_edges(path+"/edges.txt")
-            self._load_metadata(path+"/metadata.json")
+            self.path = path
+            self._load_corpus(path + "/corpus.txt")
+            self._load_vocabulary(path + "/vocabulary.txt")
+            self._load_labels(path + "/labels.txt")
+            # self._load_edges(path+"/edges.txt")
+            self._load_metadata(path + "/metadata.json")
         except:
             raise Exception("error in loading the dataset:" + path)
 
@@ -321,7 +321,6 @@ class Dataset:
                                          cache_path=cache_path)
             else:
                 raise IOError(dataset_name + ' dataset not found')
-
 
         self.__corpus = cache["corpus"].split("\n")
         self.__vocabulary = cache["vocabulary"].split("\n")
