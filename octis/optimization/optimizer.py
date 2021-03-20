@@ -478,7 +478,7 @@ class Optimizer:
             self.plot_name = self.plot_name[:-4]
 
         if self.save_name.endswith(".json"):
-            self.save_name = self.save_name[:-4]
+            self.save_name = self.save_name[:-5]
 
         if self.save_path[-1] != '/':
             self.save_path = self.save_path + '/'
