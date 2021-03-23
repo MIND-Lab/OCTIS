@@ -4,17 +4,18 @@ import pickle
 from os.path import join, exists
 from pathlib import Path
 
+import pandas as pd
+from werkzeug.utils import header_property
+
 from octis.dataset.downloader import get_data_home, _pkl_filepath, download_dataset
 
 
 class Dataset:
     """
-    Dataset handles a dataset and offer methods to
-    access, save and edit the dataset data
+    Dataset handles a dataset and offers methods to access, save and edit the dataset data
     """
 
-    def __init__(self, corpus=None, vocabulary=None, metadata=None,
-                 labels=None, edges=None):
+    def __init__(self, corpus=None, vocabulary=None, labels=None, metadata=None):
         """
         Initialize a dataset, parameters are optional
         if you want to load a dataset, initialize this
@@ -23,15 +24,13 @@ class Dataset:
         ----------
         corpus : corpus of the dataset
         vocabulary : vocabulary of the dataset
-        metadata : metadata of the dataset
         labels : labels of the dataset
-        edges : edges of the dataset
+        metadata : metadata of the dataset
         """
         self.__corpus = corpus
         self.__vocabulary = vocabulary
         self.__metadata = metadata
         self.__labels = labels
-        self.__edges = edges
 
     def get_corpus(self):
         return self.__corpus
@@ -128,21 +127,6 @@ class Dataset:
             with open(file_name, 'r') as metadata_file:
                 metadata = json.load(metadata_file)
             self.__metadata = metadata
-
-    def _save_corpus(self, file_name):
-        """
-        Saves corpus in a file, a line for each document
-        Parameters
-        ----------
-        file_name : name of the file to write
-        """
-        data = self.get_corpus()
-        if data is not None:
-            with open(file_name, 'w') as outfile:
-                for element in data:
-                    outfile.write("%s\n" % " ".join(element))
-        else:
-            raise Exception("error in saving metadata")
 
     def _load_corpus(self, file_name):
         """
@@ -260,15 +244,29 @@ class Dataset:
         """
         Path(path).mkdir(parents=True, exist_ok=True)
         try:
-            self._save_corpus(path + "/corpus.txt")
+            partitions = self.get_partitioned_corpus()
+            corpus, partition = [], []
+            for i, p in enumerate(partitions):
+                if i == 0:
+                    part = 'train'
+                elif i == 1 and len(partitions) == 3:
+                    part = 'val'
+                else:
+                    part = 'test'
+
+                for doc in p:
+                    corpus.append(doc)
+                    partitions = part
+
+            df = pd.DataFrame(corpus, partition, self.__labels)
+            df.to_csv(path + 'corpus.tsv', delimiter='\t', index=None, header=None)
+
             self._save_vocabulary(path + "/vocabulary.txt")
-            self._save_labels(path + "/labels.txt")
-            # self._save_edges(path+"/edges.txt")
             self._save_metadata(path + "/metadata.json")
         except:
             raise Exception("error in saving the dataset")
 
-    def load_custom_dataset(self, path):
+    def load_custom_dataset_from_folder(self, path):
         """
         Loads all the dataset from a folder
         Parameters
@@ -277,11 +275,34 @@ class Dataset:
         """
         try:
             self.path = path
-            self._load_corpus(path + "/corpus.txt")
-            self._load_vocabulary(path + "/vocabulary.txt")
-            self._load_labels(path + "/labels.txt")
-            # self._load_edges(path+"/edges.txt")
-            self._load_metadata(path + "/metadata.json")
+            if exists(path + "/metadata.json"):
+                self._load_metadata(path + "/metadata.json")
+            else:
+                self.__metadata = dict()
+            df = pd.read_csv(path + "/corpus.tsv", delimiter='\t', header=None)
+            if len(df.keys()) > 1:
+                df[1] = df[1].replace("train", "a_train")
+                df[1] = df[1].replace("val", "b_val")
+                df = df.sort_values(1).reset_index(drop=True)
+
+                self.__metadata['last-training-doc'] = len(df[df[1] == 'a_train'])
+                self.__metadata['last-validation-doc'] = len(df[df[1] == 'b_val'])
+
+                self.__corpus = df[0].tolist()
+                if len(df.keys()) > 2:
+                    self.__labels = df[2].tolist()
+            else:
+                self.__corpus = df[0].tolist()
+                self.__metadata['last-training-doc'] = len(df[0])
+
+            if exists(path + "/vocabulary.txt"):
+                self._load_vocabulary(path + "/vocabulary.txt")
+            else:
+                vocab = set()
+                for d in self.__corpus:
+                    for w in set(d.split(" ")):
+                        vocab.add(w)
+                self.__vocabulary = list(vocab)
         except:
             raise Exception("error in loading the dataset:" + path)
 
@@ -322,7 +343,8 @@ class Dataset:
             else:
                 raise IOError(dataset_name + ' dataset not found')
 
-        self.__corpus = cache["corpus"].split("\n")
-        self.__vocabulary = cache["vocabulary"].split("\n")
-        self.__metadata = json.loads(cache["metadata"])
-        self.__labels = list(set(cache["labels"].strip().split("\n")))
+        self.__corpus = cache["corpus"]
+        self.__vocabulary = cache["vocabulary"]
+        self.__metadata = cache["metadata"]
+        self.__labels = cache["labels"]
+

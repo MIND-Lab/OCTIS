@@ -367,7 +367,7 @@ class Optimizer:
 
         # Load the dataset
         dataset = Dataset()
-        dataset.load_custom_dataset(optimization_object["dataset_path"])
+        dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
         self.dataset = dataset
 
         # Load the metric

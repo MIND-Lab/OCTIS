@@ -35,7 +35,7 @@ def data_dir_test():
 def dataset(data_dir):
     # Load dataset
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
 
     return dataset
 

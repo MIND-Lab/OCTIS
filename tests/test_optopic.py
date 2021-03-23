@@ -31,7 +31,7 @@ def data_dir(root_dir):
 
 def test_f1score(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
 
     model = LDA(num_topics=5, iterations=5)
     output = model.train_model(dataset)
@@ -42,7 +42,7 @@ def test_f1score(data_dir):
 
 def test_coherence_measures(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
 
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)
@@ -54,7 +54,7 @@ def test_coherence_measures(data_dir):
 
 def test_model_output_lda(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = LDA(num_topics=num_topics, iterations=5)
     output = model.train_model(dataset)
@@ -81,7 +81,7 @@ def test_model_output_lda(data_dir):
 
 def test_model_output_etm(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = ETM(num_topics=num_topics, num_epochs=5)
     output = model.train_model(dataset)
@@ -108,7 +108,7 @@ def test_model_output_etm(data_dir):
 
 def test_model_output_nmf(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = NMF(num_topics=num_topics, w_max_iter=10, h_max_iter=10, use_partitions=True)
     output = model.train_model(dataset)
@@ -135,7 +135,7 @@ def test_model_output_nmf(data_dir):
 
 def test_model_output_nmf_scikit(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = NMF_scikit(num_topics=num_topics, use_partitions=True)
     output = model.train_model(dataset)
@@ -162,7 +162,7 @@ def test_model_output_nmf_scikit(data_dir):
 
 def test_model_output_ctm_zeroshot(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = CTM(num_topics=num_topics, num_epochs=5, inference_type='zeroshot')
     output = model.train_model(dataset)
@@ -189,7 +189,7 @@ def test_model_output_ctm_zeroshot(data_dir):
 
 def test_model_output_ctm_combined(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined')
     output = model.train_model(dataset)
@@ -216,7 +216,7 @@ def test_model_output_ctm_combined(data_dir):
 
 def test_model_output_prodlda(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = ProdLDA(num_topics=num_topics, num_epochs=5)
     output = model.train_model(dataset)

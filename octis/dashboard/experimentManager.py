@@ -108,7 +108,7 @@ def startExperiment(parameters):
         dataset = dataset_class()
         dataset_path = str(os.path.join(
             path, "preprocessed_datasets", parameters["dataset"]))
-        dataset.load_custom_dataset(dataset_path)
+        dataset.load_custom_dataset_from_folder(dataset_path)
 
         model_class = importModel(parameters["model"]["name"])
         model = model_class()
@@ -135,7 +135,7 @@ def startExperiment(parameters):
                 metric_parameters[key] = dataset.get_corpus()
             elif os.path.isdir(str(metric_parameters[key])):
                 metricDataset = dataset_class()
-                metricDataset.load_custom_dataset(metric_parameters[key])
+                metricDataset.load_custom_dataset_from_folder(metric_parameters[key])
                 metric_parameters[key] = metricDataset.get_corpus()
 
         metric_class = importMetric(parameters["optimize_metrics"][0]["name"])

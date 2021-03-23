@@ -5,6 +5,7 @@ import sys
 import codecs
 import shutil
 import requests
+import json
 
 """
 This code is highly inspired by the scikit-learn strategy to download datasets
@@ -58,8 +59,7 @@ def _pkl_filepath(*args, **kwargs):
 
 def download_dataset(dataset_name, target_dir, cache_path):
     """Download the 20 newsgroups data and stored it as a zipped pickle."""
-    corpus_path = join(target_dir, "corpus.txt")
-    label_path = join(target_dir, "labels.txt")
+    corpus_path = join(target_dir, "corpus.tsv")
     metadata_path = join(target_dir, "metadata.json")
     vocabulary_path = join(target_dir, "vocabulary.txt")
 
@@ -68,14 +68,11 @@ def download_dataset(dataset_name, target_dir, cache_path):
 
     dataset_url = "https://raw.githubusercontent.com/MIND-Lab/OCTIS/master/preprocessed_datasets/" + dataset_name
 
-    corpus = requests.get(dataset_url + "/corpus.txt")
-    labels = requests.get(dataset_url + "/labels.txt")
+    corpus = requests.get(dataset_url + "/corpus.tsv")
     metadata = requests.get(dataset_url + "/metadata.json")
     vocabulary = requests.get(dataset_url + "/vocabulary.txt")
 
-    if corpus and labels and metadata and vocabulary:
-        with open(label_path, 'w') as f:
-            f.write(labels.text)
+    if corpus and metadata and vocabulary:
         with open(corpus_path, 'w') as f:
             f.write(corpus.text)
         with open(metadata_path, 'w') as f:
@@ -83,8 +80,18 @@ def download_dataset(dataset_name, target_dir, cache_path):
         with open(vocabulary_path, 'w') as f:
             f.write(vocabulary.text)
 
+        only_docs, labels, partition = [], [], []
+        for d in corpus.text.split("\n"):
+            dsplit = d.strip().split("\t")
+            only_docs.append(dsplit[0])
+            if len(dsplit) > 1:
+                partition.append(dsplit[1])
+                if len(dsplit) > 2:
+                    labels.append(dsplit[2])
+
         # Store a zipped pickle
-        cache = dict(corpus=corpus.text, labels=labels.text, metadata=metadata.text, vocabulary=vocabulary.text)
+        cache = dict(corpus=only_docs, labels=labels, partitions=partition, metadata=json.loads(metadata.text),
+                     vocabulary=vocabulary.text.split("\n"))
         compressed_content = codecs.encode(pickle.dumps(cache), 'zlib_codec')
         with open(cache_path, 'wb') as f:
             f.write(compressed_content)
