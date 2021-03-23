@@ -139,7 +139,7 @@ class Preprocessing:
                 metadata["last-training-doc"] = len(train)
                 metadata["last-validation-doc"] = len(validation) + len(train)
 
-                return Dataset(partitioned_corpus, vocabulary, metadata, partitioned_labels)
+                return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=partitioned_labels)
             else:
                 train, test = train_test_split(range(len(final_docs)), test_size=0.15, random_state=1)
                 train, validation = train_test_split(train, test_size=3 / 17, random_state=1)
@@ -148,9 +148,9 @@ class Preprocessing:
                 metadata["last-validation-doc"] = len(validation) + len(train)
                 partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
 
-                return Dataset(partitioned_corpus, vocabulary, metadata, final_labels)
+                return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
         else:
-            Dataset(final_docs, vocabulary, metadata, final_labels)
+            Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
 
     def filter_words(self, docs):
         if self.vocabulary is not None:

@@ -39,7 +39,7 @@ def test_preprocessing(data_dir):
         documents_path=texts_path,
     )
 
-    dataset.save(data_dir+"/sample_texts")
+    dataset.save(data_dir+"/sample_texts/")
     dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
 
 

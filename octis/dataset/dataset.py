@@ -255,11 +255,14 @@ class Dataset:
                     part = 'test'
 
                 for doc in p:
-                    corpus.append(doc)
-                    partitions = part
+                    corpus.append(' '.join(doc))
+                    partition.append(part)
 
-            df = pd.DataFrame(corpus, partition, self.__labels)
-            df.to_csv(path + 'corpus.tsv', delimiter='\t', index=None, header=None)
+            df = pd.DataFrame(data=corpus)
+            df = pd.concat([df, pd.DataFrame(partition)], axis=1)
+            if self.__labels:
+                df = pd.concat([df, pd.DataFrame(self.__labels)], axis=1)
+            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=None)
 
             self._save_vocabulary(path + "/vocabulary.txt")
             self._save_metadata(path + "/metadata.json")
@@ -279,7 +282,7 @@ class Dataset:
                 self._load_metadata(path + "/metadata.json")
             else:
                 self.__metadata = dict()
-            df = pd.read_csv(path + "/corpus.tsv", delimiter='\t', header=None)
+            df = pd.read_csv(path + "/corpus.tsv", sep='\t', header=None)
             if len(df.keys()) > 1:
                 df[1] = df[1].replace("train", "a_train")
                 df[1] = df[1].replace("val", "b_val")
