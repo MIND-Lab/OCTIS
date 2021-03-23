@@ -13,7 +13,9 @@ from skopt.space.space import Real, Categorical, Integer
 from octis.models.model import load_model_output
 
 path = Path(os.path.dirname(os.path.realpath(__file__)))
+pathDataset = str(path.parent.parent)
 path = str(path.parent)
+
 
 # Import octis module
 spec = importlib.util.spec_from_file_location(
@@ -107,7 +109,7 @@ def startExperiment(parameters):
         dataset_class = importDataset()
         dataset = dataset_class()
         dataset_path = str(os.path.join(
-            path, "preprocessed_datasets", parameters["dataset"]))
+            pathDataset, "preprocessed_datasets", parameters["dataset"]))
         dataset.load_custom_dataset_from_folder(dataset_path)
 
         model_class = importModel(parameters["model"]["name"])
