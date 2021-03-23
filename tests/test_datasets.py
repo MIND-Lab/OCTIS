@@ -53,5 +53,5 @@ def test_load_20ng():
 def test_load_M10():
     dataset = Dataset()
     dataset.fetch_dataset("M10")
-    assert len(dataset.get_labels()) == 10
+    assert len(set(dataset.get_labels())) == 10
 

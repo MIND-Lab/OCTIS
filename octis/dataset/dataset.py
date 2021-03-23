@@ -291,11 +291,11 @@ class Dataset:
                 self.__metadata['last-training-doc'] = len(df[df[1] == 'a_train'])
                 self.__metadata['last-validation-doc'] = len(df[df[1] == 'b_val'])
 
-                self.__corpus = df[0].tolist()
+                self.__corpus = [d.split() for d in df[0].tolist()]
                 if len(df.keys()) > 2:
                     self.__labels = df[2].tolist()
             else:
-                self.__corpus = df[0].tolist()
+                self.__corpus = [d.split() for d in df[0].tolist()]
                 self.__metadata['last-training-doc'] = len(df[0])
 
             if exists(path + "/vocabulary.txt"):
@@ -303,7 +303,7 @@ class Dataset:
             else:
                 vocab = set()
                 for d in self.__corpus:
-                    for w in set(d.split(" ")):
+                    for w in set(d):
                         vocab.add(w)
                 self.__vocabulary = list(vocab)
         except:
@@ -346,7 +346,7 @@ class Dataset:
             else:
                 raise IOError(dataset_name + ' dataset not found')
 
-        self.__corpus = cache["corpus"]
+        self.__corpus = [d.split() for d in cache["corpus"]]
         self.__vocabulary = cache["vocabulary"]
         self.__metadata = cache["metadata"]
         self.__labels = cache["labels"]
