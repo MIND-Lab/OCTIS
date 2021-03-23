@@ -1,5 +1,10 @@
 import string
 from typing import List, Union
+from multiprocessing import Pool
+from functools import partial
+import re
+from tqdm.contrib.concurrent import process_map  # or thread_map
+from itertools import product
 
 import spacy
 from nltk.corpus import stopwords as nltk_stopwords
@@ -8,16 +13,19 @@ from sklearn.model_selection import train_test_split
 
 from octis.dataset.dataset import Dataset
 
-language_mapping = {'chinese': 'zh', 'danish': 'nl', 'dutch': 'nl', 'english': 'en', 'french': 'fr', 'german': 'de',
-                    'greek': 'el', 'italian': 'it', 'japanese': 'ja', 'lithuanian': 'lt', 'norwegian': 'nb',
-                    'polish': 'pl', 'portoguese': 'pt', 'romanian': 'ro', 'russian': 'ru', 'spanish': 'es'}
+spacy_model_mapping = {'chinese': 'zh_core_web_sm', 'danish': 'nl_core_news_sm', 'dutch': 'nl_core_news_sm',
+                       'english': 'en_core_web_sm', 'french': 'fr_core_news_sm', 'german': 'de_core_news_sm',
+                       'greek': 'el_core_news_sm', 'italian': 'it_core_news_sm', 'japanese': 'ja_core_news_sm',
+                       'lithuanian': 'lt_core_news_sm', 'norwegian': 'nb_core_news_sm', 'polish': 'pl_core_news_sm',
+                       'portoguese': 'pt_core_news_sm', 'romanian': 'ro_core_news_sm', 'russian': 'ru_core_news_sm',
+                       'spanish': 'es_core_news_sm'}
 
 
 class Preprocessing:
-    def __init__(self, lowercase=True, vocabulary=None, max_features=None, min_df=0, max_df=1.0,
-                 remove_punctuation=True, punctuation=string.punctuation, lemmatize=True, remove_stopwords=True,
-                 stopword_list: Union[str, List[str]] = 'english', min_chars=1, min_words_docs=0, language='english',
-                 split=True):
+    def __init__(self, lowercase=True, vocabulary=None, max_features=None, min_df=0.0, max_df=1.0,
+                 remove_punctuation=True, punctuation=string.punctuation, remove_numbers=True, lemmatize=True,
+                 stopword_list: Union[str, List[str]] = None, min_chars=1, min_words_docs=0, language='english',
+                 split=True, verbose=False, strip=True, num_processes=None):
         self.vocabulary = vocabulary
         self.lowercase = lowercase
         self.max_features = max_features
@@ -26,8 +34,20 @@ class Preprocessing:
         self.remove_punctuation = remove_punctuation
         self.punctuation = punctuation
         self.lemmatize = lemmatize
-        self.remove_stopwords = remove_stopwords
-        self.split=split
+        self.language = language
+        self.strip = strip
+        self.num_processes = num_processes
+        self.remove_numbers = remove_numbers
+
+        if self.lemmatize:
+            lang = spacy_model_mapping[self.language]
+            try:
+                self.spacy_model = spacy.load(lang)
+            except IOError:
+                raise IOError("Can't find model " + lang + ". Check the data directory or download it using the "
+                                                           "following command:\npython -m spacy download " + lang)
+        self.split = split
+        self.verbose = verbose
         if type(stopword_list) == list:
             stopwords = set(stopword_list)
         else:
@@ -42,48 +62,74 @@ class Preprocessing:
         self.min_chars = min_chars
         self.min_doc_words = min_words_docs
         self.preprocessing_steps = []
-        self.language = language
 
     def preprocess_dataset(self, documents_path, labels_path=None):
         docs = [line.strip() for line in open(documents_path, 'r').readlines()]
+        '''
+        tmp_docs = []
+        for i, d in enumerate(docs):
+            new_d = d
+            if self.strip:
+                new_d = new_d.replace('\n', '')
+                new_d = new_d.replace('\t', '')
+            if self.lowercase:
+                new_d = new_d.lower()
+            if self.remove_punctuation:
+                new_d = new_d.translate(str.maketrans(self.punctuation, ' '*len(self.punctuation)))
+            if self.lemmatize:
+                new_d = ' '.join([token.lemma_ for token in self.spacy_model(new_d)])
+                if i % 100 == 0:
+                    print(new_d)
+                    print(i)
+            if self.remove_numbers:
+                new_d = new_d.translate(str.maketrans("0123456789", ' '*len("0123456789")))
 
+            new_d = " ".join(new_d.split())
+
+            tmp_docs.append(new_d)
+        docs = tmp_docs
+        '''
+        if self.num_processes is not None:
+            #with Pool(self.num_processes) as p:
+            #    docs = p.map(self.simple_preprocessing_steps, docs)
+            docs = process_map(self.simple_preprocessing_steps, docs, max_workers=self.num_processes, chunksize=1)
+        else:
+            docs = self.simple_preprocessing_steps(docs)
         if self.lowercase:
             self.preprocessing_steps.append("lowercase")
-            docs = [d.lower() for d in docs]
         if self.remove_punctuation:
             self.preprocessing_steps.append('remove_punctuation')
-            docs = [doc.translate(str.maketrans(self.punctuation, ' ' * len(self.punctuation))).replace(
-                ' ' * 4, ' ').replace(' ' * 3, ' ').replace(' ' * 2, ' ').strip() for doc in docs]
-        if self.remove_stopwords:
-            self.preprocessing_steps.append('remove_stopwords')
-            docs = [' '.join([w for w in doc.split() if w not in self.stopwords]) for doc in docs]
         if self.lemmatize:
             self.preprocessing_steps.append('lemmatize')
-            docs = lemmatization(docs, self.language)
 
-        vocabulary = self.filter_other_words(docs)
-
+        vocabulary = self.filter_words(docs)
+        print("created vocab")
+        #with Pool(self.num_processes) as p:
+        #    final_docs, final_labels = p.starmap(self._foo, product(docs, vocabulary, labels_path, repeat=2))
+        print(len(vocabulary))
         final_docs, final_labels = [], []
         if labels_path is not None:
             labels = [line.strip() for line in open(labels_path, 'r').readlines()]
-            for doc, label in zip(docs, labels):
+            for i, doc, label in zip(range(len(docs)), docs, labels):
                 new_doc = [w for w in doc.split() if w in set(vocabulary)]
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
                     final_labels.append(label)
+                print(i)
         else:
-            labels = []
             for doc in docs:
                 new_doc = [w for w in doc.split() if w in set(vocabulary)]
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
         self.preprocessing_steps.append('filter documents with less than ' + str(self.min_doc_words) + " words")
-
+        if self.verbose:
+            print("words filtering done")
         metadata = {"total_documents": len(docs), "vocabulary_length": len(vocabulary),
-                    "preprocessing-info": self.preprocessing_steps, "labels": list(set(labels)),
-                    "total_labels": len(labels)}
+                    "preprocessing-info": self.preprocessing_steps, "labels": list(set(final_labels)),
+                    "total_labels": len(final_labels)}
+        print("inizio split")
         if self.split:
-            if len(labels)>0:
+            if len(final_labels) > 0:
                 train, test, y_train, y_test = train_test_split(
                     range(len(final_docs)), final_labels, test_size=0.15, random_state=1, stratify=final_labels)
 
@@ -95,7 +141,6 @@ class Preprocessing:
 
                 return Dataset(partitioned_corpus, vocabulary, metadata, partitioned_labels)
             else:
-
                 train, test = train_test_split(range(len(final_docs)), test_size=0.15, random_state=1)
                 train, validation = train_test_split(train, test_size=3 / 17, random_state=1)
 
@@ -103,58 +148,74 @@ class Preprocessing:
                 metadata["last-validation-doc"] = len(validation) + len(train)
                 partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
 
-                return Dataset(partitioned_corpus, vocabulary, metadata, labels)
+                return Dataset(partitioned_corpus, vocabulary, metadata, final_labels)
         else:
-            Dataset(final_docs, vocabulary, metadata, labels)
+            Dataset(final_docs, vocabulary, metadata, final_labels)
 
-    def filter_other_words(self, docs):
+    def filter_words(self, docs):
         if self.vocabulary is not None:
             self.preprocessing_steps.append('filter words by vocabulary')
             self.preprocessing_steps.append('filter words with document frequency lower than ' + str(self.min_df) +
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
-
             vectorizer = TfidfVectorizer(df_max_freq=self.max_df, df_min_freq=self.min_df, vocabulary=self.vocabulary,
                                          token_pattern=r"(?u)\b\w{" + str(self.min_chars) + ",}\b",
-                                         lowercase=self.lowercase)
+                                         lowercase=self.lowercase, stop_words=self.stopwords)
+
         elif self.max_features is not None:
             self.preprocessing_steps.append('filter vocabulary to ' + str(self.max_features) + ' terms')
             self.preprocessing_steps.append('filter words with document frequency lower than ' + str(self.min_df) +
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
-
             vectorizer = TfidfVectorizer(df_max_freq=self.max_df, df_min_freq=self.min_df, lowercase=self.lowercase,
-                                         max_features=self.max_features,
+                                         max_features=self.max_features, stop_words=self.stopwords,
                                          token_pattern=r"(?u)\b\w{" + str(self.min_chars) + ",}\b")
+
         else:
             self.preprocessing_steps.append('filter words with document frequency lower than ' + str(self.min_df) +
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(max_df=self.max_df, min_df=self.min_df, lowercase=self.lowercase,
-                                         token_pattern=r"(?u)\b\w{" + str(self.min_chars) + r",}\b")
+                                         token_pattern=r"(?u)\b\w{" + str(self.min_chars) + r",}\b",
+                                         stop_words=self.stopwords)
+
         vectorizer.fit_transform(docs)
         vocabulary = vectorizer.get_feature_names()
         return vocabulary
 
-
-def lemmatization(corpus, language):
-    """
-    Lemmatize the words in the corpus
-
-    Parameters
-    ----------
-    corpus: the corpus
-    Returns
-    -------
-    result : corpus lemmatized
-    """
-    lang = language_mapping[language]
-    try:
-        nlp = spacy.load(lang + "_core_web_sm")
-    except IOError:
-        raise IOError("Can't find model " + lang +
-                      "_core_web_sm. Check the data directory or download it using the following command:"
-                      "\npython -m spacy download " + lang + "_core_web_sm")
-    return [' '.join([token.lemma_ for token in nlp(document)]) for document in corpus]
+    def _foo(self, docs, vocabulary, labels_path):
+        final_docs, final_labels = [], []
+        if labels_path is not None:
+            labels = [line.strip() for line in open(labels_path, 'r').readlines()]
+            for doc, label in zip(docs, labels):
+                new_doc = [w for w in doc.split() if w in set(vocabulary)]
+                if len(new_doc) > self.min_doc_words:
+                    final_docs.append(new_doc)
+                    final_labels.append(label)
+            return final_docs, final_labels
+        else:
+            for doc in docs:
+                new_doc = [w for w in doc.split() if w in set(vocabulary)]
+                if len(new_doc) > self.min_doc_words:
+                    final_docs.append(new_doc)
+            return final_docs, []
 
 
+    def simple_preprocessing_steps(self, docs):
+        tmp_docs = []
+        for d in docs:
+            new_d = d
+            if self.strip:
+                new_d = new_d.replace('\n', '')
+                new_d = new_d.replace('\t', '')
+            if self.lowercase:
+                new_d = new_d.lower()
+            if self.remove_punctuation:
+                new_d = new_d.translate(str.maketrans(self.punctuation, ' '*len(self.punctuation)))
+            if self.lemmatize:
+                new_d = ' '.join([token.lemma_ for token in self.spacy_model(new_d)])
+            if self.remove_numbers:
+                new_d = new_d.translate(str.maketrans("0123456789", ' '*len("0123456789")))
+            new_d = " ".join(new_d.split())
+            tmp_docs.append(new_d)
+        return tmp_docs
