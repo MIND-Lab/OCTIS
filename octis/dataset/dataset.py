@@ -289,7 +289,7 @@ class Dataset:
                 df = df.sort_values(1).reset_index(drop=True)
 
                 self.__metadata['last-training-doc'] = len(df[df[1] == 'a_train'])
-                self.__metadata['last-validation-doc'] = len(df[df[1] == 'b_val'])
+                self.__metadata['last-validation-doc'] = len(df[df[1] == 'b_val']) + len(df[df[1] == 'a_train'])
 
                 self.__corpus = [d.split() for d in df[0].tolist()]
                 if len(df.keys()) > 2:

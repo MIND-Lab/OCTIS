@@ -1,4 +1,3 @@
-a	b	c
 inference markov chain method	train	2
 proceeding remote sense support crop yield forecast area estimate	train	0
 formation motivation trust	train	9
@@ -5846,7 +5845,7 @@ artificial neural network	train	3
 evidence utility theory interval stochastic dominance	train	9
 exact approximate algorithm extension embed processor instruction set	train	6
 discover graphical causality	train	2
-effective algorithm mining coherent cluster microarray datum	val	2
+effective algorithm mining coherent cluster microarray datum	train	2
 evolutionary objective optimization neural network face detection	val	3
 www elsevi locate	val	6
 evolutionary learning rich neural network	val	3
@@ -7100,7 +7099,7 @@ web global decision support tree	val	9
 numerical performance evaluation link space time code	val	8
 fault detection autonomous robot base fault injection learning	val	3
 technical paper publication datum provide	val	7
-find optimal gene order display microarray datum	test	2
+find optimal gene order display microarray datum	val	2
 treatment qualitative decision criterion	test	9
 find dna motif dependency	test	2
 ensemble neural network	test	3

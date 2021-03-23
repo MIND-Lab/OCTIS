@@ -76,7 +76,7 @@ def test_model_output_lda(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_etm(data_dir):
@@ -103,7 +103,7 @@ def test_model_output_etm(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_nmf(data_dir):
@@ -130,7 +130,7 @@ def test_model_output_nmf(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_nmf_scikit(data_dir):
@@ -157,7 +157,7 @@ def test_model_output_nmf_scikit(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_ctm_zeroshot(data_dir):
@@ -184,7 +184,7 @@ def test_model_output_ctm_zeroshot(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_ctm_combined(data_dir):
@@ -211,7 +211,7 @@ def test_model_output_ctm_combined(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_prodlda(data_dir):
@@ -238,4 +238,4 @@ def test_model_output_prodlda(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
