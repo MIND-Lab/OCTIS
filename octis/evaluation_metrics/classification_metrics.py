@@ -32,7 +32,7 @@ class F1Score(Abstract_Metric):
         if 'scale' in metric_parameters:
             self.scale = metric_parameters['scale']
         else:
-            self.scale = True
+            self.scale = 'minmax'
 
         if 'kernel' in metric_parameters:
             self.kernel = metric_parameters['kernel']
@@ -66,11 +66,14 @@ class F1Score(Abstract_Metric):
         if self.use_log:
             self.train_document_representations = np.log(self.train_document_representations)
             self.test_document_representations = np.log(self.test_document_representations)
-        if self.scale:
-            #scaler = MinMaxScaler()
-            scaler2 = StandardScaler()
-            X_train = scaler2.fit_transform(self.train_document_representations)
-            X_test = scaler2.transform(self.test_document_representations)
+        if self.scale == 'minmax':
+            scaler = MinMaxScaler()
+            X_train = scaler.fit_transform(self.train_document_representations)
+            X_test = scaler.transform(self.test_document_representations)
+        elif self.scale == 'std':
+            scaler = StandardScaler()
+            X_train = scaler.fit_transform(self.train_document_representations)
+            X_test = scaler.transform(self.test_document_representations)
         else:
             X_train = self.train_document_representations
             X_test = self.test_document_representations
