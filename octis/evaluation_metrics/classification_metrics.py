@@ -1,7 +1,7 @@
 from octis.evaluation_metrics.metrics import Abstract_Metric
 import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
-from sklearn.metrics import f1_score, confusion_matrix
+from sklearn.metrics import f1_score
 import numpy as np
 from sklearn import svm
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
@@ -18,7 +18,7 @@ class F1Score(Abstract_Metric):
         self.test_document_representations = None
         parameters = defaults.em_f1_score.copy()
         parameters.update(metric_parameters)
-        self.parameters=parameters
+        self.parameters = parameters
         if 'dataset' not in metric_parameters.keys():
             raise Exception('A dataset is required to extract the labels')
         else:
@@ -74,8 +74,8 @@ class F1Score(Abstract_Metric):
         else:
             X_train = self.train_document_representations
             X_test = self.test_document_representations
-        train_labels = [l[0] for l in self.labels[:len(X_train)]]
-        test_labels = [l[0] for l in self.labels[-len(X_test):]]
+        train_labels = [l for l in self.labels[:len(X_train)]]
+        test_labels = [l for l in self.labels[-len(X_test):]]
 
         id2label = {}
         label2id = {}
@@ -87,7 +87,7 @@ class F1Score(Abstract_Metric):
 
         train_labels = [label2id[l] for l in train_labels]
         test_labels = [label2id[l] for l in test_labels]
-        '''
+
         if self.kernel == 'linear':
             clf = svm.LinearSVC(verbose=True)
         else:
@@ -97,11 +97,12 @@ class F1Score(Abstract_Metric):
         predicted_test_labels = clf.predict(X_test)
 
         return f1_score(test_labels, predicted_test_labels, average=self.average)
-        # , confusion_matrix(test_labels, predicted_test_labels)
+
         '''
         m = svm_train(train_labels, X_train, '-t 0')# -S 0 -K 2 -Z ')
         p_label, _, _ = svm_predict(test_labels, X_test, m)
         #print(len(X_test))
         #print(X_test.shape)
         return f1_score(test_labels, p_label, average=self.average)
+        '''
 
