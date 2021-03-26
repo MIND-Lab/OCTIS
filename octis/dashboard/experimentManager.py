@@ -99,7 +99,7 @@ def startExperiment(parameters):
     optimizationPath = str(os.path.join(
         parameters["path"], parameters["experimentId"]))
     json_file = str(os.path.join(optimizationPath,
-                                parameters["experimentId"] + ".json"))
+                                 parameters["experimentId"] + ".json"))
     if os.path.isfile(json_file):
         Optimizer = importOptimizer()
         optimizer = Optimizer()
@@ -135,9 +135,12 @@ def startExperiment(parameters):
         for key in metric_parameters:
             if metric_parameters[key] == "use dataset texts":
                 metric_parameters[key] = dataset.get_corpus()
+            elif metric_parameters[key] == "use selected dataset":
+                metric_parameters[key] = dataset
             elif os.path.isdir(str(metric_parameters[key])):
                 metricDataset = dataset_class()
-                metricDataset.load_custom_dataset_from_folder(metric_parameters[key])
+                metricDataset.load_custom_dataset_from_folder(
+                    metric_parameters[key])
                 metric_parameters[key] = metricDataset.get_corpus()
 
         metric_class = importMetric(parameters["optimize_metrics"][0]["name"])
@@ -201,6 +204,7 @@ def retrieveBoResults(result_path):
         return dict_return
     return False
 
+
 def retrieveIterationBoResults(path, iteration):
     """
     Function to load the results_old of BO until iteration
@@ -232,15 +236,17 @@ def retrieveIterationBoResults(path, iteration):
         dict_return = dict()
 
         metric_name = result["metric_name"]
-        values=result['dict_model_runs'][metric_name]['iteration_' + str(iteration)]
+        values = result['dict_model_runs'][metric_name]['iteration_' +
+                                                        str(iteration)]
 
-        extra_metric_names=result["extra_metric_names"]
+        extra_metric_names = result["extra_metric_names"]
         for name in extra_metric_names:
-            values = result['dict_model_runs'][name]['iteration_' + str(iteration)]
+            values = result['dict_model_runs'][name]['iteration_' +
+                                                     str(iteration)]
             dict_return.update({name+"_values": values})
 
         dict_metrics = result['dict_model_runs']
-        model_runs=result['model_runs']
+        model_runs = result['model_runs']
         name_metrics = list(dict_metrics.keys())
         if len(result['extra_metric_names']) > 0:
             # nome delle metriche
@@ -250,7 +256,7 @@ def retrieveIterationBoResults(path, iteration):
 
         dict_return.update({"optimized_metric": result["metric_name"]})
         dict_return.update({"optimized_metric_values": values})
-        dict_model_attributes=result['model_attributes']
+        dict_model_attributes = result['model_attributes']
         dict_return.update({"model_attributes": dict_model_attributes})
         dict_return.update({"model_name": result["model_name"]})
         dict_return.update(
@@ -291,7 +297,7 @@ def singleInfo(path):
         mean_seen = np.mean(values)
 
         dict_metrics = result['dict_model_runs']
-        model_runs=result['model_runs']
+        model_runs = result['model_runs']
         name_metrics = list(dict_metrics.keys())
         dict_results = dict()
         for name in name_metrics:
@@ -299,7 +305,8 @@ def singleInfo(path):
             metric_results = dict_metrics[name]
             iterations = len(metric_results.keys())
             for i in range(iterations):
-                dict_results[name].append(metric_results['iteration_' + str(i)])
+                dict_results[name].append(
+                    metric_results['iteration_' + str(i)])
 
         hyperparameters = result['x_iters']
         name_hyp = list(hyperparameters.keys())
@@ -323,8 +330,8 @@ def singleInfo(path):
             {"hyperparameter_configuration": best_hyperparameter_configuration})
         dict_return.update({"optimized_metric": result["metric_name"]})
 
-        #other hyper-parameter values
-        dict_model_attributes=result['model_attributes']
+        # other hyper-parameter values
+        dict_model_attributes = result['model_attributes']
         dict_return.update({"model_attributes": dict_model_attributes})
         dict_return.update({"model_name": result["model_name"]})
 
