@@ -183,22 +183,23 @@ Available Models
 +-----------------------------------------------------+---------------------------------------------+
 | Name                                                | Link                                        |
 +================================================================================+==================+
-| CTM                                                 | `Info<https://github.com/MIND-Lab/OCTIS/>`_ |
+| CTM                                                   | [Info](https://github.com/MIND-Lab/OCTIS) |
 +--------------------------------------------------------------------------------+------------------+
-| ETM                                                 | `Info<https://github.com/MIND-Lab/OCTIS/>`_ |
+| ETM                                                   | [Info](https://github.com/MIND-Lab/OCTIS) |
 +--------------------------------------------------------------------------------+------------------+
-| HDP                          | `Info<https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex/>`_ |
+| HDP                            | [Info](https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex) |
 +--------------------------------------------------------------------------------+------------------+
-| LDA                          | `Info<https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex/>`_ |
+| LDA                            | [Info](https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex) |
 +--------------------------------------------------------------------------------+------------------+
-| LSI                                                 | `Info<https://github.com/MIND-Lab/OCTIS/>`_ |
+| LSI                                                   | [Info](https://github.com/MIND-Lab/OCTIS) |
 +--------------------------------------------------------------------------------+------------------+
-| NMF                        | `Info<https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex/>`_ |
+| NMF                          | [Info](https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex) |
 +--------------------------------------------------------------------------------+------------------+
-| NeuralLDA                                           | `Info<https://github.com/MIND-Lab/OCTIS/>`_ |
+| NeuralLDA                                             | [Info](https://github.com/MIND-Lab/OCTIS) |
 +--------------------------------------------------------------------------------+------------------+
-| ProdLDA                                             | `Info<https://github.com/MIND-Lab/OCTIS/>`_ |
+| ProdLDA                                               | [Info](https://github.com/MIND-Lab/OCTIS) |
 +--------------------------------------------------------------------------------+------------------+
+
 
 Available Datasets
 -------------------
