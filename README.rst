@@ -213,10 +213,22 @@ Available Models
 Available Datasets
 -------------------
 
-* 20Newsgroup
-* BBC News
-* DBLP
-* M10
++--------------+
+| Name         |
++==============+
+| 20Newsgroup_ |
++--------------+
+| BBC-News_    |
++--------------+
+| DBLP_        | 
++--------------+
+| M10_         |
++--------------+
+
+.. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
+.. _BBC-News: https://github.com/MIND-Lab/OCTIS
+.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.bib
+.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.bib
 
 Disclaimer
 ~~~~~~~~~~~~~
