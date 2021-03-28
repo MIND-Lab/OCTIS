@@ -180,25 +180,34 @@ Our Colab Tutorials:
 Available Models
 ----------------
 
-+-----------------------------+---------------------------------------------------------------------+
-| Name                        |                         Link                                        |
-+=============================+=====================================================================+
-| CTM                         | [Info](https://github.com/MIND-Lab/OCTIS)                           |
-+-----------------------------+---------------------------------------------------------------------+
-| ETM                         | [Info](https://github.com/MIND-Lab/OCTIS)                           |
-+-----------------------------+---------------------------------------------------------------------+
-| HDP                         | [Info](https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex)    |
-+-----------------------------+---------------------------------------------------------------------+
-| LDA                         | [Info](https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex)    |
-+-----------------------------+---------------------------------------------------------------------+
-| LSI                         | [Info](https://github.com/MIND-Lab/OCTIS)                           |
-+-----------------------------+---------------------------------------------------------------------+
-| NMF                         | [Info](https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex)  |
-+-----------------------------+---------------------------------------------------------------------+
-| NeuralLDA                   | [Info](https://github.com/MIND-Lab/OCTIS)                           |
-+-----------------------------+---------------------------------------------------------------------+
-| ProdLDA                     | [Info](https://github.com/MIND-Lab/OCTIS)                           |
-+-----------------------------+---------------------------------------------------------------------+
++------------+
+| Name       |
++============+
+| CTM_       |
++------------+
+| ETM_       |
++------------+
+| HDP_       | 
++------------+
+| LDA_       |
++------------+
+| LSI_       |
++------------+
+| NMF_       |
++------------+
+| NeuralLDA_ |
++------------+
+| ProdLDA_   |
++------------+
+
+.. _CTM: https://github.com/MIND-Lab/OCTIS
+.. _ETM: https://github.com/MIND-Lab/OCTIS
+.. _HDP: https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex
+.. _LDA: https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex
+.. _LSI: https://github.com/MIND-Lab/OCTIS
+.. _NMF: https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex
+.. _NeuralLDA: https://github.com/MIND-Lab/OCTIS
+.. _ProdLDA: https://github.com/MIND-Lab/OCTIS
 
 
 Available Datasets
