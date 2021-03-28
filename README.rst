@@ -115,7 +115,6 @@ To build a model, load a preprocessed dataset, customize the model hyperparamete
 If the dataset is partitioned, you can:
 
 * Train the model on the training set and test it on the test documents
-* Train the model on the training set and update it with the test set
 * Train the model with the whole dataset, regardless of any partition.
 
 Evaluate a model
@@ -152,9 +151,9 @@ To optimize a model you need to select a dataset, a metric and the search space 
     # Initialize an optimizer object and start the optimization.
     optimizer=Optimizer()
     OptObject=optimizer.optimize(model,dataset, npmi,search_space,
-                                    number_of_call=number_of_call,
-                                    model_runs=model_runs,
-                                    save_path=save_path)
+                                 number_of_call=number_of_call,
+                                 model_runs=model_runs,
+                                 save_path=save_path)
     #save the results of th optimization in a csv file
     OptObject.save_to_csv("results.csv")
 
@@ -209,7 +208,6 @@ Available Models
 .. _NeuralLDA: https://github.com/MIND-Lab/OCTIS
 .. _ProdLDA: https://github.com/MIND-Lab/OCTIS
 
-
 Available Datasets
 -------------------
 
@@ -227,8 +225,8 @@ Available Datasets
 
 .. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
 .. _BBC-News: https://github.com/MIND-Lab/OCTIS
-.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.bib
-.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.bib
+.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
+.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 
 Disclaimer
 ~~~~~~~~~~~~~
