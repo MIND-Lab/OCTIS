@@ -138,7 +138,7 @@ model_hyperparameters = {
         'power_iters': {'type': 'Integer', 'default_value': 1, 'min_value': 1, 'max_value': 5, 'step': 1,
                         'description': 'Number of power iteration steps to be used. Increasing the number of power '
                                        'iterations improves accuracy, but lowers performance', 'alternative_name':
-                            'Number of power iteration steps'},
+                        'Number of power iteration steps'},
         'extra_samples': {'type': 'Integer', 'default_value': 100, 'min_value': 0, 'max_value': 500, 'step': 1,
                           'description': 'Extra samples to be used besides the rank k. Can improve accuracy',
                           'alternative_name': 'Number of extra samples'}},
@@ -306,6 +306,7 @@ metric_parameters = {
 
     # classification
     "F1Score": {"name": "F1Score", "module": "classification_metrics",
+                "dataset": {"type": "String", "default_value": "use selected dataset"},
                 'average': {"type": "Categorical", "default_value": "micro",
                             "possible_values": ['binary', 'micro', None, 'macro', 'samples', 'weighted']
                             }}
@@ -318,8 +319,7 @@ metric_parameters = {
 
 optimization_parameters = {
     "surrogate_models": [{"name": "Gaussian process", "id": "GP"},
-                         {"name": "Random forest", "id": "RF"},
-                         {"name": "Random search", "id": "RS"}],
+                         {"name": "Random forest", "id": "RF"}],
     "acquisition_functions": [{"name": "Upper confidence bound", "id": "LCB"},
                               {"name": "Expected improvement", "id": "EI"}]
 }

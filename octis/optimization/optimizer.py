@@ -322,7 +322,7 @@ class Optimizer:
             metric_parameters = dict_extra_metric_parameters[name]
             if 'Coherence' in name:
                 metric_parameters.update({'texts': dataset.get_corpus()})
-            if self.name_optimized_metric.startswith('F1Score'):
+            if 'F1Score' in name:
                 metric_parameters.update({'dataset': dataset})
 
             metric = select_metric(metric_parameters, name[2:])
@@ -369,7 +369,7 @@ class Optimizer:
 
         # Load the dataset
         dataset = Dataset()
-        dataset.load(optimization_object["dataset_path"])
+        dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
         self.dataset = dataset
 
         # Load the metric
@@ -480,7 +480,7 @@ class Optimizer:
             self.plot_name = self.plot_name[:-4]
 
         if self.save_name.endswith(".json"):
-            self.save_name = self.save_name[:-4]
+            self.save_name = self.save_name[:-5]
 
         if self.save_path[-1] != '/':
             self.save_path = self.save_path + '/'

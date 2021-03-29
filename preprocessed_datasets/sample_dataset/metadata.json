@@ -1,0 +1,1 @@
+{"total_documents": 11, "vocabulary_length": 230, "preprocessing-info": [], "labels": ["talk.religion.misc", "talk.politics.misc", "sci.med", "comp.windows.x", "soc.religion.christian", "sci.electronics", "misc.forsale", "rec.autos", "rec.sport.baseball", "talk.politics.mideast", "rec.sport.hockey"], "total_labels": 11, "last-training-doc": 5, "last-validation-doc": 8}

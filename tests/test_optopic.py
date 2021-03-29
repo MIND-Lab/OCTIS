@@ -5,6 +5,7 @@
 import pytest
 
 from click.testing import CliRunner
+from octis.evaluation_metrics.classification_metrics import F1Score
 
 from octis.evaluation_metrics.coherence_metrics import *
 from octis.dataset.dataset import Dataset
@@ -25,12 +26,23 @@ def root_dir():
 
 @pytest.fixture
 def data_dir(root_dir):
-    return root_dir + "/../octis/preprocessed_datasets/"
+    return root_dir + "/../preprocessed_datasets/"
+
+
+def test_f1score(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+
+    model = LDA(num_topics=5, iterations=5)
+    output = model.train_model(dataset)
+    metric = F1Score({'dataset': dataset})
+    score = metric.score(output)
+    assert type(score) == np.float64
 
 
 def test_coherence_measures(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
 
     model = LDA(num_topics=3, iterations=5)
     output = model.train_model(dataset)
@@ -42,7 +54,7 @@ def test_coherence_measures(data_dir):
 
 def test_model_output_lda(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = LDA(num_topics=num_topics, iterations=5)
     output = model.train_model(dataset)
@@ -64,12 +76,12 @@ def test_model_output_lda(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_etm(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = ETM(num_topics=num_topics, num_epochs=5)
     output = model.train_model(dataset)
@@ -91,12 +103,12 @@ def test_model_output_etm(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_nmf(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = NMF(num_topics=num_topics, w_max_iter=10, h_max_iter=10, use_partitions=True)
     output = model.train_model(dataset)
@@ -118,12 +130,12 @@ def test_model_output_nmf(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_nmf_scikit(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = NMF_scikit(num_topics=num_topics, use_partitions=True)
     output = model.train_model(dataset)
@@ -145,12 +157,12 @@ def test_model_output_nmf_scikit(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_ctm_zeroshot(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = CTM(num_topics=num_topics, num_epochs=5, inference_type='zeroshot')
     output = model.train_model(dataset)
@@ -172,12 +184,12 @@ def test_model_output_ctm_zeroshot(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_ctm_combined(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined')
     output = model.train_model(dataset)
@@ -199,12 +211,12 @@ def test_model_output_ctm_combined(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
 def test_model_output_prodlda(data_dir):
     dataset = Dataset()
-    dataset.load(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = ProdLDA(num_topics=num_topics, num_epochs=5)
     output = model.train_model(dataset)
@@ -226,4 +238,4 @@ def test_model_output_prodlda(data_dir):
 
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
-    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[1]))
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))

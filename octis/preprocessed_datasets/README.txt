@@ -1,9 +1,0 @@
-Dataset standard:
-A dataset is composed of a folder with up to 4 files:
-corpus.txt = contains the corpus, each line is a document.
-labels.txt = contains the topics each document covers.
-             Each line refer to a document.
-             The labels of a document are serialized in a list.
-metadata.json = contains extra info about the dataset
-vocabulary.txt = contains the words used in the dataset and their
-                 frequency in the documents of the corpus.

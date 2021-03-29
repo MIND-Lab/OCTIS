@@ -13,7 +13,9 @@ from skopt.space.space import Real, Categorical, Integer
 from octis.models.model import load_model_output
 
 path = Path(os.path.dirname(os.path.realpath(__file__)))
+pathDataset = str(path.parent.parent)
 path = str(path.parent)
+
 
 # Import octis module
 spec = importlib.util.spec_from_file_location(
@@ -28,14 +30,15 @@ def importClass(class_name, module_name, module_path):
     """
     Import a class runtime based on its module and name
 
-    Parameters
-    ----------
-    class_name : name of the class
-    module_name : name of the module
-    module_path: absolute path to the module
+    :param class_name: name of the class
+    :type class_name: String
+    :param module_name: name of the module
+    :type module_name: String
+    :param module_path: absolute path to the module
+    :type module_path: String
 
-    Returns
-    single_class : returns the selected class
+    :return: returns the selected class
+    :rtype: Object
     """
     spec = importlib.util.spec_from_file_location(
         module_name, module_path, submodule_search_locations=[])
@@ -50,6 +53,12 @@ def importClass(class_name, module_name, module_path):
 def importModel(model_name):
     """
     Import a model runtime based on its name
+
+    :param model_name: name of the model
+    :type model_name: String
+
+    :return: returns a model.
+    :rtype: Model
     """
     module_path = os.path.join(path, "models")
     module_path = os.path.join(module_path, model_name + ".py")
@@ -60,6 +69,12 @@ def importModel(model_name):
 def importMetric(metric_name):
     """
     Import a metric runtime based on its name
+
+    :param metric_name: name of the metric
+    :type metric_name: String
+
+    :return: returns a metric
+    :rtype: Metric
     """
     module_path = os.path.join(path, "evaluation_metrics")
     module_name = defaults.metric_parameters[metric_name]["module"]
@@ -71,6 +86,9 @@ def importMetric(metric_name):
 def importDataset():
     """
     Import the class dataset at runtime
+
+    :return: returns the dataset class
+    :rtype: Dataset
     """
     module_path = os.path.join(path, "dataset")
     module_path = os.path.join(module_path, "dataset.py")
@@ -81,6 +99,9 @@ def importDataset():
 def importOptimizer():
     """
     Import the optimizer at runtime
+
+    :return: returns the oprimizer class
+    :rtype: Optimizer
     """
     module_path = os.path.join(path, "optimization")
     module_path = os.path.join(module_path, "optimizer.py")
@@ -92,12 +113,15 @@ def importOptimizer():
 def startExperiment(parameters):
     """
     Starts an experiment with the given parameters
+
+    :param parameters: parameters of the experiment
+    :type parameters: Dict
     """
 
     optimizationPath = str(os.path.join(
         parameters["path"], parameters["experimentId"]))
     json_file = str(os.path.join(optimizationPath,
-                                parameters["experimentId"] + ".json"))
+                                 parameters["experimentId"] + ".json"))
     if os.path.isfile(json_file):
         Optimizer = importOptimizer()
         optimizer = Optimizer()
@@ -107,8 +131,8 @@ def startExperiment(parameters):
         dataset_class = importDataset()
         dataset = dataset_class()
         dataset_path = str(os.path.join(
-            path, "preprocessed_datasets", parameters["dataset"]))
-        dataset.load(dataset_path)
+            pathDataset, "preprocessed_datasets", parameters["dataset"]))
+        dataset.load_custom_dataset_from_folder(dataset_path)
 
         model_class = importModel(parameters["model"]["name"])
         model = model_class()
@@ -133,9 +157,12 @@ def startExperiment(parameters):
         for key in metric_parameters:
             if metric_parameters[key] == "use dataset texts":
                 metric_parameters[key] = dataset.get_corpus()
+            elif metric_parameters[key] == "use selected dataset":
+                metric_parameters[key] = dataset
             elif os.path.isdir(str(metric_parameters[key])):
                 metricDataset = dataset_class()
-                metricDataset.load(metric_parameters[key])
+                metricDataset.load_custom_dataset_from_folder(
+                    metric_parameters[key])
                 metric_parameters[key] = metricDataset.get_corpus()
 
         metric_class = importMetric(parameters["optimize_metrics"][0]["name"])
@@ -178,13 +205,11 @@ def retrieveBoResults(result_path):
     """
     Function to load the results_old of BO
 
-    Parameters
-    ----------
-    result_path : path where the results_old are saved (json file).
+    :param result_path: path where the results_old are saved (json file)
+    :type result_path: String
 
-    Returns
-    -------
-    dict_return :dictionary
+    :return: returns the results of BO
+    :rtype: Dict
     """
     if os.path.isfile(result_path):
         # open json file
@@ -199,18 +224,18 @@ def retrieveBoResults(result_path):
         return dict_return
     return False
 
+
 def retrieveIterationBoResults(path, iteration):
     """
     Function to load the results_old of BO until iteration
 
-    Parameters
-    ----------
-    path : path where the results_old are saved (json file).
-    iteration : considered iteration.
+    :param path: path where the results_old are saved (json file).
+    :type path: String
+    :param iteration: considered iteration.
+    :type iterations: Int
 
-    Returns
-    -------
-    dict_return :dictionary
+    :return: returns the BO results until the given iteration
+    :rtype: Dict
     """
     if os.path.isfile(path):
         # open json file
@@ -230,15 +255,17 @@ def retrieveIterationBoResults(path, iteration):
         dict_return = dict()
 
         metric_name = result["metric_name"]
-        values=result['dict_model_runs'][metric_name]['iteration_' + str(iteration)]
+        values = result['dict_model_runs'][metric_name]['iteration_' +
+                                                        str(iteration)]
 
-        extra_metric_names=result["extra_metric_names"]
+        extra_metric_names = result["extra_metric_names"]
         for name in extra_metric_names:
-            values = result['dict_model_runs'][name]['iteration_' + str(iteration)]
+            values = result['dict_model_runs'][name]['iteration_' +
+                                                     str(iteration)]
             dict_return.update({name+"_values": values})
 
         dict_metrics = result['dict_model_runs']
-        model_runs=result['model_runs']
+        model_runs = result['model_runs']
         name_metrics = list(dict_metrics.keys())
         if len(result['extra_metric_names']) > 0:
             # nome delle metriche
@@ -248,7 +275,7 @@ def retrieveIterationBoResults(path, iteration):
 
         dict_return.update({"optimized_metric": result["metric_name"]})
         dict_return.update({"optimized_metric_values": values})
-        dict_model_attributes=result['model_attributes']
+        dict_model_attributes = result['model_attributes']
         dict_return.update({"model_attributes": dict_model_attributes})
         dict_return.update({"model_name": result["model_name"]})
         dict_return.update(
@@ -263,14 +290,12 @@ def retrieveIterationBoResults(path, iteration):
 def singleInfo(path):
     """
     Compute average, median, best and worst result of the object function evaluations
-    
-    Parameters
-    ----------
-    path :  path of the json file of a single experiment
-    
-    Returns
-    -------
-    average, median, best and worst result of the object function evaluations
+
+    :param path: path of the json file of a single experiment
+    :type path: String
+
+    :return: average, median, best and worst result of the object function evaluations
+    :rtype: Dict
     """
     if os.path.isfile(path):
         with open(path, 'rb') as file:
@@ -289,7 +314,7 @@ def singleInfo(path):
         mean_seen = np.mean(values)
 
         dict_metrics = result['dict_model_runs']
-        model_runs=result['model_runs']
+        model_runs = result['model_runs']
         name_metrics = list(dict_metrics.keys())
         dict_results = dict()
         for name in name_metrics:
@@ -297,7 +322,8 @@ def singleInfo(path):
             metric_results = dict_metrics[name]
             iterations = len(metric_results.keys())
             for i in range(iterations):
-                dict_results[name].append(metric_results['iteration_' + str(i)])
+                dict_results[name].append(
+                    metric_results['iteration_' + str(i)])
 
         hyperparameters = result['x_iters']
         name_hyp = list(hyperparameters.keys())
@@ -321,8 +347,8 @@ def singleInfo(path):
             {"hyperparameter_configuration": best_hyperparameter_configuration})
         dict_return.update({"optimized_metric": result["metric_name"]})
 
-        #other hyper-parameter values
-        dict_model_attributes=result['model_attributes']
+        # other hyper-parameter values
+        dict_model_attributes = result['model_attributes']
         dict_return.update({"model_attributes": dict_model_attributes})
         dict_return.update({"model_name": result["model_name"]})
 
@@ -361,15 +387,15 @@ def getModelInfo(experiment_path, iteration, modelRun):
     """
     Retrieve the output of the given model
 
-    Parameters
-    ----------
-    experiment_path :  path of the experiment folder
-    iteration : number of iteration
-    modelRun : number of model run
+    :param experiment_path:  path of the experiment folder
+    :type experiment_path: String
+    :param iteration: number of iteration
+    :type iteration: Int
+    :param modelRun: number of model run
+    :type modelRun: Int
 
-    Returns
-    -------
-    output of the model and vocabulary
+    :return: output of the model and vocabulary
+    :rtype: Dict
     """
     outputfile = str(os.path.join(experiment_path,
                                   "models",

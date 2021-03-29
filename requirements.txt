@@ -9,5 +9,6 @@ torch
 numpy
 libsvm
 flask
-sentence-transformers
+sentence_transformers
 git+https://github.com/MIND-Lab/dragonfly#egg=dragonfly-opt
+requests

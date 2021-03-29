@@ -1,15 +1,21 @@
+import codecs
 import json
+import pickle
+from os.path import join, exists
 from pathlib import Path
+
+import pandas as pd
+from werkzeug.utils import header_property
+
+from octis.dataset.downloader import get_data_home, _pkl_filepath, download_dataset
 
 
 class Dataset:
     """
-    Dataset handles a dataset and offer methods to
-    access, save and edit the dataset data
+    Dataset handles a dataset and offers methods to access, save and edit the dataset data
     """
 
-    def __init__(self, corpus=None, vocabulary=None, metadata=None,
-                 labels=None, edges=None):
+    def __init__(self, corpus=None, vocabulary=None, labels=None, metadata=None):
         """
         Initialize a dataset, parameters are optional
         if you want to load a dataset, initialize this
@@ -18,15 +24,13 @@ class Dataset:
         ----------
         corpus : corpus of the dataset
         vocabulary : vocabulary of the dataset
-        metadata : metadata of the dataset
         labels : labels of the dataset
-        edges : edges of the dataset
+        metadata : metadata of the dataset
         """
         self.__corpus = corpus
         self.__vocabulary = vocabulary
         self.__metadata = metadata
         self.__labels = labels
-        self.__edges = edges
 
     def get_corpus(self):
         return self.__corpus
@@ -34,7 +38,7 @@ class Dataset:
     # Partitioned Corpus getter
     def get_partitioned_corpus(self, use_validation=True):
         last_training_doc = self.__metadata["last-training-doc"]
-        #gestire l'eccezione se last_validation_doc non è definito, restituire
+        # gestire l'eccezione se last_validation_doc non è definito, restituire
         # il validation vuoto
         if use_validation:
             last_validation_doc = self.__metadata["last-validation-doc"]
@@ -124,21 +128,6 @@ class Dataset:
                 metadata = json.load(metadata_file)
             self.__metadata = metadata
 
-    def _save_corpus(self, file_name):
-        """
-        Saves corpus in a file, a line for each document
-        Parameters
-        ----------
-        file_name : name of the file to write
-        """
-        data = self.get_corpus()
-        if data is not None:
-            with open(file_name, 'w') as outfile:
-                for element in data:
-                    outfile.write("%s\n" % " ".join(element))
-        else:
-            raise Exception("error in saving metadata")
-
     def _load_corpus(self, file_name):
         """
         Loads corpus from a file
@@ -179,7 +168,7 @@ class Dataset:
         file = Path(file_name)
         if file.is_file():
             with open(file_name, 'r') as edges_file:
-                edges = [line[0:len(line)-1] for line in edges_file]
+                edges = [line[0:len(line) - 1] for line in edges_file]
             self.__edges = edges
 
     def _save_labels(self, file_name):
@@ -223,9 +212,8 @@ class Dataset:
         data = self.get_vocabulary()
         if data is not None:
             with open(file_name, 'w') as outfile:
-                for word, freq in data.items():
-                    line = word+" "+str(freq)
-                    outfile.write("%s\n" % line)
+                for word in data:
+                    outfile.write(word + "\n")
         else:
             raise Exception("error in saving vocabulary")
 
@@ -236,13 +224,12 @@ class Dataset:
         ----------
         file_name : name of the file to read
         """
-        vocabulary = {}
+        vocabulary = []
         file = Path(file_name)
         if file.is_file():
             with open(file_name, 'r') as vocabulary_file:
                 for line in vocabulary_file:
-                    tmp = line.split()
-                    vocabulary[tmp[0]] = float(tmp[1])
+                    vocabulary.append(line.strip())
             self.__vocabulary = vocabulary
         else:
             raise Exception("error in loading vocabulary")
@@ -257,15 +244,32 @@ class Dataset:
         """
         Path(path).mkdir(parents=True, exist_ok=True)
         try:
-            self._save_corpus(path+"/corpus.txt")
-            self._save_vocabulary(path+"/vocabulary.txt")
-            self._save_labels(path+"/labels.txt")
-            self._save_edges(path+"/edges.txt")
-            self._save_metadata(path+"/metadata.json")
+            partitions = self.get_partitioned_corpus()
+            corpus, partition = [], []
+            for i, p in enumerate(partitions):
+                if i == 0:
+                    part = 'train'
+                elif i == 1 and len(partitions) == 3:
+                    part = 'val'
+                else:
+                    part = 'test'
+
+                for doc in p:
+                    corpus.append(' '.join(doc))
+                    partition.append(part)
+
+            df = pd.DataFrame(data=corpus)
+            df = pd.concat([df, pd.DataFrame(partition)], axis=1)
+            if self.__labels:
+                df = pd.concat([df, pd.DataFrame(self.__labels)], axis=1)
+            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=None)
+
+            self._save_vocabulary(path + "/vocabulary.txt")
+            self._save_metadata(path + "/metadata.json")
         except:
             raise Exception("error in saving the dataset")
 
-    def load(self, path):
+    def load_custom_dataset_from_folder(self, path):
         """
         Loads all the dataset from a folder
         Parameters
@@ -273,11 +277,77 @@ class Dataset:
         path : path of the folder to read
         """
         try:
-            self.path=path
-            self._load_corpus(path+"/corpus.txt")
-            self._load_vocabulary(path+"/vocabulary.txt")
-            self._load_labels(path+"/labels.txt")
-            self._load_edges(path+"/edges.txt")
-            self._load_metadata(path+"/metadata.json")
+            self.path = path
+            if exists(path + "/metadata.json"):
+                self._load_metadata(path + "/metadata.json")
+            else:
+                self.__metadata = dict()
+            df = pd.read_csv(path + "/corpus.tsv", sep='\t', header=None)
+            if len(df.keys()) > 1:
+                df[1] = df[1].replace("train", "a_train")
+                df[1] = df[1].replace("val", "b_val")
+                df = df.sort_values(1).reset_index(drop=True)
+
+                self.__metadata['last-training-doc'] = len(df[df[1] == 'a_train'])
+                self.__metadata['last-validation-doc'] = len(df[df[1] == 'b_val']) + len(df[df[1] == 'a_train'])
+
+                self.__corpus = [d.split() for d in df[0].tolist()]
+                if len(df.keys()) > 2:
+                    self.__labels = df[2].tolist()
+            else:
+                self.__corpus = [d.split() for d in df[0].tolist()]
+                self.__metadata['last-training-doc'] = len(df[0])
+
+            if exists(path + "/vocabulary.txt"):
+                self._load_vocabulary(path + "/vocabulary.txt")
+            else:
+                vocab = set()
+                for d in self.__corpus:
+                    for w in set(d):
+                        vocab.add(w)
+                self.__vocabulary = list(vocab)
         except:
             raise Exception("error in loading the dataset:" + path)
+
+    def fetch_dataset(self, dataset_name, data_home=None, download_if_missing=True):
+        """Load the filenames and data from a dataset.
+        Parameters
+        ----------
+        dataset_name: name of the dataset to download or retrieve
+        data_home : optional, default: None
+            Specify a download and cache folder for the datasets. If None,
+            all data is stored in '~/octis' subfolders.
+        download_if_missing : optional, True by default
+            If False, raise an IOError if the data is not locally available
+            instead of trying to download the data from the source site.
+        """
+
+        data_home = get_data_home(data_home=data_home)
+        cache_path = _pkl_filepath(data_home, dataset_name + ".pkz")
+        dataset_home = join(data_home, dataset_name)
+        cache = None
+        if exists(cache_path):
+            try:
+                with open(cache_path, 'rb') as f:
+                    compressed_content = f.read()
+                uncompressed_content = codecs.decode(
+                    compressed_content, 'zlib_codec')
+                cache = pickle.loads(uncompressed_content)
+            except Exception as e:
+                print(80 * '_')
+                print('Cache loading failed')
+                print(80 * '_')
+                print(e)
+
+        if cache is None:
+            if download_if_missing:
+                cache = download_dataset(dataset_name, target_dir=dataset_home,
+                                         cache_path=cache_path)
+            else:
+                raise IOError(dataset_name + ' dataset not found')
+
+        self.__corpus = [d.split() for d in cache["corpus"]]
+        self.__vocabulary = cache["vocabulary"]
+        self.__metadata = cache["metadata"]
+        self.__labels = cache["labels"]
+

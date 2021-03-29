@@ -49,8 +49,8 @@ You can find the requirements in the `requirements.txt` file.
 Features
 --------
 
-* We provide a set of state-of-the-art preprocessed text datasets (or you can preprocess your own dataset)
-* We provide a set of well-known topic models (both classical and neurals), or you can integrate your own model
+* We provide a set of state-of-the-art preprocessed text datasets (otherwise you can preprocess your own dataset)
+* We provide a set of well-known topic models (both classical and neurals)
 * You can evaluate your model using several state-of-the-art evaluation metrics
 * You can optimize the hyperparameters of the models with respect to a given metric using Bayesian Optimization
 * We provide a simple web dashboard for starting and controlling the optimization experiments
@@ -59,7 +59,7 @@ Features
 Get a preprocessed dataset
 --------------------------
 
-To acquire a dataset you can use one of the built-in sources.
+To get a dataset you can use one of the built-in sources.
 
 .. code-block:: python
 
@@ -75,13 +75,12 @@ Or use your own.
     dataset = source.retrieve("path\to\dataset")
 
 
-A custom dataset must have a document for each line of the file.
-Datasets can be partitioned in train and test sets.
+A custom dataset is represented file a file, where each line represents a document. Additionally, you can provide a label file, where each line represents a label (corresponding to the index of the document). Datasets can be partitioned in train and test sets.
 
 Preprocess
 ----------
 
-To preprocess a dataset Initialize a Pipeline_handler and use the preprocess method.
+To preprocess a dataset, initialize a Pipeline_handler and use the preprocess method.
 
 .. code-block:: python
 
@@ -113,10 +112,9 @@ To build a model, load a preprocessed dataset, customize the model hyperparamete
     model_output = model.train_model(dataset) # Train the model
 
 
-If the dataset is partitioned, you can choose to:
+If the dataset is partitioned, you can:
 
 * Train the model on the training set and test it on the test documents
-* Train the model on the training set and update it with the test set
 * Train the model with the whole dataset, regardless of any partition.
 
 Evaluate a model
@@ -144,9 +142,7 @@ To optimize a model you need to select a dataset, a metric and the search space 
 
     from octis.optimization.optimizer import Optimizer
 
-    search_space = {
-    "alpha": Real(low=0.001, high=5.0),
-    "eta": Real(low=0.001, high=5.0)
+    search_space = {"alpha": Real(low=0.001, high=5.0), "eta": Real(low=0.001, high=5.0)
     }
 
     number_of_call=5
@@ -155,9 +151,9 @@ To optimize a model you need to select a dataset, a metric and the search space 
     # Initialize an optimizer object and start the optimization.
     optimizer=Optimizer()
     OptObject=optimizer.optimize(model,dataset, npmi,search_space,
-                                    number_of_call=number_of_call,
-                                    model_runs=model_runs,
-                                    save_path=save_path)
+                                 number_of_call=number_of_call,
+                                 model_runs=model_runs,
+                                 save_path=save_path)
     #save the results of th optimization in a csv file
     OptObject.save_to_csv("results.csv")
 
@@ -183,23 +179,54 @@ Our Colab Tutorials:
 Available Models
 ----------------
 
-* AVITM
-* CTM
-* ETM
-* HDP
-* LDA
-* LSI
-* NMF
-* NeuralLDA
-* ProdLDA
++------------+
+| Name       |
++============+
+| CTM_       |
++------------+
+| ETM_       |
++------------+
+| HDP_       | 
++------------+
+| LDA_       |
++------------+
+| LSI_       |
++------------+
+| NMF_       |
++------------+
+| NeuralLDA_ |
++------------+
+| ProdLDA_   |
++------------+
+
+.. _CTM: https://github.com/MIND-Lab/OCTIS
+.. _ETM: https://github.com/MIND-Lab/OCTIS
+.. _HDP: https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex
+.. _LDA: https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex
+.. _LSI: https://github.com/MIND-Lab/OCTIS
+.. _NMF: https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex
+.. _NeuralLDA: https://github.com/MIND-Lab/OCTIS
+.. _ProdLDA: https://github.com/MIND-Lab/OCTIS
 
 Available Datasets
 -------------------
 
-* 20Newsgroup
-* BBC News
-* DBLP
-* M10
++--------------+
+| Name         |
++==============+
+| 20Newsgroup_ |
++--------------+
+| BBC-News_    |
++--------------+
+| DBLP_        | 
++--------------+
+| M10_         |
++--------------+
+
+.. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
+.. _BBC-News: https://github.com/MIND-Lab/OCTIS
+.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
+.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 
 Disclaimer
 ~~~~~~~~~~~~~
@@ -221,8 +248,7 @@ The first step in developing a custom model is to define the dictionary of defau
 
 .. code-block:: python
 
-    hyperparameters = {'corpus': None, 'num_topics': 100,
-        'id2word': None, 'alpha': 'symmetric',
+    hyperparameters = {'corpus': None, 'num_topics': 100, 'id2word': None, 'alpha': 'symmetric',
         'eta': None, # ...
         'callbacks': None}
 
