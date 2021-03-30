@@ -7,7 +7,6 @@ from tqdm.contrib.concurrent import process_map  # or thread_map
 from itertools import product
 
 import spacy
-from nltk.corpus import stopwords as nltk_stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 
@@ -50,13 +49,17 @@ class Preprocessing:
         self.verbose = verbose
         if type(stopword_list) == list:
             stopwords = set(stopword_list)
+            self.remove_stopwords_spacy = False
         else:
             if 'english' in stopword_list:
                 with open('octis/preprocessing/stopwords/english.txt') as fr:
                     stopwords = [line.strip() for line in fr.readlines()]
+                    assert stopword_list == language
             else:
-                stopwords = nltk_stopwords.words(stopword_list)  # exception if language not present
-            stopwords = set(stopwords)
+                self.remove_stopwords_spacy = True
+                assert stopword_list == language
+
+                stopwords = []
 
         self.stopwords = stopwords
         self.min_chars = min_chars
@@ -65,30 +68,6 @@ class Preprocessing:
 
     def preprocess_dataset(self, documents_path, labels_path=None):
         docs = [line.strip() for line in open(documents_path, 'r').readlines()]
-        '''
-        tmp_docs = []
-        for i, d in enumerate(docs):
-            new_d = d
-            if self.strip:
-                new_d = new_d.replace('\n', '')
-                new_d = new_d.replace('\t', '')
-            if self.lowercase:
-                new_d = new_d.lower()
-            if self.remove_punctuation:
-                new_d = new_d.translate(str.maketrans(self.punctuation, ' '*len(self.punctuation)))
-            if self.lemmatize:
-                new_d = ' '.join([token.lemma_ for token in self.spacy_model(new_d)])
-                if i % 100 == 0:
-                    print(new_d)
-                    print(i)
-            if self.remove_numbers:
-                new_d = new_d.translate(str.maketrans("0123456789", ' '*len("0123456789")))
-
-            new_d = " ".join(new_d.split())
-
-            tmp_docs.append(new_d)
-        docs = tmp_docs
-        '''
         if self.num_processes is not None:
             #with Pool(self.num_processes) as p:
             #    docs = p.map(self.simple_preprocessing_steps, docs)
@@ -111,14 +90,16 @@ class Preprocessing:
         if labels_path is not None:
             labels = [line.strip() for line in open(labels_path, 'r').readlines()]
             for i, doc, label in zip(range(len(docs)), docs, labels):
-                new_doc = [w for w in doc.split() if w in set(vocabulary)]
+                vocab = set(vocabulary)
+                new_doc = [w for w in doc.split() if w in vocab]
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
                     final_labels.append(label)
                 print(i)
         else:
             for doc in docs:
-                new_doc = [w for w in doc.split() if w in set(vocabulary)]
+                vocab = set(vocabulary)
+                new_doc = [w for w in doc.split() if w in vocab]
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
         self.preprocessing_steps.append('filter documents with less than ' + str(self.min_doc_words) + " words")
@@ -126,7 +107,7 @@ class Preprocessing:
             print("words filtering done")
         metadata = {"total_documents": len(docs), "vocabulary_length": len(vocabulary),
                     "preprocessing-info": self.preprocessing_steps, "labels": list(set(final_labels)),
-                    "total_labels": len(final_labels)}
+                    "total_labels": len(set(final_labels))}
         print("inizio split")
         if self.split:
             if len(final_labels) > 0:
@@ -200,7 +181,6 @@ class Preprocessing:
                     final_docs.append(new_doc)
             return final_docs, []
 
-
     def simple_preprocessing_steps(self, docs):
         tmp_docs = []
         for d in docs:
@@ -210,10 +190,16 @@ class Preprocessing:
                 new_d = new_d.replace('\t', '')
             if self.lowercase:
                 new_d = new_d.lower()
+            if self.lemmatize:
+                if self.remove_stopwords_spacy:
+                    new_d = ' '.join([token.lemma_ for token in self.spacy_model(new_d) if not token.is_stop])
+                elif self.stopwords:
+                    new_d = ' '.join([token.lemma_ for token in self.spacy_model(new_d) if token.lemma_ not in set(self.stopwords)])
+                else:
+                    new_d = ' '.join([token.lemma_ for token in self.spacy_model(new_d)])
+
             if self.remove_punctuation:
                 new_d = new_d.translate(str.maketrans(self.punctuation, ' '*len(self.punctuation)))
-            if self.lemmatize:
-                new_d = ' '.join([token.lemma_ for token in self.spacy_model(new_d)])
             if self.remove_numbers:
                 new_d = new_d.translate(str.maketrans("0123456789", ' '*len("0123456789")))
             new_d = " ".join(new_d.split())
