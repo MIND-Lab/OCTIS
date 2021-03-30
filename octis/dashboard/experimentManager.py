@@ -175,6 +175,8 @@ def startExperiment(parameters):
             for key in single_metric_parameters:
                 if single_metric_parameters[key] == "use dataset texts":
                     single_metric_parameters[key] = dataset.get_corpus()
+                elif single_metric_parameters[key] == "use selected dataset":
+                    single_metric_parameters[key] = dataset
             new_metric = metric_class(single_metric_parameters)
             metrics_to_track.append(new_metric)
 
