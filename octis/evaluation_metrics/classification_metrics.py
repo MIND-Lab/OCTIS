@@ -94,7 +94,7 @@ class F1Score(Abstract_Metric):
         if self.kernel == 'linear':
             clf = svm.LinearSVC(verbose=True)
         else:
-            clf = svm.SVC(kernel=self.kernel)
+            clf = svm.SVC(kernel=self.kernel, max_iter=5000)
         clf.fit(X_train, train_labels)
 
         predicted_test_labels = clf.predict(X_test)
