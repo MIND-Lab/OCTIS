@@ -115,7 +115,6 @@ To build a model, load a preprocessed dataset, customize the model hyperparamete
 If the dataset is partitioned, you can:
 
 * Train the model on the training set and test it on the test documents
-* Train the model on the training set and update it with the test set
 * Train the model with the whole dataset, regardless of any partition.
 
 Evaluate a model
@@ -152,9 +151,9 @@ To optimize a model you need to select a dataset, a metric and the search space 
     # Initialize an optimizer object and start the optimization.
     optimizer=Optimizer()
     OptObject=optimizer.optimize(model,dataset, npmi,search_space,
-                                    number_of_call=number_of_call,
-                                    model_runs=model_runs,
-                                    save_path=save_path)
+                                 number_of_call=number_of_call,
+                                 model_runs=model_runs,
+                                 save_path=save_path)
     #save the results of th optimization in a csv file
     OptObject.save_to_csv("results.csv")
 
@@ -180,23 +179,54 @@ Our Colab Tutorials:
 Available Models
 ----------------
 
-* AVITM
-* CTM
-* ETM
-* HDP
-* LDA
-* LSI
-* NMF
-* NeuralLDA
-* ProdLDA
++------------+
+| Name       |
++============+
+| CTM_       |
++------------+
+| ETM_       |
++------------+
+| HDP_       | 
++------------+
+| LDA_       |
++------------+
+| LSI_       |
++------------+
+| NMF_       |
++------------+
+| NeuralLDA_ |
++------------+
+| ProdLDA_   |
++------------+
+
+.. _CTM: https://github.com/MIND-Lab/OCTIS
+.. _ETM: https://github.com/MIND-Lab/OCTIS
+.. _HDP: https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex
+.. _LDA: https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex
+.. _LSI: https://github.com/MIND-Lab/OCTIS
+.. _NMF: https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex
+.. _NeuralLDA: https://github.com/MIND-Lab/OCTIS
+.. _ProdLDA: https://github.com/MIND-Lab/OCTIS
 
 Available Datasets
 -------------------
 
-* 20Newsgroup
-* BBC News
-* DBLP
-* M10
++--------------+
+| Name         |
++==============+
+| 20Newsgroup_ |
++--------------+
+| BBC-News_    |
++--------------+
+| DBLP_        | 
++--------------+
+| M10_         |
++--------------+
+
+.. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
+.. _BBC-News: https://github.com/MIND-Lab/OCTIS
+.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
+.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 
 Disclaimer
 ~~~~~~~~~~~~~

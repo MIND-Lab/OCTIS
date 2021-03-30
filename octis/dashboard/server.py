@@ -19,6 +19,12 @@ queueManager = ""
 @app.route('/downloadSingleExp',
            methods=['GET'])
 def downloadSingleExp():
+    """
+    Download the report of the given experiment
+
+    :erturn: file with the report
+    :rtype: File
+    """
     experimentId = request.args.get("experimentId")
     batchId = request.args.get("batchId")
 
@@ -87,6 +93,9 @@ def downloadSingleExp():
 def selectPath():
     """
     Select a path from the server and return it to the page
+
+    :return: path
+    :rtype: Dict
     """
     window = tk.Tk()
     path = filedialog.askdirectory()
@@ -98,6 +107,9 @@ def selectPath():
 def serverClosed():
     """
     Reroute to the serverClosed page before server shutdown
+
+    :return: template
+    :rtype: render template
     """
     return render_template("serverClosed.html")
 
@@ -106,6 +118,9 @@ def serverClosed():
 def shutdown():
     """
     Save the state of the QueueManager and perform server shutdown
+
+    :return: Ack signal
+    :rtype: Dict
     """
     queueManager.stop()
     shutdown_server()
@@ -116,6 +131,9 @@ def shutdown():
 def home():
     """
     Return the octis landing page
+
+    :return: template
+    :rtype: render template
     """
     return render_template("index.html")
 
@@ -124,6 +142,9 @@ def home():
 def startExperiment():
     """
     Add a new experiment to the queue
+
+    :return: template
+    :rtype: render template
     """
     data = request.form.to_dict(flat=False)
     batch = data["batchId"][0]
@@ -205,6 +226,9 @@ def startExperiment():
 def getBatchExperiments():
     """
     return the information related to the experiments of a batch
+
+    :return: informations of the experiment
+    :rtype: Dict
     """
     data = request.json['data']
     experiments = []
@@ -223,6 +247,9 @@ def getBatchExperiments():
 def CreateExperiments():
     """
     Serve the experiment creation page
+
+    :return: template
+    :rtype: render template
     """
     models = defaults.model_hyperparameters
     models_descriptions = defaults.model_descriptions
@@ -237,6 +264,9 @@ def CreateExperiments():
 def VisualizeExperiments():
     """
     Serve the experiments visualization page
+
+    :return: template
+    :rtype: render template
     """
     batch_names = queueManager.getBatchNames()
     return render_template("VisualizeExperiments.html",
@@ -247,6 +277,9 @@ def VisualizeExperiments():
 def ManageExperiments():
     """
     Serve the ManageExperiments page
+
+    :return: template
+    :rtype: render template
     """
     exp_list = queueManager.getToRun()
     for exp in exp_list:
@@ -266,6 +299,9 @@ def ManageExperiments():
 def pauseExp():
     """
     Pause the current experiment
+
+    :return: ack signal
+    :rtype: Dict
     """
     queueManager.pause()
     return {"DONE": "YES"}
@@ -275,6 +311,9 @@ def pauseExp():
 def startExp():
     """
     Start the next experiment in the queue
+
+    :return: ack signal
+    :rtype: Dict
     """
     print(queueManager.getRunning())
     if queueManager.getRunning() == None:
@@ -286,6 +325,9 @@ def startExp():
 def deleteExp():
     """
     Delete the selected experiment from the queue
+
+    :return: ack signal
+    :rtype: Dict
     """
     data = request.json['data']
     print(queueManager.getRunning())
@@ -301,6 +343,9 @@ def deleteExp():
 def updateOrder():
     """
     Update the order of the experiments in the queue
+
+    :return: ack signal
+    :rtype: Dict
     """
     data = request.json['data']
     queueManager.editOrder(data)
@@ -311,6 +356,9 @@ def updateOrder():
 def getDocPreview():
     """
     Returns the first 40 words of the selected document
+
+    :return: first 40 words of the document
+    :rtype: Dict
     """
     data = request.json['data']
     return json.dumps({"doc": fs.getDocPreview(data["dataset"], int(data["document"]))})
@@ -320,6 +368,9 @@ def getDocPreview():
 def SingleExperiment(batch="", exp_id=""):
     """
     Serve the single experiment page
+
+    :return: template
+    :rtype: render template
     """
     models = defaults.model_hyperparameters
     output = queueManager.getModel(batch, exp_id, 0, 0)
@@ -343,6 +394,9 @@ def SingleExperiment(batch="", exp_id=""):
 def getIterationData():
     """
     Return data of a single iteration and model run of an experiment
+
+    :return: data of a single iteration and model run of an experiment
+    :rtype: Dict
     """
     data = request.json['data']
     output = queueManager.getModel(data["batchId"], data["experimentId"],
@@ -355,6 +409,14 @@ def getIterationData():
 def typed(value):
     """
     Handles typing of data
+
+    :param value: value to cast
+    :type value: *
+
+    :raises ValueError: cannot cast data
+
+    :return: data with the right type
+    :rtype: *
     """
     try:
         t = int(value)
@@ -370,6 +432,8 @@ def typed(value):
 def shutdown_server():
     """
     Perform server shutdown
+
+    :raise RuntimeError: wrong server environment used
     """
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:

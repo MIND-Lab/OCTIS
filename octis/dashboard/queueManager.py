@@ -71,10 +71,9 @@ class QueueManager:
         """
         If there is no running experiments, choose te next one to run
 
-        Returns
-        -------
-        output : a tuple containing id of the batch and id of
+        :return: a tuple containing id of the batch and id of
                  the next experiment to run
+        :rtype: tuple
         """
         if self.running[0] is None:
             self.running[0] = self.order.pop(0)
@@ -86,15 +85,15 @@ class QueueManager:
         """
         Adds a new experiment to the queue
 
-        Parameters
-        ----------
-        batch : id of the batch
-        id : id of the experiment
-        parameters : dictionary with the parameters of the experiment
+        :param batch: id of the batch
+        :type batch: String
+        :param id: id of the experiment
+        :type id: String
+        :param parameters: dictionary with the parameters of the experiment
+        :type parameters: Dict
 
-        Returns
-        -------
-        True if the experiment was added to the queue, False otherwise
+        :return: True if the experiment was added to the queue, False otherwise
+        :rtype: boolean
         """
         toAdd = batch+id
         parameters["batchId"] = batch
@@ -109,10 +108,9 @@ class QueueManager:
         """
         Put the current experiment in the finished queue
 
-        Returns
-        -------
-        output : a tuple containing id of the batch and id of the
+        :return: a tuple containing id of the batch and id of the
                  completed experiment
+        :rtype: tuple
         """
         while True:
             time.sleep(4)
@@ -132,10 +130,9 @@ class QueueManager:
         """
         pause the running experiment
 
-        Returns
-        -------
-        output : a tuple containing id of the batch and id of the
+        :return: a tuple containing id of the batch and id of the
                  paused experiment
+        :rtype: tuple
         """
         if self.busy[0] and self.running[0] != None:
             paused = self.running[0]
@@ -150,6 +147,9 @@ class QueueManager:
         """
         Get the name of each batch with experiment in the completed list or
         in the list of experiments to run
+
+        :return: names of each batch
+        :rtype: List
         """
         batch_names = []
         to_remove = []
@@ -171,13 +171,11 @@ class QueueManager:
         """
         Retrieves all the experiments of the selected batch
 
-        Parameters
-        ----------
-        batch_name : name of the batch
+        :param batch_name: name of the batch
+        :type batch_name: String
 
-        Returns
-        -------
-        experiments : list of experiments metadata
+        :return: list of experiments metadata
+        :rtype: List
         """
         experiments = []
         to_remove = []
@@ -199,14 +197,13 @@ class QueueManager:
         """
         Return the info of the experiment with the given batch name and id
 
-        Parameters
-        ----------
-        batch : name of the batch
-        experimentId: name of the experiment
+        :param batch: name of the batch
+        :type batch: String
+        :param experimentId: name of the experiment
+        :type experimentId: String
 
-        Returns
-        -------
-        experiment info (mean, median, best seen, worst seen)
+        :return: experiment info (mean, median, best seen, worst seen)
+        :rtype: Dict
         """
         experiment = None
         if batch + experimentId in self.completed:
@@ -247,6 +244,13 @@ class QueueManager:
     def _execute_and_update(toRun, running, busy):
         """
         start an experiment using a static method
+
+        :param toRun: list of experiments to run
+        :type: List
+        :param running: id of the running experiment
+        :type: String
+        :param busy: specify if the queuemanager is busy
+        :type busy: boolean
         """
         startExperiment(toRun[running[0]])
         busy[0] = False
@@ -255,17 +259,18 @@ class QueueManager:
         """
         Retrieve output of the model for a single model
 
-        Parameters
-        ----------
-        batch : name of the batch
-        experimentId : name of the experiment
-        iterarion : number of iteration of the model to retrieve
-        modelRun : numeber of model run of the model to retrieve
+        :param batch: name of the batch
+        :type batch: String
+        :param experimentId: name of the experiment
+        :type experimentId: String
+        :param iterarion: number of iteration of the model to retrieve
+        :type iteration: Int
+        :param modelRun: numeber of model run of the model to retrieve
+        :type modelRun: Int
 
-        Returns
-        -------
-        output : output of the model (topic-word-matrix,
+        :return: output of the model (topic-word-matrix,
                  document-topic-matrix and vocabulary)
+        :rtype: Dict
         """
         experiment = None
         if batch+experimentId in self.completed:
@@ -282,11 +287,15 @@ class QueueManager:
         """
         Retrieve the results of the BO untile the given iteration
 
-        Parameters
-        ----------
-        batch : id of the batch
-        experimentId : id of the experiment
-        iteration : last iteration to consider
+        :param batch: id of the batch
+        :type batch: String
+        :param experimentId: id of the experiment
+        :type experimentId: String
+        :param iteration: last iteration to consider
+        :type iteration: Int
+
+        :return: experiment interation info
+        :rtype: Dict
         """
         experiment = None
         if batch+experimentId in self.completed:
@@ -303,10 +312,13 @@ class QueueManager:
         """
         Retrieve metadata about the experiment
 
-        Parameters
-        ----------
-        batch : name of the batch
-        experimentId : name of the experiment
+        :param batch: name of the batch
+        :type batch: String
+        :param experiment: name of the experiment
+        :type experiment: String
+
+        :return: return experimen metadatata
+        :rtype: Dict
         """
         experiment = False
         if batch+experimentId in self.completed:
@@ -319,10 +331,13 @@ class QueueManager:
         """
         Retrieve the name of each experiment and their batch
 
-        Returns
-        expIds : list of entries. Each entry is a list with 2 elements.
+        :param expIds: list of entries. Each entry is a list with 2 elements.
                  the name of the experiment and a list with name of the batch and
                  name of the experiment
+        :type expIds: List
+
+        :return: name and batch of each experiment
+        :rtype: List
         """
         expIds = []
         to_remove = []
@@ -343,9 +358,8 @@ class QueueManager:
         """
         Retrieve the experiments to run
 
-        Returns
-        -------
-        experiments : dictionary of the experiments to run
+        :return: dictionary of the experiments to run
+        :rtype: Dict
         """
         return dict(self.toRun)
 
@@ -353,9 +367,8 @@ class QueueManager:
         """
         Retrieve the order of the experiments to run
 
-        Returns
-        -------
-        order : id of each experiment to run in order (from first to last)
+        :return: id of each experiment to run in order (from first to last)
+        :rtype: List
         """
         return list(self.order)
 
@@ -363,15 +376,17 @@ class QueueManager:
         """
         returns the id of the running experiment
 
-        Returns
-        -------
-        output : id of the running experiment
+        :return: id of the running experiment
+        :rtype: String
         """
         return self.running[0]
 
     def editOrder(self, newOrder):
         """
         Updates the order of the experiments to run
+
+        :param newOrder: new order of the experiments
+        :type newOrder: List
         """
         FinalOrder = []
         for el in newOrder:
@@ -383,6 +398,9 @@ class QueueManager:
     def deleteFromOrder(self, experimentId):
         """
         Delete and experiment from the queue of experiments to run
+
+        :param experimentId: id of the experiment to remove from the queue
+        :type experimentId: String
         """
         self.order = list(filter(lambda a: a != experimentId, self.order))
         del self.toRun[experimentId]
