@@ -42,7 +42,7 @@ Choose the metric function to optimize.
 
 Create the search space for the optimization.
 
-.. code-block:: bash
+.. code-block:: python
 
     search_space = {
         "alpha": Real(low=0.001, high=5.0),
@@ -51,9 +51,9 @@ Create the search space for the optimization.
 
 Finally, launch the optimization.
 
-.. code-block:: bash
+.. code-block:: python
 
-    BestObject=optimizer.optimize(model,
+    optimization_result=optimizer.optimize(model,
                        dataset,
                        npmi,
                        search_space,
@@ -85,16 +85,16 @@ where:
 
 The results of the optimization are saved in the json file, by default. However, you can save the results of the optimization also in a user-friendly csv file
 
-.. code-block:: bash
+.. code-block:: python
 
-    BestObject.save_to_csv("results.csv")
+    optimization_result.save_to_csv("results.csv")
 
 Resume the optimization
 -------------------------
 
 Optimization runs, for some reason, can be interrupted. With the help of the ``resume_optimization``  you can restart the optimization run from the last saved iteration.
 
-.. code-block:: bash
+.. code-block:: python
 
     optimizer = Optimizer()
     optimizer.resume_optimization(json_path)
@@ -107,7 +107,7 @@ Continue the optimization
 Suppose that, after an optimization process, you want to perform three extra-evaluations.
 You can do this using the method ``resume_optimization``.
 
-.. code-block:: bash
+.. code-block:: python
 
     optimizer = Optimizer()
     optimizer.resume_optimization(json_path, extra_evaluations=3)
@@ -120,7 +120,7 @@ Inspect an extra-metric
 Suppose that, during the optimization process, you want to inspect the value of another metric.
 For example, suppose that you want to check the value of
 
-.. code-block:: bash
+.. code-block:: python
 
     metric_parameters = {
         'texts': dataset.get_corpus(),
@@ -131,9 +131,9 @@ For example, suppose that you want to check the value of
 
 You can add this as a parameter.
 
-.. code-block:: bash
+.. code-block:: python
 
-    BestObject=optimizer.optimize(model,
+    optimization_result=optimizer.optimize(model,
                        dataset,
                        npmi,
                        search_space,
@@ -150,9 +150,9 @@ Early stopping
 Suppose that you want to terminate the optimization process if there is no improvement after a certain number of iterations. You can apply an early stopping criterium during the optimization.
 
 
-.. code-block:: bash
+.. code-block:: python
 
-    BestObject=optimizer.optimize(model,
+    optimization_result=optimizer.optimize(model,
                        dataset,
                        npmi,
                        search_space,

@@ -38,7 +38,7 @@ Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl -OJL https://github.com/silviatti/octis/tarball/master
+    $ curl -OJL https://github.com/mind-lab/octis/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/silviatti/octis
-.. _tarball: https://github.com/silviatti/octis/tarball/master
+.. _Github repo: https://github.com/mind-lab/octis
+.. _tarball: https://github.com/mind-lab/octis/tarball/master
