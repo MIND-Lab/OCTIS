@@ -18,16 +18,16 @@ framework_path = str(framework_path.parent)
 
 def importClass(class_name, module_name, module_path):
     """
-    Import a class runtime based on its module and name
+    Function to import a class runtime based on its module and name
 
-    Parameters
-    ----------
-    class_name : name of the class
-    module_name : name of the module
-    module_path: absolute path to the module
-
-    Returns
-    imported_class : returns the selected class
+    :param class_name: name of the class
+    :type class_name: str
+    :param module_name: name of the module
+    :type module_name: str
+    :param module_path: absolute path to the module
+    :type module_path: str
+    :return: class object
+    :rtype: class
     """
     spec = importlib.util.spec_from_file_location(
         module_name, module_path, submodule_search_locations=[])
@@ -36,22 +36,18 @@ def importClass(class_name, module_name, module_path):
     spec.loader.exec_module(module)
     importlib.invalidate_caches()
     imported_class = getattr(module, class_name)
+
     return imported_class
 
 
 def load_model(optimization_object):
     """
-
     Function used to load the topic model for the resume_optimization
 
-    Parameters
-    ----------
-    optimization_object : dictionary where the BO parameter are saved.
-
-    Returns
-    -------
-    model_instance : topic model used during the BO.
-
+    :param optimization_object: dictionary of optimization attributes saved in the jaon file
+    :type optimization_object: dict
+    :return: topic model used during the BO.
+    :rtype: object model
     """
 
     model_parameters = optimization_object['model_attributes']
@@ -63,12 +59,22 @@ def load_model(optimization_object):
     model = importClass(model_name, model_name, module_path)
     model_instance = model()
     model_instance.hyperparameters.update(model_parameters)
-    model_instance.use_partitions=use_partitioning
+    model_instance.use_partitions = use_partitioning
 
     return model_instance
 
 
 def select_metric(metric_parameters, metric_name):
+    """
+    Function to select the metric for the resume of the optimization
+
+    :param metric_parameters: metric parameters
+    :type metric_parameters: list
+    :param metric_name: name of the metric
+    :type metric_name: str
+    :return: metric
+    :rtype: metric object
+    """
     module_path = os.path.join(framework_path, "evaluation_metrics")
     module_name = defaults.metric_parameters[metric_name]["module"]
     module_path = os.path.join(module_path, module_name + ".py")
@@ -79,6 +85,14 @@ def select_metric(metric_parameters, metric_name):
 
 
 def choose_optimizer(params):
+    """
+    Function to choose a surrogate model for Bayesian Optimization
+
+    :param params: list of setting of the BO experiment
+    :type params: object
+    :return: surrogate model
+    :rtype: scikit object
+    """
     params_space_list = dimensions_aslist(params.search_space)
     estimator = None
     # Choice of the surrogate model
@@ -120,19 +134,16 @@ def choose_optimizer(params):
 
 def convergence_res(values, optimization_type="minimize"):
     """
-        Given a single element of a
-        Bayesian_optimization return the
-        convergence of y
+    Compute the list of values to plot the convergence plot (i.e. the best seen at each iteration)
 
-        Parameters
-        ----------
-        values : values obtained by BO
-
-        Returns
-        -------
-        val : A list with the best min seen for
-            each evaluation
+    :param values: the result(s) for which to compute the convergence trace.
+    :type values: list
+    :param optimization_type: "minimize" if the problem is a minimization problem, "maximize" otherwise
+    :type optimization_type: str
+    :return: a list with the best min seen for each iteration
+    :rtype: list
     """
+
     values2 = values.copy()
 
     if optimization_type == "minimize":
@@ -148,25 +159,22 @@ def convergence_res(values, optimization_type="minimize"):
 
 def early_condition(values, n_stop, n_random):
     """
-        Compute the decision to stop or not.
+    Compute the early-stop criterium to stop or not the optimization.
 
-        Parameters
-        ----------
-        values : values obtained by BO
-
-        n_stop : Range of points without improvement
-
-        n_random : Random starting point
-
-        Returns
-        -------
-        decision : Return True if early stop condition has been reached
+    :param values: values obtained by Bayesian Optimization
+    :type values: list
+    :param n_stop: Range of points without improvement
+    :type n_stop: int
+    :param n_random: Random starting points
+    :type n_random: int
+    :return: 'True' if early stop condition reached, 'False' otherwise
+    :rtype: bool
     """
     n_min_len = n_stop + n_random
 
     if len(values) >= n_min_len:
         values = convergence_res(values, optimization_type="minimize")
-        worst = values[len(values) - (n_stop)]
+        worst = values[len(values) - n_stop]
         best = values[-1]
         diff = worst - best
         if diff == 0:
@@ -177,19 +185,15 @@ def early_condition(values, n_stop, n_random):
 
 def plot_model_runs(model_runs, current_call, name_plot):
     """
-        Save a boxplot of the data.
-        Works only when optimization_runs is 1.
+    Function to save a boxplot of the data (Works only when optimization_runs is 1).
 
-        Parameters
-        ----------
-        matrix: list of list of list of numbers
-                or a 3D matrix
-
-        name_plot : The name of the file you want to
-                    give to the plot
-
+    :param model_runs: dictionary of all the model runs.
+    :type model_runs: dict
+    :param current_call: number of calls computed by BO
+    :type current_call: int
+    :param name_plot: Name of the plot
+    :type name_plot: str
     """
-
     values = [model_runs["iteration_" + str(i)] for i in range(current_call + 1)]
 
     plt.ioff()
@@ -205,21 +209,16 @@ def plot_model_runs(model_runs, current_call, name_plot):
 def plot_bayesian_optimization(values, name_plot,
                                log_scale=False, conv_max=True):
     """
-        Save a convergence plot of the result of a
-        Bayesian_optimization.
+    Function to save a convergence plot of the result of a Bayesian_optimization.
 
-        Parameters
-        ----------
-        values : values obtained by BO
-
-        name_plot : The name of the file you want to
-                    give to the plot
-
-        log_scale : y log scale if True
-
-        conv_min : If True the convergence is for the min,
-                    If False is for the max
-
+    :param values: List of objective function values
+    :type values: list
+    :param name_plot: Name of the plot
+    :type name_plot: str
+    :param log_scale: 'True' if you want a log scale for y-axis, 'False' otherwise
+    :type log_scale: bool, optional
+    :param conv_max: 'True' for a minimization problem, 'False' for a maximization problem
+    :type conv_max: bool, optional
     """
     if conv_max:
         # minimization problem -->maximization problem
@@ -251,6 +250,14 @@ def plot_bayesian_optimization(values, name_plot,
 
 
 def convert_type(obj):
+    """
+    Convert a numpy object to a python object
+
+    :param obj: object to be checked
+    :type obj: numpy object
+    :return: python object
+    :rtype: python object
+    """
     if isinstance(obj, np.integer):
         return int(obj)
     elif isinstance(obj, np.floating):
@@ -263,9 +270,12 @@ def convert_type(obj):
 
 def check_instance(obj):
     """
-
     Function to check if a specific object con be inserted in the json file.
 
+    :param obj: an object of the optimization to be saved
+    :type obj: [str,float, int, bool, etc.]
+    :return: 'True' if the object can be inserted in a json file, 'False' otherwise
+    :rtype: bool
     """
     types = [str, float, int, bool]
 
@@ -278,38 +288,44 @@ def check_instance(obj):
 
 def save_search_space(search_space):
     """
+    Function to save the search space in the json file
 
-    Function to check if a specific object con be inserted in the json file.
-
+    :param search_space: dictionary of the search space (scikit-optimize object)
+    :type search_space: dict
+    :return: dictionary for the seach space, which can be saved in a json file
+    :rtype: dict
     """
     from skopt.space.space import Real, Categorical, Integer
 
     ss = dict()
     for key in list(search_space.keys()):
         if type(search_space[key]) == Real:
-            ss[key] = ['Real', search_space[key].bounds,search_space[key].prior]
+            ss[key] = ['Real', search_space[key].bounds, search_space[key].prior]
         elif type(search_space[key]) == Integer:
-            ss[key] = ['Integer', search_space[key].bounds,search_space[key].prior]
+            ss[key] = ['Integer', search_space[key].bounds, search_space[key].prior]
         elif type(search_space[key]) == Categorical:
-            ss[key] = ['Categorical', search_space[key].categories,search_space[key].prior]
+            ss[key] = ['Categorical', search_space[key].categories, search_space[key].prior]
 
     return ss
 
 
 def load_search_space(search_space):
     """
+    Function to load the search space from the json file
 
-    Function to check if a specific object con be inserted in the json file.
-
+    :param search_space: dictionary of the search space (insertable in a json file)
+    :type dict:
+    :return: dictionary for the search space (for scikit optimize)
+    :rtype: dict
     """
     from skopt.space.space import Real, Categorical, Integer
 
     ss = dict()
     for key in list(search_space.keys()):
         if search_space[key][0] == 'Real':
-            ss[key] = Real(low=search_space[key][1][0], high=search_space[key][1][1],prior=search_space[key][2])
+            ss[key] = Real(low=search_space[key][1][0], high=search_space[key][1][1], prior=search_space[key][2])
         elif search_space[key][0] == 'Integer':
-            ss[key] = Integer(low=search_space[key][1][0], high=search_space[key][1][1],prior=search_space[key][2])
+            ss[key] = Integer(low=search_space[key][1][0], high=search_space[key][1][1], prior=search_space[key][2])
         elif search_space[key][0] == 'Categorical':
             ss[key] = Categorical(categories=search_space[key][1])
 
@@ -325,6 +341,10 @@ class BestEvaluation:
         """
         Create an object with all the information about Bayesian Optimization
 
+        :param params: list of setting of the BO experiment
+        :type params: object
+        :param resultsBO: object of Scikit-optimize where the results of BO  are saved
+        :type resultsBO: object
         """
         search_space = params.search_space
         optimization_type = params.optimization_type
@@ -377,7 +397,7 @@ class BestEvaluation:
         self.info.update({"search_space": save_search_space(params.search_space)})
         self.info.update({"model_name": params.model.__class__.__name__})
         self.info.update({"model_attributes": dict_model_parameters})
-        self.info.update({"use_partitioning":  params.model.use_partitions})
+        self.info.update({"use_partitioning": params.model.use_partitions})
         self.info.update({"metric_name": params.name_optimized_metric})
         self.info.update({"extra_metric_names": [name for name in params.extra_metric_names]})
         self.info.update({"metric_attributes": dict_metric_parameters})
@@ -418,14 +438,22 @@ class BestEvaluation:
 
     def save(self, name_file):
         """
-        Save results for Bayesian Optimization
+        Save results for Bayesian Optimization in a json file
+
+        :param name_file: name of the file
+        :type name_file: str
         """
         self.name_json = name_file
         with open(name_file, 'w') as fp:
             json.dump(self.info, fp)
 
     def save_to_csv(self, name_file):
+        """
+        Function to save the results of BO to a csv file
 
+        :param name_file: name of the file
+        :type name_file: str
+        """
         n_row = len(self.func_vals)
         n_extra_metrics = len(self.extra_metrics)
 
@@ -462,7 +490,12 @@ class BestEvaluation:
 
     def load(self, name):
         """
-        Load results for Bayesian Optimization
+        Load the results of optimization
+
+        :param name: name of the json file
+        :type name: str
+        :return: dictionary of the results load from the json file
+        :rtype: dict
         """
         with open(name, 'rb') as file:
             result = json.load(file)
