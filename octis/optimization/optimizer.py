@@ -147,12 +147,12 @@ class Optimizer:
         """
         Method to restart the optimization from the json file.
 
-        Parameters
-        ----------
-        name_path: path of the json file
-
-        extra_evaluations: extra iterations for the BO optimization
-
+        :param name_path: path of the json file
+        :type name_path: str
+        :param extra_evaluations: extra iterations for the BO optimization
+        :type extra_evaluations: int
+        :return: object with the results of the optimization
+        :rtype: object
         """
 
         # Restore of the parameters
@@ -177,8 +177,12 @@ class Optimizer:
     def _objective_function(self, hyperparameter_values):
         """
         Method to evaluate the objective function
-        """
 
+        :param hyperparameter_values: hyper-parameters of the Topic Model
+        :type hyperparameter_values: list
+        :return: value of the objective function
+        :rtype: float
+        """
         # Retrieve parameters labels
         params = {}
         for i in range(len(self.hyperparameters)):
@@ -236,7 +240,9 @@ class Optimizer:
 
     def _optimization_loop(self, opt):
         """
-        Method to perform the BO iterations
+        Method to perform the optimization through Bayesian Optimization
+
+        :rtype: result of the optimization
         """
 
         # For loop to perform Bayesian Optimization
@@ -296,9 +302,10 @@ class Optimizer:
         """
         Method to load the metric from the json file, useful for the resume method
 
-        Parameters
-        ----------
-
+        :param optimization_object: dictionary of the information saved during the optimization
+        :type optimization_object: dict
+        :param dataset: the considered dataset
+        :type dataset: OCTIS dataset object
         """
         # Optimized Metric
         self.name_optimized_metric = optimization_object['metric_name']
@@ -328,7 +335,10 @@ class Optimizer:
 
     def _restore_parameters(self, name_path):
         """
-        Restore the parameters of the BO from the json file
+        Method to restore the parameters of BO from the json file
+
+        :param name_path: name of the json file
+        :rtype name_path: str
         """
 
         # Load the previous results
@@ -398,9 +408,11 @@ class Optimizer:
 
     def _check_BO_parameters(self):
         """
-        Controls about the BO parameters
+        Method to control the BO parameters
+
+        :return: -1 if there is an error, 0 otherwise
         """
-        # Controls about BO parameters
+
         if self.optimization_type not in ['Maximize', 'Minimize']:
             print("Error: optimization type must be Maximize or Minimize")
             return -1
