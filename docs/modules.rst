@@ -18,9 +18,21 @@ Data Preprocessing Module
 Evaluation Measures Module
 ==========================
 
-.. automodule:: octis.evaluation_metrics
+.. automodule:: octis.evaluation_metrics.metrics
     :members:
 
+
+.. automodule:: octis.evaluation_metrics.coherence_metrics
+    :members:
+    
+.. automodule:: octis.evaluation_metrics.diversity_metrics
+    :members:
+    
+.. automodule:: octis.evaluation_metrics.classification_metrics
+    :members:
+    
+.. automodule:: octis.evaluation_metrics.topic_significance_metrics
+    :members:
 ==========================
 Optimization Module
 ==========================
@@ -28,9 +40,16 @@ Optimization Module
 .. automodule:: octis.optimization.optimizer
     :members:
 
+.. automodule:: octis.optimization.optimizer_tool
+    :members:
+
+
 ==========================
 Models Module
 ==========================
 
 .. automodule:: octis.models.model
+    :members:
+
+.. automodule:: octis.models.LDA
     :members:
