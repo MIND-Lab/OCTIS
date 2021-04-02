@@ -59,7 +59,7 @@ class NMF_scikit(Abstract_Model):
         self.update_with_test = False
 
         vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b\w+\b",
-                                     vocabulary=list(dataset.get_vocabulary().keys()))
+                                     vocabulary=list(dataset.get_vocabulary()))
 
         if self.use_partitions:
             partition = dataset.get_partitioned_corpus(use_validation=False)
