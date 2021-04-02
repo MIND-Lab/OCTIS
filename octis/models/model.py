@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import os
-import pickle
 import numpy as np
 import json
 
@@ -10,16 +9,17 @@ class Abstract_Model(ABC):
     Class structure of a generic Topic Modelling implementation
     """
 
-    hyperparameters = {}
-
     def __init__(self):
         """
         Create a blank model to initialize
         """
+        self.hyperparameters = dict()
 
     def set_hyperparameters(self, **kwargs):
         """
         Set model hyperparameters
+
+        :**kwargs: a dictionaary of in the form {hyperparameter name: value}
         """
         for key, value in kwargs.items():
             self.hyperparameters[key] = value
@@ -28,35 +28,40 @@ class Abstract_Model(ABC):
     def train_model(self, dataset, hyperparameters, top_words=10):
         """
         Train the model.
-        Return a dictionary with up to 3 entries,
-        'topics', 'topic-word-matrix' and 'topic-document-matrix'.
-        'topics' is the list of the most significative words for
-        each topic (list of lists of strings).
+        :param dataset: Dataset
+        :param hyperparameters: dictionary in the form {hyperparameter name: value}
+        :param top_words: number of top significant words for each topic (default: 10)
+
+        :return a dictionary containing up to 4 keys: 'topics', 'topic-word-matrix', 'topic-document-matrix',
+        'test-topic-document-matrix'. 'topics' is the list of the most significant words for each topic (list of lists
+         of strings). 'topic-word-matrix' is the matrix (num topics x |vocabulary|) containing the probabilities of a
+         word in a given topic. 'topic-document-matrix' is the matrix (|topics| x |training documents|) containing the
+         probabilities of the topics in a given training document. 'test-topic-document-matrix' is the matrix (|topics|
+         x |testing documents|) containing the probabilities of the topics in a given testing document.
         """
         pass
 
 
 def save_model_output(model_output, path=os.curdir, appr_order=7):
     """
-    Saves the model output in the choosen directory
+    Saves the model output in the chosen directory
 
-    Parameters
-    ----------
-    model_output: output of the model
-    path: path in which the file will be saved and name of the file
-    appr_order: approximation order (used to round model_output values)
+    :param model_output: output of the model
+    :param path: path in which the file will be saved and name of the file
+    :param appr_order: approximation order (used to round model_output values)
     """
 
     to_save = {}
-    for single_output in model_output.keys():
-        if single_output != "topics" and single_output != "test-topics":
-            to_save[single_output] = (
-                model_output[single_output].round(appr_order))
-        else:
-            to_save[single_output] = (model_output[single_output])
-    np.savez_compressed(
-        path,
-        **to_save)
+    try:
+        for single_output in model_output.keys():
+            if single_output != "topics" and single_output != "test-topics":
+                to_save[single_output] = (
+                    model_output[single_output].round(appr_order))
+            else:
+                to_save[single_output] = (model_output[single_output])
+        np.savez_compressed(path, **to_save)
+    except:
+        raise Exception("error in saving the output model file")
 
 
 def load_model_output(output_path, vocabulary_path=None, top_words=10):
@@ -65,11 +70,10 @@ def load_model_output(output_path, vocabulary_path=None, top_words=10):
 
     Parameters
     ----------
-    output_path: path in which th model output is saved
-    topics_path: path in which the vocabulary is saved
-                 (optional, used to retrieve the top k words of each topic)
-    top_words: top k words to retrieve for each topic
-            (in case a vocabulary path is given)
+    :param output_path: path in which th model output is saved
+    :param vocabulary_path: path in which the vocabulary is saved (optional, used to retrieve the top k words of each
+     topic)
+    :param top_words: top k words to retrieve for each topic (in case a vocabulary path is given)
     """
     output = dict(np.load(output_path, allow_pickle=True))
     if vocabulary_path is not None:
