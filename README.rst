@@ -80,19 +80,31 @@ A custom dataset is represented file a file, where each line represents a docume
 Preprocess
 ----------
 
-To preprocess a dataset, initialize a Pipeline_handler and use the preprocess method.
+To preprocess a dataset, import the preprocessing class and use the preprocess_dataset method.
 
 .. code-block:: python
 
-    from octis.preprocessing.pipeline_handler import Pipeline_handler
 
-    pipeline_handler = Pipeline_handler(dataset) # Initialize pipeline handler
-    preprocessed = pipeline_handler.preprocess() # preprocess
+    import os
+    import string
+    from octis.preprocessing.preprocessing import Preprocessing
+    os.chdir(os.path.pardir)
 
-    preprocessed.save("dataset_folder") # Save the preprocessed dataset
+    # Initialize preprocessing
+    p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True, punctuation=string.punctuation,
+                      lemmatize=True, remove_stopwords=True, stopword_list=['am', 'are', 'this', 'that'],
+                      min_chars=1, min_words_docs=0)
+    # preprocess
+    dataset = p.preprocess_dataset(
+        documents_path=r'..\preprocessed_datasets\M10\corpus.txt',
+        labels_path=r'..\preprocessed_datasets\M10\labels.txt',
+    )
+
+    # save the preprocessed dataset
+    dataset.save('hello_dataset.txt')
 
 
-For the customization of the preprocess pipeline see the optimization demo example in the examples folder.
+For the customization of the preprocess pipeline see the preprocessing demo example in the examples folder.
 
 Train a model
 -------------
