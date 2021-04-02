@@ -1,4 +1,4 @@
-from octis.evaluation_metrics.metrics import Abstract_Metric
+from octis.evaluation_metrics.metrics import AbstractMetric
 from gensim.corpora.dictionary import Dictionary
 from gensim.models import CoherenceModel
 from gensim.models import KeyedVectors
@@ -13,7 +13,7 @@ from sklearn.preprocessing import normalize
 from operator import add
 
 
-class Coherence(Abstract_Metric):
+class Coherence(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric
@@ -59,7 +59,7 @@ class Coherence(Abstract_Metric):
         score : coherence score
         """
         self.topics = model_output["topics"]
-        if self.topics is None:
+        if self.topics is None or self.topics.size <= 1:
             return -1
         if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
@@ -74,7 +74,7 @@ class Coherence(Abstract_Metric):
             return npmi.get_coherence()
 
 
-class Coherence_word_embeddings(Abstract_Metric):
+class Coherence_word_embeddings(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric
@@ -141,7 +141,7 @@ class Coherence_word_embeddings(Abstract_Metric):
             return np.mean(arrays)
 
 
-class Coherence_word_embeddings_pairwise(Abstract_Metric):
+class Coherence_word_embeddings_pairwise(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric
@@ -214,7 +214,7 @@ class Coherence_word_embeddings_pairwise(Abstract_Metric):
             return result
 
 
-class Coherence_word_embeddings_centroid(Abstract_Metric):
+class Coherence_word_embeddings_centroid(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric

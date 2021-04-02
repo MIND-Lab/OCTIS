@@ -1,24 +1,24 @@
-from octis.evaluation_metrics.metrics import Abstract_Metric
+from octis.evaluation_metrics.metrics import AbstractMetric
 import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
-from sklearn.metrics import f1_score, confusion_matrix
+from sklearn.metrics import f1_score
 import numpy as np
 from sklearn import svm
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from libsvm.svmutil import *
 
 
-class F1Score(Abstract_Metric):
+class F1Score(AbstractMetric):
 
     def __init__(self, metric_parameters=None):
-        Abstract_Metric.__init__(self, metric_parameters)
+        AbstractMetric.__init__(self, metric_parameters)
         if metric_parameters is None:
             metric_parameters = {}
         self.train_document_representations = None
         self.test_document_representations = None
         parameters = defaults.em_f1_score.copy()
         parameters.update(metric_parameters)
-        self.parameters=parameters
+        self.parameters = parameters
         if 'dataset' not in metric_parameters.keys():
             raise Exception('A dataset is required to extract the labels')
         else:
@@ -87,7 +87,7 @@ class F1Score(Abstract_Metric):
 
         train_labels = [label2id[l] for l in train_labels]
         test_labels = [label2id[l] for l in test_labels]
-        '''
+
         if self.kernel == 'linear':
             clf = svm.LinearSVC(verbose=True)
         else:
@@ -97,11 +97,11 @@ class F1Score(Abstract_Metric):
         predicted_test_labels = clf.predict(X_test)
 
         return f1_score(test_labels, predicted_test_labels, average=self.average)
-        # , confusion_matrix(test_labels, predicted_test_labels)
+
         '''
         m = svm_train(train_labels, X_train, '-t 0')# -S 0 -K 2 -Z ')
         p_label, _, _ = svm_predict(test_labels, X_test, m)
         #print(len(X_test))
         #print(X_test.shape)
         return f1_score(test_labels, p_label, average=self.average)
-
+        '''
