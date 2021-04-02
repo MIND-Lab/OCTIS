@@ -8,10 +8,9 @@ import octis.configuration.defaults as defaults
 
 class NMF(Abstract_Model):
 
-    def __init__(self, num_topics=100, chunksize=2000, passes=1, kappa=1.0,
-                 minimum_probability=0.01, w_max_iter=200,
-                 w_stop_condition=0.0001, h_max_iter=50, h_stop_condition=0.001,
-                 eval_every=10, normalize=True, random_state=None, use_partitions=True):
+    def __init__(self, num_topics=100, chunksize=2000, passes=1, kappa=1.0, minimum_probability=0.01, w_max_iter=200,
+                 w_stop_condition=0.0001, h_max_iter=50, h_stop_condition=0.001, eval_every=10, normalize=True,
+                 random_state=None, use_partitions=True):
         """
         Initialize NMF model
 
@@ -55,6 +54,7 @@ class NMF(Abstract_Model):
         random_state ({np.random.RandomState, int}, optional) – Seed for
         random generator. Needed for reproducibility.
         """
+        super().__init__()
         self.hyperparameters["num_topics"] = num_topics
         self.hyperparameters["chunksize"] = chunksize
         self.hyperparameters["passes"] = passes
