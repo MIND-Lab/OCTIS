@@ -19,7 +19,7 @@ class Abstract_Model(ABC):
         """
         Set model hyperparameters
 
-        :**kwargs: a dictionaary of in the form {hyperparameter name: value}
+        :param **kwargs: a dictionary of in the form {hyperparameter name: value}
         """
         for key, value in kwargs.items():
             self.hyperparameters[key] = value
@@ -32,12 +32,13 @@ class Abstract_Model(ABC):
         :param hyperparameters: dictionary in the form {hyperparameter name: value}
         :param top_words: number of top significant words for each topic (default: 10)
 
-        :return a dictionary containing up to 4 keys: 'topics', 'topic-word-matrix', 'topic-document-matrix',
-        'test-topic-document-matrix'. 'topics' is the list of the most significant words for each topic (list of lists
-         of strings). 'topic-word-matrix' is the matrix (num topics x |vocabulary|) containing the probabilities of a
-         word in a given topic. 'topic-document-matrix' is the matrix (|topics| x |training documents|) containing the
-         probabilities of the topics in a given training document. 'test-topic-document-matrix' is the matrix (|topics|
-         x |testing documents|) containing the probabilities of the topics in a given testing document.
+        :return model_output: a dictionary containing up to 4 keys: *topics*, *topic-word-matrix*,
+        *topic-document-matrix*, *test-topic-document-matrix*. *topics* is the list of the most significant words for
+        each topic (list of lists of strings). *topic-word-matrix* is the matrix (num topics x ||vocabulary||)
+        containing  the probabilities of a word in a given topic. *topic-document-matrix* is the matrix (||topics|| x
+        ||training documents||) containing the probabilities of the topics in a given training document.
+        *test-topic-document-matrix* is the matrix (||topics|| x ||testing documents||) containing the probabilities
+        of the topics in a given testing document.
         """
         pass
 
