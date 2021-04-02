@@ -56,26 +56,78 @@ Features
 * We provide a simple web dashboard for starting and controlling the optimization experiments
 
 
-Get a preprocessed dataset
+Examples and Tutorials
+-----------------------
+
+To easily understand how to use OCTIS, we invite you to try our tutorials out :) 
+
++--------------------------------------------------------------------------------+------------------+
+| Name                                                                           | Link             |
++================================================================================+==================+
+| How to train a topic model and evaluate the results.                           | |colab1|         |
++--------------------------------------------------------------------------------+------------------+
+| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|         |
++--------------------------------------------------------------------------------+------------------+
+| Optimizing a topic model (Example with LDA and M10)                            | |colab3|         |
++--------------------------------------------------------------------------------+------------------+
+
+
+
+Load a preprocessed dataset
 --------------------------
 
-To get a dataset you can use one of the built-in sources.
+To load one of the already preprocessed datasets as follows:
 
 .. code-block:: python
 
    from octis.dataset.dataset import Dataset
     dataset = Dataset()
-    dataset.load_custom_dataset_from_folder("octis/preprocessed_datasets/m10")
+    dataset.fetch_dataset("20NewsGroup")
+    
+Note: it is case-sensitive! 
 
-Or use your own.
+Available Datasets
+-------------------
+
++--------------+--------------+--------+---------+----------+
+| Name         | Source       | # Docs | # Words | # Labels | 
++==============+==============+========+=========+==========+
+| 20Newsgroup  | 20Newsgroup_ | 16309  | 1612    | 20       |
++--------------+--------------+--------+---------+----------+
+| BBC_News     | BBC-News_    | 2225   | 2949    | 5        |
++--------------+--------------+--------+---------+----------+
+| DBLP         | DBLP_        | 54595  | 1513    | 4        |
++--------------+--------------+--------+---------+----------+
+| M10          | M10_         | 8355   | 1696    | 10       |
++--------------+--------------+--------+---------+----------+
+
+.. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
+.. _BBC-News: https://github.com/MIND-Lab/OCTIS
+.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
+.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
+
+Otherwise, you can load a custom preprocessed dataset in the following way:
 
 .. code-block:: python
 
-    import octis.preprocessing.sources.custom_dataset as source
-    dataset = source.retrieve("path\to\dataset")
+   from octis.dataset.dataset import Dataset
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder("../path/to/the/dataset/folder")
 
+Make sure that the dataset is in the following format:
+* corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).  
+* vocabulary: a .txt file where each line represents a word of the vocabulary
 
-A custom dataset is represented file a file, where each line represents a document. Additionally, you can provide a label file, where each line represents a label (corresponding to the index of the document). Datasets can be partitioned in train and test sets.
+The partition can be "training", "test" or "validation". An example of dataset can be found (here)[https://github.com/MIND-Lab/OCTIS/tree/master/preprocessed_datasets/sample_dataset].
+
+Disclaimer
+~~~~~~~~~~~~~
+
+Similarly to `TensorFlow Datasets`_ and HuggingFace's `nlp`_ library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
+
+If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, please get in touch through a GitHub issue.
+
+If you're a dataset owner and wish to include your dataset in this library, please get in touch through a GitHub issue.
 
 Preprocess
 ----------
@@ -101,7 +153,7 @@ To preprocess a dataset, import the preprocessing class and use the preprocess_d
     )
 
     # save the preprocessed dataset
-    dataset.save('hello_dataset.txt')
+    dataset.save('hello_dataset')
 
 
 For the customization of the preprocess pipeline see the preprocessing demo example in the examples folder.
@@ -173,20 +225,6 @@ The result will provide best-seen value of the metric with the corresponding hyp
 
 You can find more here: `optimizer README`_
 
-Examples and Tutorials
------------------------
-
-Our Colab Tutorials:
-
-+--------------------------------------------------------------------------------+------------------+
-| Name                                                                           | Link             |
-+================================================================================+==================+
-| How to build a topic model and evaluate the results.                           | |colab1|         |
-+--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|         |
-+--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with LDA and M10)                            | |colab3|         |
-+--------------------------------------------------------------------------------+------------------+
 
 Available Models
 ----------------
@@ -220,34 +258,7 @@ Available Models
 .. _NeuralLDA: https://github.com/estebandito22/PyTorchAVITM
 .. _ProdLDA: https://github.com/estebandito22/PyTorchAVITM
 
-Available Datasets
--------------------
 
-+--------------+--------------+--------+---------+----------+
-| Name         | Source       | # Docs | # Words | # Labels | 
-+==============+==============+========+=========+==========+
-| 20Newsgroup  | 20Newsgroup_ | 16309  | 1612    | 20       |
-+--------------+--------------+--------+---------+----------+
-| BBC-News     | BBC-News_    | 2225   | 2949    | 5        |
-+--------------+--------------+--------+---------+----------+
-| DBLP         | DBLP_        | 54595  | 1513    | 4        |
-+--------------+--------------+--------+---------+----------+
-| M10          | M10_         | 8355   | 1696    | 10       |
-+--------------+--------------+--------+---------+----------+
-
-.. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
-.. _BBC-News: https://github.com/MIND-Lab/OCTIS
-.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
-.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
-
-Disclaimer
-~~~~~~~~~~~~~
-
-Similarly to `TensorFlow Datasets`_ and HuggingFace's `nlp`_ library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
-
-If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, please get in touch through a GitHub issue.
-
-If you're a dataset owner and wish to include your dataset in this library, please get in touch through a GitHub issue.
 
 Implement your own Model
 ------------------------
@@ -313,6 +324,22 @@ In the dashboard you can:
 * Visualize and compare all the experiments
 * Visualize a custom experiment
 * Manage the experiment queue
+
+
+How to cite our work
+---------------------
+This work has been accepted at the demo track of EACL 2021! If you decide to use it, please cite:
+
+::
+
+    @inproceedings{terragni2020octis,
+        title={OCTIS: Comparing and Optimizing Topic Models is Simple!},
+        author={Silvia Terragni and Elisabetta Fersini and Bruno Galuzzi and Pietro Tropeano and Antonio Candelieri},
+        year={2021},
+        booktitle={Proceedings of the Software Demonstrations of the 16th Conference of the European Chapter of the Association for Computational Linguistics},
+    }
+
+
 
 Team
 ------
