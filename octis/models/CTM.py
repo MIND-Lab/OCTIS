@@ -16,6 +16,22 @@ class CTM(Abstract_Model):
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
                  inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens"):
+        """
+        :param num_topics : int, number of topic components, (default 10)
+        :param model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
+        :param num_layers : int, number of layers (default 2)
+        :param activation : string, 'softplus', 'relu', ' (default 'softplus')
+        :param dropout : float, dropout to use (default 0.2)
+        :param learn_priors : bool, make priors a learnable parameter (default True)
+        :param batch_size : int, size of batch to use for training (default 64)
+        :param lr : float, learning rate to use for training (default 2e-3)
+        :param momentum : float, momentum to use for training (default 0.99)
+        :param solver : string, optimizer 'adam' or 'sgd' (default 'adam')
+        :param num_epochs : int, number of epochs to train for, (default 100)
+        :param reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
+        :param inference_type: the type of the CTM model. It can be "zeroshot" or "combined" (default zeroshot)
+        """
+
         super().__init__()
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
@@ -43,24 +59,12 @@ class CTM(Abstract_Model):
 
     def train_model(self, dataset, hyperparameters=None, top_words=10):
         """
-            Args
-                dataset: list of sentences for training the model
-                hyparameters: dict, with the below information:
+        trains CTM model
 
-                input_size : int, dimension of input
-                num_topics : int, number of topic components, (default 10)
-                model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
-                hidden_sizes : tuple, length = n_layers, (default (100, 100))
-                activation : string, 'softplus', 'relu', (default 'softplus')
-                dropout : float, dropout to use (default 0.2)
-                learn_priors : bool, make priors a learnable parameter (default True)
-                batch_size : int, size of batch to use for training (default 64)
-                lr : float, learning rate to use for training (default 2e-3)
-                momentum : float, momentum to use for training (default 0.99)
-                solver : string, optimizer 'adam' or 'sgd' (default 'adam')
-                num_epochs : int, number of epochs to train for, (default 100)
-                reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
-            """
+        :param dataset: octis Dataset for training the model
+        :param hyperparameters: dict, with optionally) the following information:
+
+        """
         if hyperparameters is None:
             hyperparameters = {}
 
@@ -83,26 +87,21 @@ class CTM(Abstract_Model):
                                 bert_model=self.hyperparameters["bert_model"])
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            self.X_train, input_size = self.preprocess(self.vocab, train=data_corpus)
+            self.X_train, input_size = self.preprocess(
+                self.vocab, train=data_corpus, bert_train_path=self.hyperparameters['bert_path'] + "_train.pkl",
+                bert_model=self.hyperparameters["bert_model"])
 
-        self.model = ctm.CTM(input_size=input_size,
-                             bert_input_size=self.X_train.X_bert.shape[1],
-                             num_topics=self.hyperparameters['num_topics'],
-                             model_type='prodLDA',
-                             inference_type=self.hyperparameters['inference_type'],
-                             hidden_sizes=self.hyperparameters['hidden_sizes'],
-                             activation=self.hyperparameters['activation'],
-                             dropout=self.hyperparameters['dropout'],
-                             learn_priors=self.hyperparameters['learn_priors'],
-                             batch_size=self.hyperparameters['batch_size'],
-                             lr=self.hyperparameters['lr'],
-                             momentum=self.hyperparameters['momentum'],
-                             solver=self.hyperparameters['solver'],
-                             num_epochs=self.hyperparameters['num_epochs'],
-                             reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
-                             topic_prior_mean=self.hyperparameters["prior_mean"],
-                             topic_prior_variance=self.hyperparameters["prior_variance"]
-                             )
+        self.model = ctm.CTM(
+            input_size=input_size, bert_input_size=self.X_train.X_bert.shape[1],
+            num_topics=self.hyperparameters['num_topics'], model_type='prodLDA',
+            inference_type=self.hyperparameters['inference_type'],  hidden_sizes=self.hyperparameters['hidden_sizes'],
+            activation=self.hyperparameters['activation'], dropout=self.hyperparameters['dropout'],
+            learn_priors=self.hyperparameters['learn_priors'], batch_size=self.hyperparameters['batch_size'],
+            lr=self.hyperparameters['lr'], momentum=self.hyperparameters['momentum'],
+            solver=self.hyperparameters['solver'], num_epochs=self.hyperparameters['num_epochs'],
+            reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
+            topic_prior_mean=self.hyperparameters["prior_mean"],
+            topic_prior_variance=self.hyperparameters["prior_variance"])
 
         self.model.fit(self.X_train, self.X_valid)
 
