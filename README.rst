@@ -65,7 +65,7 @@ To get a dataset you can use one of the built-in sources.
 
    from octis.dataset.dataset import Dataset
     dataset = Dataset()
-    dataset.load("octis/preprocessed_datasets/m10")
+    dataset.load_custom_dataset_from_folder("octis/preprocessed_datasets/m10")
 
 Or use your own.
 
@@ -106,7 +106,7 @@ To build a model, load a preprocessed dataset, customize the model hyperparamete
 
     # Load a dataset
     dataset = Dataset()
-    dataset.load("dataset_folder")
+    dataset.load_custom_dataset_from_folder("dataset_folder")
 
     model = LDA(num_topics=25)  # Create model
     model_output = model.train_model(dataset) # Train the model
