@@ -32,7 +32,7 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/silviatti/octis
+    $ git clone git://github.com/mind-lab/octis
 
 Or download the `tarball`_:
 
