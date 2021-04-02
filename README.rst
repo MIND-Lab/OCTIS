@@ -179,49 +179,49 @@ Our Colab Tutorials:
 Available Models
 ----------------
 
-+------------+
-| Name       |
-+============+
-| CTM_       |
-+------------+
-| ETM_       |
-+------------+
-| HDP_       | 
-+------------+
-| LDA_       |
-+------------+
-| LSI_       |
-+------------+
-| NMF_       |
-+------------+
-| NeuralLDA_ |
-+------------+
-| ProdLDA_   |
-+------------+
++--------------------------------+-----------------+
+| Name                           | Implementation  |
++================================+=================+
+| CTM (Terragni et al. 2020)     | CTM_            |
++--------------------------------+-----------------+
+| ETM (Blei et al. 2019)         | ETM_            |
++--------------------------------+-----------------+
+| HDP (Blei et al. 2004)         | HDP_            |
++--------------------------------+-----------------+
+| LDA (Blei et al. 2001)         | LDA_            |
++--------------------------------+-----------------+
+| LSI (Halko et al. 2009)        | LSI_            |
++--------------------------------+-----------------+
+| NMF (Renbo Zhao et al. 2016)   | NMF_            |
++--------------------------------+-----------------+
+| NeuralLDA (Carrow et al. 2018) | NeuralLDA_      |
++--------------------------------+-----------------+
+| ProdLda (Carrow et al. 2018)   | ProdLDA_        |
++--------------------------------+-----------------+
 
 .. _CTM: https://github.com/MIND-Lab/OCTIS
-.. _ETM: https://github.com/MIND-Lab/OCTIS
-.. _HDP: https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex
-.. _LDA: https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex
-.. _LSI: https://github.com/MIND-Lab/OCTIS
-.. _NMF: https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex
-.. _NeuralLDA: https://github.com/MIND-Lab/OCTIS
-.. _ProdLDA: https://github.com/MIND-Lab/OCTIS
+.. _ETM: https://github.com/adjidieng/ETM
+.. _HDP: https://radimrehurek.com/gensim/
+.. _LDA: https://radimrehurek.com/gensim/
+.. _LSI: https://radimrehurek.com/gensim/
+.. _NMF: https://radimrehurek.com/gensim/
+.. _NeuralLDA: https://github.com/estebandito22/PyTorchAVITM
+.. _ProdLDA: https://github.com/estebandito22/PyTorchAVITM
 
 Available Datasets
 -------------------
 
-+--------------+
-| Name         |
-+==============+
-| 20Newsgroup_ |
-+--------------+
-| BBC-News_    |
-+--------------+
-| DBLP_        | 
-+--------------+
-| M10_         |
-+--------------+
++--------------+--------------+--------+---------+----------+
+| Name         | Source       | # Docs | # Words | # Labels | 
++==============+==============+========+=========+==========+
+| 20Newsgroup  | 20Newsgroup_ | 16309  | 1612    | 20       |
++--------------+--------------+--------+---------+----------+
+| BBC-News     | BBC-News_    | 2225   | 2949    | 5        |
++--------------+--------------+--------+---------+----------+
+| DBLP         | DBLP_        | 54595  | 1513    | 4        |
++--------------+--------------+--------+---------+----------+
+| M10          | M10_         | 8355   | 1696    | 10       |
++--------------+--------------+--------+---------+----------+
 
 .. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
 .. _BBC-News: https://github.com/MIND-Lab/OCTIS
