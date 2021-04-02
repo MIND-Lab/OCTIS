@@ -83,6 +83,7 @@ class InvertedRBO(AbstractMetric):
 
         self.topk = parameters["topk"]
         self.weight = parameters["weight"]
+        self.topics = None
 
     def score(self, model_output):
         """
@@ -97,15 +98,14 @@ class InvertedRBO(AbstractMetric):
         -------
         td : score of the rank biased overlap over tht topics
         """
-        topics = model_output['topics']
+        self.topics = model_output['topics']
         if self.topics is None or type(self.topics) != list:
             return 0
-        print(topics.size)
-        if self.topk > len(topics[0]):
+        if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             collect = []
-            for list1, list2 in itertools.combinations(topics, 2):
+            for list1, list2 in itertools.combinations(self.topics, 2):
                 word2index = self.get_word2index(list1, list2)
                 indexed_list1 = [word2index[word] for word in list1]
                 indexed_list2 = [word2index[word] for word in list2]
