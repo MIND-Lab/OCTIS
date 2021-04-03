@@ -51,17 +51,6 @@ class MOOptimizer:
     #@staticmethod
     def objective(self, x):
         metrics_results = [[] for _ in self.metrics]
-        if os.path.exists(self.progress_file):
-            prog = pickle.load(open(self.progress_file, 'rb'))
-            if 'raw_points' in prog:
-                if self.config.domain.get_type() == 'euclidean':
-                    ordered_x = [x[name] for name in self.config.domain_orderings.raw_name_ordering]
-                else:
-                    ordered_x = [x[name] for name in self.config.domain.raw_name_ordering]
-
-                for i, p in enumerate(prog['raw_points']):
-                    if tuple(ordered_x) == tuple(p):
-                        return prog['true_vals'][i]
 
         for i in range(self.model_runs):
             model_output = self.model.train_model(hyperparameters=x)
@@ -75,7 +64,7 @@ class MOOptimizer:
 
         median_metrics_results = [np.median(res) for res in metrics_results]
         self.current_call += 1
-
+        print(median_metrics_results)
         return median_metrics_results
 
     def optimize(self):
