@@ -18,7 +18,7 @@ framework_path = str(framework_path.parent)
 
 def importClass(class_name, module_name, module_path):
     """
-    Function to import a class runtime based on its module and name
+    Import a class runtime based on its module and name
 
     :param class_name: name of the class
     :type class_name: str
@@ -42,7 +42,7 @@ def importClass(class_name, module_name, module_path):
 
 def load_model(optimization_object):
     """
-    Function used to load the topic model for the resume_optimization
+    Load the topic model for the resume of the optimization
 
     :param optimization_object: dictionary of optimization attributes saved in the jaon file
     :type optimization_object: dict
@@ -66,7 +66,7 @@ def load_model(optimization_object):
 
 def select_metric(metric_parameters, metric_name):
     """
-    Function to select the metric for the resume of the optimization
+    Select the metric for the resume of the optimization
 
     :param metric_parameters: metric parameters
     :type metric_parameters: list
@@ -86,7 +86,7 @@ def select_metric(metric_parameters, metric_name):
 
 def choose_optimizer(params):
     """
-    Function to choose a surrogate model for Bayesian Optimization
+    Choose a surrogate model for Bayesian Optimization
 
     :param params: list of setting of the BO experiment
     :type params: object
@@ -185,7 +185,7 @@ def early_condition(values, n_stop, n_random):
 
 def plot_model_runs(model_runs, current_call, name_plot):
     """
-    Function to save a boxplot of the data (Works only when optimization_runs is 1).
+    Save a boxplot of the data (Works only when optimization_runs is 1).
 
     :param model_runs: dictionary of all the model runs.
     :type model_runs: dict
@@ -209,7 +209,7 @@ def plot_model_runs(model_runs, current_call, name_plot):
 def plot_bayesian_optimization(values, name_plot,
                                log_scale=False, conv_max=True):
     """
-    Function to save a convergence plot of the result of a Bayesian_optimization.
+    Save a convergence plot of the result of a Bayesian_optimization.
 
     :param values: List of objective function values
     :type values: list
@@ -270,7 +270,7 @@ def convert_type(obj):
 
 def check_instance(obj):
     """
-    Function to check if a specific object con be inserted in the json file.
+    Check if a specific object con be inserted in the json file.
 
     :param obj: an object of the optimization to be saved
     :type obj: [str,float, int, bool, etc.]
@@ -288,7 +288,7 @@ def check_instance(obj):
 
 def save_search_space(search_space):
     """
-    Function to save the search space in the json file
+    Save the search space in the json file
 
     :param search_space: dictionary of the search space (scikit-optimize object)
     :type search_space: dict
@@ -311,7 +311,7 @@ def save_search_space(search_space):
 
 def load_search_space(search_space):
     """
-    Function to load the search space from the json file
+    Load the search space from the json file
 
     :param search_space: dictionary of the search space (insertable in a json file)
     :type dict:
@@ -449,7 +449,7 @@ class BestEvaluation:
 
     def save_to_csv(self, name_file):
         """
-        Function to save the results of BO to a csv file
+        Save results for Bayesian Optimization to a csv file
 
         :param name_file: name of the file
         :type name_file: str
@@ -490,7 +490,7 @@ class BestEvaluation:
 
     def load(self, name):
         """
-        Load the results of optimization
+        Load the results for Bayesian Optimization
 
         :param name: name of the json file
         :type name: str
