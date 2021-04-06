@@ -16,7 +16,7 @@ def scanDatasets():
     """
 
     datasets = os.listdir(str(os.path.join(path, "preprocessed_datasets")))
-    datasets.remove("README.txt")
+    datasets.remove("README.rst")
     return datasets
 
 

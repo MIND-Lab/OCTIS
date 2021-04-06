@@ -584,6 +584,7 @@
                             newInput.setAttribute("type", "text");
                             newInput.defaultValue = value["default_value"];
 
+
                             var label = document.createElement("p");
                             label.innerHTML = key;
 
@@ -592,6 +593,49 @@
                             information.appendChild(label)
                             information.appendChild(newInput)
                             box_body.appendChild(information)
+
+
+                            if (value["default_value"] == "use selected dataset") {
+
+                                selButton = document.createElement("div")
+                                selButton.classList.add("coolButton")
+                                selButton.id = key + "string"
+                                selButton.innerHTML = "Select Path"
+                                selButton.style.margin = "2px"
+
+                                information.appendChild(selButton)
+
+                                selButton.addEventListener("click", function () {
+                                    selb = this
+                                    $.ajax(
+                                        {
+                                            type: 'POST',
+                                            url: "/selectPath",
+                                            success: function (data) {
+                                                selb.parentNode.childNodes[1].value = data["path"]
+                                            }
+                                        });
+                                })
+
+
+
+                                defButton = document.createElement("div")
+                                defButton.classList.add("coolButton")
+                                defButton.id = key + "stringDef"
+                                defButton.innerHTML = "Default Path"
+                                defButton.style.margin = "2px"
+
+                                information.appendChild(defButton)
+
+                                defButton.addEventListener("click", function () {
+                                    defb = this
+                                    defb.parentNode.childNodes[1].value = "use selected dataset"
+
+                                })
+
+                            }
+
+
                             break;
 
                     }
