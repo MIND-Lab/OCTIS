@@ -229,30 +229,25 @@ You can find more here: `optimizer README`_
 Available Models
 ----------------
 
-+--------------------------------+------------------------------------------------------------+
-| Name                           | Implementation                                             |
-+================================+============================================================+
-| CTM (Bianchi et al. 2020)      | https://github.com/MilaNLProc/contextualized-topic-models_ |
-+--------------------------------+------------------------------------------------------------+
-| ETM (Dieng et al. 2019)        | https://github.com/adjidieng/ETM_                          |
-+--------------------------------+------------------------------------------------------------+
-| HDP (Blei et al. 2004)         | https://radimrehurek.com/gensim/_                          |
-+--------------------------------+------------------------------------------------------------+
-| LDA (Blei et al. 2001)         | https://radimrehurek.com/gensim/_                          |
-+--------------------------------+------------------------------------------------------------+
-| LSI (Deerwester et al. 2009)   | https://radimrehurek.com/gensim/_                          |
-+--------------------------------+------------------------------------------------------------+
-| NMF (Lee and Seung 2000)       | https://radimrehurek.com/gensim/_                          |
-+--------------------------------+------------------------------------------------------------+
-| NeuralLDA (Carrow et al. 2018) | https://github.com/estebandito22/PyTorchAVITM_             |
-+--------------------------------+------------------------------------------------------------+
-| ProdLda (Carrow et al. 2018)   | https://github.com/estebandito22/PyTorchAVITM_             |
-+--------------------------------+------------------------------------------------------------+
-
-.. _https://github.com/MilaNLProc/contextualized-topic-models: https://github.com/MilaNLProc/contextualized-topic-models
-.. _https://github.com/adjidieng/ETM: https://github.com/adjidieng/ETM
-.. _https://radimrehurek.com/gensim/: https://radimrehurek.com/gensim/
-.. _https://github.com/estebandito22/PyTorchAVITM: https://github.com/estebandito22/PyTorchAVITM
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| Name                           | Implementation                                                                                                  |
++================================+=================================================================================================================+
+| CTM (Bianchi et al. 2020)      | (github.com/MilaNLProc/contextualized-topic-models)\[https://github.com/MilaNLProc/contextualized-topic-models] |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| ETM (Dieng et al. 2019)        | (github.com/adjidieng/ETM)[https://github.com/adjidieng/ETM]                                                    |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| HDP (Blei et al. 2004)         | (radimrehurek.com/gensim/)[https://radimrehurek.com/gensim/]                                                    |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| LDA (Blei et al. 2001)         | (radimrehurek.com/gensim/)[https://radimrehurek.com/gensim/]                                                    |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| LSI (Deerwester et al. 2009)   | (radimrehurek.com/gensim/)[https://radimrehurek.com/gensim/]                                                    |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| NMF (Lee and Seung 2000)       | (radimrehurek.com/gensim/)[https://radimrehurek.com/gensim/]                                                    |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| NeuralLDA (Carrow et al. 2018) | (github.com/estebandito22/PyTorchAVITM)[https://github.com/estebandito22/PyTorchAVITM]                          |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
+| ProdLda (Carrow et al. 2018)   | (github.com/estebandito22/PyTorchAVITM)[https://github.com/estebandito22/PyTorchAVITM]                          |
++--------------------------------+-----------------------------------------------------------------------------------------------------------------+
 
 
 
