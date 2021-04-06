@@ -249,7 +249,11 @@ Available Models
 | ProdLda (Carrow et al. 2018)   | https://github.com/estebandito22/PyTorchAVITM             |
 +--------------------------------+-----------------------------------------------------------+
 
+If you use one of these implementations, make sure to cite the right paper. 
 
+If you implemented a model and wish to update any part of it, or do not want your model to be included in this library, please get in touch through a GitHub issue.
+
+If you implemented a model and wish to include your model in this library, please get in touch through a GitHub issue. Otherwise, if you want to include the model by yourself, see the following section.
 
 Implement your own Model
 ------------------------
@@ -278,22 +282,13 @@ The LDA method requires a dataset, the hyperparameters dictionary and an extra (
 
 With the hyperparameters defaults, the ones in input and the dataset you should be able to write your own code and return as output a dictionary with at least 3 entries:
 
-* `topics`: the list of the most significative words foreach topic (list of lists of strings).
-* `topic-word-matrix`: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
-* `topic-document-matrix`: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.
+* *topics*: the list of the most significative words foreach topic (list of lists of strings).
+* *topic-word-matrix*: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
+* *topic-document-matrix*: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.
 
-if your model support the training/test partitioning it should also return:
+if your model supports the training/test partitioning it should also return:
 
-* `test-topic-document-matrix`: the document topic matrix of the test set.
-
-In case the model isn't updated with the test set.
-Or:
-
-* `test-topics`: the list of the most significative words foreach topic (list of lists of strings) of the model updated with the test set.
-* `test-topic-word-matrix`: an NxV matrix of weights where N is the number of topics and V is the vocabulary length of the model updated with the test set.
-* `test-topic-document-matrix`: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus of the model updated with the test set.
-
-If the model is updated with the test set.
+* *test-topic-document-matrix*: the document topic matrix of the test set.
 
 Dashboard
 ---------
@@ -357,7 +352,7 @@ Past Contributors
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
