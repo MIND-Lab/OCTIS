@@ -101,6 +101,12 @@ class LDA(Abstract_Model):
         self.hyperparameters["gamma_threshold"] = gamma_threshold
         self.hyperparameters["random_state"] = random_state
 
+        if alpha_log is not None:
+            self.hyperparameters["alpha"] = [np.power(10, alpha_log)] \
+                                                * self.hyperparameters["num_topics"]
+        if beta_log is not None:
+            self.hyperparameters["eta"] = np.power(10, beta_log)
+
         if dataset is not None:
             if self.use_partitions:
                 self.train_corpus, self.test_corpus = dataset.get_partitioned_corpus(use_validation=False)
@@ -209,6 +215,10 @@ class LDA(Abstract_Model):
         self.hyperparameters.update(hyperparams)
         self.hyperparameters.pop('beta_log')
         self.hyperparameters.pop('alpha_log')
+        self.hyperparameters['minimum_probability'] = 0.0
+        self.hyperparameters['minimum_phi_value'] = 0.0
+
+
 
         self.trained_model = ldamodel.LdaModel(**self.hyperparameters)
 
