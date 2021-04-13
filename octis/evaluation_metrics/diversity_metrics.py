@@ -99,7 +99,7 @@ class InvertedRBO(AbstractMetric):
         td : score of the rank biased overlap over tht topics
         """
         self.topics = model_output['topics']
-        if self.topics is None or type(self.topics) != list:
+        if self.topics is None:
             return 0
         if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
