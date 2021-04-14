@@ -115,8 +115,8 @@ Otherwise, you can load a custom preprocessed dataset in the following way:
     dataset.load_custom_dataset_from_folder("../path/to/the/dataset/folder")
 
 Make sure that the dataset is in the following format:
-* corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).  
-* vocabulary: a .txt file where each line represents a word of the vocabulary
+    * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).  
+    * vocabulary: a .txt file where each line represents a word of the vocabulary
 
 The partition can be "training", "test" or "validation". An example of dataset can be found (here)[https://github.com/MIND-Lab/OCTIS/tree/master/preprocessed_datasets/sample_dataset].
 
@@ -201,30 +201,30 @@ Available metrics
 
 Classification Metrics:
 
-* F1Score
+* F1 measure (:code:`F1Score()`)
 
 Coherence Metrics:
 
-* U_Mass
-* C_V
-* C_Uci
-* NPMI
-* Coherence word embeddings
-* Coherence word embeddings pairwise
-* Coherence word embeddings  centroid
+* UMass Coherence (:code:`Coherence({'measure':'c_umass'}`)
+* C_V Coherence (:code:`Coherence({'measure':'c_v'}`)
+* UCI Coherence (:code:`Coherence({'measure':'c_uci'}`)
+* NPMI Coherence (:code:`Coherence({'measure':'c_npmi'}`)
+* Coherence word embeddings (:code:`Coherence_word_embeddings()`)
+* Coherence word embeddings pairwise (:code:`Coherence_word_embeddings_pairwise()`)
+* Coherence word embeddings centroid (:code:`Coherence_word_embeddings_centroid()`)
 
 Diversity Metrics:
 
-* Topic Diversity
-* InvertedRBO
-* Word Embeddings InvertedRBO
-* Word Embeddings InvertedRBO centroid
+* Topic Diversity (:code:`TopicDiversity()`)
+* InvertedRBO (:code:`InvertedRBO()`)
+* Word Embeddings InvertedRBO (:code:`WordEmbeddingsInvertedRBO()`)
+* Word Embeddings InvertedRBO centroid (:code:`WordEmbeddingsInvertedRBOCentroid()`)
 
 Topic significance Metrics:
 
-* KL Uniform
-* KL Vacuous
-* KL Background
+* KL Uniform (:code:`KL_uniform()`)
+* KL Vacuous (:code:`KL_vacuous()`)
+* KL Background (:code:`KL_background()`)
 
 Optimize a model
 ----------------
