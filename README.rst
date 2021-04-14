@@ -196,6 +196,35 @@ To evaluate a model, choose a metric and use the score() method of the metric cl
     metric = TopicDiversity(td_parameters) # Initialize metric
     topic_diversity_score = metric.score(model_output) # Compute score of the metric
 
+Available metrics
+-----------------
+
+Classification Metrics:
+
+* F1Score
+
+Coherence Metrics:
+
+* U_Mass
+* C_V
+* C_Uci
+* NPMI
+* Coherence word embeddings
+* Coherence word embeddings pairwise
+* Coherence word embeddings  centroid
+
+Diversity Metrics:
+
+* Topic Diversity
+* InvertedRBO
+* Word Embeddings InvertedRBO
+* Word Embeddings InvertedRBO centroid
+
+Topic significance Metrics:
+
+* KL Uniform
+* KL Vacuous
+* KL Background
 
 Optimize a model
 ----------------
@@ -290,6 +319,30 @@ With the hyperparameters defaults, the ones in input and the dataset you should 
 if your model supports the training/test partitioning it should also return:
 
 * *test-topic-document-matrix*: the document topic matrix of the test set.
+
+Implement your own Metric
+-------------------------
+
+Metrics inherit from the class AbstractMetric defined in evaluation_metrics/metrics.py.
+To build your own metric your class must override the score(self, model_output) method which always
+require at least the model output and should return the metric evaluation as output.
+
+To better understand how a metric work, let's have a look at the topic diversity implementation.
+The first step in developing a custom metric is to define the dictionary of default hyperparameters values:
+
+.. code-block:: python
+    hyperparameters = {'topk': 10}
+
+Defining the default hyperparameters values allows users to work on a subset of them without having to assign a value to each parameter.
+
+The following step is the score() override:
+
+.. code-block:: python
+    def score(self, model_output):
+
+The topic diversity only requires the model output.
+With the model output and the hyperparameters updated during the initialization phase
+you should be able to write your own code and return as output the result of the computation.
 
 Dashboard
 ---------
