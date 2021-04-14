@@ -331,6 +331,7 @@ To better understand how a metric work, let's have a look at the topic diversity
 The first step in developing a custom metric is to define the dictionary of default hyperparameters values:
 
 .. code-block:: python
+
     hyperparameters = {'topk': 10}
 
 Defining the default hyperparameters values allows users to work on a subset of them without having to assign a value to each parameter.
@@ -338,6 +339,7 @@ Defining the default hyperparameters values allows users to work on a subset of 
 The following step is the score() override:
 
 .. code-block:: python
+
     def score(self, model_output):
 
 The topic diversity only requires the model output.
