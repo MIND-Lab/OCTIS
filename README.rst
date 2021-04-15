@@ -59,7 +59,7 @@ Features
 Examples and Tutorials
 -----------------------
 
-To easily understand how to use OCTIS, we invite you to try our tutorials out :) 
+To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 
 +--------------------------------------------------------------------------------+------------------+
 | Name                                                                           | Link             |
@@ -83,14 +83,14 @@ To load one of the already preprocessed datasets as follows:
    from octis.dataset.dataset import Dataset
     dataset = Dataset()
     dataset.fetch_dataset("20NewsGroup")
-    
-Note: it is case-sensitive! 
+
+Note: it is case-sensitive!
 
 Available Datasets
 -------------------
 
 +--------------+--------------+--------+---------+----------+
-| Name         | Source       | # Docs | # Words | # Labels | 
+| Name         | Source       | # Docs | # Words | # Labels |
 +==============+==============+========+=========+==========+
 | 20Newsgroup  | 20Newsgroup_ | 16309  | 1612    | 20       |
 +--------------+--------------+--------+---------+----------+
@@ -115,7 +115,7 @@ Otherwise, you can load a custom preprocessed dataset in the following way:
     dataset.load_custom_dataset_from_folder("../path/to/the/dataset/folder")
 
 Make sure that the dataset is in the following format:
-* corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).  
+* corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).
 * vocabulary: a .txt file where each line represents a word of the vocabulary
 
 The partition can be "training", "test" or "validation". An example of dataset can be found (here)[https://github.com/MIND-Lab/OCTIS/tree/master/preprocessed_datasets/sample_dataset].
@@ -249,7 +249,7 @@ Available Models
 | ProdLda (Carrow et al. 2018)   | https://github.com/estebandito22/PyTorchAVITM             |
 +--------------------------------+-----------------------------------------------------------+
 
-If you use one of these implementations, make sure to cite the right paper. 
+If you use one of these implementations, make sure to cite the right paper.
 
 If you implemented a model and wish to update any part of it, or do not want your model to be included in this library, please get in touch through a GitHub issue.
 
