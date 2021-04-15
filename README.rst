@@ -28,6 +28,15 @@ OCTIS
         :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_ETM.ipynb
         :alt: Open In Colab
 
+
+.. image:: https://img.shields.io/github/contributors/MilaNLProc/contextualized-topic-models
+        :target: https://github.com/MilaNLProc/contextualized-topic-models/graphs/contributors/
+        :alt: Contributors
+
+.. image:: https://img.shields.io/badge/License-MIT-blue.svg
+        :target: https://lbesson.mit-license.org/
+        :alt: License
+
 .. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png?raw=true
   :width: 100
   :alt: Logo
@@ -74,7 +83,7 @@ To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 
 
 Load a preprocessed dataset
---------------------------
+----------------------------
 
 To load one of the already preprocessed datasets as follows:
 
