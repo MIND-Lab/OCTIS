@@ -115,8 +115,8 @@ Otherwise, you can load a custom preprocessed dataset in the following way:
     dataset.load_custom_dataset_from_folder("../path/to/the/dataset/folder")
 
 Make sure that the dataset is in the following format:
-* corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).
-* vocabulary: a .txt file where each line represents a word of the vocabulary
+    * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).
+    * vocabulary: a .txt file where each line represents a word of the vocabulary
 
 The partition can be "training", "test" or "validation". An example of dataset can be found (here)[https://github.com/MIND-Lab/OCTIS/tree/master/preprocessed_datasets/sample_dataset].
 
