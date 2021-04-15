@@ -59,7 +59,7 @@ Features
 Examples and Tutorials
 -----------------------
 
-To easily understand how to use OCTIS, we invite you to try our tutorials out :) 
+To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 
 +--------------------------------------------------------------------------------+------------------+
 | Name                                                                           | Link             |
@@ -83,14 +83,14 @@ To load one of the already preprocessed datasets as follows:
    from octis.dataset.dataset import Dataset
     dataset = Dataset()
     dataset.fetch_dataset("20NewsGroup")
-    
-Note: it is case-sensitive! 
+
+Note: it is case-sensitive!
 
 Available Datasets
 -------------------
 
 +--------------+--------------+--------+---------+----------+
-| Name         | Source       | # Docs | # Words | # Labels | 
+| Name         | Source       | # Docs | # Words | # Labels |
 +==============+==============+========+=========+==========+
 | 20Newsgroup  | 20Newsgroup_ | 16309  | 1612    | 20       |
 +--------------+--------------+--------+---------+----------+
@@ -115,7 +115,7 @@ Otherwise, you can load a custom preprocessed dataset in the following way:
     dataset.load_custom_dataset_from_folder("../path/to/the/dataset/folder")
 
 Make sure that the dataset is in the following format:
-    * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).  
+    * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).
     * vocabulary: a .txt file where each line represents a word of the vocabulary
 
 The partition can be "training", "test" or "validation". An example of dataset can be found (here)[https://github.com/MIND-Lab/OCTIS/tree/master/preprocessed_datasets/sample_dataset].
@@ -196,35 +196,6 @@ To evaluate a model, choose a metric and use the score() method of the metric cl
     metric = TopicDiversity(td_parameters) # Initialize metric
     topic_diversity_score = metric.score(model_output) # Compute score of the metric
 
-Available metrics
------------------
-
-Classification Metrics:
-
-* F1 measure (:code:`F1Score()`)
-
-Coherence Metrics:
-
-* UMass Coherence (:code:`Coherence({'measure':'c_umass'}`)
-* C_V Coherence (:code:`Coherence({'measure':'c_v'}`)
-* UCI Coherence (:code:`Coherence({'measure':'c_uci'}`)
-* NPMI Coherence (:code:`Coherence({'measure':'c_npmi'}`)
-* Coherence word embeddings (:code:`Coherence_word_embeddings()`)
-* Coherence word embeddings pairwise (:code:`Coherence_word_embeddings_pairwise()`)
-* Coherence word embeddings centroid (:code:`Coherence_word_embeddings_centroid()`)
-
-Diversity Metrics:
-
-* Topic Diversity (:code:`TopicDiversity()`)
-* InvertedRBO (:code:`InvertedRBO()`)
-* Word Embeddings InvertedRBO (:code:`WordEmbeddingsInvertedRBO()`)
-* Word Embeddings InvertedRBO centroid (:code:`WordEmbeddingsInvertedRBOCentroid()`)
-
-Topic significance Metrics:
-
-* KL Uniform (:code:`KL_uniform()`)
-* KL Vacuous (:code:`KL_vacuous()`)
-* KL Background (:code:`KL_background()`)
 
 Optimize a model
 ----------------
@@ -258,28 +229,27 @@ You can find more here: `optimizer README`_
 Available Models
 ----------------
 
-+----------------------------------------+-------------------------------------------------------------------+
-| Name                                   | Implementation                                                    |
-+========================================+===================================================================+
-| CTM (Bianchi et al. 2020)              | https://github.com/MilaNLProc/contextualized-topic-models         |
-+----------------------------------------+-------------------------------------------------------------------+
-| ETM (Dieng et al. 2020)                | https://github.com/adjidieng/ETM                                  |
-+----------------------------------------+-------------------------------------------------------------------+
-| NeuralLDA (Srivastava and Sutton 2017) | https://github.com/estebandito22/PyTorchAVITM                     |
-+----------------------------------------+-------------------------------------------------------------------+
-| ProdLda (Srivastava and Sutton 2017)   | https://github.com/estebandito22/PyTorchAVITM                     |
-+----------------------------------------+-------------------------------------------------------------------+
-| HDP (Blei et al. 2004)                 | https://radimrehurek.com/gensim/                                  |
-+----------------------------------------+-------------------------------------------------------------------+
-| LDA (Blei et al. 2001)                 | https://radimrehurek.com/gensim/                                  |
-+----------------------------------------+-------------------------------------------------------------------+
-| LSI (Deerwester et al. 2009)           | https://radimrehurek.com/gensim/                                  |
-+----------------------------------------+-------------------------------------------------------------------+
-| NMF (Lee and Seung 2000)               | https://radimrehurek.com/gensim/                                  |
-+----------------------------------------+-------------------------------------------------------------------+
++--------------------------------+-----------------------------------------------------------+
+| Name                           | Implementation                                            |
++================================+===========================================================+
+| CTM (Bianchi et al. 2020)      | https://github.com/MilaNLProc/contextualized-topic-models |
++--------------------------------+-----------------------------------------------------------+
+| ETM (Dieng et al. 2019)        | https://github.com/adjidieng/ETM                          |
++--------------------------------+-----------------------------------------------------------+
+| HDP (Blei et al. 2004)         | https://radimrehurek.com/gensim/                          |
++--------------------------------+-----------------------------------------------------------+
+| LDA (Blei et al. 2001)         | https://radimrehurek.com/gensim/                          |
++--------------------------------+-----------------------------------------------------------+
+| LSI (Deerwester et al. 2009)   | https://radimrehurek.com/gensim/                          |
++--------------------------------+-----------------------------------------------------------+
+| NMF (Lee and Seung 2000)       | https://radimrehurek.com/gensim/                          |
++--------------------------------+-----------------------------------------------------------+
+| NeuralLDA (Carrow et al. 2018) | https://github.com/estebandito22/PyTorchAVITM             |
++--------------------------------+-----------------------------------------------------------+
+| ProdLda (Carrow et al. 2018)   | https://github.com/estebandito22/PyTorchAVITM             |
++--------------------------------+-----------------------------------------------------------+
 
-
-If you use one of these implementations, make sure to cite the right paper. 
+If you use one of these implementations, make sure to cite the right paper.
 
 If you implemented a model and wish to update any part of it, or do not want your model to be included in this library, please get in touch through a GitHub issue.
 
@@ -319,32 +289,6 @@ With the hyperparameters defaults, the ones in input and the dataset you should 
 if your model supports the training/test partitioning it should also return:
 
 * *test-topic-document-matrix*: the document topic matrix of the test set.
-
-Implement your own Metric
--------------------------
-
-Metrics inherit from the class AbstractMetric defined in evaluation_metrics/metrics.py.
-To build your own metric your class must override the score(self, model_output) method which always
-require at least the model output and should return the metric evaluation as output.
-
-To better understand how a metric work, let's have a look at the topic diversity implementation.
-The first step in developing a custom metric is to define the dictionary of default hyperparameters values:
-
-.. code-block:: python
-
-    hyperparameters = {'topk': 10}
-
-Defining the default hyperparameters values allows users to work on a subset of them without having to assign a value to each parameter.
-
-The following step is the score() override:
-
-.. code-block:: python
-
-    def score(self, model_output):
-
-The topic diversity only requires the model output.
-With the model output and the hyperparameters updated during the initialization phase
-you should be able to write your own code and return as output the result of the computation.
 
 Dashboard
 ---------
