@@ -214,7 +214,7 @@ class QueueManager:
             path = str(os.path.join(
                 experiment["path"], experiment["experimentId"], experiment["experimentId"]+".json"))
             return expManager.singleInfo(path)
-        return False
+        return None
 
     def start(self):
         """
