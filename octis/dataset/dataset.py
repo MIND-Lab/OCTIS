@@ -15,7 +15,7 @@ class Dataset:
     Dataset handles a dataset and offers methods to access, save and edit the dataset data
     """
 
-    def __init__(self, corpus=None, vocabulary=None, labels=None, metadata=None):
+    def __init__(self, corpus=None, vocabulary=None, labels=None, metadata=None, document_indexes=None):
         """
         Initialize a dataset, parameters are optional
         if you want to load a dataset, initialize this
@@ -31,6 +31,7 @@ class Dataset:
         self.__vocabulary = vocabulary
         self.__metadata = metadata
         self.__labels = labels
+        self.__original_indexes = document_indexes
 
     def get_corpus(self):
         return self.__corpus
@@ -217,6 +218,19 @@ class Dataset:
         else:
             raise Exception("error in saving vocabulary")
 
+    def _save_document_indexes(self, file_name):
+        """
+        Saves document indexes in a file
+        Parameters
+        ----------
+        file_name : name of the file to write
+        -------
+        """
+        if self.__original_indexes is not None:
+            with open(file_name, 'w') as outfile:
+                for i in self.__original_indexes:
+                    outfile.write(str(i) + "\n")
+
     def _load_vocabulary(self, file_name):
         """
         Loads vocabulary from a file
@@ -231,6 +245,23 @@ class Dataset:
                 for line in vocabulary_file:
                     vocabulary.append(line.strip())
             self.__vocabulary = vocabulary
+        else:
+            raise Exception("error in loading vocabulary")
+
+    def _load_document_indexes(self, file_name):
+        """
+        Loads document indexes from a file
+        Parameters
+        ----------
+        file_name : name of the file to read
+        """
+        document_indexes = []
+        file = Path(file_name)
+        if file.is_file():
+            with open(file_name, 'r') as indexes_file:
+                for line in indexes_file:
+                    document_indexes.append(line.strip())
+            self.__original_indexes = document_indexes
         else:
             raise Exception("error in loading vocabulary")
 
@@ -266,6 +297,8 @@ class Dataset:
 
             self._save_vocabulary(path + "/vocabulary.txt")
             self._save_metadata(path + "/metadata.json")
+            self._save_document_indexes(path + "/indexes.txt")
+
         except:
             raise Exception("error in saving the dataset")
 
@@ -277,7 +310,6 @@ class Dataset:
         path : path of the folder to read
         """
         try:
-            self.path = path
             if exists(path + "/metadata.json"):
                 self._load_metadata(path + "/metadata.json")
             else:
@@ -306,6 +338,8 @@ class Dataset:
                     for w in set(d):
                         vocab.add(w)
                 self.__vocabulary = list(vocab)
+            if exists(path + "/indexes.txt"):
+                self._load_document_indexes(path + "/indexes.txt")
         except:
             raise Exception("error in loading the dataset:" + path)
 
