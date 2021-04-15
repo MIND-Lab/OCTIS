@@ -1,6 +1,6 @@
 import numpy as np
 import octis.configuration.citations as citations
-from octis.evaluation_metrics.metrics import Abstract_Metric
+from octis.evaluation_metrics.metrics import AbstractMetric
 
 
 def _KL(P, Q):
@@ -34,7 +34,7 @@ def _replace_zeros_lines(arr):
     return arr
 
 
-class KL_uniform(Abstract_Metric):
+class KL_uniform(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric
@@ -85,7 +85,7 @@ class KL_uniform(Abstract_Metric):
         return result
 
 
-class KL_vacuous(Abstract_Metric):
+class KL_vacuous(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric
@@ -145,7 +145,7 @@ class KL_vacuous(Abstract_Metric):
         return result
 
 
-class KL_background(Abstract_Metric):
+class KL_background(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric

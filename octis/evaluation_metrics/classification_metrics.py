@@ -1,4 +1,4 @@
-from octis.evaluation_metrics.metrics import Abstract_Metric
+from octis.evaluation_metrics.metrics import AbstractMetric
 import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
 from sklearn.metrics import f1_score
@@ -8,10 +8,10 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from libsvm.svmutil import *
 
 
-class F1Score(Abstract_Metric):
+class F1Score(AbstractMetric):
 
     def __init__(self, metric_parameters=None):
-        Abstract_Metric.__init__(self, metric_parameters)
+        AbstractMetric.__init__(self, metric_parameters)
         if metric_parameters is None:
             metric_parameters = {}
         self.train_document_representations = None

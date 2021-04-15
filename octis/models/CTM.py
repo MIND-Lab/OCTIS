@@ -16,6 +16,22 @@ class CTM(Abstract_Model):
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
                  inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens"):
+        """
+        :param num_topics : int, number of topic components, (default 10)
+        :param model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
+        :param num_layers : int, number of layers (default 2)
+        :param activation : string, 'softplus', 'relu', ' (default 'softplus')
+        :param dropout : float, dropout to use (default 0.2)
+        :param learn_priors : bool, make priors a learnable parameter (default True)
+        :param batch_size : int, size of batch to use for training (default 64)
+        :param lr : float, learning rate to use for training (default 2e-3)
+        :param momentum : float, momentum to use for training (default 0.99)
+        :param solver : string, optimizer 'adam' or 'sgd' (default 'adam')
+        :param num_epochs : int, number of epochs to train for, (default 100)
+        :param reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
+        :param inference_type: the type of the CTM model. It can be "zeroshot" or "combined" (default zeroshot)
+        """
+
         super().__init__()
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type

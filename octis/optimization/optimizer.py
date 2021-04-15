@@ -33,42 +33,64 @@ class Optimizer:
                  save_models=True, save_step=1, save_name="result", save_path="results/", early_stop=False,
                  early_step=5,
                  plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False, topk=10):
-
         """
-        Hyper-parameter Optimization for Topic Model
+        Perform hyper-parameter optimization for a Topic Model
 
-        Parameters
-        ----------
-        model          : model with hyperparameters to optimize
-        dataset        : dateset for the topic model
-        metric         : initialized metric to use for optimization
-        search_space   : a dictionary of hyperparameters to optimize
-                       (each parameter is defined as a skopt space)
-                       with the name of the hyperparameter given as key
-        extra_metrics: list of extra metric computed during BO
-        number_of_call : number of calls to f
-        n_random_starts: number of evaluations of f with random points before approximating it with minimizer
-        initial_point_generator: way to generate random points (lhs, random,sobol,halton,hammersly,grid,)
-        optimization_type: maximization or minimization problem
-        model_runs     : number of different evaluation of the function using the same hyper-parameter configuration
-        surrogate_model: type of surrogate model (from sklearn)
-        kernel         : type of kernel (from sklearn)
-        acq_func       : function to minimize over the minimizer prior (LCB,EI,PI)
-        random_state   : set random state to something other than None for reproducible results.
-        x0             : list of initial configurations to test
-        y0             : list of values for x0
-        save_models    : if True, all the model (number_of_call*model_runs) are saved
-        save_step      : integer interval after which save the .pkl about BO file
-        save_name      : name of the .csv and .pkl files
-        save_path      : path where .pkl, plot and result will be saved.
-
-        early_stop     : if True, an early stop policy is applied fro BO.
-        early_step     : integer interval after which a current optimization run is stopped if it doesn't improve.
-        plot_best_seen : if True the plot of the best seen for BO is showed
-        plot_model     : if True the boxplot of all the model runs is done
-        plot_name      : name of the plots (both for model runs or best_seen)
-        log_scale_plot : if True the "y_axis" of the plot is set to log_scale
-
+        :param model: model with hyperparameters to optimize
+        :rtype model: OCTIS Topic Model
+        :param dataset: dataset for the model dataset
+        :rtype dataset: OCTIS dataset
+        :param metric: metric used for the optimization
+        :rtype metric: OCTIS metric
+        :param search_space: a dictionary of hyperparameters to optimize (each parameter is defined as a skopt space)
+        :rtype search_space: skopt space object
+        :param extra_metrics: list of extra-metrics to compute during the optimization
+        :rtype extra_metrics: list of metrics, optional
+        :param number_of_call: number of evaluations of metric
+        :rtype number_of_call: int, optional
+        :param n_random_starts: number of evaluations of metric with random points before approximating it with surrogate model
+        :rtype n_random_starts: int, optional
+        :param initial_point_generator: set an initial point generator. Can be either "random", "sobol", "halton" ,"hammersly","lhs"
+        :rtype initial_point_generator: str, optional
+        :param optimization_type: Set "Maximize" if you want to maximize metric, "Minimize" if you want to minimize
+        :rtype optimization type: str, optional
+        :param model_runs:
+        :rtype: int, optional
+        :param surrogate_model: set a surrogate model. Can be either "GP" (Gaussian Process), "RF" (Random Forest) or "ET" (Extra-Tree)
+        :rtype: str, optional
+        :param kernel: set a kernel function
+        :param acq_func: Function to minimize over the surrogate model. Can be either: "LCB" (Lower Confidence Bound), "EI" (Expected improvement) OR "PI" (Probability of Improvement)
+        :rtype: str, optional
+        :param random_state: Set random state to something other than None for reproducible results.
+        :rtype: int, optional
+        :param x0: List of initial input points.
+        :rtype: list, optional
+        :param y0: Evaluation of initial input points.
+        :rtype: list, optional
+        :param save_models: if 'True' save all the topic models generated during the optimization process
+        :rtype: bool, optional
+        :param save_step: decide how much to save the results of the optimization
+        :rtype: int, optional
+        :param save_name: name of the file where the results of the optimization will be saved
+        :rtype: str, optional
+        :param save_path: Path where the results of the optimization (json file) will be saved
+        :rtype save_path: str, optional
+        :param early_stop: if "True" stop the optimization if there is no improvement after early_step evaluations
+        :rtype early_stop: bool, optional
+        :param early_step: number of iterations with no improvement after which optimization will be stopped (if early_stop is True)
+        :rtype early_step: int, optional
+        :param plot_best_seen: If "True" save a convergence plot of the result of a Bayesian_optimization (i.e. the best seen for each iteration)
+        :rtype plot_best_seen: bool, optional
+        :param plot_model: If "True" save the boxplot of all the model runs
+        :rtype plot_model: bool, optional
+        :param plot_name: Set the name of the plots (best_seen and model_runs).
+        :rtype plot_name: str, optional
+        :param log_scale_plot: if "True" use the logarithmic scale for the plots.
+        :rtype log_scale_plot: bool, optional
+        :param topk:
+        :rtype topk: int, optional
+        :return: BestEvaluation object
+        :rtype: class
         """
         # Set the attributes
         if extra_metrics is None:
@@ -145,14 +167,14 @@ class Optimizer:
 
     def resume_optimization(self, name_path, extra_evaluations=0):
         """
-        Method to restart the optimization from the json file.
+        Restart the optimization from the json file.
 
-        Parameters
-        ----------
-        name_path: path of the json file
-
-        extra_evaluations: extra iterations for the BO optimization
-
+        :param name_path: path of the json file
+        :type name_path: str
+        :param extra_evaluations: extra iterations for the BO optimization
+        :type extra_evaluations: int
+        :return: object with the results of the optimization
+        :rtype: object
         """
 
         # Restore of the parameters
@@ -176,9 +198,13 @@ class Optimizer:
 
     def _objective_function(self, hyperparameter_values):
         """
-        Method to evaluate the objective function
-        """
+        Evaluate the objective function
 
+        :param hyperparameter_values: hyper-parameters of the Topic Model
+        :type hyperparameter_values: list
+        :return: value of the objective function
+        :rtype: float
+        """
         # Retrieve parameters labels
         params = {}
         for i in range(len(self.hyperparameters)):
@@ -238,7 +264,10 @@ class Optimizer:
 
     def _optimization_loop(self, opt):
         """
-        Method to perform the BO iterations
+        Perform the optimization through Bayesian Optimization
+
+        :return: result of the optimization
+        :rtype: class
         """
 
         # For loop to perform Bayesian Optimization
@@ -296,11 +325,12 @@ class Optimizer:
 
     def _load_metric(self, optimization_object, dataset):
         """
-        Method to load the metric from the json file, useful for the resume method
+        Load the metric from the json file, useful for the resume method
 
-        Parameters
-        ----------
-
+        :param optimization_object: dictionary of the information saved during the optimization
+        :type optimization_object: dict
+        :param dataset: the considered dataset
+        :type dataset: OCTIS dataset object
         """
         # Optimized Metric
         self.name_optimized_metric = optimization_object['metric_name']
@@ -330,7 +360,12 @@ class Optimizer:
 
     def _restore_parameters(self, name_path):
         """
-        Restore the parameters of the BO from the json file
+        Restore the BO parameters  from the json file
+
+        :param name_path: name of the json file
+        :rtype name_path: str
+        :return: result of BO optimization (scikit-optimize object), surrogate model (scikit-learn object)
+        :rtype: tuple
         """
 
         # Load the previous results
@@ -400,9 +435,12 @@ class Optimizer:
 
     def _check_BO_parameters(self):
         """
-        Controls about the BO parameters
+        Check the correctness of BO parameters
+
+        :return: -1 if there is an error, 0 otherwise
+        :rtype: bool
         """
-        # Controls about BO parameters
+
         if self.optimization_type not in ['Maximize', 'Minimize']:
             print("Error: optimization type must be Maximize or Minimize")
             return -1

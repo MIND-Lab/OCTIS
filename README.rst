@@ -56,43 +56,107 @@ Features
 * We provide a simple web dashboard for starting and controlling the optimization experiments
 
 
-Get a preprocessed dataset
+Examples and Tutorials
+-----------------------
+
+To easily understand how to use OCTIS, we invite you to try our tutorials out :) 
+
++--------------------------------------------------------------------------------+------------------+
+| Name                                                                           | Link             |
++================================================================================+==================+
+| How to train a topic model and evaluate the results.                           | |colab1|         |
++--------------------------------------------------------------------------------+------------------+
+| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|         |
++--------------------------------------------------------------------------------+------------------+
+| Optimizing a topic model (Example with LDA and M10)                            | |colab3|         |
++--------------------------------------------------------------------------------+------------------+
+
+
+
+Load a preprocessed dataset
 --------------------------
 
-To get a dataset you can use one of the built-in sources.
+To load one of the already preprocessed datasets as follows:
 
 .. code-block:: python
 
    from octis.dataset.dataset import Dataset
     dataset = Dataset()
-    dataset.load("octis/preprocessed_datasets/m10")
+    dataset.fetch_dataset("20NewsGroup")
+    
+Note: it is case-sensitive! 
 
-Or use your own.
+Available Datasets
+-------------------
+
++--------------+--------------+--------+---------+----------+
+| Name         | Source       | # Docs | # Words | # Labels | 
++==============+==============+========+=========+==========+
+| 20Newsgroup  | 20Newsgroup_ | 16309  | 1612    | 20       |
++--------------+--------------+--------+---------+----------+
+| BBC_News     | BBC-News_    | 2225   | 2949    | 5        |
++--------------+--------------+--------+---------+----------+
+| DBLP         | DBLP_        | 54595  | 1513    | 4        |
++--------------+--------------+--------+---------+----------+
+| M10          | M10_         | 8355   | 1696    | 10       |
++--------------+--------------+--------+---------+----------+
+
+.. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
+.. _BBC-News: https://github.com/MIND-Lab/OCTIS
+.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
+.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
+
+Otherwise, you can load a custom preprocessed dataset in the following way:
 
 .. code-block:: python
 
-    import octis.preprocessing.sources.custom_dataset as source
-    dataset = source.retrieve("path\to\dataset")
+   from octis.dataset.dataset import Dataset
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder("../path/to/the/dataset/folder")
 
+Make sure that the dataset is in the following format:
+    * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).  
+    * vocabulary: a .txt file where each line represents a word of the vocabulary
 
-A custom dataset is represented file a file, where each line represents a document. Additionally, you can provide a label file, where each line represents a label (corresponding to the index of the document). Datasets can be partitioned in train and test sets.
+The partition can be "training", "test" or "validation". An example of dataset can be found (here)[https://github.com/MIND-Lab/OCTIS/tree/master/preprocessed_datasets/sample_dataset].
+
+Disclaimer
+~~~~~~~~~~~~~
+
+Similarly to `TensorFlow Datasets`_ and HuggingFace's `nlp`_ library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
+
+If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, please get in touch through a GitHub issue.
+
+If you're a dataset owner and wish to include your dataset in this library, please get in touch through a GitHub issue.
 
 Preprocess
 ----------
 
-To preprocess a dataset, initialize a Pipeline_handler and use the preprocess method.
+To preprocess a dataset, import the preprocessing class and use the preprocess_dataset method.
 
 .. code-block:: python
 
-    from octis.preprocessing.pipeline_handler import Pipeline_handler
 
-    pipeline_handler = Pipeline_handler(dataset) # Initialize pipeline handler
-    preprocessed = pipeline_handler.preprocess() # preprocess
+    import os
+    import string
+    from octis.preprocessing.preprocessing import Preprocessing
+    os.chdir(os.path.pardir)
 
-    preprocessed.save("dataset_folder") # Save the preprocessed dataset
+    # Initialize preprocessing
+    p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True, punctuation=string.punctuation,
+                      lemmatize=True, remove_stopwords=True, stopword_list=['am', 'are', 'this', 'that'],
+                      min_chars=1, min_words_docs=0)
+    # preprocess
+    dataset = p.preprocess_dataset(
+        documents_path=r'..\preprocessed_datasets\M10\corpus.txt',
+        labels_path=r'..\preprocessed_datasets\M10\labels.txt',
+    )
+
+    # save the preprocessed dataset
+    dataset.save('hello_dataset')
 
 
-For the customization of the preprocess pipeline see the optimization demo example in the examples folder.
+For the customization of the preprocess pipeline see the preprocessing demo example in the examples folder.
 
 Train a model
 -------------
@@ -106,7 +170,7 @@ To build a model, load a preprocessed dataset, customize the model hyperparamete
 
     # Load a dataset
     dataset = Dataset()
-    dataset.load("dataset_folder")
+    dataset.load_custom_dataset_from_folder("dataset_folder")
 
     model = LDA(num_topics=25)  # Create model
     model_output = model.train_model(dataset) # Train the model
@@ -132,6 +196,35 @@ To evaluate a model, choose a metric and use the score() method of the metric cl
     metric = TopicDiversity(td_parameters) # Initialize metric
     topic_diversity_score = metric.score(model_output) # Compute score of the metric
 
+Available metrics
+-----------------
+
+Classification Metrics:
+
+* F1 measure (:code:`F1Score()`)
+
+Coherence Metrics:
+
+* UMass Coherence (:code:`Coherence({'measure':'c_umass'}`)
+* C_V Coherence (:code:`Coherence({'measure':'c_v'}`)
+* UCI Coherence (:code:`Coherence({'measure':'c_uci'}`)
+* NPMI Coherence (:code:`Coherence({'measure':'c_npmi'}`)
+* Coherence word embeddings (:code:`Coherence_word_embeddings()`)
+* Coherence word embeddings pairwise (:code:`Coherence_word_embeddings_pairwise()`)
+* Coherence word embeddings centroid (:code:`Coherence_word_embeddings_centroid()`)
+
+Diversity Metrics:
+
+* Topic Diversity (:code:`TopicDiversity()`)
+* InvertedRBO (:code:`InvertedRBO()`)
+* Word Embeddings InvertedRBO (:code:`WordEmbeddingsInvertedRBO()`)
+* Word Embeddings InvertedRBO centroid (:code:`WordEmbeddingsInvertedRBOCentroid()`)
+
+Topic significance Metrics:
+
+* KL Uniform (:code:`KL_uniform()`)
+* KL Vacuous (:code:`KL_vacuous()`)
+* KL Background (:code:`KL_background()`)
 
 Optimize a model
 ----------------
@@ -161,81 +254,36 @@ The result will provide best-seen value of the metric with the corresponding hyp
 
 You can find more here: `optimizer README`_
 
-Examples and Tutorials
------------------------
-
-Our Colab Tutorials:
-
-+--------------------------------------------------------------------------------+------------------+
-| Name                                                                           | Link             |
-+================================================================================+==================+
-| How to build a topic model and evaluate the results.                           | |colab1|         |
-+--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|         |
-+--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with LDA and M10)                            | |colab3|         |
-+--------------------------------------------------------------------------------+------------------+
 
 Available Models
 ----------------
 
-+------------+
-| Name       |
-+============+
-| CTM_       |
-+------------+
-| ETM_       |
-+------------+
-| HDP_       | 
-+------------+
-| LDA_       |
-+------------+
-| LSI_       |
-+------------+
-| NMF_       |
-+------------+
-| NeuralLDA_ |
-+------------+
-| ProdLDA_   |
-+------------+
++----------------------------------------+-------------------------------------------------------------------+
+| Name                                   | Implementation                                                    |
++========================================+===================================================================+
+| CTM (Bianchi et al. 2020)              | https://github.com/MilaNLProc/contextualized-topic-models         |
++----------------------------------------+-------------------------------------------------------------------+
+| ETM (Dieng et al. 2020)                | https://github.com/adjidieng/ETM                                  |
++----------------------------------------+-------------------------------------------------------------------+
+| NeuralLDA (Srivastava and Sutton 2017) | https://github.com/estebandito22/PyTorchAVITM                     |
++----------------------------------------+-------------------------------------------------------------------+
+| ProdLda (Srivastava and Sutton 2017)   | https://github.com/estebandito22/PyTorchAVITM                     |
++----------------------------------------+-------------------------------------------------------------------+
+| HDP (Blei et al. 2004)                 | https://radimrehurek.com/gensim/                                  |
++----------------------------------------+-------------------------------------------------------------------+
+| LDA (Blei et al. 2001)                 | https://radimrehurek.com/gensim/                                  |
++----------------------------------------+-------------------------------------------------------------------+
+| LSI (Deerwester et al. 2009)           | https://radimrehurek.com/gensim/                                  |
++----------------------------------------+-------------------------------------------------------------------+
+| NMF (Lee and Seung 2000)               | https://radimrehurek.com/gensim/                                  |
++----------------------------------------+-------------------------------------------------------------------+
 
-.. _CTM: https://github.com/MIND-Lab/OCTIS
-.. _ETM: https://github.com/MIND-Lab/OCTIS
-.. _HDP: https://dblp.org/rec/conf/nips/TehJBB04.html?view=bibtex
-.. _LDA: https://dblp.org/rec/conf/nips/BleiNJ01.html?view=bibtex
-.. _LSI: https://github.com/MIND-Lab/OCTIS
-.. _NMF: https://dblp.org/rec/journals/tsp/ZhaoT17.html?view=bibtex
-.. _NeuralLDA: https://github.com/MIND-Lab/OCTIS
-.. _ProdLDA: https://github.com/MIND-Lab/OCTIS
 
-Available Datasets
--------------------
+If you use one of these implementations, make sure to cite the right paper. 
 
-+--------------+
-| Name         |
-+==============+
-| 20Newsgroup_ |
-+--------------+
-| BBC-News_    |
-+--------------+
-| DBLP_        | 
-+--------------+
-| M10_         |
-+--------------+
+If you implemented a model and wish to update any part of it, or do not want your model to be included in this library, please get in touch through a GitHub issue.
 
-.. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
-.. _BBC-News: https://github.com/MIND-Lab/OCTIS
-.. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
-.. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
-
-Disclaimer
-~~~~~~~~~~~~~
-
-Similarly to `TensorFlow Datasets`_ and HuggingFace's `nlp`_ library, we just downloaded and prepared public datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license and to cite the right owner of the dataset.
-
-If you're a dataset owner and wish to update any part of it, or do not want your dataset to be included in this library, please get in touch through a GitHub issue.
-
-If you're a dataset owner and wish to include your dataset in this library, please get in touch through a GitHub issue.
+If you implemented a model and wish to include your model in this library, please get in touch through a GitHub issue. Otherwise, if you want to include the model by yourself, see the following section.
 
 Implement your own Model
 ------------------------
@@ -264,22 +312,39 @@ The LDA method requires a dataset, the hyperparameters dictionary and an extra (
 
 With the hyperparameters defaults, the ones in input and the dataset you should be able to write your own code and return as output a dictionary with at least 3 entries:
 
-* `topics`: the list of the most significative words foreach topic (list of lists of strings).
-* `topic-word-matrix`: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
-* `topic-document-matrix`: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.
+* *topics*: the list of the most significative words foreach topic (list of lists of strings).
+* *topic-word-matrix*: an NxV matrix of weights where N is the number of topics and V is the vocabulary length.
+* *topic-document-matrix*: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus.
 
-if your model support the training/test partitioning it should also return:
+if your model supports the training/test partitioning it should also return:
 
-* `test-topic-document-matrix`: the document topic matrix of the test set.
+* *test-topic-document-matrix*: the document topic matrix of the test set.
 
-In case the model isn't updated with the test set.
-Or:
+Implement your own Metric
+-------------------------
 
-* `test-topics`: the list of the most significative words foreach topic (list of lists of strings) of the model updated with the test set.
-* `test-topic-word-matrix`: an NxV matrix of weights where N is the number of topics and V is the vocabulary length of the model updated with the test set.
-* `test-topic-document-matrix`: an NxD matrix of weights where N is the number of topics and D is the number of documents in the corpus of the model updated with the test set.
+Metrics inherit from the class AbstractMetric defined in evaluation_metrics/metrics.py.
+To build your own metric your class must override the score(self, model_output) method which always
+require at least the model output and should return the metric evaluation as output.
 
-If the model is updated with the test set.
+To better understand how a metric work, let's have a look at the topic diversity implementation.
+The first step in developing a custom metric is to define the dictionary of default hyperparameters values:
+
+.. code-block:: python
+
+    hyperparameters = {'topk': 10}
+
+Defining the default hyperparameters values allows users to work on a subset of them without having to assign a value to each parameter.
+
+The following step is the score() override:
+
+.. code-block:: python
+
+    def score(self, model_output):
+
+The topic diversity only requires the model output.
+With the model output and the hyperparameters updated during the initialization phase
+you should be able to write your own code and return as output the result of the computation.
 
 Dashboard
 ---------
@@ -301,6 +366,22 @@ In the dashboard you can:
 * Visualize and compare all the experiments
 * Visualize a custom experiment
 * Manage the experiment queue
+
+
+How to cite our work
+---------------------
+This work has been accepted at the demo track of EACL 2021! If you decide to use it, please cite:
+
+::
+
+    @inproceedings{terragni2020octis,
+        title={OCTIS: Comparing and Optimizing Topic Models is Simple!},
+        author={Silvia Terragni and Elisabetta Fersini and Bruno Galuzzi and Pietro Tropeano and Antonio Candelieri},
+        year={2021},
+        booktitle={Proceedings of the Software Demonstrations of the 16th Conference of the European Chapter of the Association for Computational Linguistics},
+    }
+
+
 
 Team
 ------
@@ -327,7 +408,7 @@ Past Contributors
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage

@@ -1,4 +1,4 @@
-from octis.evaluation_metrics.metrics import Abstract_Metric
+from octis.evaluation_metrics.metrics import AbstractMetric
 import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
 import itertools
@@ -8,7 +8,7 @@ from octis.evaluation_metrics.word_embeddings_rbo import word_embeddings_rbo
 from octis.evaluation_metrics.word_embeddings_rbo_centroid import word_embeddings_rbo as weirbo_centroid
 
 
-class TopicDiversity(Abstract_Metric):
+class TopicDiversity(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric
@@ -19,7 +19,7 @@ class TopicDiversity(Abstract_Metric):
                             topk: top k words on which the topic diversity
                             will be computed
         """
-        Abstract_Metric.__init__(self, metric_parameters)
+        AbstractMetric.__init__(self, metric_parameters)
         if metric_parameters is None:
             metric_parameters = {}
         parameters = defaults.em_topic_diversity.copy()
@@ -59,7 +59,7 @@ class TopicDiversity(Abstract_Metric):
             return td
 
 
-class InvertedRBO(Abstract_Metric):
+class InvertedRBO(AbstractMetric):
     def __init__(self, metric_parameters=None):
         """
         Initialize metric
@@ -83,6 +83,7 @@ class InvertedRBO(Abstract_Metric):
 
         self.topk = parameters["topk"]
         self.weight = parameters["weight"]
+        self.topics = None
 
     def score(self, model_output):
         """
@@ -97,14 +98,14 @@ class InvertedRBO(Abstract_Metric):
         -------
         td : score of the rank biased overlap over tht topics
         """
-        topics = model_output['topics']
-        if topics is None:
+        self.topics = model_output['topics']
+        if self.topics is None:
             return 0
-        if self.topk > len(topics[0]):
+        if self.topk > len(self.topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             collect = []
-            for list1, list2 in itertools.combinations(topics, 2):
+            for list1, list2 in itertools.combinations(self.topics, 2):
                 word2index = self.get_word2index(list1, list2)
                 indexed_list1 = [word2index[word] for word in list1]
                 indexed_list2 = [word2index[word] for word in list2]
@@ -122,7 +123,7 @@ class InvertedRBO(Abstract_Metric):
         return word2index
 
 
-class WordEmbeddingsInvertedRBO(Abstract_Metric):
+class WordEmbeddingsInvertedRBO(AbstractMetric):
     def __init__(self, metric_parameters=None):
         super().__init__(metric_parameters)
         if metric_parameters is None:
@@ -166,7 +167,7 @@ class WordEmbeddingsInvertedRBO(Abstract_Metric):
         return word2index
 
 
-class WordEmbeddingsInvertedRBOCentroid(Abstract_Metric):
+class WordEmbeddingsInvertedRBOCentroid(AbstractMetric):
     def __init__(self, metric_parameters=None):
         super().__init__(metric_parameters)
         if metric_parameters is None:

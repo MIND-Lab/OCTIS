@@ -29,29 +29,6 @@ def data_dir(root_dir):
     return root_dir + "/../preprocessed_datasets/"
 
 
-def test_f1score(data_dir):
-    dataset = Dataset()
-    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
-
-    model = LDA(num_topics=5, iterations=5)
-    output = model.train_model(dataset)
-    metric = F1Score({'dataset': dataset})
-    score = metric.score(output)
-    assert type(score) == np.float64
-
-
-def test_coherence_measures(data_dir):
-    dataset = Dataset()
-    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
-
-    model = LDA(num_topics=3, iterations=5)
-    output = model.train_model(dataset)
-    metrics_parameters = {'topk': 10, "texts": dataset.get_corpus()}
-    metric = Coherence(metrics_parameters)
-    score = metric.score(output)
-    assert type(score) == np.float64
-
-
 def test_model_output_lda(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
