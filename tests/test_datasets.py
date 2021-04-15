@@ -43,7 +43,6 @@ def test_preprocessing(data_dir):
     dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
 
 
-
 def test_load_20ng():
     dataset = Dataset()
     dataset.fetch_dataset("20NewsGroup")
@@ -55,3 +54,18 @@ def test_load_M10():
     dataset.fetch_dataset("M10")
     assert len(set(dataset.get_labels())) == 10
 
+
+def test_partitions_fetch():
+    dataset = Dataset()
+    dataset.fetch_dataset("M10")
+    partitions = dataset.get_partitioned_corpus()
+    assert len(partitions[0]) == 5847
+    assert len(partitions[1]) == 1254
+
+
+def test_partitions_custom(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir+"M10")
+    partitions = dataset.get_partitioned_corpus()
+    assert len(partitions[0]) == 5847
+    assert len(partitions[1]) == 1254

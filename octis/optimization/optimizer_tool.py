@@ -1,7 +1,5 @@
-import json
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from skopt.learning import GaussianProcessRegressor, RandomForestRegressor, ExtraTreesRegressor
 from skopt import Optimizer as skopt_optimizer
 from skopt.utils import dimensions_aslist
@@ -9,7 +7,6 @@ import os
 import importlib
 import sys
 import octis.configuration.defaults as defaults
-
 from pathlib import Path
 
 framework_path = Path(os.path.dirname(os.path.realpath(__file__)))
@@ -79,56 +76,56 @@ def select_metric(metric_parameters, metric_name):
     module_name = defaults.metric_parameters[metric_name]["module"]
     module_path = os.path.join(module_path, module_name + ".py")
     Metric = importClass(metric_name, metric_name, module_path)
-    metric = Metric(metric_parameters)
+    metric = Metric(**metric_parameters)
 
     return metric
 
 
-def choose_optimizer(params):
+def choose_optimizer(optimizer):
     """
     Choose a surrogate model for Bayesian Optimization
 
-    :param params: list of setting of the BO experiment
-    :type params: object
+    :param optimizer: list of setting of the BO experiment
+    :type optimizer: Optimizer
     :return: surrogate model
     :rtype: scikit object
     """
-    params_space_list = dimensions_aslist(params.search_space)
+    params_space_list = dimensions_aslist(optimizer.search_space)
     estimator = None
     # Choice of the surrogate model
     # Random forest
-    if params.surrogate_model == "RF":
+    if optimizer.surrogate_model == "RF":
         estimator = RandomForestRegressor(
-            n_estimators=100, min_samples_leaf=3, random_state=params.random_state)
+            n_estimators=100, min_samples_leaf=3, random_state=optimizer.random_state)
     # Extra Tree
-    elif params.surrogate_model == "ET":
+    elif optimizer.surrogate_model == "ET":
         estimator = ExtraTreesRegressor(
-            n_estimators=100, min_samples_leaf=3, random_state=params.random_state)
+            n_estimators=100, min_samples_leaf=3, random_state=optimizer.random_state)
     # GP Minimize
-    elif params.surrogate_model == "GP":
+    elif optimizer.surrogate_model == "GP":
         estimator = GaussianProcessRegressor(
-            kernel=params.kernel, random_state=params.random_state)
+            kernel=optimizer.kernel, random_state=optimizer.random_state)
         # Random Search
-    elif params.surrogate_model == "RS":
+    elif optimizer.surrogate_model == "RS":
         estimator = "dummy"
 
     if estimator == "dummy":
         opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                              acq_func=params.acq_func,
+                              acq_func=optimizer.acq_func,
                               acq_optimizer='sampling',
-                              initial_point_generator=params.initial_point_generator,
-                              random_state=params.random_state)
+                              initial_point_generator=optimizer.initial_point_generator,
+                              random_state=optimizer.random_state)
     else:
         opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                              acq_func=params.acq_func,
+                              acq_func=optimizer.acq_func,
                               acq_optimizer='sampling',
-                              n_initial_points=params.n_random_starts,
-                              initial_point_generator=params.initial_point_generator,
+                              n_initial_points=optimizer.n_random_starts,
+                              initial_point_generator=optimizer.initial_point_generator,
                               # work only for version skopt 8.0!!!
                               acq_optimizer_kwargs={
                                   "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
                               acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
-                              random_state=params.random_state)
+                              random_state=optimizer.random_state)
     return opt
 
 
@@ -331,173 +328,3 @@ def load_search_space(search_space):
 
     return ss
 
-
-##############################################################################
-
-
-class BestEvaluation:
-
-    def __init__(self, params, resultsBO):
-        """
-        Create an object with all the information about Bayesian Optimization
-
-        :param params: list of setting of the BO experiment
-        :type params: object
-        :param resultsBO: object of Scikit-optimize where the results of BO  are saved
-        :type resultsBO: object
-        """
-        search_space = params.search_space
-        optimization_type = params.optimization_type
-
-        # Creation of model metric-parameters saved in the json file
-        metric_parameters = params.metric.parameters
-        dict_metric_parameters = dict()
-
-        for key in list(metric_parameters.keys()):
-            if check_instance(metric_parameters[key]):
-                dict_metric_parameters.update({key: metric_parameters[key]})
-
-        # Creation of model hyper-parameters saved in the json file
-        model_parameters = params.model.hyperparameters
-        dict_model_parameters = dict()
-
-        for key in list(model_parameters.keys()):
-            if check_instance(model_parameters[key]):
-                dict_model_parameters.update({key: model_parameters[key]})
-
-        # Creation of extra metric-parameters saved in the json file
-        dict_extra_metric_parameters = dict()
-
-        for i in range(len(params.extra_metrics)):
-            metric_parameters = params.extra_metrics[i].parameters
-            dict_extra_metric_parameters.update({params.extra_metric_names[i]: dict()})
-            for key in list(metric_parameters.keys()):
-                if check_instance(metric_parameters[key]):
-                    dict_extra_metric_parameters[params.extra_metric_names[i]].update({key: metric_parameters[key]})
-
-        # Info about optimization
-        self.info = dict()
-        self.info.update({"dataset_name": params.dataset.get_metadata()["info"]["name"]})
-        self.info.update({"dataset_path": params.dataset.path})
-        self.info.update({"kernel": str(params.kernel)})
-        self.info.update({"acq_func": params.acq_func})
-        self.info.update({"surrogate_model": params.surrogate_model})
-        self.info.update({"optimization_type": "Maximize" if optimization_type == "Maximize" else "Minimize"})
-        self.info.update({"model_runs": params.model_runs})
-        self.info.update({"save_models": params.save_models})
-        self.info.update({"save_step": params.save_step})
-        self.info.update({"save_name": params.save_name})
-        self.info.update({"save_path": params.save_path})
-        self.info.update({"early_stop": params.early_stop})
-        self.info.update({"early_step": params.early_step})
-        self.info.update({"plot_model": params.plot_model})
-        self.info.update({"plot_best_seen": params.plot_best_seen})
-        self.info.update({"plot_name": params.plot_name})
-        self.info.update({"log_scale_plot": params.log_scale_plot})
-        self.info.update({"search_space": save_search_space(params.search_space)})
-        self.info.update({"model_name": params.model.__class__.__name__})
-        self.info.update({"model_attributes": dict_model_parameters})
-        self.info.update({"use_partitioning": params.model.use_partitions})
-        self.info.update({"metric_name": params.name_optimized_metric})
-        self.info.update({"extra_metric_names": [name for name in params.extra_metric_names]})
-        self.info.update({"metric_attributes": dict_metric_parameters})
-        self.info.update({"extra_metric_attributes": dict_extra_metric_parameters})
-        self.info.update({"current_call": params.current_call})
-        self.info.update({"number_of_call": params.number_of_call})
-        self.info.update({"random_state": params.random_state})
-        self.info.update({"x0": params.x0})
-        self.info.update({"y0": params.y0})
-        self.info.update({"n_random_starts": params.n_random_starts})
-        self.info.update({"initial_point_generator": params.initial_point_generator})
-        self.info.update({"topk": params.topk})
-        self.info.update({"time_eval": params.time_eval})
-        self.info.update({"dict_model_runs": params.dict_model_runs})
-
-        # Reverse the sign of minimization if the problem is a maximization
-        if optimization_type == "Maximize":
-            self.func_vals = [-val for val in resultsBO.func_vals]
-            self.y_best = resultsBO.fun
-        else:
-            self.func_vals = [val for val in resultsBO.func_vals]
-            self.y_best = resultsBO.fun
-
-        self.x_iters = dict()
-        name_hyperparameters = sorted(list(search_space.keys()))
-
-        # dictionary of x_iters
-        lenList = len(resultsBO.x_iters)
-        for i, name in enumerate(name_hyperparameters):
-            self.x_iters.update(
-                {name: [convert_type(resultsBO.x_iters[j][i]) for j in range(lenList)]})
-
-        self.info.update({"f_val": self.func_vals})
-        self.info.update({"x_iters": self.x_iters})
-
-        self.metric = params.metric
-        self.extra_metrics = params.extra_metrics
-
-    def save(self, name_file):
-        """
-        Save results for Bayesian Optimization in a json file
-
-        :param name_file: name of the file
-        :type name_file: str
-        """
-        self.name_json = name_file
-        with open(name_file, 'w') as fp:
-            json.dump(self.info, fp)
-
-    def save_to_csv(self, name_file):
-        """
-        Save results for Bayesian Optimization to a csv file
-
-        :param name_file: name of the file
-        :type name_file: str
-        """
-        n_row = len(self.func_vals)
-        n_extra_metrics = len(self.extra_metrics)
-
-        # creation of the Dataframe
-        df = pd.DataFrame()
-        df['dataset'] = [self.info["dataset_name"]] * n_row
-        df['surrogate model'] = [self.info["surrogate_model"]] * n_row
-        df['acquisition function'] = [self.info["acq_func"]] * n_row
-        df['num_iteration'] = [i for i in range(n_row)]
-        df['time'] = [self.info['time_eval'][i] for i in range(n_row)]
-        df['Median(model_runs)'] = [np.median(
-            self.info['dict_model_runs'][self.info['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
-        df['Mean(model_runs)'] = [np.mean(
-            self.info['dict_model_runs'][self.info['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
-        df['Standard_Deviation(model_runs)'] = [np.std(
-            self.info['dict_model_runs'][self.metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
-
-        for hyperparameter in list(self.x_iters.keys()):
-            df[hyperparameter] = self.x_iters[hyperparameter]
-
-        for metric, i in zip(self.extra_metrics, range(n_extra_metrics)):
-            try:
-                df[metric.info()["name"] + '(not optimized)'] = [np.median(
-                    self.dict_model_runs[metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
-            except:
-                df[metric.__class__.__name__ + '(not optimized)'] = [np.median(
-                    self.dict_model_runs[metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
-
-        if not name_file.endswith(".csv"):
-            name_file = name_file + ".csv"
-
-        # save the Dataframe to a csv
-        df.to_csv(name_file, index=False, na_rep='Unkown')
-
-    def load(self, name):
-        """
-        Load the results for Bayesian Optimization
-
-        :param name: name of the json file
-        :type name: str
-        :return: dictionary of the results load from the json file
-        :rtype: dict
-        """
-        with open(name, 'rb') as file:
-            result = json.load(file)
-
-        return result

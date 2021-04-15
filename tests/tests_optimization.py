@@ -51,20 +51,14 @@ def model():
 @pytest.fixture
 def metric(dataset):
     # Choose of the metric function to optimize
-    metric_parameters = {
-        'texts': dataset.get_corpus(),
-        'topk': 10,
-        'measure': 'c_npmi'
-    }
-    npmi = Coherence(metric_parameters)
+    npmi = Coherence(texts=dataset.get_corpus(), topk=10, measure='c_npmi')
     return npmi
 
 
 @pytest.fixture
 def extra_metric(dataset):
     # extra metric
-    f1_metric = F1Score({'dataset': dataset})
-
+    f1_metric = F1Score(dataset=dataset)
     return f1_metric
 
 
@@ -123,7 +117,7 @@ def test_simple_optimization(dataset, model, metric, search_space, data_dir_test
     f = open(save_path + save_name)
     file = json.load(f)
 
-    assert len(file) == 37
+    assert len(file) == 38
     assert type(file["metric_name"]) == str
     assert file["metric_name"] == metric.__class__.__name__
     assert file["surrogate_model"] == "RF"
@@ -180,7 +174,7 @@ def test_resume_optimization(dataset, model, metric, search_space, data_dir_test
     f = open(save_path + "result.json")
     file = json.load(f)
 
-    assert len(file) == 37
+    assert len(file) == 38
     assert len(file["f_val"]) == number_of_call + extra_evaluations
     assert all([len(file["x_iters"][el]) == number_of_call + extra_evaluations for el in file["x_iters"].keys()])
 
@@ -328,7 +322,7 @@ def test_extra_metrics(dataset, model, metric, extra_metric, search_space, data_
     f = open(save_path + "result.json")
     file = json.load(f)
 
-    assert len(file) == 37
+    assert len(file) == 38
     assert file["metric_name"] == metric.__class__.__name__
     assert len(file["extra_metric_names"]) == 1
     assert file["extra_metric_names"][0] == "0_F1Score"
@@ -377,8 +371,7 @@ def test_extra_metrics_resume(dataset, model, metric, extra_metric, search_space
     f = open(save_path + "result.json")
     file = json.load(f)
 
-    assert len(file) == 37
-
+    assert len(file) == 38
     assert len(file["f_val"]) == number_of_call + extra_evaluations
     assert all([len(file["x_iters"][el]) == number_of_call + extra_evaluations for el in file["x_iters"].keys()])
 
@@ -414,8 +407,7 @@ def test_initial_input(dataset, model, metric, extra_metric, search_space, data_
     f = open(save_path + "result.json")
     file = json.load(f)
 
-    assert len(file) == 37
-
+    assert len(file) == 38
     assert len(file["x0"]["eta"]) == 3
     assert type(file["x0"]["eta"]) == list
     assert all([file["x0"]["eta"][i] == x0["eta"][i] for i in range(len(x0["eta"]))])

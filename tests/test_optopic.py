@@ -5,9 +5,7 @@
 import pytest
 
 from click.testing import CliRunner
-from octis.evaluation_metrics.classification_metrics import F1Score
 
-from octis.evaluation_metrics.coherence_metrics import *
 from octis.dataset.dataset import Dataset
 from octis.models.LDA import LDA
 from octis.models.ETM import ETM
