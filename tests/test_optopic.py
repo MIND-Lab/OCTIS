@@ -14,6 +14,7 @@ from octis.models.NMF import NMF
 from octis.models.NMF_scikit import NMF_scikit
 from octis.models.ProdLDA import ProdLDA
 
+import numpy as np
 import os
 
 
