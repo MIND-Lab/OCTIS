@@ -1,6 +1,6 @@
-=======
-OCTIS
-=======
+=========================================================
+OCTIS : Optimizing and Comparing Topic Models is Simple!
+=========================================================
 
 .. |colab1| image:: https://colab.research.google.com/assets/colab-badge.svg
     :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/models/LDA_training_only.ipynb
@@ -93,7 +93,7 @@ To load one of the already preprocessed datasets as follows:
    dataset = Dataset()
    dataset.fetch_dataset("20NewsGroup")
 
-Note: it is case-sensitive!
+Just use one of the dataset names listed below. Note: it is case-sensitive! 
 
 Available Datasets
 -------------------
@@ -101,13 +101,13 @@ Available Datasets
 +--------------+--------------+--------+---------+----------+
 | Name         | Source       | # Docs | # Words | # Labels |
 +==============+==============+========+=========+==========+
-| 20Newsgroup  | 20Newsgroup_ | 16309  | 1612    | 20       |
+| 20NewsGroup  | 20Newsgroup_ |  16309 |    1612 |       20 |
 +--------------+--------------+--------+---------+----------+
-| BBC_News     | BBC-News_    | 2225   | 2949    | 5        |
+| BBC_News     | BBC-News_    |   2225 |    2949 |        5 |
 +--------------+--------------+--------+---------+----------+
-| DBLP         | DBLP_        | 54595  | 1513    | 4        |
+| DBLP         | DBLP_        |  54595 |    1513 |        4 |
 +--------------+--------------+--------+---------+----------+
-| M10          | M10_         | 8355   | 1696    | 10       |
+| M10          | M10_         |   8355 |    1696 |       10 |
 +--------------+--------------+--------+---------+----------+
 
 .. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
