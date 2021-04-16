@@ -46,7 +46,7 @@ def test_preprocessing(data_dir):
 def test_load_20ng():
     dataset = Dataset()
     dataset.fetch_dataset("20NewsGroup")
-    assert len(dataset.get_corpus()) == 16310
+    assert len(dataset.get_corpus()) == 16309
 
 
 def test_load_M10():
