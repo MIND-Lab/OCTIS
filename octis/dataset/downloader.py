@@ -82,12 +82,13 @@ def download_dataset(dataset_name, target_dir, cache_path):
 
         only_docs, labels, partition = [], [], []
         for d in corpus.text.split("\n"):
-            dsplit = d.strip().split("\t")
-            only_docs.append(dsplit[0])
-            if len(dsplit) > 1:
-                partition.append(dsplit[1])
-                if len(dsplit) > 2:
-                    labels.append(dsplit[2])
+            if len(d.strip()) > 0:
+                dsplit = d.strip().split("\t")
+                only_docs.append(dsplit[0])
+                if len(dsplit) > 1:
+                    partition.append(dsplit[1])
+                    if len(dsplit) > 2:
+                        labels.append(dsplit[2])
 
         # Store a zipped pickle
         cache = dict(corpus=only_docs, labels=labels, partitions=partition, metadata=json.loads(metadata.text),
