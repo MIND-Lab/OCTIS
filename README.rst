@@ -124,7 +124,7 @@ Otherwise, you can load a custom preprocessed dataset in the following way:
    dataset.load_custom_dataset_from_folder("../path/to/the/dataset/folder")
 
 Make sure that the dataset is in the following format:
-    * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document(optional).
+    * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document (optional).
     * vocabulary: a .txt file where each line represents a word of the vocabulary
 
 The partition can be "training", "test" or "validation". An example of dataset can be found here: `sample_dataset_`.
@@ -156,7 +156,7 @@ To preprocess a dataset, import the preprocessing class and use the preprocess_d
                       lemmatize=True, remove_stopwords=True, stopword_list=['am', 'are', 'this', 'that'],
                       min_chars=1, min_words_docs=0)
     # preprocess
-    dataset = p.preprocess_dataset(documents_path=r'..\corpus.txt', labels_path=r'..\M10\labels.txt')
+    dataset = p.preprocess_dataset(documents_path=r'..\corpus.txt', labels_path=r'..\labels.txt')
 
     # save the preprocessed dataset
     dataset.save('hello_dataset')
@@ -167,7 +167,7 @@ For more details on the preprocessing see the preprocessing demo example in the 
 Train a model
 --------------
 
-To build a model, load a preprocessed dataset, customize the model hyperparameters and use the train_model() method of the model class.
+To build a model, load a preprocessed dataset, set the model hyperparameters and use :code:`train_model()` to train the model.
 
 .. code-block:: python
 
@@ -190,7 +190,7 @@ If the dataset is partitioned, you can:
 Evaluate a model
 ----------------
 
-To evaluate a model, choose a metric and use the score() method of the metric class.
+To evaluate a model, choose a metric and use the :code:`score()` method of the metric class.
 
 .. code-block:: python
 
@@ -199,16 +199,46 @@ To evaluate a model, choose a metric and use the score() method of the metric cl
     metric = TopicDiversity(topk=10) # Initialize metric
     topic_diversity_score = metric.score(model_output) # Compute score of the metric
 
+Available metrics
+-----------------
+
+Classification Metrics:
+
+* F1 measure (:code:`F1Score()`)
+
+Coherence Metrics:
+
+* UMass Coherence (:code:`Coherence({'measure':'c_umass'}`)
+* C_V Coherence (:code:`Coherence({'measure':'c_v'}`)
+* UCI Coherence (:code:`Coherence({'measure':'c_uci'}`)
+* NPMI Coherence (:code:`Coherence({'measure':'c_npmi'}`)
+* Word Embedding-based Coherence Pairwise (:code:`WECoherencePairwise()`)
+* Word Embedding-based Coherence Centroid (:code:`WECoherenceCentroid()`)
+
+Diversity Metrics:
+
+* Topic Diversity (:code:`TopicDiversity()`)
+* InvertedRBO (:code:`InvertedRBO()`)
+* Word Embedding-based InvertedRBO (:code:`WordEmbeddingsInvertedRBO()`)
+* Word Embedding-based InvertedRBO centroid (:code:`WordEmbeddingsInvertedRBOCentroid()`)
+
+Topic significance Metrics:
+
+* KL Uniform (:code:`KL_uniform()`)
+* KL Vacuous (:code:`KL_vacuous()`)
+* KL Background (:code:`KL_background()`)
+
 
 Optimize a model
 ----------------
 
 To optimize a model you need to select a dataset, a metric and the search space of the hyperparameters to optimize. 
-For the types of the hyperparameters, we use scikit-optimize types. 
+For the types of the hyperparameters, we use :code:`scikit-optimize` types (https://scikit-optimize.github.io/stable/modules/space.html)
 
 .. code-block:: python
 
     from octis.optimization.optimizer import Optimizer
+    from skopt.space.space import Real
 
     # Define the search space. To see which hyperparameters to optimize, see the topic model's initialization signature
     search_space = {"alpha": Real(low=0.001, high=5.0), "eta": Real(low=0.001, high=5.0)}
