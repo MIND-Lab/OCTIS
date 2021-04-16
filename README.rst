@@ -29,8 +29,8 @@ OCTIS
         :alt: Open In Colab
 
 
-.. image:: https://img.shields.io/github/contributors/MilaNLProc/contextualized-topic-models
-        :target: https://github.com/MilaNLProc/contextualized-topic-models/graphs/contributors/
+.. image:: https://img.shields.io/github/contributors/MIND-Lab/OCTIS
+        :target: https://github.com/MIND-Lab/OCTIS/graphs/contributors/
         :alt: Contributors
 
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
