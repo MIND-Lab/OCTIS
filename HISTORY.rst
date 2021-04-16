@@ -2,7 +2,7 @@
 History
 =======
 
-1.0.0 (2021-04-15)
+1.0.0 (2021-04-16)
 ------------------
 * New metrics initialization (do not support dictionaries as input anymore)
 * Optimization, dataset and dashboard bug fixes
