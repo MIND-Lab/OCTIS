@@ -249,11 +249,10 @@ class Optimizer:
             plot_model_runs(self.dict_model_runs[self.name_optimized_metric], self.current_call, name_plot)
 
             # Boxplot of extrametrics (if any)
-            j = 0
-            for extra_metric in self.extra_metrics:
+            for j in range(len(self.extra_metrics)):
                 name_plot = self.save_path + self.plot_name + "_model_runs_" + self.extra_metric_names[j]
                 plot_model_runs(self.dict_model_runs[self.extra_metric_names[j]], self.current_call, name_plot)
-                j = j + 1
+
         return result
 
     def _optimization_loop(self, opt):
