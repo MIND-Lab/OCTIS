@@ -1,4 +1,4 @@
-"""Top-level package for opTopic."""
+"""Top-level package for OCTIS."""
 from octis.dashboard import *
 from octis.configuration import *
 from octis.dataset import *

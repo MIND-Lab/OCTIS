@@ -1,4 +1,4 @@
-* opTopic version:
+* OCTIS version:
 * Python version:
 * Operating System:
 
