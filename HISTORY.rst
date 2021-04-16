@@ -2,6 +2,10 @@
 History
 =======
 
+1.0.2 (2021-04-16)
+------------------
+* Dataset downloader fix
+
 1.0.0 (2021-04-16)
 ------------------
 * New metrics initialization (do not support dictionaries as input anymore)
