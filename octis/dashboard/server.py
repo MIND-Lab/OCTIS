@@ -285,14 +285,11 @@ def ManageExperiments():
     for exp in exp_list:
         exp_info = queueManager.getExperimentInfo(
             exp_list[exp]["batchId"], exp_list[exp]["experimentId"])
-        if exp_info != False:
+        if exp_info is not None:
             exp_list[exp].update(exp_info)
     order = queueManager.getOrder()
     running = queueManager.getRunning()
-    return render_template("ManageExperiments.html",
-                           order=order,
-                           experiments=exp_list,
-                           running=running)
+    return render_template("ManageExperiments.html", order=order, experiments=exp_list, running=running)
 
 
 @ app.route("/pauseExp", methods=["POST"])
@@ -331,7 +328,7 @@ def deleteExp():
     """
     data = request.json['data']
     print(queueManager.getRunning())
-    if queueManager.getRunning() != None and queueManager.getRunning() == data:
+    if queueManager.getRunning() is not None and queueManager.getRunning() == data:
         queueManager.pause()
         queueManager.deleteFromOrder(data)
     else:

@@ -5,9 +5,7 @@
 import pytest
 
 from click.testing import CliRunner
-from octis.evaluation_metrics.classification_metrics import F1Score
 
-from octis.evaluation_metrics.coherence_metrics import *
 from octis.dataset.dataset import Dataset
 from octis.models.LDA import LDA
 from octis.models.ETM import ETM
@@ -16,6 +14,7 @@ from octis.models.NMF import NMF
 from octis.models.NMF_scikit import NMF_scikit
 from octis.models.ProdLDA import ProdLDA
 
+import numpy as np
 import os
 
 

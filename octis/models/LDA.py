@@ -151,9 +151,8 @@ class LDA(Abstract_Model):
         ----------
         dataset : dataset to use to build the model
         hyperparams : hyperparameters to build the model
-        top_words : if greather than 0 returns the most significant words
-                 for each topic in the output
-                 Default True
+        top_words : if greater than 0 returns the most significant words for each topic in the output
+                 (Default True)
         Returns
         -------
         result : dictionary with up to 3 entries,

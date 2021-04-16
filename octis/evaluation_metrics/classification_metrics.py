@@ -10,34 +10,19 @@ from libsvm.svmutil import *
 
 class F1Score(AbstractMetric):
 
-    def __init__(self, metric_parameters=None):
-        AbstractMetric.__init__(self, metric_parameters)
-        if metric_parameters is None:
-            metric_parameters = {}
-        self.train_document_representations = None
-        self.test_document_representations = None
-        parameters = defaults.em_f1_score.copy()
-        parameters.update(metric_parameters)
-        self.parameters = parameters
-        if 'dataset' not in metric_parameters.keys():
-            raise Exception('A dataset is required to extract the labels')
-        else:
-            self.labels = metric_parameters['dataset'].get_labels()
-        self.average = parameters['average']
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear'):
+        AbstractMetric.__init__(self, )
 
-        if 'use_log' in metric_parameters:
-            self.use_log = metric_parameters['use_log']
-        else:
-            self.use_log = False
-        if 'scale' in metric_parameters:
-            self.scale = metric_parameters['scale']
-        else:
-            self.scale = True
+        self._train_document_representations = None
+        self._test_document_representations = None
 
-        if 'kernel' in metric_parameters:
-            self.kernel = metric_parameters['kernel']
-        else:
-            self.kernel = 'linear'
+        self._labels = dataset.get_labels()
+        self.average = average
+
+        self.use_log = use_log
+        self.scale = scale
+
+        self.kernel = kernel
 
     def info(self):
         return {
@@ -60,22 +45,22 @@ class F1Score(AbstractMetric):
         score : score
         """
 
-        self.train_document_representations = model_output["topic-document-matrix"].T
-        self.test_document_representations = model_output["test-topic-document-matrix"].T
+        self._train_document_representations = model_output["topic-document-matrix"].T
+        self._test_document_representations = model_output["test-topic-document-matrix"].T
 
         if self.use_log:
-            self.train_document_representations = np.log(self.train_document_representations)
-            self.test_document_representations = np.log(self.test_document_representations)
+            self._train_document_representations = np.log(self._train_document_representations)
+            self._test_document_representations = np.log(self._test_document_representations)
         if self.scale:
             #scaler = MinMaxScaler()
             scaler2 = StandardScaler()
-            X_train = scaler2.fit_transform(self.train_document_representations)
-            X_test = scaler2.transform(self.test_document_representations)
+            X_train = scaler2.fit_transform(self._train_document_representations)
+            X_test = scaler2.transform(self._test_document_representations)
         else:
-            X_train = self.train_document_representations
-            X_test = self.test_document_representations
-        train_labels = [l for l in self.labels[:len(X_train)]]
-        test_labels = [l for l in self.labels[-len(X_test):]]
+            X_train = self._train_document_representations
+            X_test = self._test_document_representations
+        train_labels = [l for l in self._labels[:len(X_train)]]
+        test_labels = [l for l in self._labels[-len(X_test):]]
 
         id2label = {}
         label2id = {}
@@ -87,7 +72,7 @@ class F1Score(AbstractMetric):
 
         train_labels = [label2id[l] for l in train_labels]
         test_labels = [label2id[l] for l in test_labels]
-
+        '''
         if self.kernel == 'linear':
             clf = svm.LinearSVC(verbose=True)
         else:
@@ -104,4 +89,5 @@ class F1Score(AbstractMetric):
         #print(len(X_test))
         #print(X_test.shape)
         return f1_score(test_labels, p_label, average=self.average)
-        '''
+
+

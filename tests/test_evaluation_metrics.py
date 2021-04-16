@@ -36,28 +36,25 @@ def model_output(dataset):
 
 
 def test_f1score(dataset, model_output):
-    metric = F1Score({'dataset': dataset})
+    metric = F1Score(dataset=dataset)
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
 
 
 def test_coherence_measures(dataset, model_output):
-    metrics_parameters = {'topk': 10, "texts": dataset.get_corpus()}
-    metric = Coherence(metrics_parameters)
+    metric = Coherence(topk=10, texts=dataset.get_corpus())
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
 
 
 def test_diversity_measures(dataset, model_output):
-    metrics_parameters = {'topk': 10}
-    metric = TopicDiversity(metrics_parameters)
+    metric = TopicDiversity(topk=10)
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
 
 
 def test_irbo(dataset, model_output):
-    metrics_parameters = {'topk': 10}
-    metric = InvertedRBO(metrics_parameters)
+    metric = InvertedRBO(topk=10)
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
 

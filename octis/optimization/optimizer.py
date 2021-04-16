@@ -1,7 +1,7 @@
 # Utils
+import json
 import time
 from pathlib import Path
-import json
 
 # utils from skopt and sklearn
 from sklearn.gaussian_process.kernels import *
@@ -10,13 +10,9 @@ from skopt.space.space import *
 from octis.dataset.dataset import Dataset
 # utils from other files of the framework
 from octis.models.model import save_model_output
-from octis.optimization.optimizer_tool import BestEvaluation
-from octis.optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
-from octis.optimization.optimizer_tool import early_condition
-from octis.optimization.optimizer_tool import choose_optimizer
-from octis.optimization.optimizer_tool import select_metric
-from octis.optimization.optimizer_tool import load_model
-from octis.optimization.optimizer_tool import load_search_space
+from octis.optimization.optimizer_evaluation import OptimizerEvaluation
+from octis.optimization.optimizer_tool import choose_optimizer, early_condition, load_model, select_metric
+from octis.optimization.optimizer_tool import load_search_space, plot_bayesian_optimization, plot_model_runs
 
 
 class Optimizer:
@@ -145,7 +141,7 @@ class Optimizer:
             i = i + 1
 
         # Control about the correctness of BO parameters
-        if self._check_BO_parameters() == -1:
+        if self._check_bo_parameters() == -1:
             print("ERROR: wrong initialitation of BO parameters")
             return None
 
@@ -185,11 +181,11 @@ class Optimizer:
 
         # Check if there are other iterations to do
         if self.number_of_previous_calls == self.number_of_call:
-            return BestEvaluation(self, resultsBO=res)
+            return OptimizerEvaluation(self, BO_results=res)
 
         # Control about the correctness of BO parameters
-        if self._check_BO_parameters() == -1:
-            print("ERROR: wrong inizialitation of BO parameters")
+        if self._check_bo_parameters() == -1:
+            print("ERROR: wrong initialization of BO parameters")
             return None
 
         results = self._optimization_loop(opt)
@@ -253,11 +249,10 @@ class Optimizer:
             plot_model_runs(self.dict_model_runs[self.name_optimized_metric], self.current_call, name_plot)
 
             # Boxplot of extrametrics (if any)
-            j = 0
-            for extra_metric in self.extra_metrics:
+            for j in range(len(self.extra_metrics)):
                 name_plot = self.save_path + self.plot_name + "_model_runs_" + self.extra_metric_names[j]
                 plot_model_runs(self.dict_model_runs[self.extra_metric_names[j]], self.current_call, name_plot)
-                j = j + 1
+
         return result
 
     def _optimization_loop(self, opt):
@@ -267,7 +262,7 @@ class Optimizer:
         :return: result of the optimization
         :rtype: class
         """
-
+        results = None
         # For loop to perform Bayesian Optimization
         for i in range(self.number_of_previous_calls, self.number_of_call):
 
@@ -303,7 +298,7 @@ class Optimizer:
                                            self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
 
             # Create an object related to the BO optimization
-            results = BestEvaluation(self, resultsBO=res)
+            results = OptimizerEvaluation(self, BO_results=res)
 
             # Save the object
             if i % self.save_step == 0:
@@ -399,10 +394,15 @@ class Optimizer:
         self.initial_point_generator = optimization_object['initial_point_generator']
         self.topk = optimization_object['topk']
         self.time_eval = optimization_object["time_eval"]
+        res = None
 
         # Load the dataset
         dataset = Dataset()
-        dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
+        if not optimization_object["is_cached"]:
+            dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
+        else:
+            dataset.fetch_dataset(optimization_object["dataset_path"])
+
         self.dataset = dataset
 
         # Load the metric
@@ -410,10 +410,8 @@ class Optimizer:
 
         # Load the model
         self.model = load_model(optimization_object)
-
         # Creation of the hyperparameters
         self.hyperparameters = list(sorted(self.search_space.keys()))
-
         # Choice of the optimizer
         opt = choose_optimizer(self)
 
@@ -431,7 +429,7 @@ class Optimizer:
 
         return res, opt
 
-    def _check_BO_parameters(self):
+    def _check_bo_parameters(self):
         """
         Check the correctness of BO parameters
 

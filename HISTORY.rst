@@ -2,6 +2,13 @@
 History
 =======
 
+1.0.0 (2021-04-16)
+------------------
+* New metrics initialization (do not support dictionaries as input anymore)
+* Optimization, dataset and dashboard bug fixes
+* Refactoring
+* Updated README and documentation
+
 0.4.0 (2021-04-15)
 ------------------
 * Dataset preprocessing produces also an indexes.txt file containing the indexes of the documents

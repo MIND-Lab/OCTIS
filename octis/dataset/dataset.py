@@ -32,6 +32,8 @@ class Dataset:
         self.__metadata = metadata
         self.__labels = labels
         self.__original_indexes = document_indexes
+        self.dataset_path = None
+        self.is_cached = False
 
     def get_corpus(self):
         return self.__corpus
@@ -298,6 +300,7 @@ class Dataset:
             self._save_vocabulary(path + "/vocabulary.txt")
             self._save_metadata(path + "/metadata.json")
             self._save_document_indexes(path + "/indexes.txt")
+            self.dataset_path = path
 
         except:
             raise Exception("error in saving the dataset")
@@ -309,12 +312,13 @@ class Dataset:
         ----------
         path : path of the folder to read
         """
+        self.dataset_path = path
         try:
-            if exists(path + "/metadata.json"):
-                self._load_metadata(path + "/metadata.json")
+            if exists(self.dataset_path + "/metadata.json"):
+                self._load_metadata(self.dataset_path + "/metadata.json")
             else:
                 self.__metadata = dict()
-            df = pd.read_csv(path + "/corpus.tsv", sep='\t', header=None)
+            df = pd.read_csv(self.dataset_path + "/corpus.tsv", sep='\t', header=None)
             if len(df.keys()) > 1:
                 df[1] = df[1].replace("train", "a_train")
                 df[1] = df[1].replace("val", "b_val")
@@ -330,18 +334,18 @@ class Dataset:
                 self.__corpus = [d.split() for d in df[0].tolist()]
                 self.__metadata['last-training-doc'] = len(df[0])
 
-            if exists(path + "/vocabulary.txt"):
-                self._load_vocabulary(path + "/vocabulary.txt")
+            if exists(self.dataset_path + "/vocabulary.txt"):
+                self._load_vocabulary(self.dataset_path + "/vocabulary.txt")
             else:
                 vocab = set()
                 for d in self.__corpus:
                     for w in set(d):
                         vocab.add(w)
                 self.__vocabulary = list(vocab)
-            if exists(path + "/indexes.txt"):
-                self._load_document_indexes(path + "/indexes.txt")
+            if exists(self.dataset_path + "/indexes.txt"):
+                self._load_document_indexes(self.dataset_path + "/indexes.txt")
         except:
-            raise Exception("error in loading the dataset:" + path)
+            raise Exception("error in loading the dataset:" + self.dataset_path)
 
     def fetch_dataset(self, dataset_name, data_home=None, download_if_missing=True):
         """Load the filenames and data from a dataset.
@@ -375,11 +379,10 @@ class Dataset:
 
         if cache is None:
             if download_if_missing:
-                cache = download_dataset(dataset_name, target_dir=dataset_home,
-                                         cache_path=cache_path)
+                cache = download_dataset(dataset_name, target_dir=dataset_home, cache_path=cache_path)
             else:
                 raise IOError(dataset_name + ' dataset not found')
-
+        self.is_cached = True
         self.__corpus = [d.split() for d in cache["corpus"]]
         self.__vocabulary = cache["vocabulary"]
         self.__metadata = cache["metadata"]
