@@ -256,7 +256,8 @@ def retrieveIterationBoResults(path, iteration):
         dict_return = dict()
 
         metric_name = result["metric_name"]
-        values = result['dict_model_runs'][metric_name]['iteration_' + str(iteration)]
+        values = result['dict_model_runs'][metric_name]['iteration_' +
+                                                        str(iteration)]
 
         extra_metric_names = result["extra_metric_names"]
         for name in extra_metric_names:
@@ -365,7 +366,8 @@ def singleInfo(path):
                 for j in iterations:
                     values.append(np.median(dict_values[j]))
                 dict_values_extra_metrics.update({name: values})
-                val_stats = [np.max(values), np.min(values), np.median(values), np.mean(values)]
+                val_stats = [np.max(values), np.min(
+                    values), np.median(values), np.mean(values)]
                 dict_stats_extra_metrics.update({name: val_stats})
             dict_return.update(
                 {"extra_metric_vals": dict_values_extra_metrics})

@@ -521,7 +521,7 @@
                         case "Categorical":
                             newInput = document.createElement("select")
                             newInput.classList.add("coolSelect")
-                            newInput.id = key + "input"
+                            newInput.id = key + "input"+where
 
                             for (const val of value["possible_values"]) {
                                 var option = document.createElement("option");

@@ -209,12 +209,21 @@ def startExperiment():
                 for key, content in json.loads(singleValue).items():
                     if key != "metric" and key != "type":
                         metric["parameters"][key] = typed(content)
+
                     if key == "type" and content == "track":
                         optimize = False
                 if optimize:
                     expParams["optimize_metrics"].append(metric)
                 else:
                     expParams["track_metrics"].append(metric)
+
+
+
+    if expParams["optimize_metrics"][0]["name"]=="F1Score" and not expParams["partitioning"]:
+        return VisualizeExperiments()
+    for trackedMetric in expParams["track_metrics"]:
+        if trackedMetric["name"] == "F1Score" and not expParams["partitioning"]:
+            return VisualizeExperiments()
 
     print(expParams)
 
