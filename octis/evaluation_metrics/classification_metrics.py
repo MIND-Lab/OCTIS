@@ -78,7 +78,7 @@ class ClassificationScore(AbstractMetric):
         return test_labels, predicted_test_labels
 
 
-def compute_score(model_output, metric, super_metric):
+def compute_SVM_output(model_output, metric, super_metric):
     global stored_average
     global stored_use_log
     global stored_scale
@@ -134,7 +134,7 @@ class F1Score(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_score(model_output, self, super())
+        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
         return f1_score(test_labels, predicted_test_labels, average=self.average)
 
 
@@ -160,7 +160,7 @@ class PrecisionScore(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_score(model_output, self, super())
+        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
         return precision_score(test_labels, predicted_test_labels, average=self.average)
 
 
@@ -186,7 +186,7 @@ class RecallScore(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_score(model_output, self, super())
+        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
         return recall_score(test_labels, predicted_test_labels, average=self.average)
 
 class AccuracyScore(ClassificationScore):
@@ -211,5 +211,5 @@ class AccuracyScore(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_score(model_output, self, super())
+        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
         return accuracy_score(test_labels, predicted_test_labels)
