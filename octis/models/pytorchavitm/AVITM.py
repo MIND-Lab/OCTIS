@@ -1,11 +1,11 @@
 from sklearn.feature_extraction.text import CountVectorizer
 
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 from octis.models.pytorchavitm import datasets
 from octis.models.pytorchavitm.avitm import avitm_model
 
 
-class AVITM(Abstract_Model):
+class AVITM(AbstractModel):
 
     def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,

@@ -1,6 +1,6 @@
 from sklearn.feature_extraction.text import CountVectorizer
 
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 from octis.models.contextualized_topic_models.datasets import dataset
 from octis.models.contextualized_topic_models.models import ctm
 from octis.models.contextualized_topic_models.utils.data_preparation import bert_embeddings_from_list
@@ -9,7 +9,7 @@ import os
 import pickle as pkl
 
 
-class CTM(Abstract_Model):
+class CTM(AbstractModel):
 
     def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,

@@ -1,4 +1,4 @@
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 import numpy as np
 from gensim.models import ldamodel
 import gensim.corpora as corpora
@@ -6,7 +6,7 @@ import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
 
 
-class LDA(Abstract_Model):
+class LDA(AbstractModel):
 
     id2word = None
     id_corpus = None

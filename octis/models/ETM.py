@@ -7,12 +7,12 @@ from octis.models.ETM_model import data
 from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
 from octis.models.ETM_model import etm
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 import gensim
 import pickle as pkl
 
 
-class ETM(Abstract_Model):
+class ETM(AbstractModel):
 
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,

@@ -1,14 +1,14 @@
 import numpy as np
 import tomotopy as tp
 
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 
 """
 Experimental integration of tomotopy's implementation of LDA
 """
 
 
-class LDA_tomopy(Abstract_Model):
+class LDA_tomopy(AbstractModel):
 
     def __init__(self):
         self.hyperparameters = {}

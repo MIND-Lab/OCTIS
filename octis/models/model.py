@@ -4,9 +4,9 @@ import numpy as np
 import json
 
 
-class Abstract_Model(ABC):
+class AbstractModel(ABC):
     """
-    Class structure of a generic Topic Modelling implementation
+    Class structure of a generic Topic Modeling implementation
     """
 
     def __init__(self):

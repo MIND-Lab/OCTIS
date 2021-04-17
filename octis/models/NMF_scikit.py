@@ -1,11 +1,11 @@
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 import numpy as np
 from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
 import octis.configuration.defaults as defaults
 
 
-class NMF_scikit(Abstract_Model):
+class NMF_scikit(AbstractModel):
 
     def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0, use_partitions=True):
         """
