@@ -6,7 +6,7 @@ import pytest
 
 from click.testing import CliRunner
 from octis.evaluation_metrics.topic_significance_metrics import *
-from octis.evaluation_metrics.classification_metrics import F1Score, PrecisionScore, stored_model_output_hash
+from octis.evaluation_metrics.classification_metrics import F1Score, PrecisionScore
 from octis.evaluation_metrics.classification_metrics import  AccuracyScore, RecallScore
 from octis.evaluation_metrics.diversity_metrics import TopicDiversity, InvertedRBO
 
@@ -63,7 +63,6 @@ def test_recallscore(dataset, model_output):
 def test_svm_persistency(dataset, model_output):
     metric = F1Score(dataset=dataset)
     metric.score(model_output)
-    stored_hash = stored_model_output_hash
     metric = AccuracyScore(dataset=dataset)
     metric.score(model_output)
     assert metric.same_svm
