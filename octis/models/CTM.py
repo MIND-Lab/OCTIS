@@ -103,7 +103,7 @@ class CTM(AbstractModel):
             topic_prior_mean=self.hyperparameters["prior_mean"],
             topic_prior_variance=self.hyperparameters["prior_variance"])
 
-        self.model.fit(self.X_train, self.X_valid)
+        self.model.fit(self.X_train, self.X_valid, verbose=False)
 
         if self.use_partitions:
             result = self.inference()

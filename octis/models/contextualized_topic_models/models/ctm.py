@@ -89,7 +89,7 @@ class CTM(object):
         self.model = DecoderNetwork(
             input_size, self.bert_size, inference_type, num_topics, model_type, hidden_sizes, activation,
             dropout, self.learn_priors, self.topic_prior_mean, self.topic_prior_variance)
-        self.early_stopping = EarlyStopping(patience=5, verbose=True)
+        self.early_stopping = EarlyStopping(patience=5, verbose=False)
         # init optimizer
         if self.solver == 'adam':
             self.optimizer = optim.Adam(self.model.parameters(), lr=lr, betas=(self.momentum, 0.99))
