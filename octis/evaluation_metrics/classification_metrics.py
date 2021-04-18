@@ -115,9 +115,9 @@ def compute_SVM_output(model_output, metric, super_metric):
 
 
 class F1Score(ClassificationScore):
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear'):
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
         super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel)
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {
@@ -144,9 +144,9 @@ class F1Score(ClassificationScore):
 
 class PrecisionScore(ClassificationScore):
 
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear'):
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
         super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel)
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {"citation": citations.em_f1_score, "name": "Precision"}
@@ -170,9 +170,9 @@ class PrecisionScore(ClassificationScore):
 
 class RecallScore(ClassificationScore):
 
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear'):
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
         super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel)
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {"citation": citations.em_f1_score, "name": "Precision"}
@@ -195,9 +195,9 @@ class RecallScore(ClassificationScore):
 
 class AccuracyScore(ClassificationScore):
 
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear'):
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
         super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel)
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {"citation": citations.em_f1_score, "name": "Precision"}
