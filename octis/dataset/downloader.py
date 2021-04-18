@@ -90,9 +90,10 @@ def download_dataset(dataset_name, target_dir, cache_path):
                     if len(dsplit) > 2:
                         labels.append(dsplit[2])
 
+        vocab = [word for word in vocabulary.text.split("\n") if len(word) > 0]
         # Store a zipped pickle
         cache = dict(corpus=only_docs, labels=labels, partitions=partition, metadata=json.loads(metadata.text),
-                     vocabulary=vocabulary.text.split("\n"))
+                     vocabulary=vocab)
         compressed_content = codecs.encode(pickle.dumps(cache), 'zlib_codec')
         with open(cache_path, 'wb') as f:
             f.write(compressed_content)
