@@ -19,6 +19,7 @@ from octis.models.ProdLDA import ProdLDA
 import os
 from octis.preprocessing.preprocessing import Preprocessing
 
+from octis.dataset.downloader import get_data_home, _pkl_filepath
 
 @pytest.fixture
 def root_dir():
@@ -44,6 +45,17 @@ def test_preprocessing(data_dir):
 
 
 def test_load_20ng():
+    data_home = get_data_home(data_home=None)
+    cache_path = _pkl_filepath(data_home, "20NewsGroup" + ".pkz")
+    if os.path.exists(cache_path):
+        os.remove(cache_path)
+
+    dataset = Dataset()
+    dataset.fetch_dataset("20NewsGroup")
+    assert len(dataset.get_corpus()) == 16309
+    assert len(dataset.get_labels()) == 16309
+    assert os.path.exists(cache_path)
+
     dataset = Dataset()
     dataset.fetch_dataset("20NewsGroup")
     assert len(dataset.get_corpus()) == 16309

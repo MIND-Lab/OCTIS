@@ -69,12 +69,22 @@ def test_svm_persistency(dataset, model_output):
     metric = F1Score(dataset=dataset, average="macro")
     metric.score(model_output)
     assert not metric.same_svm
-    
 
-def test_coherence_measures(dataset, model_output):
+
+def test_npmi_coherence_measures(dataset, model_output):
     metric = Coherence(topk=10, texts=dataset.get_corpus())
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
+
+
+def test_we_coherence_measures(dataset, model_output):
+    metric = WECoherenceCentroid(topk=5)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == np.float32 or type(score) == float
+
+    metric = WECoherencePairwise(topk=10)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == np.float32 or type(score) == float
 
 
 def test_diversity_measures(dataset, model_output):
