@@ -66,10 +66,10 @@ def test_svm_persistency(dataset, model_output):
     stored_hash = stored_model_output_hash
     metric = AccuracyScore(dataset=dataset)
     metric.score(model_output)
-    assert stored_hash == stored_model_output_hash
+    assert metric.same_svm
     metric = F1Score(dataset=dataset, average="macro")
     metric.score(model_output)
-    assert stored_hash != stored_model_output_hash
+    assert not metric.same_svm
     
 
 def test_coherence_measures(dataset, model_output):

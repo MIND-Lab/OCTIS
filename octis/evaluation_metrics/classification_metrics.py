@@ -90,6 +90,7 @@ def compute_SVM_output(model_output, metric, super_metric):
 
     test_labels = None
     predicted_test_labels = None
+    flag = True
 
     if stored_average == metric.average and \
        stored_use_log == metric.use_log and \
@@ -106,8 +107,9 @@ def compute_SVM_output(model_output, metric, super_metric):
         stored_kernel = metric.kernel
         stored_svm_results = [test_labels, predicted_test_labels]
         stored_model_output_hash = model_output_hash
+        flag = False
 
-    return [test_labels, predicted_test_labels]
+    return [test_labels, predicted_test_labels, flag]
 
 
 class F1Score(ClassificationScore):
@@ -134,7 +136,7 @@ class F1Score(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
         return f1_score(test_labels, predicted_test_labels, average=self.average)
 
 
@@ -160,7 +162,7 @@ class PrecisionScore(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
         return precision_score(test_labels, predicted_test_labels, average=self.average)
 
 
@@ -186,7 +188,7 @@ class RecallScore(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
         return recall_score(test_labels, predicted_test_labels, average=self.average)
 
 class AccuracyScore(ClassificationScore):
@@ -211,5 +213,5 @@ class AccuracyScore(ClassificationScore):
         -------
         score : score
         """
-        test_labels, predicted_test_labels = compute_SVM_output(model_output, self, super())
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
         return accuracy_score(test_labels, predicted_test_labels)
