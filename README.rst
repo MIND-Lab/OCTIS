@@ -344,15 +344,21 @@ In the dashboard you can:
 
 How to cite our work
 ---------------------
-This work has been accepted at the demo track of EACL 2021! If you decide to use it, please cite:
+This work has been accepted at the demo track of EACL 2021! You can find it here: https://www.aclweb.org/anthology/2020.insights-1.5/ 
+If you decide to use this resource, please cite:
 
 ::
 
     @inproceedings{terragni2020octis,
-        title={OCTIS: Comparing and Optimizing Topic Models is Simple!},
-        author={Silvia Terragni and Elisabetta Fersini and Bruno Galuzzi and Pietro Tropeano and Antonio Candelieri},
+        title={{OCTIS}: Comparing and Optimizing Topic Models is Simple!},
+        author={Terragni, Silvia and Fersini, Elisabetta and Galuzzi, Bruno Giovanni and Tropeano, Pietro and Candelieri, Antonio},
         year={2021},
-        booktitle={Proceedings of the Software Demonstrations of the 16th Conference of the European Chapter of the Association for Computational Linguistics},
+        booktitle={Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: System Demonstrations},
+        month = apr,
+        year = "2021",
+        publisher = "Association for Computational Linguistics",
+        url = "https://www.aclweb.org/anthology/2021.eacl-demos.31",
+        pages = "263--270",
     }
 
 
