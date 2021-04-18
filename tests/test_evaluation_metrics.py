@@ -6,7 +6,8 @@ import pytest
 
 from click.testing import CliRunner
 from octis.evaluation_metrics.topic_significance_metrics import *
-from octis.evaluation_metrics.classification_metrics import F1Score
+from octis.evaluation_metrics.classification_metrics import F1Score, PrecisionScore, stored_model_output_hash
+from octis.evaluation_metrics.classification_metrics import  AccuracyScore, RecallScore
 from octis.evaluation_metrics.diversity_metrics import TopicDiversity, InvertedRBO
 
 from octis.evaluation_metrics.coherence_metrics import *
@@ -40,6 +41,36 @@ def test_f1score(dataset, model_output):
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
 
+
+def test_accuracyscore(dataset, model_output):
+    metric = AccuracyScore(dataset=dataset)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+
+
+def test_precisionscore(dataset, model_output):
+    metric = PrecisionScore(dataset=dataset)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+
+
+def test_recallscore(dataset, model_output):
+    metric = RecallScore(dataset=dataset)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+
+
+def test_svm_persistency(dataset, model_output):
+    metric = F1Score(dataset=dataset)
+    metric.score(model_output)
+    stored_hash = stored_model_output_hash
+    metric = AccuracyScore(dataset=dataset)
+    metric.score(model_output)
+    assert stored_hash == stored_model_output_hash
+    metric = F1Score(dataset=dataset, average="macro")
+    metric.score(model_output)
+    assert stored_hash != stored_model_output_hash
+    
 
 def test_coherence_measures(dataset, model_output):
     metric = Coherence(topk=10, texts=dataset.get_corpus())
