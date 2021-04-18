@@ -2,6 +2,12 @@
 History
 =======
 
+1.1.0 (2021-04-18)
+------------------
+* New classification metrics
+* Vocabulary downloader fix
+
+
 1.0.2 (2021-04-16)
 ------------------
 * Dataset downloader fix
