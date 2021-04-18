@@ -16,7 +16,7 @@ stored_svm_results = [None, None]
 
 
 class ClassificationScore(AbstractMetric):
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear'):
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
         AbstractMetric.__init__(self)
 
         self._train_document_representations = None
@@ -24,6 +24,8 @@ class ClassificationScore(AbstractMetric):
 
         self._labels = dataset.get_labels()
         self.average = average
+
+        self.same_svm = same_svm
 
         self.use_log = use_log
         self.scale = scale
