@@ -205,6 +205,9 @@ Available metrics
 Classification Metrics:
 
 * F1 measure (:code:`F1Score()`)
+* Precision (:code:`PrecisionScore()`)
+* Recall (:code:`RecallScore()`)
+* Accuracy (:code:`AccuracyScore()`)
 
 Coherence Metrics:
 
