@@ -279,17 +279,18 @@ class CTM(object):
             val_samples_processed, val_loss = self._validation(validation_loader)
             e = datetime.datetime.now()
 
-            # report
-            print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
-                epoch + 1, self.num_epochs, val_samples_processed,
-                len(self.validation_data) * self.num_epochs, val_loss, e - s))
+            if verbose:
+                print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
+                    epoch + 1, self.num_epochs, val_samples_processed,
+                    len(self.validation_data) * self.num_epochs, val_loss, e - s))
 
             if np.isnan(val_loss) or np.isnan(train_loss):
                 break
             else:
                 self.early_stopping(val_loss, self.model)
                 if self.early_stopping.early_stop:
-                    print("Early stopping")
+                    if verbose:
+                        print("Early stopping")
                     if save_dir is not None:
                         self.save(save_dir)
                     break
