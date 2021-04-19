@@ -386,5 +386,6 @@ class Dataset:
         self.__corpus = [d.split() for d in cache["corpus"]]
         self.__vocabulary = cache["vocabulary"]
         self.__metadata = cache["metadata"]
+        self.dataset_path = cache_path
         self.__labels = cache["labels"]
 

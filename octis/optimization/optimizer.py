@@ -401,7 +401,8 @@ class Optimizer:
         if not optimization_object["is_cached"]:
             dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
         else:
-            dataset.fetch_dataset(optimization_object["dataset_path"])
+            dp = optimization_object["dataset_path"][:-(len(optimization_object["dataset_name"]) + len("_py3.pkz"))]
+            dataset.fetch_dataset(optimization_object["dataset_name"], data_home=dp)
 
         self.dataset = dataset
 
