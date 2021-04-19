@@ -5,15 +5,11 @@ Our Colab Tutorials:
 
 
 .. |colab1| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/models/LDA_training_only.ipynb
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_LDA_training_only.ipynb
     :alt: Open In Colab
 
 .. |colab2| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_ETM.ipynb
-    :alt: Open In Colab
-
-.. |colab3| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_LDA.ipynb
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
     :alt: Open In Colab
 
 
@@ -21,9 +17,7 @@ Our Colab Tutorials:
 +--------------------------------------------------------------------------------+------------------+
 | Name                                                                           | Link             |
 +================================================================================+==================+
-| How to build a topic model and evaluate the results.                           | |colab1|         |
+| How to build a topic model and evaluate the results (LDA on 20Newsgroups)      | |colab1|         |
 +--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with ETM and 20Newsgroup)                    | |colab2|         |
-+--------------------------------------------------------------------------------+------------------+
-| Optimizing a topic model (Example with LDA and M10)                            | |colab3|         |
+| How to optimize the hyperparameters of a neural topic model (CTM on M10)       | |colab2|         |
 +--------------------------------------------------------------------------------+------------------+

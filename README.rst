@@ -2,17 +2,15 @@
 OCTIS : Optimizing and Comparing Topic Models is Simple!
 =========================================================
 
+
 .. |colab1| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/models/LDA_training_only.ipynb
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_LDA_training_only.ipynb
     :alt: Open In Colab
 
 .. |colab2| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_ETM.ipynb
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
     :alt: Open In Colab
 
-.. |colab3| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_LDA.ipynb
-    :alt: Open In Colab
 
 .. image:: https://img.shields.io/pypi/v/octis.svg
         :target: https://pypi.python.org/pypi/octis
@@ -25,7 +23,7 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
         :alt: Documentation Status
 
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
-        :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/optimization/optimizing_ETM.ipynb
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
         :alt: Open In Colab
 
 
@@ -70,16 +68,13 @@ Examples and Tutorials
 
 To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 
-+---------------------------------------------------------------------------------+------------------+
-| Name                                                                            | Link             |
-+=================================================================================+==================+
-| How to train a topic model and evaluate their results                           | |colab1|         |
-+---------------------------------------------------------------------------------+------------------+
-| Optimizing a neural topic model (Example with ETM on 20Newsgroup)               | |colab2|         |
-+---------------------------------------------------------------------------------+------------------+
-| Optimizing a classical topic model (Example with LDA on M10)                    | |colab3|         |
-+---------------------------------------------------------------------------------+------------------+
-
++--------------------------------------------------------------------------------+------------------+
+| Name                                                                           | Link             |
++================================================================================+==================+
+| How to build a topic model and evaluate the results (LDA on 20Newsgroups)      | |colab1|         |
++--------------------------------------------------------------------------------+------------------+
+| How to optimize the hyperparameters of a neural topic model (CTM on M10)       | |colab2|         |
++--------------------------------------------------------------------------------+------------------+
 
 
 Load a preprocessed dataset
@@ -93,7 +88,7 @@ To load one of the already preprocessed datasets as follows:
    dataset = Dataset()
    dataset.fetch_dataset("20NewsGroup")
 
-Just use one of the dataset names listed below. Note: it is case-sensitive! 
+Just use one of the dataset names listed below. Note: it is case-sensitive!
 
 Available Datasets
 -------------------
@@ -195,7 +190,7 @@ To evaluate a model, choose a metric and use the :code:`score()` method of the m
 .. code-block:: python
 
     from octis.evaluation_metrics.diversity_metrics import TopicDiversity
-    
+
     metric = TopicDiversity(topk=10) # Initialize metric
     topic_diversity_score = metric.score(model_output) # Compute score of the metric
 
@@ -235,7 +230,7 @@ Topic significance Metrics:
 Optimize a model
 ----------------
 
-To optimize a model you need to select a dataset, a metric and the search space of the hyperparameters to optimize. 
+To optimize a model you need to select a dataset, a metric and the search space of the hyperparameters to optimize.
 For the types of the hyperparameters, we use :code:`scikit-optimize` types (https://scikit-optimize.github.io/stable/modules/space.html)
 
 .. code-block:: python
@@ -250,7 +245,7 @@ For the types of the hyperparameters, we use :code:`scikit-optimize` types (http
     optimizer=Optimizer()
     optResult=optimizer.optimize(model, dataset, eval_metric, search_space, save_path="../results" # path to store the results
                                  number_of_call=30, # number of optimization iterations
-                                 model_runs=5) # number of runs of the topic model 
+                                 model_runs=5) # number of runs of the topic model
     #save the results of th optimization in a csv file
     optResult.save_to_csv("results.csv")
 
@@ -347,7 +342,7 @@ In the dashboard you can:
 
 How to cite our work
 ---------------------
-This work has been accepted at the demo track of EACL 2021! You can find it here: https://www.aclweb.org/anthology/2020.insights-1.5/ 
+This work has been accepted at the demo track of EACL 2021! You can find it here: https://www.aclweb.org/anthology/2020.insights-1.5/
 If you decide to use this resource, please cite:
 
 ::
