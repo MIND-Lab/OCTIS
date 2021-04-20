@@ -277,6 +277,7 @@ Available Models
 | ProdLda `(Srivastava and Sutton 2017)`_   | https://github.com/estebandito22/PyTorchAVITM             |
 +-------------------------------------------+-----------------------------------------------------------+
 
+
 .. _(Bianchi et al. 2020): https://www.aclweb.org/anthology/2021.eacl-main.143/
 .. _(Dieng et al. 2020): https://www.aclweb.org/anthology/2020.tacl-1.29 
 .. _(Blei et al. 2004): https://people.eecs.berkeley.edu/~jordan/papers/hdp.pdf
