@@ -257,25 +257,33 @@ You can find more here: `optimizer README`_
 Available Models
 ----------------
 
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| Name                                                         | Implementation                                            | Link to original paper                                                             |
-+==============================================================+===========================================================+====================================================================================+
-| CTM - Contextualized Topic Models (Bianchi et al. 2020)      | https://github.com/MilaNLProc/contextualized-topic-models | https://www.aclweb.org/anthology/2021.eacl-main.143/                               |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| ETM - Embedded Topic Models (Dieng et al. 2020)              | https://github.com/adjidieng/ETM                          | https://www.aclweb.org/anthology/2020.tacl-1.29                                    |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| HDP - Hierarchical Dirichlet Process (Blei et al. 2004)      | https://radimrehurek.com/gensim/                          | https://people.eecs.berkeley.edu/~jordan/papers/hdp.pdf                            |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| LDA - Latent Dirichlet Allocation (Blei et al. 2003)         | https://radimrehurek.com/gensim/                          | https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf                            |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| LSI - Latent Semantic Indexing (Landauer et al. 1998)        | https://radimrehurek.com/gensim/                          | http://lsa.colorado.edu/papers/dp1.LSAintro.pdf                                    |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| NMF - Non-Negative Matrix Factorization (Lee and Seung 2000) | https://radimrehurek.com/gensim/                          | https://papers.nips.cc/paper/1861-algorithms-for-non-negative-matrix-factorization |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| NeuralLDA (Srivastava and Sutton 2017)                       | https://github.com/estebandito22/PyTorchAVITM             | https://arxiv.org/abs/1703.01488                                                   |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| ProdLDA - Product of Experts LDA (Srivastava and Sutton 2017)| https://github.com/estebandito22/PyTorchAVITM             | https://arxiv.org/abs/1703.01488                                                   |
-+--------------------------------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
++-------------------------------------------+-----------------------------------------------------------+
+| Name                                      | Implementation                                            |
++===========================================+===========================================================+
+| CTM `(Bianchi et al. 2020)`_              | https://github.com/MilaNLProc/contextualized-topic-models |
++-------------------------------------------+-----------------------------------------------------------+
+| ETM `(Dieng et al. 2020)`_                | https://github.com/adjidieng/ETM                          |
++-------------------------------------------+-----------------------------------------------------------+
+| HDP `(Blei et al. 2004)`_                 | https://radimrehurek.com/gensim/                          |
++-------------------------------------------+-----------------------------------------------------------+
+| LDA `(Blei et al. 2003)`_                 | https://radimrehurek.com/gensim/                          |
++-------------------------------------------+-----------------------------------------------------------+
+| LSI `(Landauer et al. 1998)`_             | https://radimrehurek.com/gensim/                          |
++-------------------------------------------+-----------------------------------------------------------+
+| NMF `(Lee and Seung 2000)`_               | https://radimrehurek.com/gensim/                          |
++-------------------------------------------+-----------------------------------------------------------+
+| NeuralLDA `(Srivastava and Sutton 2017)`_ | https://github.com/estebandito22/PyTorchAVITM             |
++-------------------------------------------+-----------------------------------------------------------+
+| ProdLda `(Srivastava and Sutton 2017)`_   | https://github.com/estebandito22/PyTorchAVITM             |
++-------------------------------------------+-----------------------------------------------------------+
+
+.. _(Bianchi et al. 2020): https://www.aclweb.org/anthology/2021.eacl-main.143/
+.. _(Dieng et al. 2020): https://www.aclweb.org/anthology/2020.tacl-1.29 
+.. _(Blei et al. 2004): https://people.eecs.berkeley.edu/~jordan/papers/hdp.pdf
+.. _(Blei et al. 2003): https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
+.. _(Landauer et al. 1998): http://lsa.colorado.edu/papers/dp1.LSAintro.pdf
+.. _(Lee and Seung 2000): https://papers.nips.cc/paper/1861-algorithms-for-non-negative-matrix-factorization
+.. _(Srivastava and Sutton 2017): https://arxiv.org/abs/1703.01488 
 
 If you use one of these implementations, make sure to cite the right paper.
 
