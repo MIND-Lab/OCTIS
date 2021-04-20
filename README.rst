@@ -262,13 +262,13 @@ Available Models
 +========================================+===========================================================+
 | CTM (Bianchi et al. 2020)              | https://github.com/MilaNLProc/contextualized-topic-models |
 +----------------------------------------+-----------------------------------------------------------+
-| ETM (Dieng et al. 2019)                | https://github.com/adjidieng/ETM                          |
+| ETM (Dieng et al. 2020)                | https://github.com/adjidieng/ETM                          |
 +----------------------------------------+-----------------------------------------------------------+
 | HDP (Blei et al. 2004)                 | https://radimrehurek.com/gensim/                          |
 +----------------------------------------+-----------------------------------------------------------+
-| LDA (Blei et al. 2001)                 | https://radimrehurek.com/gensim/                          |
+| LDA (Blei et al. 2003)                 | https://radimrehurek.com/gensim/                          |
 +----------------------------------------+-----------------------------------------------------------+
-| LSI (Deerwester et al. 2009)           | https://radimrehurek.com/gensim/                          |
+| LSI (Landauer et al. 1998)             | https://radimrehurek.com/gensim/                          |
 +----------------------------------------+-----------------------------------------------------------+
 | NMF (Lee and Seung 2000)               | https://radimrehurek.com/gensim/                          |
 +----------------------------------------+-----------------------------------------------------------+
@@ -276,6 +276,8 @@ Available Models
 +----------------------------------------+-----------------------------------------------------------+
 | ProdLda (Srivastava and Sutton 2017)   | https://github.com/estebandito22/PyTorchAVITM             |
 +----------------------------------------+-----------------------------------------------------------+
+
+
 
 If you use one of these implementations, make sure to cite the right paper.
 
