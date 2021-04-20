@@ -3,6 +3,10 @@ History
 =======
 
 
+1.2.1 (2021-04-20)
+------------------
+* Tomotopy LDA's implementation should work now
+
 1.1.1 (2021-04-19)
 ------------------
 * bug fix dataset download
