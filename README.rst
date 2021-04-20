@@ -342,7 +342,7 @@ In the dashboard you can:
 
 How to cite our work
 ---------------------
-This work has been accepted at the demo track of EACL 2021! You can find it here: https://www.aclweb.org/anthology/2020.insights-1.5/
+This work has been accepted at the demo track of EACL 2021! You can find it here: https://www.aclweb.org/anthology/2021.eacl-demos.31/
 If you decide to use this resource, please cite:
 
 ::
