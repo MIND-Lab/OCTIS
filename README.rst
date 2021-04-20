@@ -272,13 +272,10 @@ Available Models
 +----------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
 | NMF (Lee and Seung 2000)               | https://radimrehurek.com/gensim/                          | https://papers.nips.cc/paper/1861-algorithms-for-non-negative-matrix-factorization |
 +----------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| NeuralLDA (Srivastava and Sutton 2017) | https://github.com/estebandito22/PyTorchAVITM             | arxiv.org/abs/1703.01488                                                           |
+| NeuralLDA (Srivastava and Sutton 2017) | https://github.com/estebandito22/PyTorchAVITM             | https://arxiv.org/abs/1703.01488                                                   |
 +----------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-| ProdLda (Srivastava and Sutton 2017)   | https://github.com/estebandito22/PyTorchAVITM             | arxiv.org/abs/1703.01488                                                           |
+| ProdLda (Srivastava and Sutton 2017)   | https://github.com/estebandito22/PyTorchAVITM             | https://arxiv.org/abs/1703.01488                                                   |
 +----------------------------------------+-----------------------------------------------------------+------------------------------------------------------------------------------------+
-
-
-
 
 If you use one of these implementations, make sure to cite the right paper.
 
