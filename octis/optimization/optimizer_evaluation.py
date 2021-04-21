@@ -44,8 +44,8 @@ class OptimizerEvaluation:
 
         # Info about optimization
         self.info = dict()
-        dataset_info = optimizer.dataset.get_metadata()["info"]
-        if dataset_info is not None:
+        if "info" in optimizer.dataset.get_metadata().keys():
+            dataset_info = optimizer.dataset.get_metadata()["info"]
             self.info.update({"dataset_name": dataset_info["name"]})
         else:
             self.info.update({"dataset_name": "dataset_name"})
