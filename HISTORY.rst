@@ -3,7 +3,7 @@ History
 =======
 
 
-1.2.1 (2021-04-20)
+1.2.0 (2021-04-20)
 ------------------
 * Tomotopy LDA's implementation should work now
 
