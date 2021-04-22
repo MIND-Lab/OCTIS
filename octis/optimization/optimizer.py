@@ -33,59 +33,59 @@ class Optimizer:
         Perform hyper-parameter optimization for a Topic Model
 
         :param model: model with hyperparameters to optimize
-        :rtype model: OCTIS Topic Model
+        :type model: OCTIS Topic Model
         :param dataset: dataset for the model dataset
-        :rtype dataset: OCTIS dataset
+        :type dataset: OCTIS dataset
         :param metric: metric used for the optimization
-        :rtype metric: OCTIS metric
+        :type metric: OCTIS metric
         :param search_space: a dictionary of hyperparameters to optimize (each parameter is defined as a skopt space)
-        :rtype search_space: skopt space object
+        :type search_space: skopt space object
         :param extra_metrics: list of extra-metrics to compute during the optimization
-        :rtype extra_metrics: list of metrics, optional
+        :type extra_metrics: list of metrics, optional
         :param number_of_call: number of evaluations of metric
-        :rtype number_of_call: int, optional
+        :type number_of_call: int, optional
         :param n_random_starts: number of evaluations of metric with random points before approximating it with surrogate model
-        :rtype n_random_starts: int, optional
+        :type n_random_starts: int, optional
         :param initial_point_generator: set an initial point generator. Can be either "random", "sobol", "halton" ,"hammersly","lhs"
-        :rtype initial_point_generator: str, optional
+        :type initial_point_generator: str, optional
         :param optimization_type: Set "Maximize" if you want to maximize metric, "Minimize" if you want to minimize
-        :rtype optimization type: str, optional
+        :type optimization type: str, optional
         :param model_runs:
-        :rtype: int, optional
+        :type: int, optional
         :param surrogate_model: set a surrogate model. Can be either "GP" (Gaussian Process), "RF" (Random Forest) or "ET" (Extra-Tree)
-        :rtype: str, optional
+        :type: str, optional
         :param kernel: set a kernel function
         :param acq_func: Function to minimize over the surrogate model. Can be either: "LCB" (Lower Confidence Bound), "EI" (Expected improvement) OR "PI" (Probability of Improvement)
-        :rtype: str, optional
+        :type: str, optional
         :param random_state: Set random state to something other than None for reproducible results.
-        :rtype: int, optional
+        :type: int, optional
         :param x0: List of initial input points.
-        :rtype: list, optional
+        :type: list, optional
         :param y0: Evaluation of initial input points.
-        :rtype: list, optional
+        :type: list, optional
         :param save_models: if 'True' save all the topic models generated during the optimization process
-        :rtype: bool, optional
+        :type: bool, optional
         :param save_step: decide how much to save the results of the optimization
-        :rtype: int, optional
+        :type: int, optional
         :param save_name: name of the file where the results of the optimization will be saved
-        :rtype: str, optional
+        :type: str, optional
         :param save_path: Path where the results of the optimization (json file) will be saved
-        :rtype save_path: str, optional
+        :type save_path: str, optional
         :param early_stop: if "True" stop the optimization if there is no improvement after early_step evaluations
-        :rtype early_stop: bool, optional
+        :type early_stop: bool, optional
         :param early_step: number of iterations with no improvement after which optimization will be stopped (if early_stop is True)
-        :rtype early_step: int, optional
+        :type early_step: int, optional
         :param plot_best_seen: If "True" save a convergence plot of the result of a Bayesian_optimization (i.e. the best seen for each iteration)
-        :rtype plot_best_seen: bool, optional
+        :type plot_best_seen: bool, optional
         :param plot_model: If "True" save the boxplot of all the model runs
-        :rtype plot_model: bool, optional
+        :type plot_model: bool, optional
         :param plot_name: Set the name of the plots (best_seen and model_runs).
-        :rtype plot_name: str, optional
+        :type plot_name: str, optional
         :param log_scale_plot: if "True" use the logarithmic scale for the plots.
-        :rtype log_scale_plot: bool, optional
+        :type log_scale_plot: bool, optional
         :param topk:
-        :rtype topk: int, optional
-        :return: BestEvaluation object
+        :type topk: int, optional
+        :return: OptimizerEvaluation object
         :rtype: class
         """
         # Set the attributes
@@ -356,7 +356,7 @@ class Optimizer:
         Restore the BO parameters  from the json file
 
         :param name_path: name of the json file
-        :rtype name_path: str
+        :type name_path: str
         :return: result of BO optimization (scikit-optimize object), surrogate model (scikit-learn object)
         :rtype: tuple
         """
