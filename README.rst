@@ -39,7 +39,7 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
   :width: 100
   :alt: Logo
 
-OCTIS (Optimizing and Comparing Topic models Is Simple) aims at training, analyzing and comparing
+**OCTIS (Optimizing and Comparing Topic models Is Simple)** aims at training, analyzing and comparing
 Topic Models, whose optimal hyperparameters are estimated by means of a Bayesian Optimization approach. This work has been accepted to the demo track of EACL2021. `Click to read the paper`_!
 
 .. contents:: Table of Contents 
