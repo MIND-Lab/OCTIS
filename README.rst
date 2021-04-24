@@ -10,7 +10,12 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
 .. |colab2| image:: https://colab.research.google.com/assets/colab-badge.svg
     :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
     :alt: Open In Colab
-
+.. |twitter_silvia| image:: https://img.shields.io/twitter/follow/TerragniSilvia?style=social
+    :target: https://twitter.com/intent/follow?screen_name=TerragniSilvia
+    :alt: Follow TerragniSilvia on Twitter
+.. |twitter_betta| image:: https://img.shields.io/twitter/follow/FersiniE?style=social
+    :target: https://twitter.com/intent/follow?screen_name=FersiniE
+    :alt: Follow FersiniE on Twitter
 
 .. image:: https://img.shields.io/pypi/v/octis.svg
         :target: https://pypi.python.org/pypi/octis
@@ -403,9 +408,8 @@ Team
 Project and Development Lead
 =============================
 
-- `Silvia Terragni`_ <s.terragni4@campus.unimib.it> 
-.. image:: https://img.shields.io/twitter/follow/terragnisilvia?style=social
-- Elisabetta Fersini <elisabetta.fersini@unimib.it>
+- `Silvia Terragni`_ <s.terragni4@campus.unimib.it> |twitter_silvia|
+- Elisabetta Fersini <elisabetta.fersini@unimib.it> |twitter_betta|
 - Antonio Candelieri <antonio.candelieri@unimib.it>
 
 
