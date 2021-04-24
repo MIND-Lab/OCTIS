@@ -22,11 +22,6 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
         :target: https://octis.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
-        :alt: Open In Colab
-
-
 .. image:: https://img.shields.io/github/contributors/MIND-Lab/OCTIS
         :target: https://github.com/MIND-Lab/OCTIS/graphs/contributors/
         :alt: Contributors
@@ -35,9 +30,19 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
         :target: https://lbesson.mit-license.org/
         :alt: License
 
+.. image:: https://img.shields.io/github/stars/mind-lab/OCTIS?logo=github
+        :target: https://github.com/mind-lab/OCTIS/stargazers
+        :alt: Github Stars
+        
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
+        :alt: Open In Colab
+
 .. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png?raw=true
   :width: 100
   :alt: Logo
+
+
 
 **OCTIS (Optimizing and Comparing Topic models Is Simple)** aims at training, analyzing and comparing
 Topic Models, whose optimal hyperparameters are estimated by means of a Bayesian Optimization approach. This work has been accepted to the demo track of EACL2021. `Click to read the paper`_!
@@ -396,17 +401,18 @@ Team
 Project and Development Lead
 =============================
 
-* `Silvia Terragni`_ <s.terragni4@campus.unimib.it>
-* Elisabetta Fersini <elisabetta.fersini@unimib.it>
-* Antonio Candelieri <antonio.candelieri@unimib.it>
+- `Silvia Terragni`_ <s.terragni4@campus.unimib.it> 
+- Elisabetta Fersini <elisabetta.fersini@unimib.it>
+- Antonio Candelieri <antonio.candelieri@unimib.it>
+
 
 
 Current Contributors
 =============================
 
-* Pietro Tropeano <p.tropeano1@campus.unimib.it> Framework architecture, Preprocessing, Topic Models, Evaluation metrics and Web Dashboard
-* Bruno Galuzzi <bruno.galuzzi@unimib.it> Bayesian Optimization
-* Silvia Terragni <s.terragni4@campus.unimib.it> Overall project
+- Pietro Tropeano <p.tropeano1@campus.unimib.it> Framework architecture, Preprocessing, Topic Models, Evaluation metrics and Web Dashboard
+- Bruno Galuzzi <bruno.galuzzi@unimib.it> Bayesian Optimization
+- Silvia Terragni <s.terragni4@campus.unimib.it> Overall project
 
 Past Contributors
 =============================
