@@ -37,10 +37,13 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
     :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
         :alt: Open In Colab
+.. image:: https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FTerragniSilvia%2Fstatus%2F1384140420947451908%3Fs%3D20
 
 .. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png?raw=true
   :width: 100
   :alt: Logo
+  
+  
 
 
 
