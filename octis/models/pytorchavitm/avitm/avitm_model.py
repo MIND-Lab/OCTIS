@@ -423,7 +423,6 @@ class AVITM_model(object):
                     x = x.reshape(x.shape[0], -1)
                     if self.USE_CUDA:
                         x = x.cuda()
-                        x_bert = x_bert.cuda()
                     # forward pass
                     self.model.zero_grad()
                     collect_theta.extend(self.model.get_theta(x).cpu().numpy().tolist())
