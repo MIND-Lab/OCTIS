@@ -10,7 +10,12 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
 .. |colab2| image:: https://colab.research.google.com/assets/colab-badge.svg
     :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
     :alt: Open In Colab
-
+.. |twitter_silvia| image:: https://img.shields.io/twitter/follow/TerragniSilvia?style=social
+    :target: https://twitter.com/intent/follow?screen_name=TerragniSilvia
+    :alt: Follow TerragniSilvia on Twitter
+.. |twitter_betta| image:: https://img.shields.io/twitter/follow/FersiniE?style=social
+    :target: https://twitter.com/intent/follow?screen_name=FersiniE
+    :alt: Follow FersiniE on Twitter
 
 .. image:: https://img.shields.io/pypi/v/octis.svg
         :target: https://pypi.python.org/pypi/octis
@@ -22,11 +27,6 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
         :target: https://octis.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
-        :alt: Open In Colab
-
-
 .. image:: https://img.shields.io/github/contributors/MIND-Lab/OCTIS
         :target: https://github.com/MIND-Lab/OCTIS/graphs/contributors/
         :alt: Contributors
@@ -35,15 +35,37 @@ OCTIS : Optimizing and Comparing Topic Models is Simple!
         :target: https://lbesson.mit-license.org/
         :alt: License
 
+.. image:: https://img.shields.io/github/stars/mind-lab/OCTIS?logo=github
+        :target: https://github.com/mind-lab/OCTIS/stargazers
+        :alt: Github Stars
+       
+.. image:: https://pepy.tech/badge/octis/month
+        :target: https://pepy.tech/project/octis
+        :alt: Monthly Downloads
+        
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/github/MIND-Lab/OCTIS/blob/master/examples/OCTIS_Optimizing_CTM.ipynb
+        :alt: Open In Colab
+      
+
 .. image:: https://github.com/MIND-Lab/OCTIS/blob/master/logo.png?raw=true
   :width: 100
   :alt: Logo
+  
+  
 
-OCTIS (Optimizing and Comparing Topic models Is Simple) aims at training, analyzing and comparing
-Topic Models, whose optimal hyper-parameters are estimated by means of a Bayesian Optimization approach.
 
+
+**OCTIS (Optimizing and Comparing Topic models Is Simple)** aims at training, analyzing and comparing
+Topic Models, whose optimal hyperparameters are estimated by means of a Bayesian Optimization approach. This work has been accepted to the demo track of EACL2021. `Click to read the paper`_!
+
+.. contents:: Table of Contents 
+   :depth: 2
+
+***************
 Install
---------
+***************
+
 
 You can install OCTIS with the following command:
 ::
@@ -52,9 +74,10 @@ You can install OCTIS with the following command:
 
 You can find the requirements in the `requirements.txt` file.
 
+***************
+Main Features
+***************
 
-Features
---------
 
 * Preprocess your own dataset or use one of the already-preprocessed benchmark datasets
 * Well-known topic models (both classical and neurals)
@@ -63,8 +86,9 @@ Features
 * Python library for advanced usage or simple web dashboard for starting and controlling the optimization experiments
 
 
+***********************
 Examples and Tutorials
------------------------
+***********************
 
 To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 
@@ -77,8 +101,12 @@ To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 +--------------------------------------------------------------------------------+------------------+
 
 
+**************************
+Datasets and Preprocessing
+**************************
+
 Load a preprocessed dataset
-----------------------------
+============================
 
 To load one of the already preprocessed datasets as follows:
 
@@ -91,7 +119,7 @@ To load one of the already preprocessed datasets as follows:
 Just use one of the dataset names listed below. Note: it is case-sensitive!
 
 Available Datasets
--------------------
+============================
 
 +--------------+--------------+--------+---------+----------+
 | Name         | Source       | # Docs | # Words | # Labels |
@@ -122,7 +150,7 @@ Make sure that the dataset is in the following format:
     * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document (optional).
     * vocabulary: a .txt file where each line represents a word of the vocabulary
 
-The partition can be "training", "test" or "validation". An example of dataset can be found here: `sample_dataset_`.
+The partition can be "train" for the training partition, "test" for testing partition, or "val" for the validation partition. An example of dataset can be found here: `sample_dataset_`.
 
 Disclaimer
 ~~~~~~~~~~~~~
@@ -133,8 +161,8 @@ If you're a dataset owner and wish to update any part of it, or do not want your
 
 If you're a dataset owner and wish to include your dataset in this library, please get in touch through a GitHub issue.
 
-Preprocess
------------
+Preprocess a Dataset
+============================
 
 To preprocess a dataset, import the preprocessing class and use the preprocess_dataset method.
 
@@ -159,8 +187,13 @@ To preprocess a dataset, import the preprocessing class and use the preprocess_d
 
 For more details on the preprocessing see the preprocessing demo example in the examples folder.
 
+
+*****************************
+Topic Models and Evaluation
+*****************************
+
 Train a model
---------------
+==============
 
 To build a model, load a preprocessed dataset, set the model hyperparameters and use :code:`train_model()` to train the model.
 
@@ -182,80 +215,8 @@ If the dataset is partitioned, you can:
 * Train the model on the training set and test it on the test documents
 * Train the model with the whole dataset, regardless of any partition.
 
-Evaluate a model
-----------------
-
-To evaluate a model, choose a metric and use the :code:`score()` method of the metric class.
-
-.. code-block:: python
-
-    from octis.evaluation_metrics.diversity_metrics import TopicDiversity
-
-    metric = TopicDiversity(topk=10) # Initialize metric
-    topic_diversity_score = metric.score(model_output) # Compute score of the metric
-
-Available metrics
------------------
-
-Classification Metrics:
-
-* F1 measure (:code:`F1Score()`)
-* Precision (:code:`PrecisionScore()`)
-* Recall (:code:`RecallScore()`)
-* Accuracy (:code:`AccuracyScore()`)
-
-Coherence Metrics:
-
-* UMass Coherence (:code:`Coherence({'measure':'c_umass'}`)
-* C_V Coherence (:code:`Coherence({'measure':'c_v'}`)
-* UCI Coherence (:code:`Coherence({'measure':'c_uci'}`)
-* NPMI Coherence (:code:`Coherence({'measure':'c_npmi'}`)
-* Word Embedding-based Coherence Pairwise (:code:`WECoherencePairwise()`)
-* Word Embedding-based Coherence Centroid (:code:`WECoherenceCentroid()`)
-
-Diversity Metrics:
-
-* Topic Diversity (:code:`TopicDiversity()`)
-* InvertedRBO (:code:`InvertedRBO()`)
-* Word Embedding-based InvertedRBO (:code:`WordEmbeddingsInvertedRBO()`)
-* Word Embedding-based InvertedRBO centroid (:code:`WordEmbeddingsInvertedRBOCentroid()`)
-
-Topic significance Metrics:
-
-* KL Uniform (:code:`KL_uniform()`)
-* KL Vacuous (:code:`KL_vacuous()`)
-* KL Background (:code:`KL_background()`)
-
-
-Optimize a model
-----------------
-
-To optimize a model you need to select a dataset, a metric and the search space of the hyperparameters to optimize.
-For the types of the hyperparameters, we use :code:`scikit-optimize` types (https://scikit-optimize.github.io/stable/modules/space.html)
-
-.. code-block:: python
-
-    from octis.optimization.optimizer import Optimizer
-    from skopt.space.space import Real
-
-    # Define the search space. To see which hyperparameters to optimize, see the topic model's initialization signature
-    search_space = {"alpha": Real(low=0.001, high=5.0), "eta": Real(low=0.001, high=5.0)}
-
-    # Initialize an optimizer object and start the optimization.
-    optimizer=Optimizer()
-    optResult=optimizer.optimize(model, dataset, eval_metric, search_space, save_path="../results" # path to store the results
-                                 number_of_call=30, # number of optimization iterations
-                                 model_runs=5) # number of runs of the topic model
-    #save the results of th optimization in a csv file
-    optResult.save_to_csv("results.csv")
-
-The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you have to set 'plot' attribute of Bayesian_optimization to True.
-
-You can find more here: `optimizer README`_
-
-
 Available Models
-----------------
+=================
 
 +-------------------------------------------+-----------------------------------------------------------+
 | Name                                      | Implementation                                            |
@@ -292,8 +253,52 @@ If you implemented a model and wish to update any part of it, or do not want you
 
 If you implemented a model and wish to include your model in this library, please get in touch through a GitHub issue. Otherwise, if you want to include the model by yourself, see the following section.
 
+Evaluate a model
+==================
+
+To evaluate a model, choose a metric and use the :code:`score()` method of the metric class.
+
+.. code-block:: python
+
+    from octis.evaluation_metrics.diversity_metrics import TopicDiversity
+
+    metric = TopicDiversity(topk=10) # Initialize metric
+    topic_diversity_score = metric.score(model_output) # Compute score of the metric
+
+Available metrics
+==================
+
+Classification Metrics:
+
+* F1 measure (:code:`F1Score()`)
+* Precision (:code:`PrecisionScore()`)
+* Recall (:code:`RecallScore()`)
+* Accuracy (:code:`AccuracyScore()`)
+
+Coherence Metrics:
+
+* UMass Coherence (:code:`Coherence({'measure':'c_umass'}`)
+* C_V Coherence (:code:`Coherence({'measure':'c_v'}`)
+* UCI Coherence (:code:`Coherence({'measure':'c_uci'}`)
+* NPMI Coherence (:code:`Coherence({'measure':'c_npmi'}`)
+* Word Embedding-based Coherence Pairwise (:code:`WECoherencePairwise()`)
+* Word Embedding-based Coherence Centroid (:code:`WECoherenceCentroid()`)
+
+Diversity Metrics:
+
+* Topic Diversity (:code:`TopicDiversity()`)
+* InvertedRBO (:code:`InvertedRBO()`)
+* Word Embedding-based InvertedRBO (:code:`WordEmbeddingsInvertedRBO()`)
+* Word Embedding-based InvertedRBO centroid (:code:`WordEmbeddingsInvertedRBOCentroid()`)
+
+Topic significance Metrics:
+
+* KL Uniform (:code:`KL_uniform()`)
+* KL Vacuous (:code:`KL_vacuous()`)
+* KL Background (:code:`KL_background()`)
+
 Implement your own Model
-------------------------
+=========================
 
 Models inherit from the class `AbstractModel` defined in `octis/models/model.py` .
 To build your own model your class must override the `train_model(self, dataset, hyperparameters)` method which always requires at least a `Dataset` object and a `Dictionary` of hyperparameters as input and should return a dictionary with the output of the model as output.
@@ -327,8 +332,40 @@ if your model supports the training/test partitioning it should also return:
 
 * *test-topic-document-matrix*: the document topic matrix of the test set.
 
+
+
+*****************************
+Hyperparameter Optimization
+*****************************
+
+To optimize a model you need to select a dataset, a metric and the search space of the hyperparameters to optimize.
+For the types of the hyperparameters, we use :code:`scikit-optimize` types (https://scikit-optimize.github.io/stable/modules/space.html)
+
+.. code-block:: python
+
+    from octis.optimization.optimizer import Optimizer
+    from skopt.space.space import Real
+
+    # Define the search space. To see which hyperparameters to optimize, see the topic model's initialization signature
+    search_space = {"alpha": Real(low=0.001, high=5.0), "eta": Real(low=0.001, high=5.0)}
+
+    # Initialize an optimizer object and start the optimization.
+    optimizer=Optimizer()
+    optResult=optimizer.optimize(model, dataset, eval_metric, search_space, save_path="../results" # path to store the results
+                                 number_of_call=30, # number of optimization iterations
+                                 model_runs=5) # number of runs of the topic model
+    #save the results of th optimization in a csv file
+    optResult.save_to_csv("results.csv")
+
+The result will provide best-seen value of the metric with the corresponding hyperparameter configuration, and the hyperparameters and metric value for each iteration of the optimization. To visualize this information, you have to set 'plot' attribute of Bayesian_optimization to True.
+
+You can find more here: `optimizer README`_
+
+
+*****************************
 Dashboard
----------
+*****************************
+
 
 OCTIS includes a user friendly graphical interface for creating, monitoring and viewing experiments.
 Following the implementation standards of datasets, models and metrics the dashboard will automatically update and allow you to use your own custom implementations.
@@ -349,9 +386,10 @@ In the dashboard you can:
 * Manage the experiment queue
 
 
+*****************************
 How to cite our work
----------------------
-This work has been accepted at the demo track of EACL 2021! You can find it here: https://www.aclweb.org/anthology/2021.eacl-demos.31/
+*****************************
+This work has been accepted at the demo track of EACL 2021! `Click to read the paper`_!
 If you decide to use this resource, please cite:
 
 ::
@@ -368,36 +406,42 @@ If you decide to use this resource, please cite:
         pages = "263--270",
     }
 
-
-
+*****************************
 Team
-------
+*****************************
 
 Project and Development Lead
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=============================
 
-* `Silvia Terragni`_ <s.terragni4@campus.unimib.it>
-* Elisabetta Fersini <elisabetta.fersini@unimib.it>
-* Antonio Candelieri <antonio.candelieri@unimib.it>
+- `Silvia Terragni`_ <s.terragni4@campus.unimib.it> |twitter_silvia|
+- Elisabetta Fersini <elisabetta.fersini@unimib.it> |twitter_betta|
+- Antonio Candelieri <antonio.candelieri@unimib.it>
+
+
 
 Current Contributors
-~~~~~~~~~~~~~~~~~~~~~~
+=============================
 
-* Pietro Tropeano <p.tropeano1@campus.unimib.it> Framework architecture, Preprocessing, Topic Models, Evaluation metrics and Web Dashboard
-* Bruno Galuzzi <bruno.galuzzi@unimib.it> Bayesian Optimization
-* Silvia Terragni <s.terragni4@campus.unimib.it> Overall project
+- Pietro Tropeano <p.tropeano1@campus.unimib.it> Framework architecture, Preprocessing, Topic Models, Evaluation metrics and Web Dashboard
+- Bruno Galuzzi <bruno.galuzzi@unimib.it> Bayesian Optimization
+- Silvia Terragni <s.terragni4@campus.unimib.it> Overall project
 
 Past Contributors
-~~~~~~~~~~~~~~~~~~~~
+=============================
+
 * Lorenzo Famiglini <l.famiglini@campus.unimib.it> Neural models integration
 * Davide Pietrasanta <d.pietrasanta@campus.unimib.it> Bayesian Optimization
 
+
+
+*****************************
 Credits
--------
+*****************************
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _`Click to read the paper`: https://www.aclweb.org/anthology/2021.eacl-demos.31/
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 .. _Silvia Terragni: https://silviatti.github.io/
 .. _sample_dataset: https://github.com/MIND-Lab/OCTIS/tree/master/preprocessed_datasets/sample_dataset
