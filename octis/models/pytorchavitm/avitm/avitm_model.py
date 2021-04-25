@@ -1,30 +1,25 @@
 """Class to train AVITM models."""
 
+import datetime
 import os
 from collections import defaultdict
-import multiprocessing as mp
-import requests
-from octis.models.early_stopping.pytorchtools import EarlyStopping
 
 import numpy as np
-import datetime
-
 import torch
 from torch import optim
-from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torch.utils.data import DataLoader
 
+from octis.models.early_stopping.pytorchtools import EarlyStopping
 from octis.models.pytorchavitm.avitm.decoder_network import DecoderNetwork
 
 
 class AVITM_model(object):
 
-    def __init__(self, input_size, num_topics=10, model_type='prodLDA',
-                 hidden_sizes=(100, 100), activation='softplus', dropout=0.2,
-                 learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
-                 solver='adam', num_epochs=100, reduce_on_plateau=False,
-                 topic_prior_mean=0.0, topic_prior_variance=None,
-                 num_data_loader_workers=mp.cpu_count()):
+    def __init__(self, input_size, num_topics=10, model_type='prodLDA', hidden_sizes=(100, 100),
+                 activation='softplus', dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
+                 solver='adam', num_epochs=100, reduce_on_plateau=False, topic_prior_mean=0.0,
+                 topic_prior_variance=None, num_samples=10, num_data_loader_workers=0, verbose=False):
         """
         Initialize AVITM model.
 
@@ -61,7 +56,7 @@ class AVITM_model(object):
         assert isinstance(batch_size, int) and batch_size > 0, \
             "batch_size must be int > 0."
         assert lr > 0, "lr must be > 0."
-        assert isinstance(momentum, float) and momentum > 0 and momentum <= 1, \
+        assert isinstance(momentum, float) and 0 < momentum <= 1, \
             "momentum must be 0 < float <= 1."
         assert solver in ['adagrad', 'adam', 'sgd', 'adadelta', 'rmsprop'], \
             "solver must be 'adam', 'adadelta', 'sgd', 'rmsprop' or 'adagrad'"
@@ -75,6 +70,7 @@ class AVITM_model(object):
 
         self.input_size = input_size
         self.num_topics = num_topics
+        self.verbose = verbose
         self.model_type = model_type
         self.hidden_sizes = hidden_sizes
         self.activation = activation
@@ -89,11 +85,12 @@ class AVITM_model(object):
         self.num_data_loader_workers = num_data_loader_workers
         self.topic_prior_mean = topic_prior_mean
         self.topic_prior_variance = topic_prior_variance
+        self.num_samples = num_samples
         # init inference avitm network
         self.model = DecoderNetwork(
             input_size, num_topics, model_type, hidden_sizes, activation,
             dropout, learn_priors, topic_prior_mean, topic_prior_variance)
-        self.early_stopping = EarlyStopping(patience=5, verbose=True)
+        self.early_stopping = EarlyStopping(patience=5, verbose=False)
         self.validation_data = None
         # init optimizer
         if self.solver == 'adam':
@@ -157,26 +154,25 @@ class AVITM_model(object):
         topic_doc_list = []
         for batch_samples in loader:
             # batch_size x vocab_size
-            X = batch_samples['X']
+            x = batch_samples['X']
 
             if self.USE_CUDA:
-                X = X.cuda()
+                x = x.cuda()
             # forward pass
             self.model.zero_grad()
-            prior_mean, prior_variance, \
-            posterior_mean, posterior_variance, posterior_log_variance, \
-            word_dists, topic_words, topic_document = self.model(X)
+            prior_mean, prior_var, posterior_mean, posterior_var, posterior_log_var, \
+            word_dists, topic_words, topic_document = self.model(x)
 
             topic_doc_list.extend(topic_document)
 
             # backward pass
-            loss = self._loss(X, word_dists, prior_mean, prior_variance,
-                              posterior_mean, posterior_variance, posterior_log_variance)
+            loss = self._loss(x, word_dists, prior_mean, prior_var,
+                              posterior_mean, posterior_var, posterior_log_var)
             loss.backward()
             self.optimizer.step()
 
             # compute train loss
-            samples_processed += X.size()[0]
+            samples_processed += x.size()[0]
             train_loss += loss.item()
 
         train_loss /= samples_processed
@@ -190,21 +186,20 @@ class AVITM_model(object):
         samples_processed = 0
         for batch_samples in loader:
             # batch_size x vocab_size
-            X = batch_samples['X']
+            x = batch_samples['X']
 
             if self.USE_CUDA:
-                X = X.cuda()
+                x = x.cuda()
             # forward pass
             self.model.zero_grad()
-            prior_mean, prior_variance, \
-            posterior_mean, posterior_variance, posterior_log_variance, \
-            word_dists, topic_word, topic_document = self.model(X)
+            prior_mean, prior_var, posterior_mean, posterior_var, posterior_log_var, \
+            word_dists, topic_word, topic_document = self.model(x)
 
-            loss = self._loss(X, word_dists, prior_mean, prior_variance,
-                              posterior_mean, posterior_variance, posterior_log_variance)
+            loss = self._loss(x, word_dists, prior_mean, prior_var,
+                              posterior_mean, posterior_var, posterior_log_var)
 
             # compute train loss
-            samples_processed += X.size()[0]
+            samples_processed += x.size()[0]
             val_loss += loss.item()
 
         val_loss /= samples_processed
@@ -220,24 +215,25 @@ class AVITM_model(object):
             val_dataset : PyTorch Dataset classs for validation data.
             save_dir : directory to save checkpoint models to.
         """
-        # Print settings to output file
-        print("Settings: \n\
-               N Components: {}\n\
-               Topic Prior Mean: {}\n\
-               Topic Prior Variance: {}\n\
-               Model Type: {}\n\
-               Hidden Sizes: {}\n\
-               Activation: {}\n\
-               Dropout: {}\n\
-               Learn Priors: {}\n\
-               Learning Rate: {}\n\
-               Momentum: {}\n\
-               Reduce On Plateau: {}\n\
-               Save Dir: {}".format(
-            self.num_topics, self.topic_prior_mean,
-            self.topic_prior_variance, self.model_type,
-            self.hidden_sizes, self.activation, self.dropout, self.learn_priors,
-            self.lr, self.momentum, self.reduce_on_plateau, save_dir))
+        if self.verbose:
+            # Print settings to output file
+            print("Settings: \n\
+                   N Components: {}\n\
+                   Topic Prior Mean: {}\n\
+                   Topic Prior Variance: {}\n\
+                   Model Type: {}\n\
+                   Hidden Sizes: {}\n\
+                   Activation: {}\n\
+                   Dropout: {}\n\
+                   Learn Priors: {}\n\
+                   Learning Rate: {}\n\
+                   Momentum: {}\n\
+                   Reduce On Plateau: {}\n\
+                   Save Dir: {}".format(
+                self.num_topics, self.topic_prior_mean,
+                self.topic_prior_variance, self.model_type,
+                self.hidden_sizes, self.activation, self.dropout, self.learn_priors,
+                self.lr, self.momentum, self.reduce_on_plateau, save_dir))
 
         self.model_dir = save_dir
         self.train_data = train_dataset
@@ -303,17 +299,17 @@ class AVITM_model(object):
         with torch.no_grad():
             for batch_samples in loader:
                 # batch_size x vocab_size
-                X = batch_samples['X']
-                X = X.reshape(X.shape[0], -1)
+                x = batch_samples['X']
+                x = x.reshape(x.shape[0], -1)
                 if self.USE_CUDA:
-                    X = X.cuda()
+                    x = x.cuda()
                 # forward pass
                 self.model.zero_grad()
-                _, _, _, _, _, _, _, topic_document = self.model(X)
+                _, _, _, _, _, _, _, topic_document = self.model(x)
                 topic_document_mat.append(topic_document)
 
         results = self.get_info()
-        #results['test-topic-document-matrix2'] = np.vstack(
+        # results['test-topic-document-matrix2'] = np.vstack(
         #    np.asarray([i.cpu().detach().numpy() for i in topic_document_mat])).T
         results['test-topic-document-matrix'] = np.asarray(self.get_thetas(dataset)).T
 
@@ -353,10 +349,10 @@ class AVITM_model(object):
         info = {}
         topic_word = self.get_topics()
         topic_word_dist = self.get_topic_word_mat()
-        #topic_document_dist = self.get_topic_document_mat()
+        # topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
 
-        #info['topic-document-matrix2'] = topic_document_dist.T
+        # info['topic-document-matrix2'] = topic_document_dist.T
         info['topic-document-matrix'] = np.asarray(self.get_thetas(self.train_data)).T
 
         info['topic-word-matrix'] = topic_word_dist
@@ -405,23 +401,32 @@ class AVITM_model(object):
         for (k, v) in checkpoint['dcue_dict'].items():
             setattr(self, k, v)
 
-        self._init_nn()
         self.model.load_state_dict(checkpoint['state_dict'])
 
     def get_thetas(self, dataset):
-        """Predict input."""
+        """
+        Get the document-topic distribution for a dataset of topics. Includes multiple sampling to reduce variation via
+        the parameter num_samples.
+        :param dataset: a PyTorch Dataset containing the documents
+        """
         self.model.eval()
-        loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False,
-                            num_workers=self.num_data_loader_workers)
-        with torch.no_grad():
-            collect_theta = []
-            for batch_samples in loader:
-                # batch_size x vocab_size
-                X = batch_samples['X']
-                X = X.reshape(X.shape[0], -1)
-                if self.USE_CUDA:
-                    X = X.cuda()
-                # forward pass
-                self.model.zero_grad()
-                collect_theta.extend(self.model.get_theta(X).cpu().numpy().tolist())
-            return collect_theta
+
+        loader = DataLoader(
+            dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_data_loader_workers)
+        final_thetas = []
+        for sample_index in range(self.num_samples):
+            with torch.no_grad():
+                collect_theta = []
+                for batch_samples in loader:
+                    # batch_size x vocab_size
+                    x = batch_samples['X']
+                    x = x.reshape(x.shape[0], -1)
+                    if self.USE_CUDA:
+                        x = x.cuda()
+                        x_bert = x_bert.cuda()
+                    # forward pass
+                    self.model.zero_grad()
+                    collect_theta.extend(self.model.get_theta(x).cpu().numpy().tolist())
+
+                final_thetas.append(np.array(collect_theta))
+        return np.sum(final_thetas, axis=0) / self.num_samples
