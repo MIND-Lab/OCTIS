@@ -2,8 +2,8 @@ import os
 import time
 import json
 from collections import namedtuple
-from octis.dashboard.experimentManager import startExperiment
-import octis.dashboard.experimentManager as expManager
+from experimentManager import startExperiment
+import experimentManager as expManager
 import multiprocessing as mp
 from subprocess import Popen
 import signal

@@ -379,7 +379,7 @@ def singleInfo(path):
             dict_return.update({"extra_metric_stats": dict()})
 
         return dict_return
-    return False
+    return None
 
 
 def getModelInfo(experiment_path, iteration, modelRun):
