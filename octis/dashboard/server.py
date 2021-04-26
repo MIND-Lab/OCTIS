@@ -453,7 +453,7 @@ if __name__ == '__main__':
     """
     Initialize the server
     """
-    from octis.dashboard.queueManager import QueueManager
+    from queueManager import QueueManager
 
     
     parser = argparse.ArgumentParser()
