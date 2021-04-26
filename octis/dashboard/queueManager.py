@@ -1,7 +1,6 @@
 import os
 import time
 import json
-from pathlib import Path
 from collections import namedtuple
 from octis.dashboard.experimentManager import startExperiment
 import octis.dashboard.experimentManager as expManager
@@ -21,13 +20,15 @@ class QueueManager:
     process = None
     busy = None
     idle = None
+    path = None
 
-    def __init__(self):
+    def __init__(self, path):
         """
         Initialize the queue manager.
         Loads old queues
         """
         manager = mp.Manager()
+        self.path = path
         self.running = manager.list()
         self.running.append(None)
         self.toRun = manager.dict()
@@ -37,16 +38,14 @@ class QueueManager:
         self.busy.append(False)
         self.process = manager.list()
 
-        self.load_state()
+        self.load_state(path)
         self.idle = mp.Process(target=self._run)
         self.idle.start()
 
-    def save_state(self):
+    def save_state(self, path):
         """
         Saves the state of the queue
         """
-        path = Path(os.path.dirname(os.path.realpath(__file__)))
-        path = os.path.join(path, "queueManagerState.json")
         with open(path, "w") as fp:
             json.dump({"running": self.running[0],
                        "toRun": dict(self.toRun),
@@ -54,12 +53,18 @@ class QueueManager:
                        "completed": dict(self.completed)},
                       fp)
 
-    def load_state(self):
+    def load_state(self, path):
         """
         Loads the state of the queue
         """
-        path = Path(os.path.dirname(os.path.realpath(__file__)))
-        path = os.path.join(path, "queueManagerState.json")
+        if not os.path.isfile(path):
+            with open(path, "w") as state:
+                json.dump({"running": self.running[0],
+                       "toRun": dict(self.toRun),
+                       "order": list(self.order),
+                       "completed": dict(self.completed)},
+                       state)
+
         with open(path, "r") as fp:
             data = json.load(fp)
             self.running[0] = data["running"]
@@ -120,7 +125,7 @@ class QueueManager:
                     self.completed[finished] = self.toRun[finished]
                     del self.toRun[finished]
                     self.running[0] = None
-                    self.save_state()
+                    self.save_state(self.path)
                 if len(self.order) > 0 and self.running[0] is None:
                     self.running[0] = self.order.pop(0)
                     self.start()
@@ -238,7 +243,7 @@ class QueueManager:
         """
         self.idle.terminate()
         self.pause()
-        self.save_state()
+        self.save_state(self.path)
 
     @staticmethod
     def _execute_and_update(toRun, running, busy):

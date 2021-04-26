@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.append(os.getcwd())
 import argparse
 import webbrowser
 import octis.dashboard.frameworkScanner as fs
@@ -9,7 +12,6 @@ import tkinter as tk
 import pandas as pd
 import numpy as np
 from tkinter import filedialog
-import os
 
 
 app = Flask(__name__)
@@ -453,12 +455,21 @@ if __name__ == '__main__':
     """
     from octis.dashboard.queueManager import QueueManager
 
-    queueManager = QueueManager()
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, help="port", default=5000)
     parser.add_argument("--host", type=str, help="host", default='localhost')
+    parser.add_argument("--queue", type=str, help="queue", default="")
 
     args = parser.parse_args()
+
+    queue = None
+    if args.queue != "":
+        queue = args.queue
+    else:
+        queue = os.path.join(os.getcwd(),"queueManagerState.json")
+
+    queueManager = QueueManager(queue)
 
     url = 'http://' + str(args.host) + ':' + str(args.port)
     webbrowser.open_new(url)
