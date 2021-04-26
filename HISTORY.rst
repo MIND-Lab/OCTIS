@@ -2,6 +2,11 @@
 History
 =======
 
+1.3.0 (2021-04-25)
+------------------
+* Added parameter num_samples to CTM, NeuralLDA and ProdLDA
+* Bug fix AVITM
+
 1.2.1 (2021-04-21)
 ------------------
 * Bug fix info dataset
