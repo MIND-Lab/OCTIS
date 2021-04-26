@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.getcwd())
 import argparse
 import webbrowser
-import octis.dashboard.frameworkScanner as fs
+import frameworkScanner as fs
 import octis.configuration.defaults as defaults
 from multiprocessing import Process, Pool
 import json
