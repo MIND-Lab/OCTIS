@@ -8,10 +8,10 @@ To run the dashboard, while in the project directory run the following command:
 
 .. code-block:: bash
 
-    python OCTIS/dashboard/server.py --port [port number] --queue [path to queue json file]
+    python OCTIS/dashboard/server.py --port [port number] --dashboardState [path to dashboard state file]
 
 The port parameter is optional and the selected port number will be used to host the dashboard server, the default port is 5000.
-The queue parameter is optional and the selected json file will be used to save the informations used to launch and find the experiments, the default queue path is the current directory.
+The dashboardState parameter is optional and the selected json file will be used to save the informations used to launch and find the experiments, the default dashboardState path is the current directory.
 
 The browser will open and you will be redirected to the dashboard.
 In the dashboard you can:

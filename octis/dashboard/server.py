@@ -459,17 +459,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, help="port", default=5000)
     parser.add_argument("--host", type=str, help="host", default='localhost')
-    parser.add_argument("--queue", type=str, help="queue", default="")
+    parser.add_argument("--dashboardState", type=str, help="dashboardState", default="")
 
     args = parser.parse_args()
 
-    queue = None
-    if args.queue != "":
-        queue = args.queue
+    dashboardState = None
+    if args.dashboardState != "":
+        dashboardState = args.dashboardState
     else:
-        queue = os.path.join(os.getcwd(),"queueManagerState.json")
+        dashboardState = os.path.join(os.getcwd(),"queueManagerState.json")
 
-    queueManager = QueueManager(queue)
+    queueManager = QueueManager(dashboardState)
 
     url = 'http://' + str(args.host) + ':' + str(args.port)
     webbrowser.open_new(url)
