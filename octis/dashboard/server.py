@@ -1,6 +1,11 @@
 import os
 import sys
+from pathlib import Path
+
 sys.path.append(os.getcwd())
+octispath = Path(os.path.dirname(__file__)).parent.absolute().parent.absolute()
+sys.path.append(str(octispath))
+
 import argparse
 import webbrowser
 import frameworkScanner as fs
