@@ -8,29 +8,31 @@ from torch import nn
 
 
 class DETM(nn.Module):
-    def __init__(self, args, embeddings):
+    def __init__(self, num_topics, num_times, vocab_size, t_hidden_size, eta_hidden_size,
+                 rho_size, emb_size, enc_drop, eta_nlayers, delta, train_embeddings, 
+                 theta_act, embeddings):
         super(DETM, self).__init__()
 
         ## define hyperparameters
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.num_topics = args.num_topics
-        self.num_times = args.num_times
-        self.vocab_size = args.vocab_size
-        self.t_hidden_size = args.t_hidden_size
-        self.eta_hidden_size = args.eta_hidden_size
-        self.rho_size = args.rho_size
-        self.emsize = args.emb_size
-        self.enc_drop = args.enc_drop
-        self.eta_nlayers = args.eta_nlayers
-        self.t_drop = nn.Dropout(args.enc_drop)
-        self.delta = args.delta
-        self.train_embeddings = args.train_embeddings
+        self.num_topics = num_topics
+        self.num_times = num_times
+        self.vocab_size = vocab_size
+        self.t_hidden_size = t_hidden_size
+        self.eta_hidden_size = eta_hidden_size
+        self.rho_size = rho_size
+        self.emsize = emb_size
+        self.enc_drop = enc_drop
+        self.eta_nlayers = eta_nlayers
+        self.t_drop = nn.Dropout(enc_drop)
+        self.delta = delta
+        self.train_embeddings = rain_embeddings
 
-        self.theta_act = self.get_activation(args.theta_act)
+        self.theta_act = self.get_activation(theta_act)
 
         ## define the word embedding matrix \rho
-        if args.train_embeddings:
-            self.rho = nn.Linear(args.rho_size, args.vocab_size, bias=False)
+        if train_embeddings:
+            self.rho = nn.Linear(rho_size, vocab_size, bias=False)
         else:
             num_embeddings, emsize = embeddings.size()
             rho = nn.Embedding(num_embeddings, emsize)
@@ -38,24 +40,24 @@ class DETM(nn.Module):
             self.rho = rho.weight.data.clone().float().to(self.device)
 
         ## define the variational parameters for the topic embeddings over time (alpha) ... alpha is K x T x L
-        self.mu_q_alpha = nn.Parameter(torch.randn(args.num_topics, args.num_times, args.rho_size))
-        self.logsigma_q_alpha = nn.Parameter(torch.randn(args.num_topics, args.num_times, args.rho_size))
+        self.mu_q_alpha = nn.Parameter(torch.randn(num_topics, num_times, rho_size))
+        self.logsigma_q_alpha = nn.Parameter(torch.randn(num_topics, num_times, rho_size))
     
         ## define variational distribution for \theta_{1:D} via amortizartion... theta is K x D
         self.q_theta = nn.Sequential(
-                    nn.Linear(args.vocab_size+args.num_topics, args.t_hidden_size), 
+                    nn.Linear(vocab_size+num_topics, t_hidden_size), 
                     self.theta_act,
-                    nn.Linear(args.t_hidden_size, args.t_hidden_size),
-                    self.theta_act,
+                    nn.Linear(t_hidden_size, t_hidden_size),
+                    theta_act,
                 )
-        self.mu_q_theta = nn.Linear(args.t_hidden_size, args.num_topics, bias=True)
-        self.logsigma_q_theta = nn.Linear(args.t_hidden_size, args.num_topics, bias=True)
+        self.mu_q_theta = nn.Linear(t_hidden_size, num_topics, bias=True)
+        self.logsigma_q_theta = nn.Linear(t_hidden_size, num_topics, bias=True)
 
         ## define variational distribution for \eta via amortizartion... eta is K x T
-        self.q_eta_map = nn.Linear(args.vocab_size, args.eta_hidden_size)
-        self.q_eta = nn.LSTM(args.eta_hidden_size, args.eta_hidden_size, args.eta_nlayers, dropout=args.eta_dropout)
-        self.mu_q_eta = nn.Linear(args.eta_hidden_size+args.num_topics, args.num_topics, bias=True)
-        self.logsigma_q_eta = nn.Linear(args.eta_hidden_size+args.num_topics, args.num_topics, bias=True)
+        self.q_eta_map = nn.Linear(vocab_size, eta_hidden_size)
+        self.q_eta = nn.LSTM(eta_hidden_size, eta_hidden_size, eta_nlayers, dropout=eta_dropout)
+        self.mu_q_eta = nn.Linear(eta_hidden_size+num_topics, num_topics, bias=True)
+        self.logsigma_q_eta = nn.Linear(eta_hidden_size+num_topics, num_topics, bias=True)
 
     def get_activation(self, act):
         if act == 'tanh':
@@ -77,13 +79,13 @@ class DETM(nn.Module):
         else:
             print('Defaulting to tanh activations...')
             act = nn.Tanh()
-        return act 
+        return act
 
     def reparameterize(self, mu, logvar):
         """Returns a sample from a Gaussian distribution via reparameterization.
         """
         if self.training:
-            std = torch.exp(0.5 * logvar) 
+            std = torch.exp(0.5 * logvar)
             eps = torch.randn_like(std)
             return eps.mul_(std).add_(mu)
         else:
