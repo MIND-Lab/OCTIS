@@ -146,7 +146,7 @@ class CTM(AbstractModel):
                    bert_train_path=None, bert_test_path=None, bert_val_path=None):
         vocab2id = {w: i for i, w in enumerate(vocab)}
         vec = CountVectorizer(
-            vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
+            vocabulary=vocab2id, token_pattern=r'(?u)\b[\w+|\-]+\b')
         entire_dataset = train.copy()
         if test is not None:
             entire_dataset.extend(test)
