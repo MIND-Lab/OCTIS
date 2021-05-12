@@ -223,14 +223,17 @@ class Preprocessing:
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(df_max_freq=self.max_df, df_min_freq=self.min_df, lowercase=self.lowercase,
                                          max_features=self.max_features, stop_words=self.stopwords,
-                                         token_pattern=r"(?u)\b\w{" + str(self.min_chars) + ",}\b")
+                                         token_pattern=r"(?u)\b[\w{" + str(self.min_chars) + r",}|\-]+\b")
 
         else:
+
+            #string.punctuation
+
             self.preprocessing_steps.append('filter words with document frequency lower than ' + str(self.min_df) +
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(max_df=self.max_df, min_df=self.min_df, lowercase=self.lowercase,
-                                         token_pattern=r"(?u)\b\w{" + str(self.min_chars) + r",}\b",
+                                         token_pattern=r"(?u)\b[\w{" + str(self.min_chars) + r",}|\-]+\b",
                                          stop_words=self.stopwords)
 
         vectorizer.fit_transform(docs)
