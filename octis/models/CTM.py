@@ -83,6 +83,7 @@ class CTM(AbstractModel):
             hyperparameters = {}
 
         self.set_params(hyperparameters)
+        self.vocab = dataset.get_vocabulary()
 
         if self.use_partitions:
             train, validation, test = dataset.get_partitioned_corpus(use_validation=True)
@@ -91,13 +92,16 @@ class CTM(AbstractModel):
             data_corpus_test = [' '.join(i) for i in test]
             data_corpus_validation = [' '.join(i) for i in validation]
 
-            self.vocab = dataset.get_vocabulary()
             x_train, x_test, x_valid, input_size = self.preprocess(
                 self.vocab, data_corpus_train, test=data_corpus_test, validation=data_corpus_validation,
                 bert_train_path=self.hyperparameters['bert_path'] + "_train.pkl",
                 bert_test_path=self.hyperparameters['bert_path'] + "_test.pkl",
                 bert_val_path=self.hyperparameters['bert_path'] + "_val.pkl",
                 bert_model=self.hyperparameters["bert_model"])
+
+            result = self.inference(x_test)
+            return result
+
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
             x_train, input_size = self.preprocess(
@@ -117,12 +121,9 @@ class CTM(AbstractModel):
                              reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
                              topic_prior_variance=self.hyperparameters["prior_variance"])
 
-        self.model.fit(x_train, x_valid, verbose=False)
 
-        if self.use_partitions:
-            result = self.inference(x_test)
-        else:
-            result = self.model.get_info()
+        self.model.fit(x_train, None, verbose=False)
+        result = self.model.get_info()
         return result
 
     def set_params(self, hyperparameters):

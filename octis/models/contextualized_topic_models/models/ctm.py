@@ -215,7 +215,7 @@ class CTM(object):
 
         return samples_processed, val_loss
 
-    def fit(self, train_dataset, validation_dataset, save_dir=None, verbose=True):
+    def fit(self, train_dataset, validation_dataset=None, save_dir=None, verbose=True):
         """
         Train the CTM model.
 
@@ -273,30 +273,30 @@ class CTM(object):
             self.final_topic_word = topic_word
             self.final_topic_document = topic_document
             self.best_loss_train = train_loss
+            if self.validation_data is not None:
+                validation_loader = DataLoader(
+                    self.validation_data, batch_size=self.batch_size, shuffle=True,
+                    num_workers=self.num_data_loader_workers)
+                # train epoch
+                s = datetime.datetime.now()
+                val_samples_processed, val_loss = self._validation(validation_loader)
+                e = datetime.datetime.now()
 
-            validation_loader = DataLoader(
-                self.validation_data, batch_size=self.batch_size, shuffle=True,
-                num_workers=self.num_data_loader_workers)
-            # train epoch
-            s = datetime.datetime.now()
-            val_samples_processed, val_loss = self._validation(validation_loader)
-            e = datetime.datetime.now()
+                if verbose:
+                    print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
+                        epoch + 1, self.num_epochs, val_samples_processed,
+                        len(self.validation_data) * self.num_epochs, val_loss, e - s))
 
-            if verbose:
-                print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
-                    epoch + 1, self.num_epochs, val_samples_processed,
-                    len(self.validation_data) * self.num_epochs, val_loss, e - s))
-
-            if np.isnan(val_loss) or np.isnan(train_loss):
-                break
-            else:
-                self.early_stopping(val_loss, self.model)
-                if self.early_stopping.early_stop:
-                    if verbose:
-                        print("Early stopping")
-                    if save_dir is not None:
-                        self.save(save_dir)
+                if np.isnan(val_loss) or np.isnan(train_loss):
                     break
+                else:
+                    self.early_stopping(val_loss, self.model)
+                    if self.early_stopping.early_stop:
+                        if verbose:
+                            print("Early stopping")
+                        if save_dir is not None:
+                            self.save(save_dir)
+                        break
 
     def predict(self, dataset):
         """Predict input."""
