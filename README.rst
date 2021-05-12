@@ -438,7 +438,7 @@ Past Contributors
 Credits
 *****************************
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations.
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations. A special thanks goes to tenggaard_ who helped us find many bugs in early octis releases :) 
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`Click to read the paper`: https://www.aclweb.org/anthology/2021.eacl-demos.31/
@@ -448,3 +448,4 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 .. _Optimizer README: https://github.com/MIND-Lab/topic-modeling-evaluation-framework/blob/develop-package/octis/optimization/README.md
 .. _TensorFlow Datasets: https://github.com/tensorflow/datasets
 .. _nlp: https://github.com/huggingface/nlp
+.. _tenggaard: https://github.com/tenggaard
