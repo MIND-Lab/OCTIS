@@ -2,6 +2,13 @@
 History
 =======
 
+1.4.0 (2021-05-12)
+------------------
+* Fixed CTM training when only training dataset is used
+* Dashboard bugs fixed
+* Minor bug fixes
+* Added new tests for TM training
+
 1.3.0 (2021-04-25)
 ------------------
 * Added parameter num_samples to CTM, NeuralLDA and ProdLDA
