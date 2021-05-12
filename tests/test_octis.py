@@ -245,7 +245,8 @@ def test_model_output_ctm_combined_not_partition(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined',use_partitions=False)
+    model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined',use_partitions=False,
+                bert_path='./not_part')
     output = model.train_model(dataset)
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
