@@ -83,6 +83,29 @@ def test_model_output_etm(data_dir):
     assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
+def test_model_output_etm_not_partitioned(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = ETM(num_topics=num_topics, num_epochs=5, use_partitions=False)
+    output = model.train_model(dataset)
+    assert 'topics' in output.keys()
+    assert 'topic-word-matrix' in output.keys()
+    assert 'test-topic-document-matrix' not in output.keys()
+
+    # check topics format
+    assert type(output['topics']) == list
+    assert len(output['topics']) == num_topics
+
+    # check topic-word-matrix format
+    assert type(output['topic-word-matrix']) == np.ndarray
+    assert output['topic-word-matrix'].shape == (num_topics, len(dataset.get_vocabulary()))
+
+    # check topic-document-matrix format
+    assert type(output['topic-document-matrix']) == np.ndarray
+    assert output['topic-document-matrix'].shape == (num_topics, len(dataset.get_corpus()))
+
+
 def test_model_output_lda_tomotopy(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
@@ -218,6 +241,29 @@ def test_model_output_ctm_combined(data_dir):
     assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
+def test_model_output_ctm_combined_not_partition(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined',use_partitions=False)
+    output = model.train_model(dataset)
+    assert 'topics' in output.keys()
+    assert 'topic-word-matrix' in output.keys()
+    assert 'test-topic-document-matrix' not in output.keys()
+
+    # check topics format
+    assert type(output['topics']) == list
+    assert len(output['topics']) == num_topics
+
+    # check topic-word-matrix format
+    assert type(output['topic-word-matrix']) == np.ndarray
+    assert output['topic-word-matrix'].shape == (num_topics, len(dataset.get_vocabulary()))
+
+    # check topic-document-matrix format
+    assert type(output['topic-document-matrix']) == np.ndarray
+    assert output['topic-document-matrix'].shape == (num_topics, len(dataset.get_corpus()))
+
+
 def test_model_output_prodlda(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
@@ -243,3 +289,27 @@ def test_model_output_prodlda(data_dir):
     # check test-topic-document-matrix format
     assert type(output['test-topic-document-matrix']) == np.ndarray
     assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
+
+
+def test_model_output_prodlda_not_partitioned(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = ProdLDA(num_topics=num_topics, num_epochs=5, use_partitions=False)
+    output = model.train_model(dataset)
+    assert 'topics' in output.keys()
+    assert 'topic-word-matrix' in output.keys()
+    assert 'test-topic-document-matrix' not in output.keys()
+
+    # check topics format
+    assert type(output['topics']) == list
+    assert len(output['topics']) == num_topics
+
+    # check topic-word-matrix format
+    assert type(output['topic-word-matrix']) == np.ndarray
+    assert output['topic-word-matrix'].shape == (num_topics, len(dataset.get_vocabulary()))
+
+    # check topic-document-matrix format
+    assert type(output['topic-document-matrix']) == np.ndarray
+    assert output['topic-document-matrix'].shape == (num_topics, len(dataset.get_corpus()))
+
