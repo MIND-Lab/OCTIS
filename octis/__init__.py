@@ -9,4 +9,4 @@ from octis.preprocessing import *
 
 __author__ = """Silvia Terragni"""
 __email__ = 's.terragni4@campus.unimib.it'
-__version__ = '__version__ = '1.3.0''
+__version__ = '__version__ = '1.4.0''
