@@ -5,7 +5,7 @@ import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from tqdm.contrib.concurrent import process_map  # or thread_map
-
+from pathlib import Path
 from octis.dataset.dataset import Dataset
 
 """
@@ -25,7 +25,7 @@ class Preprocessing:
                  punctuation: str = string.punctuation, remove_numbers: bool = True, lemmatize: bool = True,
                  stopword_list: Union[str, List[str]] = None, min_chars: int = 1, min_words_docs: int = 0,
                  language: str = 'english', split: bool = True, verbose: bool = False, num_processes: int = None,
-                 save_original_indexes=True):
+                 save_original_indexes=True, remove_stopwords_spacy: bool = False):
         """
         init Preprocessing
 
@@ -47,6 +47,7 @@ class Preprocessing:
         :type punctuation: str
         :param remove_numbers: if true, numbers will be removed
         :type remove_numbers: bool
+        :param remove_stopwords_spacy: bool , if true use spacy to remove stopwords
         :param lemmatize: if true, words will be lemmatized using a spacy model according to the language that has been
         set (default: true)
         :type lemmatize: bool
@@ -100,7 +101,8 @@ class Preprocessing:
                 self.remove_stopwords_spacy = False
             else:
                 if 'english' in stopword_list:
-                    with open('octis/preprocessing/stopwords/english.txt') as fr:
+                    stop_word_path = Path(__file__).parent.joinpath('stopwords', 'english.txt')
+                    with open(stop_word_path) as fr:
                         stopwords = [line.strip() for line in fr.readlines()]
                         assert stopword_list == language
                 else:

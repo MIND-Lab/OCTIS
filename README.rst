@@ -175,11 +175,12 @@ To preprocess a dataset, import the preprocessing class and use the preprocess_d
     os.chdir(os.path.pardir)
 
     # Initialize preprocessing
-    p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True, punctuation=string.punctuation,
-                      lemmatize=True, remove_stopwords=True, stopword_list=['am', 'are', 'this', 'that'],
-                      min_chars=1, min_words_docs=0)
+    preprocessor = Preprocessing(vocabulary=None, max_features=None, 
+                                 remove_punctuation=True, punctuation=string.punctuation,
+                                 lemmatize=True, stopword_list='english',
+                                 min_chars=1, min_words_docs=0)
     # preprocess
-    dataset = p.preprocess_dataset(documents_path=r'..\corpus.txt', labels_path=r'..\labels.txt')
+    dataset = preprocessor.preprocess_dataset(documents_path=r'..\corpus.txt', labels_path=r'..\labels.txt')
 
     # save the preprocessed dataset
     dataset.save('hello_dataset')
