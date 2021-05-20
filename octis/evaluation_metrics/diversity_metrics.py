@@ -56,13 +56,11 @@ class TopicDiversity(AbstractMetric):
 class InvertedRBO(AbstractMetric):
     def __init__(self, topk=10, weight=0.9):
         """
-        Initialize metric
+        Initialize metric Inverted Ranked-Biased Overlap
 
-        Parameters
-        ----------
-        topk: top k words on which the topic diversity will be computed
-        weight: p (float), Weight of each agreement at depth d:p**(d-1). When set
-        to 1.0, there is no weight, the rbo returns to average overlap.
+        :param topk: top k words on which the topic diversity will be computed
+        :param weight: weight of each agreement at depth d. When set to 1.0, there is no weight, the rbo returns to
+        average overlap. (default 0.9)
         """
         super().__init__()
         self.topk = topk
@@ -72,13 +70,8 @@ class InvertedRBO(AbstractMetric):
         """
         Retrieves the score of the metric
 
-        Parameters
-        ----------
-        model_output : dictionary, output of the model. the 'topics' key is required.
+        :param model_output : dictionary, output of the model. the 'topics' key is required.
 
-        Returns
-        -------
-        td : score of the rank biased overlap over tht topics
         """
         topics = model_output['topics']
         if topics is None:
@@ -97,11 +90,23 @@ class InvertedRBO(AbstractMetric):
 
 
 class WordEmbeddingsInvertedRBO(AbstractMetric):
-    def __init__(self, topk=10, weight=0.9, norm=True, word2vec_path=None, binary=True):
+
+    def __init__(self, topk=10, weight=0.9, normalize=True, word2vec_path=None, binary=True):
+        """
+        Initialize metric WE-IRBO-Match
+
+        Parameters
+        ----------
+        :param topk: top k words on which the topic diversity will be computed
+        :param word2vec_path: word embedding space in gensim word2vec format
+        :param weight: Weight of each agreement at depth d. When set to 1.0, there is no weight, the rbo returns to
+        average overlap. (Default 0.9)
+        :param normalize: if true, normalize the cosine similarity
+        """
         super().__init__()
         self.topk = topk
         self.weight = weight
-        self.norm = norm
+        self.norm = normalize
         self.binary = binary
         self.word2vec_path = word2vec_path
         if word2vec_path is None:
@@ -140,11 +145,11 @@ def get_word2index(list1, list2):
 
 
 class WordEmbeddingsInvertedRBOCentroid(AbstractMetric):
-    def __init__(self, topk=10, weight=0.9, norm=True, word2vec_path=None, binary=True):
+    def __init__(self, topk=10, weight=0.9, normalize=True, word2vec_path=None, binary=True):
         super().__init__()
         self.topk = topk
         self.weight = weight
-        self.norm = norm
+        self.norm = normalize
         self.binary = binary
         self.word2vec_path = word2vec_path
         if word2vec_path is None:
@@ -174,3 +179,67 @@ class WordEmbeddingsInvertedRBOCentroid(AbstractMetric):
 
                 collect.append(rbo_val)
             return 1 - np.mean(collect)
+
+
+class LogOddsRatio(AbstractMetric):
+    def __init__(self):
+        """
+        Initialize metric Log Odds Ratio
+        """
+        super().__init__()
+
+    def score(self, model_output):
+        beta = model_output['topic-word-matrix']
+        lor = 0
+        count = 0
+        for i, j in itertools.combinations(range(len(beta)), 2):
+            lor += _LOR(beta[i], beta[j])
+            count += 1
+        return lor / count
+
+
+def _LOR(P, Q):
+    lor = 0
+    for v, w in zip(P, Q):
+        if v > 0 or w > 0:
+            lor = lor + np.abs(np.log(v) - np.log(w))
+    return lor / len(P)
+
+
+class KLDivergence(AbstractMetric):
+    def __init__(self):
+        """
+        Initialize metric Kullback-Leibler Divergence between topic-word distributions
+        """
+        super().__init__()
+
+    def score(self, model_output):
+        beta = model_output['topic-word-matrix']
+        kl_div = 0
+        count = 0
+        for i, j in itertools.combinations(range(len(beta)), 2):
+            kl_div += _LOR(beta[i], beta[j])
+            count += 1
+        return kl_div / count
+
+
+def _KL(P, Q):
+    """
+    Perform Kullback-Leibler divergence
+
+    Parameters
+    ----------
+    P : distribution P
+    Q : distribution Q
+
+    Returns
+    -------
+    divergence : divergence from Q to P
+    """
+    # add epsilon to grant absolute continuity
+    epsilon = 0.00001
+    P = P+epsilon
+    Q = Q+epsilon
+
+    divergence = np.sum(P*np.log(P/Q))
+    return divergence

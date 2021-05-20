@@ -154,52 +154,24 @@ class WECoherenceCentroid(AbstractMetric):
         """
         Retrieve the score of the metric
 
-        Parameters
-        ----------
-        model_output : dictionary, output of the model
-                       key 'topics' required.
+        :param model_output: dictionary, output of the model. key 'topics' required.
+        :return topic coherence computed on the word embeddings
 
-        Returns
-        -------
-        score : topic coherence computed on the word embeddings
         """
         topics = model_output["topics"]
         if self.topk > len(topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
             result = 0
+            count = 0
             for topic in topics:
-                E = []
-
-                # average vector of the words in topic (centroid)
-                len_word_embedding = 0
-                for word in topic:
-                    if word in self._wv.vocab:
-                        len_word_embedding = len(self._wv.__getitem__(word))
-
-                t = [0] * len_word_embedding
-
-                # Create matrix E (normalize word embeddings of words represented as vectors in wv) and
-                # average vector of the words in topic
-                for word in topic:
-                    if word in self._wv.vocab:
-                        word_embedding = np.reshape(
-                            self._wv.__getitem__(word), (1, -1))
-                        normalized_we = np.reshape(
-                            normalize(word_embedding), (1, -1))
-                        E.append(normalized_we[0])
-                        t = list(map(add, t, word_embedding))
-                t = np.array(t)
-                t = t/(len(t)*sum(t))
-
                 topic_coherence = 0
-                # Perform cosine similarity between each word embedding in E and t.
-                for word_embedding in E:
-                    distance = spatial.distance.cosine(word_embedding, t)
-                    topic_coherence += distance
-                topic_coherence = topic_coherence/self.topk
-
-                # Update result with the computed coherence of the topic
+                for w1, w2 in itertools.combinations(topic, 2):
+                    if w1 in self._wv.vocab and w2 in self._wv.vocab:
+                        distance = spatial.distance.cosine(self._wv.__getitem__(w1), self._wv.__getitem__(w2))
+                        topic_coherence += distance - 1
+                        count = count + 1
+                topic_coherence = topic_coherence/count
                 result += topic_coherence
             result /= len(topics)
             return result
