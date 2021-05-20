@@ -269,34 +269,80 @@ To evaluate a model, choose a metric and use the :code:`score()` method of the m
 Available metrics
 ==================
 
-Classification Metrics:
+* **Classification Metrics**:
 
-* F1 measure (:code:`F1Score()`)
-* Precision (:code:`PrecisionScore()`)
-* Recall (:code:`RecallScore()`)
-* Accuracy (:code:`AccuracyScore()`)
+    * F1-score_ : :code:`F1Score(dataset)`
+    * Precision_ : :code:`PrecisionScore(dataset)`
+    * Recall_ : :code:`RecallScore(dataset)`
+    * Accuracy_ : :code:`AccuracyScore(dataset)`
 
-Coherence Metrics:
+.. _F1-score: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/classification_metrics.py#L117
+.. _Precision: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/classification_metrics.py#L145
+.. _Recall: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/classification_metrics.py#L171
+.. _Accuracy: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/classification_metrics.py#L196
 
-* UMass Coherence (:code:`Coherence({'measure':'c_umass'}`)
-* C_V Coherence (:code:`Coherence({'measure':'c_v'}`)
-* UCI Coherence (:code:`Coherence({'measure':'c_uci'}`)
-* NPMI Coherence (:code:`Coherence({'measure':'c_npmi'}`)
-* Word Embedding-based Coherence Pairwise (:code:`WECoherencePairwise()`)
-* Word Embedding-based Coherence Centroid (:code:`WECoherenceCentroid()`)
+* **Coherence Metrics**:
 
-Diversity Metrics:
+    * `UMass Coherence`_ : :code:`Coherence({'measure':'c_umass'}`
+    * `C_V Coherence`_ : :code:`Coherence({'measure':'c_v'}`
+    * `UCI Coherence`_ : :code:`Coherence({'measure':'c_uci'}`
+    * `NPMI Coherence`_ : :code:`Coherence({'measure':'c_npmi'}`
+    * `Word Embedding-based Coherence Pairwise`_ : :code:`WECoherencePairwise()`
+    * `Word Embedding-based Coherence Centroid`_ : :code:`WECoherenceCentroid()`
 
-* Topic Diversity (:code:`TopicDiversity()`)
-* InvertedRBO (:code:`InvertedRBO()`)
-* Word Embedding-based InvertedRBO (:code:`WordEmbeddingsInvertedRBO()`)
-* Word Embedding-based InvertedRBO centroid (:code:`WordEmbeddingsInvertedRBOCentroid()`)
+.. _`UMass Coherence`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/coherence_metrics.py#L15
+.. _`C_V Coherence`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/coherence_metrics.py#L15
+.. _`UCI Coherence`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/coherence_metrics.py#L15
+.. _`NPMI Coherence`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/coherence_metrics.py#L15
+.. _`Word Embedding-based Coherence Pairwise`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/coherence_metrics.py#L67
+.. _`Word Embedding-based Coherence Centroid`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/coherence_metrics.py#L126
 
-Topic significance Metrics:
+* **Diversity Metrics**:
 
-* KL Uniform (:code:`KL_uniform()`)
-* KL Vacuous (:code:`KL_vacuous()`)
-* KL Background (:code:`KL_background()`)
+    * `Topic Diversity`_ : :code:`TopicDiversity()`
+    * `InvertedRBO`_ : :code:`InvertedRBO()`
+    * `Word Embedding-based InvertedRBO Matches`_ : :code:`WordEmbeddingsInvertedRBO()`
+    * `Word Embedding-based InvertedRBO Centroid`_ : :code:`WordEmbeddingsInvertedRBOCentroid()`
+    * `Log odds ratio`_ : :code:`LogOddsRatio()`
+    * `Kullback-Liebler Divergence`_ : :code:`KLDivergence()`
+
+.. _`Topic Diversity`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/diversity_metrics.py#L12
+.. _`InvertedRBO`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/diversity_metrics.py#L56
+.. _`Word Embedding-based InvertedRBO Matches`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/diversity_metrics.py#L92
+.. _`Word Embedding-based InvertedRBO Centroid`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/diversity_metrics.py#L147
+.. _`Log odds ratio`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/diversity_metrics.py#L184
+.. _`Kullback-Liebler Divergence`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/diversity_metrics.py#L209
+
+* **Similarity Metrics**:
+
+    * `Ranked-Biased Overlap`_ : :code:`RBO()`
+    * `Word Embedding-based RBO Matches`_ : :code:`WordEmbeddingsRBOMatch()`
+    * `Word Embedding-based RBO Centroid`_ : :code:`WordEmbeddingsRBOCentroid()`
+    * `Word Embeddings-based Pairwise Similarity`_ : :code:`WordEmbeddingsPairwiseSimilarity()`
+    * `Word Embeddings-based Centroid Similarity`_ : :code:`WordEmbeddingsCentroidSimilarity()`
+    * `Word Embeddings-based Weighted Sum Similarity`_ : :code:`WordEmbeddingsWeightedSumSimilarity()`
+    * `Pairwise Jaccard Similarity`_ : :code:`PairwiseJaccardSimilarity()`
+
+
+.. _`Word Embedding-based RBO Matches`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/similarity_metrics.py#L11
+.. _`Word Embedding-based RBO Centroid`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/similarity_metrics.py#L35
+.. _`Word Embeddings-based Pairwise Similarity`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/similarity_metrics.py#L59
+.. _`Word Embeddings-based Centroid Similarity`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/similarity_metrics.py#L103
+.. _`Ranked-Biased Overlap`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/similarity_metrics.py#L201
+.. _`Word Embeddings-based Weighted Sum Similarity`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/similarity_metrics.py#L158
+.. _`Pairwise Jaccard Similarity`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/similarity_metrics.py#L223
+ 
+
+* **Topic significance Metrics**:
+
+    * `KL Uniform`_ : :code:`KL_uniform()`
+    * `KL Vacuous`_ : :code:`KL_vacuous()`
+    * `KL Background`_ : :code:`KL_background()`
+    
+.. _`KL Uniform`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/topic_significance_metrics.py#L37
+.. _`KL Vacuous`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/topic_significance_metrics.py#L84
+.. _`KL Background`: https://github.com/MIND-Lab/OCTIS/blob/master/octis/evaluation_metrics/topic_significance_metrics.py#L138
+ 
 
 Implement your own Model
 =========================
