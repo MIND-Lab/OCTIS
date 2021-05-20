@@ -25,7 +25,7 @@ class Preprocessing:
                  punctuation: str = string.punctuation, remove_numbers: bool = True, lemmatize: bool = True,
                  stopword_list: Union[str, List[str]] = None, min_chars: int = 1, min_words_docs: int = 0,
                  language: str = 'english', split: bool = True, verbose: bool = False, num_processes: int = None,
-                 save_original_indexes=True, remove_stopwords_spacy: bool = False):
+                 save_original_indexes=True, remove_stopwords_spacy: bool = True):
         """
         init Preprocessing
 
@@ -47,7 +47,7 @@ class Preprocessing:
         :type punctuation: str
         :param remove_numbers: if true, numbers will be removed
         :type remove_numbers: bool
-        :param remove_stopwords_spacy: bool , if true use spacy to remove stopwords
+        :param remove_stopwords_spacy: bool , if true use spacy to remove stopwords (default: true)
         :param lemmatize: if true, words will be lemmatized using a spacy model according to the language that has been
         set (default: true)
         :type lemmatize: bool
@@ -92,23 +92,27 @@ class Preprocessing:
                                                            "following command:\npython -m spacy download " + lang)
         self.split = split
         self.verbose = verbose
+
+        self.remove_stopwords_spacy = remove_stopwords_spacy
+
+        stopwords = []
+        # if stopwords is None then stopwords are not removed
         if stopword_list is None:
-            stopwords = []
             self.remove_stopwords_spacy = False
         else:
+            # if custom list is specified, then we do not use spacy stopwords
             if type(stopword_list) == list:
                 stopwords = set(stopword_list)
                 self.remove_stopwords_spacy = False
+            elif self.remove_stopwords_spacy:
+                assert stopword_list == language
             else:
+                # if remove_stopwords_spacy is false, then use MALLET English stopwords
                 if 'english' in stopword_list:
                     stop_word_path = Path(__file__).parent.joinpath('stopwords', 'english.txt')
                     with open(stop_word_path) as fr:
                         stopwords = [line.strip() for line in fr.readlines()]
                         assert stopword_list == language
-                else:
-                    self.remove_stopwords_spacy = True
-                    assert stopword_list == language
-                    stopwords = []
 
         self.stopwords = stopwords
         self.min_chars = min_chars
