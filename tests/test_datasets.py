@@ -25,11 +25,23 @@ def data_dir(root_dir):
     return root_dir + "/../preprocessed_datasets/"
 
 
-def test_preprocessing(data_dir):
+def test_preprocessing_custom_stops(data_dir):
     texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
     p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True, punctuation=".,?:",
                       lemmatize=False,  stopword_list=['am', 'are', 'this', 'that'],
                       min_chars=2, min_words_docs=5,min_df=0.0001)
+    dataset = p.preprocess_dataset(
+        documents_path=texts_path,
+    )
+
+    dataset.save(data_dir+"/sample_texts/")
+    dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
+
+def test_preprocessing_english_stops(data_dir):
+    texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
+    p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True,
+                      lemmatize=False,  stopword_list='english',
+                      min_chars=2, min_words_docs=1)
     dataset = p.preprocess_dataset(
         documents_path=texts_path,
     )
