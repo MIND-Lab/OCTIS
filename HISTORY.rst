@@ -2,6 +2,14 @@
 History
 =======
 
+1.6.0 (2021-05-20)
+------------------
+* Added regularization hyperparameter to NMF_scikit
+* Added similarity metrics
+* Fixed handling of stopwords in preprocessing
+* Fixed coherence and diversity metrics
+* Added new metrics tests
+
 1.4.0 (2021-05-12)
 ------------------
 * Fixed CTM training when only training dataset is used
