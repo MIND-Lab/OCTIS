@@ -7,8 +7,11 @@ import pytest
 from click.testing import CliRunner
 from octis.evaluation_metrics.topic_significance_metrics import *
 from octis.evaluation_metrics.classification_metrics import F1Score, PrecisionScore
-from octis.evaluation_metrics.classification_metrics import  AccuracyScore, RecallScore
-from octis.evaluation_metrics.diversity_metrics import TopicDiversity, InvertedRBO
+from octis.evaluation_metrics.classification_metrics import AccuracyScore, RecallScore
+from octis.evaluation_metrics.diversity_metrics import TopicDiversity, InvertedRBO, KLDivergence, LogOddsRatio, \
+    WordEmbeddingsInvertedRBO
+from octis.evaluation_metrics.similarity_metrics import WordEmbeddingsRBOMatch, PairwiseJaccardSimilarity, RBO, \
+    WordEmbeddingsCentroidSimilarity
 
 from octis.evaluation_metrics.coherence_metrics import *
 from octis.dataset.dataset import Dataset
@@ -75,43 +78,87 @@ def test_npmi_coherence_measures(dataset, model_output):
     metric = Coherence(topk=10, texts=dataset.get_corpus())
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
-
+    assert -1 <= score <= 1
 
 def test_we_coherence_measures(dataset, model_output):
     metric = WECoherenceCentroid(topk=5)
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == np.float32 or type(score) == float
+    assert -1 <= score <= 1
 
     metric = WECoherencePairwise(topk=10)
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == np.float32 or type(score) == float
+    assert -1 <= score <= 1
 
 
 def test_diversity_measures(dataset, model_output):
     metric = TopicDiversity(topk=10)
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
+    metric = KLDivergence()
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
+    metric = LogOddsRatio()
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
+    metric = WordEmbeddingsInvertedRBO(normalize=True)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
+
+def test_similarity_measures(dataset, model_output):
+    metric = RBO(topk=10)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
+    metric = WordEmbeddingsRBOMatch(topk=10, normalize=True)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
+    metric = PairwiseJaccardSimilarity(topk=10)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
+    metric = WordEmbeddingsCentroidSimilarity(topk=10)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
 
 
 def test_irbo(dataset, model_output):
     metric = InvertedRBO(topk=10)
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
 
 
 def test_kl_b(dataset, model_output):
     metric = KL_background()
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
+    assert score >= 0
 
 
 def test_kl_v(dataset, model_output):
     metric = KL_vacuous()
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
+    assert score >= 0
 
 
 def test_kl_u(dataset, model_output):
     metric = KL_uniform()
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
+    assert score >= 0
