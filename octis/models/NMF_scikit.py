@@ -7,7 +7,8 @@ import octis.configuration.defaults as defaults
 
 class NMF_scikit(AbstractModel):
 
-    def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0, use_partitions=True):
+    def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0, regularization='both',
+                 use_partitions=True):
         """
         Initialize NMF model
 
@@ -48,6 +49,7 @@ class NMF_scikit(AbstractModel):
         self.hyperparameters["init"] = init
         self.hyperparameters["alpha"] = alpha
         self.hyperparameters["l1_ratio"] = l1_ratio
+        self.hyperparameters['regularization'] = regularization
         self.use_partitions = use_partitions
 
         self.id2word = None
@@ -126,9 +128,9 @@ class NMF_scikit(AbstractModel):
         #hyperparameters["corpus"] = self.id_corpus
         #hyperparameters["id2word"] = self.id2word
         self.hyperparameters.update(hyperparameters)
-
         model = NMF(n_components=self.hyperparameters["num_topics"], init=self.hyperparameters["init"],
-                    alpha=self.hyperparameters["alpha"], l1_ratio=self.hyperparameters["l1_ratio"])
+                    alpha=self.hyperparameters["alpha"], l1_ratio=self.hyperparameters["l1_ratio"],
+                    regularization=self.hyperparameters['regularization'])
 
         W = model.fit_transform(self.id_corpus)
         #W = W / W.sum(axis=1, keepdims=True)

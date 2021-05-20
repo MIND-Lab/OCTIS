@@ -2,7 +2,7 @@ gensim<=3.8.3
 nltk
 pandas
 spacy
-scikit-learn
+scikit-learn>=0.24.2
 scikit-optimize>=0.8.1
 matplotlib
 torch
