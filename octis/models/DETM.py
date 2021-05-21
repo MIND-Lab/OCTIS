@@ -1,32 +1,15 @@
+from octis.models.DETM_model import detm
 from octis.models.base_etm import BaseETM
-from models.DETM_model import detm
-
+from octis.models.DETM_model import data
+import torch
 
 class DETM(BaseETM):
-    def __init__(self, num_topics=50,
-                 rho_size=300,
-                 embedding_size=300,
-                 t_hidden_size=800,
-                 theta_act=relu,
-                 train_embeddings=1,
-                 eta_nlayers=3,
-                 eta_hidden_size=200,
-                 delta=0.005,
-                 device='cpu',
-                 lr_factor=4.0,
-                 lr=0.005,
-                 anneal_lr=1,
-                 epochs=100,
-                 seed=2019,
-                 enc_drop=0.0,
-                 eta_dropout=0.0,
-                 clip=0.0,
-                 nonmono=10,
-                 optimizer='adam',
-                 wdecay=1.2e-6,
+    def __init__(self, num_topics=50, rho_size=300, embedding_size=300, t_hidden_size=800,
+                 activation='relu', train_embeddings=1, eta_nlayers=3, eta_hidden_size=200,
+                 delta=0.005, device='cpu', lr_factor=4.0, lr=0.005, anneal_lr=1,
+                 num_epochs=100, seed=2019, dropout=0.0, eta_dropout=0.0, clip=0.0,
+                 nonmono=10, optimizer='adam', wdecay=1.2e-6, embeddings_path="", use_partitions=True):
 
-                 )
-    
         super(DETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = int(num_topics)
@@ -35,7 +18,6 @@ class DETM(BaseETM):
         self.hyperparameters['rho_size'] = int(rho_size)
         self.hyperparameters['embedding_size'] = int(embedding_size)
         self.hyperparameters['activation'] = activation
-        self.hyperparameters['theta_act'] = theta_act
         self.hyperparameters['eta_nlayers'] = eta_nlayers
         self.hyperparameters['eta_hidden_size'] = eta_hidden_size
         self.hyperparameters['delta'] = delta
@@ -48,16 +30,14 @@ class DETM(BaseETM):
         self.hyperparameters['clip'] = float(clip)
         self.hyperparameters['wdecay'] = float(wdecay)
         self.hyperparameters['eta_dropout'] = float(eta_dropout)
-        self.hyperparameters['enc_drop'] = int(enc_drop)
         self.hyperparameters['seed'] = int(seed)
         self.hyperparameters['clip'] = int(clip)
         self.hyperparameters['nonmono'] = int(nonmono)
         self.hyperparameters['train_embeddings'] = bool(train_embeddings)
         self.hyperparameters['embeddings_path'] = embeddings_path
         self.device = device
-        self.top_word = top_word
         self.early_stopping = None
-        #TODO:  this we need to agree on this
+        # TODO:  this we need to agree on this
         self.test_tokens, self.test_counts = None, None
         self.valid_tokens, self.valid_counts = None, None
         self.train_tokens, self.train_counts, self.vocab = None, None, None
@@ -66,11 +46,8 @@ class DETM(BaseETM):
         self.optimizer = None
         self.embeddings = None
 
-
         # are they enough or we need more
 
-
-    
     def set_model(self, dataset, hyperparameters):
         if self.use_partitions:
             train_data, validation_data, testing_data = dataset.get_partitioned_corpus(use_validation=True)
@@ -109,7 +86,6 @@ class DETM(BaseETM):
                                theta_act=self.hyperparameters['activation'],
                                eta_nlayers=self.hyperparameters['eta_nlayers'],
                                delta=self.hyperparameters['eta_nlayers'],
-                               theta_act=self.hyperparameters['theta_act'],
                                embeddings=self.embeddings,
                                train_embeddings=self.hyperparameters['train_embeddings'],
                                enc_drop=self.hyperparameters['dropout']).to(self.device)
@@ -139,7 +115,7 @@ class DETM(BaseETM):
             data_batch, times_batch = data.get_batch(train_data,
                                                      ind,
                                                      self.device,
-                                                     train_times) # we can use pytorch data loader here
+                                                     train_times)  # we can use pytorch data loader here
             times_batch = get_indices(train_times, times_batch)
             sums = data_batch.sum(1).unsqueeze(1)
             times_batch = torch.from_numpy(times_batch)
@@ -147,11 +123,8 @@ class DETM(BaseETM):
                 normalized_data_batch = data_batch / sums
             else:
                 normalized_data_batch = data_batch
-            loss, nll, kl_alpha, kl_eta, kl_theta = self.model.forward(data_batch,
-                                                                       normalized_data_batch,
-                                                                       times_batch,
-                                                                       train_rnn_inp,
-                                                                       train_data.shape[0])
+            loss, nll, kl_alpha, kl_eta, kl_theta = self.model.forward(
+                data_batch, normalized_data_batch, times_batch, train_rnn_inp, train_data.shape[0])
             loss.backward()
             if self.hyperparameters['clip'] > 0:
                 torch.nn.utils.clip_grad_norm_(self.parameters(), self.hyperparameters['clip'])
@@ -169,49 +142,17 @@ class DETM(BaseETM):
                 cur_kl_eta = round(acc_kl_eta_loss / cnt, 2)
                 cur_kl_alpha = round(acc_kl_alpha_loss / cnt, 2)
                 lr = optimizer.param_groups[0]['lr']
-                print('Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. KL_eta: {} .. KL_alpha: {} .. Rec_loss: {} .. NELBO: {}'.format(
-                    epoch, idx, len(indices), lr, cur_kl_theta, cur_kl_eta, cur_kl_alpha, cur_nll, cur_loss))
+                print(
+                    'Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. KL_eta: {} .. KL_alpha: {} .. Rec_loss: {} .. NELBO: {}'.format(
+                        epoch, idx, len(indices), lr, cur_kl_theta, cur_kl_eta, cur_kl_alpha, cur_nll, cur_loss))
         cur_loss = round(acc_loss / cnt, 2)
         cur_nll = round(acc_nll / cnt, 2)
         cur_kl_theta = round(acc_kl_theta_loss / cnt, 2)
         cur_kl_eta = round(acc_kl_eta_loss / cnt, 2)
         cur_kl_alpha = round(acc_kl_alpha_loss / cnt, 2)
         lr = optimizer.param_groups[0]['lr']
-        print('*'*100)
-        print('Epoch----->{} .. LR: {} .. KL_theta: {} .. KL_eta: {} .. KL_alpha: {} .. Rec_loss: {} .. NELBO: {}'.format(
+        print('*' * 100)
+        print(
+            'Epoch----->{} .. LR: {} .. KL_theta: {} .. KL_eta: {} .. KL_alpha: {} .. Rec_loss: {} .. NELBO: {}'.format(
                 epoch, lr, cur_kl_theta, cur_kl_eta, cur_kl_alpha, cur_nll, cur_loss))
-        print('*'*100)
-
-    def visualize(self, vocabulary):
-        """Visualizes topics and embeddings and word usage evolution.
-        """
-        self.eval()
-        with torch.no_grad():
-            alpha = self.mu_q_alpha
-            beta = self.get_beta(alpha)
-            print('beta: ', beta.size())
-            print('\n')
-            print('#'*100)
-            print('Visualize topics...')
-            times = [0, 10, 40]
-            topics_words = []
-            for k in range(self.hyperparameters['num_topics']):
-                for t in times:
-                    gamma = beta[k, t, :]
-                    top_words = list(gamma.cpu().numpy().self.hyperparameters['rt']()[-self.hyperparameters['num_words']+1:][::-1])
-                    topic_words = [vocabulary[a] for a in top_words]
-                    topics_words.append(' '.join(topic_words))
-                    print('Topic {} .. Time: {} ===> {}'.format(k, t, topic_words)) 
-
-            print('\n')
-            print('Visualize word embeddings ...')
-            queries = ['economic', 'assembly', 'security', 'management', 'debt', 'rights',  'africa']
-            try:
-                embeddings = self.rho.weight  # Vocab_size x E
-            except Exception:
-                embeddings = self.rho         # Vocab_size x E
-            neighbors = []
-            for word in queries:
-                print('word: {} .. neighbors: {}'.format(
-                    word, nearest_neighbors(word, embeddings, vocabulary, self.hyperparameters['num_words'])))
-            print('#'*100)
+        print('*' * 100)
