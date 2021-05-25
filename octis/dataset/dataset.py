@@ -293,9 +293,11 @@ class Dataset:
 
             df = pd.DataFrame(data=corpus)
             df = pd.concat([df, pd.DataFrame(partition)], axis=1)
+
+            labs = [' '.join(lab) for lab in self.__labels]
             if self.__labels:
-                df = pd.concat([df, pd.DataFrame(self.__labels)], axis=1)
-            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=None)
+                df = pd.concat([df, pd.DataFrame(labs)], axis=1)
+            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=False)
 
             self._save_vocabulary(path + "/vocabulary.txt")
             self._save_metadata(path + "/metadata.json")
@@ -305,7 +307,7 @@ class Dataset:
         except:
             raise Exception("error in saving the dataset")
 
-    def load_custom_dataset_from_folder(self, path):
+    def load_custom_dataset_from_folder(self, path, multilabel=False):
         """
         Loads all the dataset from a folder
         Parameters
@@ -329,7 +331,11 @@ class Dataset:
 
                 self.__corpus = [d.split() for d in df[0].tolist()]
                 if len(df.keys()) > 2:
-                    self.__labels = df[2].tolist()
+                    if multilabel:
+                        self.__labels = [doc.split() for doc in df[2].tolist()]
+                    else:
+                        self.__labels = df[2].tolist()
+
             else:
                 self.__corpus = [d.split() for d in df[0].tolist()]
                 self.__metadata['last-training-doc'] = len(df[0])
