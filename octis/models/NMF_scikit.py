@@ -58,7 +58,7 @@ class NMF_scikit(Abstract_Model):
         self.use_partitions = use_partitions
         self.update_with_test = False
 
-        vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b\w+\b",
+        vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b[\w+|\-]+\b",
                                      vocabulary=list(dataset.get_vocabulary()))
 
         if self.use_partitions:
@@ -135,6 +135,7 @@ class NMF_scikit(Abstract_Model):
             hyperparams.pop("num_topics")
 
         self.hyperparameters.update(hyperparams)
+        print(self.hyperparameters)
         model = NMF(**self.hyperparameters)
 
         W = model.fit_transform(self.train_corpus)

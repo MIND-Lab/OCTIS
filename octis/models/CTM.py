@@ -15,7 +15,8 @@ class CTM(Abstract_Model):
                  dropout=0.2, learn_priors=True, batch_size=64, log_lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
-                 inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens"):
+                 inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens",
+                 num_samples = 30):
         """
         :param num_topics : int, number of topic components, (default 10)
         :param model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
@@ -51,6 +52,8 @@ class CTM(Abstract_Model):
         self.hyperparameters["bert_path"] = bert_path
         self.hyperparameters["num_layers"] = num_layers
         self.hyperparameters["bert_model"] = bert_model
+        self.hyperparameters["num_samples"] = num_samples
+
         self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
@@ -115,8 +118,8 @@ class CTM(Abstract_Model):
                              num_epochs=self.hyperparameters['num_epochs'],
                              reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
                              topic_prior_mean=self.hyperparameters["prior_mean"],
-                             topic_prior_variance=self.hyperparameters["prior_variance"]
-                             )
+                             topic_prior_variance=self.hyperparameters["prior_variance"],
+                             num_samples=self.hyperparameters["num_samples"])
 
         self.model.fit(self.X_train, self.X_valid)
 

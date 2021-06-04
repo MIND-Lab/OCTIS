@@ -19,7 +19,7 @@ class CTM(object):
     def __init__(self, input_size, bert_input_size, inference_type="zeroshot", num_topics=10, model_type='prodLDA',
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2, learn_priors=True, batch_size=64,
                  lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, reduce_on_plateau=False, topic_prior_mean=0.0,
-                 topic_prior_variance=None, num_data_loader_workers=0):
+                 topic_prior_variance=None, num_data_loader_workers=0, num_samples=30):
         """
         :param input_size: int, dimension of input
         :param bert_input_size: int, dimension of input that comes from BERT embeddings
@@ -51,6 +51,7 @@ class CTM(object):
         self.bert_size = bert_input_size
         self.momentum = momentum
         self.solver = solver
+        self.num_samples = num_samples
         self.num_epochs = num_epochs
         self.reduce_on_plateau = reduce_on_plateau
         self.num_data_loader_workers = num_data_loader_workers
@@ -378,22 +379,31 @@ class CTM(object):
         self.model.load_state_dict(checkpoint['state_dict'])
 
     def get_thetas(self, dataset):
-        """Predict input."""
+        """
+        Get the document-topic distribution for a dataset of topics. Includes multiple sampling to reduce variation via
+        the parameter num_samples.
+        :param dataset: a PyTorch Dataset containing the documents
+        """
         self.model.eval()
-        loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False,
-                            num_workers=self.num_data_loader_workers)
-        with torch.no_grad():
-            collect_theta = []
-            for batch_samples in loader:
-                # batch_size x vocab_size
-                X = batch_samples['X']
-                X = X.reshape(X.shape[0], -1)
-                X_bert = batch_samples['X_bert']
-                if self.USE_CUDA:
-                    X = X.cuda()
-                    X_bert = X_bert.cuda()
 
-                # forward pass
-                self.model.zero_grad()
-                collect_theta.extend(self.model.get_theta(X, X_bert).cpu().numpy().tolist())
-            return collect_theta
+        loader = DataLoader(
+            dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_data_loader_workers)
+        final_thetas = []
+        for sample_index in range(self.num_samples):
+            with torch.no_grad():
+                collect_theta = []
+                for batch_samples in loader:
+                    # batch_size x vocab_size
+                    x = batch_samples['X']
+                    x = x.reshape(x.shape[0], -1)
+                    x_bert = batch_samples['X_bert']
+                    if self.USE_CUDA:
+                        x = x.cuda()
+                        x_bert = x_bert.cuda()
+                    # forward pass
+                    self.model.zero_grad()
+                    collect_theta.extend(self.model.get_theta(x, x_bert).cpu().numpy().tolist())
+
+                final_thetas.append(np.array(collect_theta))
+        return np.sum(final_thetas, axis=0) / self.num_samples
+
