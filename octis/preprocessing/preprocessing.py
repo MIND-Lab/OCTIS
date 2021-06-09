@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from tqdm.contrib.concurrent import process_map  # or thread_map
 from pathlib import Path
 from octis.dataset.dataset import Dataset
+from collections import Counter
 
 """
 Maps the language to its corresponding spacy model
@@ -160,6 +161,17 @@ class Preprocessing:
                     final_docs.append(new_doc)
                     final_labels.append(label)
                     document_indexes.append(i)
+
+            labels_to_remove = set([k for k, v in dict(Counter(final_labels)).items() if v <= 3])
+            if len(labels_to_remove) > 0:
+                docs = final_docs
+                labels = final_labels
+                document_indexes, final_labels, final_docs = [], [], []
+                for i, doc, label in zip(range(len(docs)), docs, labels):
+                    if label not in labels_to_remove:
+                        final_docs.append(doc)
+                        final_labels.append(label)
+                        document_indexes.append(i)
         else:
             for i, doc in enumerate(docs):
                 vocab = set(vocabulary)
@@ -229,7 +241,7 @@ class Preprocessing:
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(df_max_freq=self.max_df, df_min_freq=self.min_df, lowercase=self.lowercase,
                                          max_features=self.max_features, stop_words=self.stopwords,
-                                         token_pattern=r"(?u)\b[\w{" + str(self.min_chars) + r",}|\-]+\b")
+                                         token_pattern=r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b")
 
         else:
 
@@ -239,7 +251,7 @@ class Preprocessing:
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(max_df=self.max_df, min_df=self.min_df, lowercase=self.lowercase,
-                                         token_pattern=r"(?u)\b[\w{" + str(self.min_chars) + r",}|\-]+\b",
+                                         token_pattern=r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b",
                                          stop_words=self.stopwords)
 
         vectorizer.fit_transform(docs)
