@@ -218,11 +218,11 @@ class Preprocessing:
                                    document_indexes=document_indexes)
         else:
             if self.save_original_indexes:
-                Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels,
-                        document_indexes=document_indexes)
+                return Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels,
+                               document_indexes=document_indexes)
             else:
 
-                Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
+                return Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
 
     def filter_words(self, docs):
         if self.vocabulary is not None:

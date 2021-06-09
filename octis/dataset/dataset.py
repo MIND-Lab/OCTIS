@@ -40,42 +40,44 @@ class Dataset:
 
     # Partitioned Corpus getter
     def get_partitioned_corpus(self, use_validation=True):
-        last_training_doc = self.__metadata["last-training-doc"]
-        # gestire l'eccezione se last_validation_doc non è definito, restituire
-        # il validation vuoto
-        if use_validation:
-            last_validation_doc = self.__metadata["last-validation-doc"]
-            if self.__corpus is not None and last_training_doc != 0:
-                train_corpus = []
-                test_corpus = []
-                validation_corpus = []
+        if "last-training-doc" in self.__metadata:
+            last_training_doc = self.__metadata["last-training-doc"]
+            if use_validation:
+                last_validation_doc = self.__metadata["last-validation-doc"]
+                if self.__corpus is not None and last_training_doc != 0:
+                    train_corpus = []
+                    test_corpus = []
+                    validation_corpus = []
 
-                for i in range(last_training_doc):
-                    train_corpus.append(self.__corpus[i])
-                for i in range(last_training_doc, last_validation_doc):
-                    validation_corpus.append(self.__corpus[i])
-                for i in range(last_validation_doc, len(self.__corpus)):
-                    test_corpus.append(self.__corpus[i])
-                return train_corpus, validation_corpus, test_corpus
-        else:
-            if self.__corpus is not None and last_training_doc != 0:
-                if "last-validation-doc" in self.__metadata.keys():
-                    last_validation_doc = self.__metadata["last-validation-doc"]
-                else:
-                    last_validation_doc = 0
-
-                train_corpus = []
-                test_corpus = []
-                for i in range(last_training_doc):
-                    train_corpus.append(self.__corpus[i])
-
-                if last_validation_doc != 0:
+                    for i in range(last_training_doc):
+                        train_corpus.append(self.__corpus[i])
+                    for i in range(last_training_doc, last_validation_doc):
+                        validation_corpus.append(self.__corpus[i])
                     for i in range(last_validation_doc, len(self.__corpus)):
                         test_corpus.append(self.__corpus[i])
-                else:
-                    for i in range(last_training_doc, len(self.__corpus)):
-                        test_corpus.append(self.__corpus[i])
-                return train_corpus, test_corpus
+                    return train_corpus, validation_corpus, test_corpus
+            else:
+                if self.__corpus is not None and last_training_doc != 0:
+                    if "last-validation-doc" in self.__metadata.keys():
+                        last_validation_doc = self.__metadata["last-validation-doc"]
+                    else:
+                        last_validation_doc = 0
+
+                    train_corpus = []
+                    test_corpus = []
+                    for i in range(last_training_doc):
+                        train_corpus.append(self.__corpus[i])
+
+                    if last_validation_doc != 0:
+                        for i in range(last_validation_doc, len(self.__corpus)):
+                            test_corpus.append(self.__corpus[i])
+                    else:
+                        for i in range(last_training_doc, len(self.__corpus)):
+                            test_corpus.append(self.__corpus[i])
+                    return train_corpus, test_corpus
+        else:
+            return self.__corpus
+
 
     # Edges getter
     def get_edges(self):

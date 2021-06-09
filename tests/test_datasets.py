@@ -37,10 +37,11 @@ def test_preprocessing_custom_stops(data_dir):
     dataset.save(data_dir+"/sample_texts/")
     dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
 
-def test_preprocessing_english_stops(data_dir):
+
+def test_preprocessing_english_stops_split(data_dir):
     texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
     p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True,
-                      lemmatize=False,  stopword_list='english',
+                      lemmatize=False,  stopword_list='english', split=False,
                       min_chars=2, min_words_docs=1)
     dataset = p.preprocess_dataset(
         documents_path=texts_path,
