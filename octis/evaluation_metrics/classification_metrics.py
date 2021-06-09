@@ -1,11 +1,12 @@
-from octis.evaluation_metrics.metrics import AbstractMetric
-import octis.configuration.citations as citations
-from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
 import numpy as np
 from sklearn import svm
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from libsvm.svmutil import *
+from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 
+import octis.configuration.citations as citations
+from octis.evaluation_metrics.metrics import AbstractMetric
+from sklearn.preprocessing import MultiLabelBinarizer
 
 stored_average = None
 stored_use_log = None
@@ -42,7 +43,7 @@ class ClassificationScore(AbstractMetric):
             self._test_document_representations = np.log(
                 self._test_document_representations)
         if self.scale:
-            #scaler = MinMaxScaler()
+            # scaler = MinMaxScaler()
             scaler2 = StandardScaler()
             x_train = scaler2.fit_transform(
                 self._train_document_representations)
@@ -50,29 +51,31 @@ class ClassificationScore(AbstractMetric):
         else:
             x_train = self._train_document_representations
             x_test = self._test_document_representations
+
         train_labels = [label for label in self._labels[:len(x_train)]]
         test_labels = [label for label in self._labels[-len(x_test):]]
 
-        id2label, label2id = {}, {}
-        for i, lab in enumerate(list(train_labels)):
-            id2label[i] = lab
-            label2id[lab] = i
+        if type(self._labels[0]) == list:
+            mlb = MultiLabelBinarizer()
 
-        train_labels = [label2id[l] for l in train_labels]
-        test_labels = [label2id[l] for l in test_labels]
+            train_labels = mlb.fit_transform(train_labels)
+            test_labels = mlb.transform(test_labels)
+            clf = RandomForestClassifier()
 
-        '''
-        m = svm_train(train_labels, X_train, '-t 0')# -S 0 -K 2 -Z ')
-        p_label, _, _ = svm_predict(test_labels, X_test, m)
-        #print(len(X_test))
-        #print(X_test.shape)
-        return f1_score(test_labels, p_label, average=self.average)
-        '''
-
-        if self.kernel == 'linear':
-            clf = svm.LinearSVC(verbose=False)
         else:
-            clf = svm.SVC(kernel=self.kernel, verbose=False)
+            label2id = {}
+            for i, lab in enumerate(list(train_labels)):
+                label2id[lab] = i
+
+            train_labels = [label2id[l] for l in train_labels]
+            test_labels = [label2id[l] for l in test_labels]
+
+            if self.kernel == 'linear':
+                clf = svm.LinearSVC(verbose=False)
+            else:
+                clf = svm.SVC(kernel=self.kernel, verbose=False)
+
+        ###########
         clf.fit(x_train, train_labels)
 
         predicted_test_labels = clf.predict(x_test)
@@ -95,10 +98,10 @@ def compute_SVM_output(model_output, metric, super_metric):
     flag = True
 
     if stored_average == metric.average and \
-       stored_use_log == metric.use_log and \
-       stored_scale == metric.scale and \
-       stored_kernel == metric.kernel and \
-       stored_model_output_hash == model_output_hash:
+        stored_use_log == metric.use_log and \
+        stored_scale == metric.scale and \
+        stored_kernel == metric.kernel and \
+        stored_model_output_hash == model_output_hash:
         test_labels, predicted_test_labels = stored_svm_results
     else:
         test_labels, predicted_test_labels = super_metric.score(model_output)
@@ -192,6 +195,7 @@ class RecallScore(ClassificationScore):
         """
         test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
         return recall_score(test_labels, predicted_test_labels, average=self.average)
+
 
 class AccuracyScore(ClassificationScore):
 

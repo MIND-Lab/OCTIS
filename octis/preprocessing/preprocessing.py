@@ -120,7 +120,7 @@ class Preprocessing:
         self.min_doc_words = min_words_docs
         self.preprocessing_steps = []
 
-    def preprocess_dataset(self, documents_path, labels_path=None):
+    def preprocess_dataset(self, documents_path, labels_path=None, multilabel=False):
         """
         preprocess the input dataset
 
@@ -129,6 +129,8 @@ class Preprocessing:
         :param labels_path: path to the documents file. Each row of the file represents a label. Its index corresponds
         to the index of the documents file (default: None)
         :type labels_path: str
+        :param multilabel: if true, a document is supposed to have more than one label (labels are split by whitespace)
+        :type multilabel: bool
 
         :return octis.dataset.dataset.Dataset
         """
@@ -153,7 +155,11 @@ class Preprocessing:
         print(len(vocabulary))
         final_docs, final_labels, document_indexes = [], [], []
         if labels_path is not None:
-            labels = [line.strip() for line in open(labels_path, 'r').readlines()]
+            if multilabel:
+                labels = [line.strip().split() for line in open(labels_path, 'r').readlines()]
+            else:
+                labels = [line.strip() for line in open(labels_path, 'r').readlines()]
+
             for i, doc, label in zip(range(len(docs)), docs, labels):
                 vocab = set(vocabulary)
                 new_doc = [w for w in doc.split() if w in vocab]
@@ -184,24 +190,27 @@ class Preprocessing:
         if self.verbose:
             print("words filtering done")
         metadata = {"total_documents": len(docs), "vocabulary_length": len(vocabulary),
-                    "preprocessing-info": self.preprocessing_steps, "labels": list(set(final_labels)),
-                    "total_labels": len(set(final_labels))}
+                    "preprocessing-info": self.preprocessing_steps
+                    # ,"labels": list(set(final_labels)), "total_labels": len(set(final_labels))
+                    }
         if self.split:
             if len(final_labels) > 0:
                 train, test, y_train, y_test = train_test_split(
-                    range(len(final_docs)), final_labels, test_size=0.15, random_state=1, stratify=final_labels)
+                    range(len(final_docs)), final_labels, test_size=0.15, random_state=1, shuffle=True)#stratify=final_labels)
 
-                train, validation = train_test_split(train, test_size=3 / 17, random_state=1, stratify=y_train)
+                train, validation = train_test_split(train, test_size=3 / 17, random_state=1, shuffle=True)# stratify=y_train)
+
                 partitioned_labels = [final_labels[doc] for doc in train + validation + test]
                 partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
                 document_indexes = [document_indexes[doc] for doc in train + validation + test]
                 metadata["last-training-doc"] = len(train)
                 metadata["last-validation-doc"] = len(validation) + len(train)
                 if self.save_original_indexes:
-                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=partitioned_labels,
-                                   document_indexes=document_indexes)
+                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata,
+                                   labels=partitioned_labels, document_indexes=document_indexes)
                 else:
-                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=partitioned_labels)
+                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata,
+                                   labels=partitioned_labels)
             else:
                 train, test = train_test_split(range(len(final_docs)), test_size=0.15, random_state=1)
                 train, validation = train_test_split(train, test_size=3 / 17, random_state=1)
