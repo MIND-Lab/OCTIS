@@ -2,6 +2,11 @@
 History
 =======
 
+1.7.0 (2021-06-09)
+------------------
+* Handling multilabel classification
+* Fixed preprocessing when dataset is not split (#17)
+
 1.6.0 (2021-05-20)
 ------------------
 * Added regularization hyperparameter to NMF_scikit
