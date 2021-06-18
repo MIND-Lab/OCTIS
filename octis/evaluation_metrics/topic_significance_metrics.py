@@ -47,7 +47,7 @@ class KL_uniform(AbstractMetric):
             "name": "KL_Uniform, Uniform distribution over words"
         }
 
-    def score(self, model_output):
+    def score(self, model_output, per_topic=False):
         """
         Retrieves the score of the metric
 
@@ -56,9 +56,12 @@ class KL_uniform(AbstractMetric):
         model_output : dictionary, output of the model
                        'topic-word-matrix' required
 
+        per_topic: if True, it returns the score for each topic
+
         Returns
         -------
         result : score
+
         """
         phi = _replace_zeros_lines(model_output["topic-word-matrix"].astype(float))
 
@@ -77,8 +80,11 @@ class KL_uniform(AbstractMetric):
 
         # KL-uniform = mean of the divergences
         # between topic-word distributions and uniform distribution
-        result = np.array(divergences).mean()
-        return result
+        if per_topic:
+            return divergences
+        else:
+            result = np.array(divergences).mean()
+            return result
 
 
 class KL_vacuous(AbstractMetric):

@@ -2,6 +2,12 @@
 History
 =======
 
+
+1.8.0 (2021-06-18)
+------------------
+* Added per-topic kl-uniform significance
+
+
 1.7.1 (2021-06-09)
 ------------------
 * Handling multilabel classification
