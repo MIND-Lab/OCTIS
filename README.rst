@@ -122,7 +122,7 @@ Available Datasets
 ============================
 
 +--------------+--------------+--------+---------+----------+
-| Name         | Source       | # Docs | # Words | # Labels |
+|Name in OCTIS | Source       | # Docs | # Words | # Labels |
 +==============+==============+========+=========+==========+
 | 20NewsGroup  | 20Newsgroup_ |  16309 |    1612 |       20 |
 +--------------+--------------+--------+---------+----------+
@@ -138,6 +138,9 @@ Available Datasets
 .. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 .. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 
+
+Load a Custom Dataset
+============================
 Otherwise, you can load a custom preprocessed dataset in the following way:
 
 .. code-block:: python
