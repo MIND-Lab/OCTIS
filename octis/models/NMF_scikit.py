@@ -102,7 +102,7 @@ class NMF_scikit(AbstractModel):
             hyperparameters = {}
 
         if self.id2word is None or self.id_corpus is None:
-            vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b\w+\b",
+            vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b[\w|\-]+\b",
                                          vocabulary=dataset.get_vocabulary())
 
             if self.use_partitions:
