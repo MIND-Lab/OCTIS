@@ -133,18 +133,18 @@ class CTM(AbstractModel):
         self.model.fit(self.X_train, self.X_valid)
 
         if self.use_partitions:
-            result = self.inference()
+            result = self.inference(x_test=self.X_test)
         else:
             result = self.model.get_info()
         return result
 
     def set_params(self, hyperparameters):
-       for k in hyperparameters.keys():
+        for k in hyperparameters.keys():
             if k in self.hyperparameters.keys() and k != 'hidden_sizes':
                 self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
 
         self.hyperparameters['hidden_sizes'] = tuple(
-            [int(self.hyperparameters["num_neurons"]) for _ in range(self.hyperparameters["num_layers"])])
+            [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])
 
     def inference(self, x_test):
         assert isinstance(self.use_partitions, bool) and self.use_partitions
