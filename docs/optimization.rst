@@ -44,6 +44,7 @@ Create the search space for the optimization.
 
 .. code-block:: python
 
+    from skopt.space.space import Real
     search_space = {
         "alpha": Real(low=0.001, high=5.0),
         "eta": Real(low=0.001, high=5.0)

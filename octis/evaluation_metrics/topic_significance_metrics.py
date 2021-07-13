@@ -35,14 +35,11 @@ def _replace_zeros_lines(arr):
 
 
 class KL_uniform(AbstractMetric):
-    def __init__(self, metric_parameters=None):
+    def __init__(self):
         """
         Initialize metric
         """
         super().__init__()
-        if metric_parameters is None:
-            metric_parameters = {}
-        self.parameters=metric_parameters
 
     def info(self):
         return {
@@ -50,7 +47,7 @@ class KL_uniform(AbstractMetric):
             "name": "KL_Uniform, Uniform distribution over words"
         }
 
-    def score(self, model_output):
+    def score(self, model_output, per_topic=False):
         """
         Retrieves the score of the metric
 
@@ -59,41 +56,43 @@ class KL_uniform(AbstractMetric):
         model_output : dictionary, output of the model
                        'topic-word-matrix' required
 
+        per_topic: if True, it returns the score for each topic
+
         Returns
         -------
         result : score
+
         """
-        self.phi = _replace_zeros_lines(
-            model_output["topic-word-matrix"].astype(float))
+        phi = _replace_zeros_lines(model_output["topic-word-matrix"].astype(float))
 
         # make uniform distribution
-        val = 1.0 / len(self.phi[0])
-        unif_distr = np.full(len(self.phi[0]), val)
+        val = 1.0 / len(phi[0])
+        unif_distr = np.full(len(phi[0]), val)
 
         divergences = []
-        for topic in range(len(self.phi)):
+        for topic in range(len(phi)):
 
             # normalize phi, sum up to 1
-            P = self.phi[topic] / self.phi[topic].sum()
+            P = phi[topic] / phi[topic].sum()
 
             divergence = _KL(P, unif_distr)
             divergences.append(divergence)
 
         # KL-uniform = mean of the divergences
         # between topic-word distributions and uniform distribution
-        result = np.array(divergences).mean()
-        return result
+        if per_topic:
+            return divergences
+        else:
+            result = np.array(divergences).mean()
+            return result
 
 
 class KL_vacuous(AbstractMetric):
-    def __init__(self, metric_parameters=None):
+    def __init__(self):
         """
         Initialize metric
         """
         super().__init__()
-        if metric_parameters is None:
-            metric_parameters = {}
-        self.parameters=metric_parameters
 
     def info(self):
         return {
@@ -115,45 +114,39 @@ class KL_vacuous(AbstractMetric):
         -------
         result : score
         """
-        self.phi = _replace_zeros_lines(
-            model_output["topic-word-matrix"].astype(float))
-        self.theta = _replace_zeros_lines(
-            model_output["topic-document-matrix"].astype(float))
+        phi = _replace_zeros_lines(model_output["topic-word-matrix"].astype(float))
+        theta = _replace_zeros_lines(model_output["topic-document-matrix"].astype(float))
 
-        vacuous = np.zeros(self.phi.shape[1])
-        for topic in range(len(self.theta)):
+        vacuous = np.zeros(phi.shape[1])
+        for topic in range(len(theta)):
 
             # get probability of the topic in the corpus
-            p_topic = self.theta[topic].sum()/len(self.theta[0])
+            p_topic = theta[topic].sum()/len(theta[0])
 
             # get probability of the words:
             # P(Wi | vacuous_dist) = P(Wi | topic)*P(topic)
-            vacuous += self.phi[topic]*p_topic
+            vacuous += phi[topic]*p_topic
 
         divergences = []
-        for topic in range(len(self.phi)):
+        for topic in range(len(phi)):
 
             # normalize phi, sum up to 1
-            P = self.phi[topic] / self.phi[topic].sum()
+            P = phi[topic] / phi[topic].sum()
 
             divergence = _KL(P, vacuous)
             divergences.append(divergence)
 
-        # KL-vacuous = mean of the divergences
-        # between topic-word distributions and vacuous distribution
+        # KL-vacuous = mean of the divergences between topic-word distributions and vacuous distribution
         result = np.array(divergences).mean()
         return result
 
 
 class KL_background(AbstractMetric):
-    def __init__(self, metric_parameters=None):
+    def __init__(self):
         """
         Initialize metric
         """
         super().__init__()
-        if metric_parameters is None:
-            metric_parameters = {}
-        self.parameters=metric_parameters
 
     def info(self):
         return {
@@ -174,17 +167,16 @@ class KL_background(AbstractMetric):
         -------
         result : score
         """
-        self.theta = _replace_zeros_lines(
-            model_output["topic-document-matrix"].astype(float))
+        theta = _replace_zeros_lines(model_output["topic-document-matrix"].astype(float))
 
         # make uniform distribution
-        val = 1.0 / len(self.theta[0])
-        unif_distr = np.full(len(self.theta[0]), val)
+        val = 1.0 / len(theta[0])
+        unif_distr = np.full(len(theta[0]), val)
 
         divergences = []
-        for topic in range(len(self.theta)):
+        for topic in range(len(theta)):
             # normalize theta, sum up to 1
-            P = self.theta[topic] / self.theta[topic].sum()
+            P = theta[topic] / theta[topic].sum()
 
             divergence = _KL(P, unif_distr)
             divergences.append(divergence)

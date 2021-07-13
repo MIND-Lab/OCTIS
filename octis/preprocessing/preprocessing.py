@@ -5,8 +5,9 @@ import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from tqdm.contrib.concurrent import process_map  # or thread_map
-
+from pathlib import Path
 from octis.dataset.dataset import Dataset
+from collections import Counter
 
 """
 Maps the language to its corresponding spacy model
@@ -25,7 +26,7 @@ class Preprocessing:
                  punctuation: str = string.punctuation, remove_numbers: bool = True, lemmatize: bool = True,
                  stopword_list: Union[str, List[str]] = None, min_chars: int = 1, min_words_docs: int = 0,
                  language: str = 'english', split: bool = True, verbose: bool = False, num_processes: int = None,
-                 save_original_indexes=True):
+                 save_original_indexes=True, remove_stopwords_spacy: bool = True):
         """
         init Preprocessing
 
@@ -47,6 +48,7 @@ class Preprocessing:
         :type punctuation: str
         :param remove_numbers: if true, numbers will be removed
         :type remove_numbers: bool
+        :param remove_stopwords_spacy: bool , if true use spacy to remove stopwords (default: true)
         :param lemmatize: if true, words will be lemmatized using a spacy model according to the language that has been
         set (default: true)
         :type lemmatize: bool
@@ -91,29 +93,34 @@ class Preprocessing:
                                                            "following command:\npython -m spacy download " + lang)
         self.split = split
         self.verbose = verbose
+
+        self.remove_stopwords_spacy = remove_stopwords_spacy
+
+        stopwords = []
+        # if stopwords is None then stopwords are not removed
         if stopword_list is None:
-            stopwords = []
             self.remove_stopwords_spacy = False
         else:
+            # if custom list is specified, then we do not use spacy stopwords
             if type(stopword_list) == list:
                 stopwords = set(stopword_list)
                 self.remove_stopwords_spacy = False
+            elif self.remove_stopwords_spacy:
+                assert stopword_list == language
             else:
+                # if remove_stopwords_spacy is false, then use MALLET English stopwords
                 if 'english' in stopword_list:
-                    with open('octis/preprocessing/stopwords/english.txt') as fr:
+                    stop_word_path = Path(__file__).parent.joinpath('stopwords', 'english.txt')
+                    with open(stop_word_path) as fr:
                         stopwords = [line.strip() for line in fr.readlines()]
                         assert stopword_list == language
-                else:
-                    self.remove_stopwords_spacy = True
-                    assert stopword_list == language
-                    stopwords = []
 
         self.stopwords = stopwords
         self.min_chars = min_chars
         self.min_doc_words = min_words_docs
         self.preprocessing_steps = []
 
-    def preprocess_dataset(self, documents_path, labels_path=None):
+    def preprocess_dataset(self, documents_path, labels_path=None, multilabel=False):
         """
         preprocess the input dataset
 
@@ -122,6 +129,8 @@ class Preprocessing:
         :param labels_path: path to the documents file. Each row of the file represents a label. Its index corresponds
         to the index of the documents file (default: None)
         :type labels_path: str
+        :param multilabel: if true, a document is supposed to have more than one label (labels are split by whitespace)
+        :type multilabel: bool
 
         :return octis.dataset.dataset.Dataset
         """
@@ -146,7 +155,11 @@ class Preprocessing:
         print(len(vocabulary))
         final_docs, final_labels, document_indexes = [], [], []
         if labels_path is not None:
-            labels = [line.strip() for line in open(labels_path, 'r').readlines()]
+            if multilabel:
+                labels = [line.strip().split() for line in open(labels_path, 'r').readlines()]
+            else:
+                labels = [line.strip() for line in open(labels_path, 'r').readlines()]
+
             for i, doc, label in zip(range(len(docs)), docs, labels):
                 vocab = set(vocabulary)
                 new_doc = [w for w in doc.split() if w in vocab]
@@ -154,6 +167,17 @@ class Preprocessing:
                     final_docs.append(new_doc)
                     final_labels.append(label)
                     document_indexes.append(i)
+
+            labels_to_remove = set([k for k, v in dict(Counter(final_labels)).items() if v <= 3])
+            if len(labels_to_remove) > 0:
+                docs = final_docs
+                labels = final_labels
+                document_indexes, final_labels, final_docs = [], [], []
+                for i, doc, label in zip(range(len(docs)), docs, labels):
+                    if label not in labels_to_remove:
+                        final_docs.append(doc)
+                        final_labels.append(label)
+                        document_indexes.append(i)
         else:
             for i, doc in enumerate(docs):
                 vocab = set(vocabulary)
@@ -166,24 +190,27 @@ class Preprocessing:
         if self.verbose:
             print("words filtering done")
         metadata = {"total_documents": len(docs), "vocabulary_length": len(vocabulary),
-                    "preprocessing-info": self.preprocessing_steps, "labels": list(set(final_labels)),
-                    "total_labels": len(set(final_labels))}
+                    "preprocessing-info": self.preprocessing_steps
+                    # ,"labels": list(set(final_labels)), "total_labels": len(set(final_labels))
+                    }
         if self.split:
             if len(final_labels) > 0:
                 train, test, y_train, y_test = train_test_split(
-                    range(len(final_docs)), final_labels, test_size=0.15, random_state=1, stratify=final_labels)
+                    range(len(final_docs)), final_labels, test_size=0.15, random_state=1, shuffle=True)#stratify=final_labels)
 
-                train, validation = train_test_split(train, test_size=3 / 17, random_state=1, stratify=y_train)
+                train, validation = train_test_split(train, test_size=3 / 17, random_state=1, shuffle=True)# stratify=y_train)
+
                 partitioned_labels = [final_labels[doc] for doc in train + validation + test]
                 partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
                 document_indexes = [document_indexes[doc] for doc in train + validation + test]
                 metadata["last-training-doc"] = len(train)
                 metadata["last-validation-doc"] = len(validation) + len(train)
                 if self.save_original_indexes:
-                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=partitioned_labels,
-                                   document_indexes=document_indexes)
+                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata,
+                                   labels=partitioned_labels, document_indexes=document_indexes)
                 else:
-                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=partitioned_labels)
+                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata,
+                                   labels=partitioned_labels)
             else:
                 train, test = train_test_split(range(len(final_docs)), test_size=0.15, random_state=1)
                 train, validation = train_test_split(train, test_size=3 / 17, random_state=1)
@@ -200,11 +227,11 @@ class Preprocessing:
                                    document_indexes=document_indexes)
         else:
             if self.save_original_indexes:
-                Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels,
-                        document_indexes=document_indexes)
+                return Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels,
+                               document_indexes=document_indexes)
             else:
 
-                Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
+                return Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
 
     def filter_words(self, docs):
         if self.vocabulary is not None:
@@ -223,14 +250,17 @@ class Preprocessing:
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(df_max_freq=self.max_df, df_min_freq=self.min_df, lowercase=self.lowercase,
                                          max_features=self.max_features, stop_words=self.stopwords,
-                                         token_pattern=r"(?u)\b\w{" + str(self.min_chars) + ",}\b")
+                                         token_pattern=r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b")
 
         else:
+
+            #string.punctuation
+
             self.preprocessing_steps.append('filter words with document frequency lower than ' + str(self.min_df) +
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(max_df=self.max_df, min_df=self.min_df, lowercase=self.lowercase,
-                                         token_pattern=r"(?u)\b\w{" + str(self.min_chars) + r",}\b",
+                                         token_pattern=r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b",
                                          stop_words=self.stopwords)
 
         vectorizer.fit_transform(docs)

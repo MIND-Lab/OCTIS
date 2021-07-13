@@ -1,43 +1,129 @@
-from octis.evaluation_metrics.metrics import AbstractMetric
-import octis.configuration.citations as citations
-import octis.configuration.defaults as defaults
-from sklearn.metrics import f1_score
 import numpy as np
 from sklearn import svm
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from libsvm.svmutil import *
+from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.ensemble import RandomForestClassifier
+
+import octis.configuration.citations as citations
+from octis.evaluation_metrics.metrics import AbstractMetric
+from sklearn.preprocessing import MultiLabelBinarizer
+
+stored_average = None
+stored_use_log = None
+stored_scale = None
+stored_kernel = None
+stored_model_output_hash = None
+stored_svm_results = [None, None]
 
 
-class F1Score(AbstractMetric):
+class ClassificationScore(AbstractMetric):
+    def __init__(self, dataset, average='micro', use_log=False, scale='minmax', kernel='linear', same_svm=False):
+        AbstractMetric.__init__(self)
 
-    def __init__(self, metric_parameters=None):
-        AbstractMetric.__init__(self, metric_parameters)
-        if metric_parameters is None:
-            metric_parameters = {}
-        self.train_document_representations = None
-        self.test_document_representations = None
-        parameters = defaults.em_f1_score.copy()
-        parameters.update(metric_parameters)
-        self.parameters = parameters
-        if 'dataset' not in metric_parameters.keys():
-            raise Exception('A dataset is required to extract the labels')
+        self._train_document_representations = None
+        self._test_document_representations = None
+
+        self._labels = dataset.get_labels()
+        self.average = average
+
+        self.same_svm = same_svm
+
+        self.use_log = use_log
+        self.scale = scale
+
+        self.kernel = kernel
+
+    def score(self, model_output):
+        self._train_document_representations = model_output["topic-document-matrix"].T
+        self._test_document_representations = model_output["test-topic-document-matrix"].T
+
+        if self.use_log:
+            self._train_document_representations = np.log(
+                self._train_document_representations)
+            self._test_document_representations = np.log(
+                self._test_document_representations)
+        if self.scale == 'minmax':
+            scaler = MinMaxScaler()
+            x_train = scaler.fit_transform(
+                self._train_document_representations)
+            x_test = scaler.transform(self._test_document_representations)
+        elif self.scale == 'std':
+            scaler = StandardScaler()
+            x_train = scaler.fit_transform(self._train_document_representations)
+            x_test = scaler.transform(self._test_document_representations)
         else:
-            self.labels = metric_parameters['dataset'].get_labels()
-        self.average = parameters['average']
+            x_train = self._train_document_representations
+            x_test = self._test_document_representations
 
-        if 'use_log' in metric_parameters:
-            self.use_log = metric_parameters['use_log']
-        else:
-            self.use_log = False
-        if 'scale' in metric_parameters:
-            self.scale = metric_parameters['scale']
-        else:
-            self.scale = 'minmax'
+        train_labels = [label for label in self._labels[:len(x_train)]]
+        test_labels = [label for label in self._labels[-len(x_test):]]
 
-        if 'kernel' in metric_parameters:
-            self.kernel = metric_parameters['kernel']
+        if type(self._labels[0]) == list:
+            mlb = MultiLabelBinarizer()
+
+            train_labels = mlb.fit_transform(train_labels)
+            test_labels = mlb.transform(test_labels)
+            clf = RandomForestClassifier()
+
         else:
-            self.kernel = 'linear'
+            label2id = {}
+            for i, lab in enumerate(list(train_labels)):
+                label2id[lab] = i
+
+            train_labels = [label2id[l] for l in train_labels]
+            test_labels = [label2id[l] for l in test_labels]
+
+            if self.kernel == 'linear':
+                clf = svm.LinearSVC(verbose=False)
+            else:
+                clf = svm.SVC(kernel=self.kernel, verbose=False)
+
+        ###########
+        clf.fit(x_train, train_labels)
+
+        predicted_test_labels = clf.predict(x_test)
+
+        return test_labels, predicted_test_labels
+
+
+def compute_SVM_output(model_output, metric, super_metric):
+    global stored_average
+    global stored_use_log
+    global stored_scale
+    global stored_kernel
+    global stored_svm_results
+    global stored_model_output_hash
+
+    model_output_hash = hash(str(model_output))
+
+    test_labels = None
+    predicted_test_labels = None
+    flag = True
+
+    if stored_average == metric.average and \
+        stored_use_log == metric.use_log and \
+        stored_scale == metric.scale and \
+        stored_kernel == metric.kernel and \
+        stored_model_output_hash == model_output_hash:
+        test_labels, predicted_test_labels = stored_svm_results
+    else:
+        test_labels, predicted_test_labels = super_metric.score(model_output)
+
+        stored_average = metric.average
+        stored_use_log = metric.use_log
+        stored_scale = metric.scale
+        stored_kernel = metric.kernel
+        stored_svm_results = [test_labels, predicted_test_labels]
+        stored_model_output_hash = model_output_hash
+        flag = False
+
+    return [test_labels, predicted_test_labels, flag]
+
+
+class F1Score(ClassificationScore):
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
+        super().__init__(dataset=dataset, average=average,
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {
@@ -51,61 +137,90 @@ class F1Score(AbstractMetric):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model
-                       key 'topic-document-matrix' and
-                       'test-topic-document-matrix' required.
+        model_output : dictionary, output of the model. keys 'topic-document-matrix' and
+                       'test-topic-document-matrix' are required.
 
         Returns
         -------
         score : score
         """
-
-        self.train_document_representations = model_output["topic-document-matrix"].T
-        self.test_document_representations = model_output["test-topic-document-matrix"].T
-
-        if self.use_log:
-            self.train_document_representations = np.log(self.train_document_representations)
-            self.test_document_representations = np.log(self.test_document_representations)
-        if self.scale == 'minmax':
-            scaler = MinMaxScaler()
-            X_train = scaler.fit_transform(self.train_document_representations)
-            X_test = scaler.transform(self.test_document_representations)
-        elif self.scale == 'std':
-            scaler = StandardScaler()
-            X_train = scaler.fit_transform(self.train_document_representations)
-            X_test = scaler.transform(self.test_document_representations)
-        else:
-            X_train = self.train_document_representations
-            X_test = self.test_document_representations
-        train_labels = [l for l in self.labels[:len(X_train)]]
-        test_labels = [l for l in self.labels[-len(X_test):]]
-
-        id2label = {}
-        label2id = {}
-        count = 0
-        for i in set(train_labels):
-            id2label[count] = i
-            label2id[i] = count
-            count = count + 1
-
-        train_labels = [label2id[l] for l in train_labels]
-        test_labels = [label2id[l] for l in test_labels]
-
-        if self.kernel == 'linear':
-            clf = svm.LinearSVC(verbose=True)
-        else:
-            clf = svm.SVC(kernel=self.kernel, max_iter=5000)
-        clf.fit(X_train, train_labels)
-
-        predicted_test_labels = clf.predict(X_test)
-
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
         return f1_score(test_labels, predicted_test_labels, average=self.average)
 
-        '''
-        m = svm_train(train_labels, X_train, '-t 0')# -S 0 -K 2 -Z ')
-        p_label, _, _ = svm_predict(test_labels, X_test, m)
-        #print(len(X_test))
-        #print(X_test.shape)
-        return f1_score(test_labels, p_label, average=self.average)
-        '''
 
+class PrecisionScore(ClassificationScore):
+
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
+        super().__init__(dataset=dataset, average=average,
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
+
+    def info(self):
+        return {"citation": citations.em_f1_score, "name": "Precision"}
+
+    def score(self, model_output):
+        """
+        Retrieves the score of the metric
+
+        Parameters
+        ----------
+        model_output : dictionary, output of the model. 'topic-document-matrix' and
+                       'test-topic-document-matrix' keys are required.
+
+        Returns
+        -------
+        score : score
+        """
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
+        return precision_score(test_labels, predicted_test_labels, average=self.average)
+
+
+class RecallScore(ClassificationScore):
+
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
+        super().__init__(dataset=dataset, average=average,
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
+
+    def info(self):
+        return {"citation": citations.em_f1_score, "name": "Precision"}
+
+    def score(self, model_output):
+        """
+        Retrieves the score of the metric
+
+        Parameters
+        ----------
+        model_output : dictionary, output of the model. 'topic-document-matrix' and
+                       'test-topic-document-matrix' keys are required.
+
+        Returns
+        -------
+        score : score
+        """
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
+        return recall_score(test_labels, predicted_test_labels, average=self.average)
+
+
+class AccuracyScore(ClassificationScore):
+
+    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
+        super().__init__(dataset=dataset, average=average,
+                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
+
+    def info(self):
+        return {"citation": citations.em_f1_score, "name": "Precision"}
+
+    def score(self, model_output):
+        """
+        Retrieves the score of the metric
+
+        Parameters
+        ----------
+        model_output : dictionary, output of the model. 'topic-document-matrix' and
+                       'test-topic-document-matrix' keys are required.
+
+        Returns
+        -------
+        score : score
+        """
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
+        return accuracy_score(test_labels, predicted_test_labels)

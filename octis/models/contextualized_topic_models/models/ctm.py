@@ -27,13 +27,15 @@ class CTM(object):
         :param num_topics: int, number of topic components, (default 10)
         :param model_type: string, 'prodLDA' or 'LDA' (default 'prodLDA')
         :param hidden_sizes: tuple, length = n_layers, (default (100, 100))
-        :param activation: string, 'softplus', 'relu', (default 'softplus')
+        :param activation: string, 'softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu', 'rrelu', 'elu',
+         'selu' (default 'softplus')
         :param dropout: float, dropout to use (default 0.2)
         :param learn_priors: bool, make priors a learnable parameter (default True)
         :param batch_size: int, size of batch to use for training (default 64)
         :param lr: float, learning rate to use for training (default 2e-3)
         :param momentum: float, momentum to use for training (default 0.99)
         :param solver: string, optimizer 'adam' or 'sgd' (default 'adam')
+        :param num_samples: int, number of times theta needs to be sampled
         :param num_epochs: int, number of epochs to train for, (default 100)
         :param reduce_on_plateau: bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
         :param num_data_loader_workers: int, number of data loader workers (default cpu_count). set it to 0 if you are using Windows
@@ -61,7 +63,7 @@ class CTM(object):
         self.model = DecoderNetwork(
             input_size, self.bert_size, inference_type, num_topics, model_type, hidden_sizes, activation,
             dropout, self.learn_priors, self.topic_prior_mean, self.topic_prior_variance)
-        self.early_stopping = EarlyStopping(patience=5, verbose=True)
+        self.early_stopping = EarlyStopping(patience=5, verbose=False)
         # init optimizer
         if self.solver == 'adam':
             self.optimizer = optim.Adam(self.model.parameters(), lr=lr, betas=(self.momentum, 0.99))
@@ -184,7 +186,7 @@ class CTM(object):
 
         return samples_processed, val_loss
 
-    def fit(self, train_dataset, validation_dataset, save_dir=None, verbose=True):
+    def fit(self, train_dataset, validation_dataset=None, save_dir=None, verbose=True):
         """
         Train the CTM model.
 
@@ -242,29 +244,30 @@ class CTM(object):
             self.final_topic_word = topic_word
             self.final_topic_document = topic_document
             self.best_loss_train = train_loss
+            if self.validation_data is not None:
+                validation_loader = DataLoader(
+                    self.validation_data, batch_size=self.batch_size, shuffle=True,
+                    num_workers=self.num_data_loader_workers)
+                # train epoch
+                s = datetime.datetime.now()
+                val_samples_processed, val_loss = self._validation(validation_loader)
+                e = datetime.datetime.now()
 
-            validation_loader = DataLoader(
-                self.validation_data, batch_size=self.batch_size, shuffle=True,
-                num_workers=self.num_data_loader_workers)
-            # train epoch
-            s = datetime.datetime.now()
-            val_samples_processed, val_loss = self._validation(validation_loader)
-            e = datetime.datetime.now()
+                if verbose:
+                    print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
+                        epoch + 1, self.num_epochs, val_samples_processed,
+                        len(self.validation_data) * self.num_epochs, val_loss, e - s))
 
-            # report
-            print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
-                epoch + 1, self.num_epochs, val_samples_processed,
-                len(self.validation_data) * self.num_epochs, val_loss, e - s))
-
-            if np.isnan(val_loss) or np.isnan(train_loss):
-                break
-            else:
-                self.early_stopping(val_loss, self.model)
-                if self.early_stopping.early_stop:
-                    print("Early stopping")
-                    if save_dir is not None:
-                        self.save(save_dir)
+                if np.isnan(val_loss) or np.isnan(train_loss):
                     break
+                else:
+                    self.early_stopping(val_loss, self.model)
+                    if self.early_stopping.early_stop:
+                        if verbose:
+                            print("Early stopping")
+                        if save_dir is not None:
+                            self.save(save_dir)
+                        break
 
     def predict(self, dataset):
         """Predict input."""

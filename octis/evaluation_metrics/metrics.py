@@ -6,15 +6,11 @@ class AbstractMetric(ABC):
     Class structure of a generic metric implementation
     """
 
-    def __init__(self, metric_parameters=None):
+    def __init__(self):
         """
         init metric
-
-        :param metric_parameters: parameters of a generic metric
-        :type dict {parameter name: value}
         """
-        if metric_parameters is None:
-            self.metric_parameters = {}
+        pass
 
     @abstractmethod
     def score(self, model_output):
@@ -26,3 +22,7 @@ class AbstractMetric(ABC):
         :type model_output: dict
         """
         pass
+
+    def get_params(self):
+        return [att for att in dir(self) if not att.startswith("_") and att != 'info' and att != 'score' and
+                att != 'get_params']

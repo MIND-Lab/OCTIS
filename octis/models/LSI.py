@@ -1,11 +1,11 @@
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 from gensim.models import lsimodel
 import numpy as np
 import gensim.corpora as corpora
 import octis.configuration.defaults as defaults
 
 
-class LSI(Abstract_Model):
+class LSI(AbstractModel):
 
     id2word = None
     id_corpus = None

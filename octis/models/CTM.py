@@ -1,15 +1,14 @@
 from sklearn.feature_extraction.text import CountVectorizer
 
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 from octis.models.contextualized_topic_models.datasets import dataset
 from octis.models.contextualized_topic_models.models import ctm
 from octis.models.contextualized_topic_models.utils.data_preparation import bert_embeddings_from_list
-import numpy
 import os
 import pickle as pkl
 
 
-class CTM(Abstract_Model):
+class CTM(AbstractModel):
 
     def __init__(self, dataset, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, log_lr=2e-3, momentum=0.99,
@@ -18,10 +17,13 @@ class CTM(Abstract_Model):
                  inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens",
                  num_samples = 30):
         """
+        initialization of CTM
+
         :param num_topics : int, number of topic components, (default 10)
         :param model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
+        :param activation : string, 'softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu', 'rrelu', 'elu',
+        'selu' (default 'softplus')
         :param num_layers : int, number of layers (default 2)
-        :param activation : string, 'softplus', 'relu', ' (default 'softplus')
         :param dropout : float, dropout to use (default 0.2)
         :param learn_priors : bool, make priors a learnable parameter (default True)
         :param batch_size : int, size of batch to use for training (default 64)
@@ -29,11 +31,18 @@ class CTM(Abstract_Model):
         :param momentum : float, momentum to use for training (default 0.99)
         :param solver : string, optimizer 'adam' or 'sgd' (default 'adam')
         :param num_epochs : int, number of epochs to train for, (default 100)
+        :param num_samples: int, number of times theta needs to be sampled (default: 10)
+        :param use_partitions: bool, if true the model will be trained on the training set and evaluated on the test
+        set (default: true)
         :param reduce_on_plateau : bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
         :param inference_type: the type of the CTM model. It can be "zeroshot" or "combined" (default zeroshot)
+        :param bert_path: path to store the document contextualized representations
+        :param bert_model: name of the contextualized model (default: bert-base-nli-mean-tokens).
+        see https://www.sbert.net/docs/pretrained_models.html
         """
 
         super().__init__()
+
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
         self.hyperparameters['activation'] = activation
@@ -41,6 +50,7 @@ class CTM(Abstract_Model):
         self.hyperparameters['inference_type'] = inference_type
         self.hyperparameters['learn_priors'] = learn_priors
         self.hyperparameters['batch_size'] = batch_size
+        self.hyperparameters['num_samples'] = num_samples
         self.hyperparameters['log_lr'] = log_lr
         self.hyperparameters['momentum'] = momentum
         self.hyperparameters['solver'] = solver
@@ -57,7 +67,6 @@ class CTM(Abstract_Model):
         self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
-
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
         if self.use_partitions:
@@ -130,59 +139,27 @@ class CTM(Abstract_Model):
         return result
 
     def set_params(self, hyperparameters):
-        self.hyperparameters['num_topics'] = \
-            hyperparameters.get('num_topics', self.hyperparameters['num_topics'])
-        self.hyperparameters['model_type'] = \
-            hyperparameters.get('model_type', self.hyperparameters['model_type'])
-        self.hyperparameters['activation'] = \
-            hyperparameters.get('activation', self.hyperparameters['activation'])
-        self.hyperparameters['dropout'] = hyperparameters.get('dropout', self.hyperparameters['dropout'])
-        self.hyperparameters['learn_priors'] = \
-            hyperparameters.get('learn_priors', self.hyperparameters['learn_priors'])
-        self.hyperparameters['batch_size'] = \
-            hyperparameters.get('batch_size', self.hyperparameters['batch_size'])
-        self.hyperparameters['log_lr'] = hyperparameters.get('log_lr', self.hyperparameters['log_lr'])
-        self.hyperparameters['momentum'] = \
-            hyperparameters.get('momentum', self.hyperparameters['momentum'])
-        self.hyperparameters['solver'] = hyperparameters.get('solver', self.hyperparameters['solver'])
-        self.hyperparameters['num_epochs'] = \
-            hyperparameters.get('num_epochs', self.hyperparameters['num_epochs'])
-        self.hyperparameters['reduce_on_plateau'] = \
-            hyperparameters.get('reduce_on_plateau', self.hyperparameters['reduce_on_plateau'])
-        self.hyperparameters["prior_mean"] = \
-            hyperparameters.get('prior_mean', self.hyperparameters['prior_mean'])
-        self.hyperparameters["prior_variance"] = \
-            hyperparameters.get('prior_variance', self.hyperparameters['prior_variance'])
-        self.hyperparameters["inference_type"] = \
-            hyperparameters.get('inference_type', self.hyperparameters['inference_type'])
-        self.hyperparameters["num_layers"] = \
-            hyperparameters.get('num_layers', self.hyperparameters['num_layers'])
-        self.hyperparameters["num_neurons"] = \
-            hyperparameters.get('num_neurons', self.hyperparameters['num_neurons'])
+       for k in hyperparameters.keys():
+            if k in self.hyperparameters.keys() and k != 'hidden_sizes':
+                self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
 
         self.hyperparameters['hidden_sizes'] = tuple(
             [int(self.hyperparameters["num_neurons"]) for _ in range(self.hyperparameters["num_layers"])])
 
-    def inference(self):
+    def inference(self, x_test):
         assert isinstance(self.use_partitions, bool) and self.use_partitions
-        results = self.model.predict(self.X_test)
+        results = self.model.predict(x_test)
         return results
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
-
-    def info_test(self):
-        if self.use_partitions:
-            return self.X_test
-        else:
-            print('No partitioned dataset, please apply test_set method = True')
 
     @staticmethod
     def preprocess(vocab, train, bert_model, test=None, validation=None,
                    bert_train_path=None, bert_test_path=None, bert_val_path=None):
         vocab2id = {w: i for i, w in enumerate(vocab)}
         vec = CountVectorizer(
-            vocabulary=vocab2id, token_pattern=r'(?u)\b\w+\b')
+            vocabulary=vocab2id, token_pattern=r'(?u)\b[\w+|\-]+\b')
         entire_dataset = train.copy()
         if test is not None:
             entire_dataset.extend(test)

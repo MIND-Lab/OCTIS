@@ -32,48 +32,52 @@ class Dataset:
         self.__metadata = metadata
         self.__labels = labels
         self.__original_indexes = document_indexes
+        self.dataset_path = None
+        self.is_cached = False
 
     def get_corpus(self):
         return self.__corpus
 
     # Partitioned Corpus getter
     def get_partitioned_corpus(self, use_validation=True):
-        last_training_doc = self.__metadata["last-training-doc"]
-        # gestire l'eccezione se last_validation_doc non è definito, restituire
-        # il validation vuoto
-        if use_validation:
-            last_validation_doc = self.__metadata["last-validation-doc"]
-            if self.__corpus is not None and last_training_doc != 0:
-                train_corpus = []
-                test_corpus = []
-                validation_corpus = []
+        if "last-training-doc" in self.__metadata:
+            last_training_doc = self.__metadata["last-training-doc"]
+            if use_validation:
+                last_validation_doc = self.__metadata["last-validation-doc"]
+                if self.__corpus is not None and last_training_doc != 0:
+                    train_corpus = []
+                    test_corpus = []
+                    validation_corpus = []
 
-                for i in range(last_training_doc):
-                    train_corpus.append(self.__corpus[i])
-                for i in range(last_training_doc, last_validation_doc):
-                    validation_corpus.append(self.__corpus[i])
-                for i in range(last_validation_doc, len(self.__corpus)):
-                    test_corpus.append(self.__corpus[i])
-                return train_corpus, validation_corpus, test_corpus
-        else:
-            if self.__corpus is not None and last_training_doc != 0:
-                if "last-validation-doc" in self.__metadata.keys():
-                    last_validation_doc = self.__metadata["last-validation-doc"]
-                else:
-                    last_validation_doc = 0
-
-                train_corpus = []
-                test_corpus = []
-                for i in range(last_training_doc):
-                    train_corpus.append(self.__corpus[i])
-
-                if last_validation_doc != 0:
+                    for i in range(last_training_doc):
+                        train_corpus.append(self.__corpus[i])
+                    for i in range(last_training_doc, last_validation_doc):
+                        validation_corpus.append(self.__corpus[i])
                     for i in range(last_validation_doc, len(self.__corpus)):
                         test_corpus.append(self.__corpus[i])
-                else:
-                    for i in range(last_training_doc, len(self.__corpus)):
-                        test_corpus.append(self.__corpus[i])
-                return train_corpus, test_corpus
+                    return train_corpus, validation_corpus, test_corpus
+            else:
+                if self.__corpus is not None and last_training_doc != 0:
+                    if "last-validation-doc" in self.__metadata.keys():
+                        last_validation_doc = self.__metadata["last-validation-doc"]
+                    else:
+                        last_validation_doc = 0
+
+                    train_corpus = []
+                    test_corpus = []
+                    for i in range(last_training_doc):
+                        train_corpus.append(self.__corpus[i])
+
+                    if last_validation_doc != 0:
+                        for i in range(last_validation_doc, len(self.__corpus)):
+                            test_corpus.append(self.__corpus[i])
+                    else:
+                        for i in range(last_training_doc, len(self.__corpus)):
+                            test_corpus.append(self.__corpus[i])
+                    return train_corpus, test_corpus
+        else:
+            return self.__corpus
+
 
     # Edges getter
     def get_edges(self):
@@ -291,30 +295,34 @@ class Dataset:
 
             df = pd.DataFrame(data=corpus)
             df = pd.concat([df, pd.DataFrame(partition)], axis=1)
+
+            labs = [' '.join(lab) for lab in self.__labels]
             if self.__labels:
-                df = pd.concat([df, pd.DataFrame(self.__labels)], axis=1)
-            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=None)
+                df = pd.concat([df, pd.DataFrame(labs)], axis=1)
+            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=False)
 
             self._save_vocabulary(path + "/vocabulary.txt")
             self._save_metadata(path + "/metadata.json")
             self._save_document_indexes(path + "/indexes.txt")
+            self.dataset_path = path
 
         except:
             raise Exception("error in saving the dataset")
 
-    def load_custom_dataset_from_folder(self, path):
+    def load_custom_dataset_from_folder(self, path, multilabel=False):
         """
         Loads all the dataset from a folder
         Parameters
         ----------
         path : path of the folder to read
         """
+        self.dataset_path = path
         try:
-            if exists(path + "/metadata.json"):
-                self._load_metadata(path + "/metadata.json")
+            if exists(self.dataset_path + "/metadata.json"):
+                self._load_metadata(self.dataset_path + "/metadata.json")
             else:
                 self.__metadata = dict()
-            df = pd.read_csv(path + "/corpus.tsv", sep='\t', header=None)
+            df = pd.read_csv(self.dataset_path + "/corpus.tsv", sep='\t', header=None)
             if len(df.keys()) > 1:
                 df[1] = df[1].replace("train", "a_train")
                 df[1] = df[1].replace("val", "b_val")
@@ -325,23 +333,27 @@ class Dataset:
 
                 self.__corpus = [d.split() for d in df[0].tolist()]
                 if len(df.keys()) > 2:
-                    self.__labels = df[2].tolist()
+                    if multilabel:
+                        self.__labels = [doc.split() for doc in df[2].tolist()]
+                    else:
+                        self.__labels = df[2].tolist()
+
             else:
                 self.__corpus = [d.split() for d in df[0].tolist()]
                 self.__metadata['last-training-doc'] = len(df[0])
 
-            if exists(path + "/vocabulary.txt"):
-                self._load_vocabulary(path + "/vocabulary.txt")
+            if exists(self.dataset_path + "/vocabulary.txt"):
+                self._load_vocabulary(self.dataset_path + "/vocabulary.txt")
             else:
                 vocab = set()
                 for d in self.__corpus:
                     for w in set(d):
                         vocab.add(w)
                 self.__vocabulary = list(vocab)
-            if exists(path + "/indexes.txt"):
-                self._load_document_indexes(path + "/indexes.txt")
+            if exists(self.dataset_path + "/indexes.txt"):
+                self._load_document_indexes(self.dataset_path + "/indexes.txt")
         except:
-            raise Exception("error in loading the dataset:" + path)
+            raise Exception("error in loading the dataset:" + self.dataset_path)
 
     def fetch_dataset(self, dataset_name, data_home=None, download_if_missing=True):
         """Load the filenames and data from a dataset.
@@ -375,13 +387,13 @@ class Dataset:
 
         if cache is None:
             if download_if_missing:
-                cache = download_dataset(dataset_name, target_dir=dataset_home,
-                                         cache_path=cache_path)
+                cache = download_dataset(dataset_name, target_dir=dataset_home, cache_path=cache_path)
             else:
                 raise IOError(dataset_name + ' dataset not found')
-
+        self.is_cached = True
         self.__corpus = [d.split() for d in cache["corpus"]]
         self.__vocabulary = cache["vocabulary"]
         self.__metadata = cache["metadata"]
+        self.dataset_path = cache_path
         self.__labels = cache["labels"]
 

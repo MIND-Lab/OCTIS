@@ -1,7 +1,7 @@
 # Utils
+import json
 import time
 from pathlib import Path
-import json
 
 # utils from skopt and sklearn
 from sklearn.gaussian_process.kernels import *
@@ -10,13 +10,9 @@ from skopt.space.space import *
 from octis.dataset.dataset import Dataset
 # utils from other files of the framework
 from octis.models.model import save_model_output
-from octis.optimization.optimizer_tool import BestEvaluation
-from octis.optimization.optimizer_tool import plot_bayesian_optimization, plot_model_runs
-from octis.optimization.optimizer_tool import early_condition
-from octis.optimization.optimizer_tool import choose_optimizer
-from octis.optimization.optimizer_tool import select_metric
-from octis.optimization.optimizer_tool import load_model
-from octis.optimization.optimizer_tool import load_search_space
+from octis.optimization.optimizer_evaluation import OptimizerEvaluation
+from octis.optimization.optimizer_tool import choose_optimizer, early_condition, load_model, select_metric
+from octis.optimization.optimizer_tool import load_search_space, plot_bayesian_optimization, plot_model_runs
 
 
 class Optimizer:
@@ -37,59 +33,59 @@ class Optimizer:
         Perform hyper-parameter optimization for a Topic Model
 
         :param model: model with hyperparameters to optimize
-        :rtype model: OCTIS Topic Model
+        :type model: OCTIS Topic Model
         :param dataset: dataset for the model dataset
-        :rtype dataset: OCTIS dataset
+        :type dataset: OCTIS dataset
         :param metric: metric used for the optimization
-        :rtype metric: OCTIS metric
+        :type metric: OCTIS metric
         :param search_space: a dictionary of hyperparameters to optimize (each parameter is defined as a skopt space)
-        :rtype search_space: skopt space object
+        :type search_space: skopt space object
         :param extra_metrics: list of extra-metrics to compute during the optimization
-        :rtype extra_metrics: list of metrics, optional
+        :type extra_metrics: list of metrics, optional
         :param number_of_call: number of evaluations of metric
-        :rtype number_of_call: int, optional
+        :type number_of_call: int, optional
         :param n_random_starts: number of evaluations of metric with random points before approximating it with surrogate model
-        :rtype n_random_starts: int, optional
+        :type n_random_starts: int, optional
         :param initial_point_generator: set an initial point generator. Can be either "random", "sobol", "halton" ,"hammersly","lhs"
-        :rtype initial_point_generator: str, optional
+        :type initial_point_generator: str, optional
         :param optimization_type: Set "Maximize" if you want to maximize metric, "Minimize" if you want to minimize
-        :rtype optimization type: str, optional
+        :type optimization type: str, optional
         :param model_runs:
-        :rtype: int, optional
+        :type: int, optional
         :param surrogate_model: set a surrogate model. Can be either "GP" (Gaussian Process), "RF" (Random Forest) or "ET" (Extra-Tree)
-        :rtype: str, optional
+        :type: str, optional
         :param kernel: set a kernel function
         :param acq_func: Function to minimize over the surrogate model. Can be either: "LCB" (Lower Confidence Bound), "EI" (Expected improvement) OR "PI" (Probability of Improvement)
-        :rtype: str, optional
+        :type: str, optional
         :param random_state: Set random state to something other than None for reproducible results.
-        :rtype: int, optional
+        :type: int, optional
         :param x0: List of initial input points.
-        :rtype: list, optional
+        :type: list, optional
         :param y0: Evaluation of initial input points.
-        :rtype: list, optional
+        :type: list, optional
         :param save_models: if 'True' save all the topic models generated during the optimization process
-        :rtype: bool, optional
+        :type: bool, optional
         :param save_step: decide how much to save the results of the optimization
-        :rtype: int, optional
+        :type: int, optional
         :param save_name: name of the file where the results of the optimization will be saved
-        :rtype: str, optional
+        :type: str, optional
         :param save_path: Path where the results of the optimization (json file) will be saved
-        :rtype save_path: str, optional
+        :type save_path: str, optional
         :param early_stop: if "True" stop the optimization if there is no improvement after early_step evaluations
-        :rtype early_stop: bool, optional
+        :type early_stop: bool, optional
         :param early_step: number of iterations with no improvement after which optimization will be stopped (if early_stop is True)
-        :rtype early_step: int, optional
+        :type early_step: int, optional
         :param plot_best_seen: If "True" save a convergence plot of the result of a Bayesian_optimization (i.e. the best seen for each iteration)
-        :rtype plot_best_seen: bool, optional
+        :type plot_best_seen: bool, optional
         :param plot_model: If "True" save the boxplot of all the model runs
-        :rtype plot_model: bool, optional
+        :type plot_model: bool, optional
         :param plot_name: Set the name of the plots (best_seen and model_runs).
-        :rtype plot_name: str, optional
+        :type plot_name: str, optional
         :param log_scale_plot: if "True" use the logarithmic scale for the plots.
-        :rtype log_scale_plot: bool, optional
+        :type log_scale_plot: bool, optional
         :param topk:
-        :rtype topk: int, optional
-        :return: BestEvaluation object
+        :type topk: int, optional
+        :return: OptimizerEvaluation object
         :rtype: class
         """
         # Set the attributes
@@ -145,7 +141,7 @@ class Optimizer:
             i = i + 1
 
         # Control about the correctness of BO parameters
-        if self._check_BO_parameters() == -1:
+        if self._check_bo_parameters() == -1:
             print("ERROR: wrong initialitation of BO parameters")
             return None
 
@@ -185,11 +181,11 @@ class Optimizer:
 
         # Check if there are other iterations to do
         if self.number_of_previous_calls == self.number_of_call:
-            return BestEvaluation(self, resultsBO=res)
+            return OptimizerEvaluation(self, BO_results=res)
 
         # Control about the correctness of BO parameters
-        if self._check_BO_parameters() == -1:
-            print("ERROR: wrong inizialitation of BO parameters")
+        if self._check_bo_parameters() == -1:
+            print("ERROR: wrong initialization of BO parameters")
             return None
 
         results = self._optimization_loop(opt)
@@ -255,11 +251,10 @@ class Optimizer:
             plot_model_runs(self.dict_model_runs[self.name_optimized_metric], self.current_call, name_plot)
 
             # Boxplot of extrametrics (if any)
-            j = 0
-            for extra_metric in self.extra_metrics:
+            for j in range(len(self.extra_metrics)):
                 name_plot = self.save_path + self.plot_name + "_model_runs_" + self.extra_metric_names[j]
                 plot_model_runs(self.dict_model_runs[self.extra_metric_names[j]], self.current_call, name_plot)
-                j = j + 1
+
         return result
 
     def _optimization_loop(self, opt):
@@ -269,7 +264,7 @@ class Optimizer:
         :return: result of the optimization
         :rtype: class
         """
-
+        results = None
         # For loop to perform Bayesian Optimization
         for i in range(self.number_of_previous_calls, self.number_of_call):
 
@@ -305,7 +300,7 @@ class Optimizer:
                                            self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
 
             # Create an object related to the BO optimization
-            results = BestEvaluation(self, resultsBO=res)
+            results = OptimizerEvaluation(self, BO_results=res)
 
             # Save the object
             if i % self.save_step == 0:
@@ -363,7 +358,7 @@ class Optimizer:
         Restore the BO parameters  from the json file
 
         :param name_path: name of the json file
-        :rtype name_path: str
+        :type name_path: str
         :return: result of BO optimization (scikit-optimize object), surrogate model (scikit-learn object)
         :rtype: tuple
         """
@@ -401,10 +396,16 @@ class Optimizer:
         self.initial_point_generator = optimization_object['initial_point_generator']
         self.topk = optimization_object['topk']
         self.time_eval = optimization_object["time_eval"]
+        res = None
 
         # Load the dataset
         dataset = Dataset()
-        dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
+        if not optimization_object["is_cached"]:
+            dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
+        else:
+            dp = optimization_object["dataset_path"][:-(len(optimization_object["dataset_name"]) + len("_py3.pkz"))]
+            dataset.fetch_dataset(optimization_object["dataset_name"], data_home=dp)
+
         self.dataset = dataset
 
         # Load the metric
@@ -412,10 +413,8 @@ class Optimizer:
 
         # Load the model
         self.model = load_model(optimization_object)
-
         # Creation of the hyperparameters
         self.hyperparameters = list(sorted(self.search_space.keys()))
-
         # Choice of the optimizer
         opt = choose_optimizer(self)
 
@@ -433,7 +432,7 @@ class Optimizer:
 
         return res, opt
 
-    def _check_BO_parameters(self):
+    def _check_bo_parameters(self):
         """
         Check the correctness of BO parameters
 

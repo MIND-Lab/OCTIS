@@ -1,4 +1,4 @@
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 import numpy as np
 from gensim.models import ldamodel
 import gensim.corpora as corpora
@@ -6,7 +6,7 @@ import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
 
 
-class LDA(Abstract_Model):
+class LDA(AbstractModel):
 
     id2word = None
     id_corpus = None
@@ -180,7 +180,7 @@ class LDA(Abstract_Model):
         ----------
         dataset : dataset to use to build the model
         hyperparameters : hyperparameters to build the model
-        top_words : if greather than 0 returns the most significant words
+        top_words : if greater than 0 returns the most significant words
                  for each topic in the output
                  Default True
         Returns

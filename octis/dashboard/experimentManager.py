@@ -1,21 +1,20 @@
-import os
-import ast
-import sys
-import json
-import numpy as np
-import inspect
 import importlib
-from pathlib import Path
+import json
+import os
+import sys
 from importlib import util
+from pathlib import Path
+
 import gensim.corpora as corpora
-import octis.configuration.defaults as defaults
+import numpy as np
 from skopt.space.space import Real, Categorical, Integer
+
+import octis.configuration.defaults as defaults
 from octis.models.model import load_model_output
 
 path = Path(os.path.dirname(os.path.realpath(__file__)))
 pathDataset = str(path.parent.parent)
 path = str(path.parent)
-
 
 # Import octis module
 spec = importlib.util.spec_from_file_location(
@@ -127,7 +126,7 @@ def startExperiment(parameters):
         optimizer = Optimizer()
         optimizer.resume_optimization(json_file)
     else:
-        # Import dataset class and initialize an instance with the choosen dataset
+        # Import dataset class and initialize an instance with the chosen dataset
         dataset_class = importDataset()
         dataset = dataset_class()
         dataset_path = str(os.path.join(
@@ -166,7 +165,7 @@ def startExperiment(parameters):
                 metric_parameters[key] = metricDataset.get_corpus()
 
         metric_class = importMetric(parameters["optimize_metrics"][0]["name"])
-        metric = metric_class(metric_parameters)
+        metric = metric_class(**metric_parameters)
 
         metrics_to_track = []
         for single_metric in parameters["track_metrics"]:
@@ -177,7 +176,7 @@ def startExperiment(parameters):
                     single_metric_parameters[key] = dataset.get_corpus()
                 elif single_metric_parameters[key] == "use selected dataset":
                     single_metric_parameters[key] = dataset
-            new_metric = metric_class(single_metric_parameters)
+            new_metric = metric_class(**single_metric_parameters)
             metrics_to_track.append(new_metric)
 
         vocabulary_path = str(os.path.join(
@@ -253,7 +252,7 @@ def retrieveIterationBoResults(path, iteration):
             hyperparameters_iter.append(hyperparameters[name][iteration])
 
         hyperparameters_config = dict(zip(name_hyp, hyperparameters_iter))
-        # dizionaro di output
+        # output dictionary
         dict_return = dict()
 
         metric_name = result["metric_name"]
@@ -264,13 +263,13 @@ def retrieveIterationBoResults(path, iteration):
         for name in extra_metric_names:
             values = result['dict_model_runs'][name]['iteration_' +
                                                      str(iteration)]
-            dict_return.update({name+"_values": values})
+            dict_return.update({name + "_values": values})
 
         dict_metrics = result['dict_model_runs']
         model_runs = result['model_runs']
         name_metrics = list(dict_metrics.keys())
         if len(result['extra_metric_names']) > 0:
-            # nome delle metriche
+            # metrics names
             dict_return.update({"metric_names": name_metrics[1:]})
         else:
             dict_return.update({"metric_names": 0})
@@ -284,8 +283,6 @@ def retrieveIterationBoResults(path, iteration):
             {"hyperparameter_configuration": hyperparameters_config})
         return dict_return
     return False
-
-
 # Manca retrieve di Iperparametri iterazione e topic-word-matrix e document-topic matrix
 
 
@@ -358,7 +355,7 @@ def singleInfo(path):
         dict_stats_extra_metrics = dict()
 
         if len(result['extra_metric_names']) > 0:
-            # nome delle metriche
+            # metrics names
             dict_return.update({"metric_names": name_metrics[1:]})
             extra_metrics_names = list(result['dict_model_runs'].keys())
 
@@ -366,8 +363,8 @@ def singleInfo(path):
                 values = []
                 dict_values = result['dict_model_runs'][name]
                 iterations = list(dict_values.keys())
-                for iter in iterations:
-                    values.append(np.median(dict_values[iter]))
+                for j in iterations:
+                    values.append(np.median(dict_values[j]))
                 dict_values_extra_metrics.update({name: values})
                 val_stats = [np.max(values), np.min(
                     values), np.median(values), np.mean(values)]
@@ -382,7 +379,7 @@ def singleInfo(path):
             dict_return.update({"extra_metric_stats": dict()})
 
         return dict_return
-    return False
+    return None
 
 
 def getModelInfo(experiment_path, iteration, modelRun):

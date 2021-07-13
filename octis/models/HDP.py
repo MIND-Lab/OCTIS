@@ -1,4 +1,4 @@
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 import numpy as np
 from gensim.models import hdpmodel
 import gensim.corpora as corpora
@@ -6,15 +6,14 @@ import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
 
 
-class HDP(Abstract_Model):
+class HDP(AbstractModel):
 
     id2word = None
     id_corpus = None
     use_partitions = True
     update_with_test = False
 
-    def __init__(self, max_chunks=None, max_time=None, chunksize=256,
-                 kappa=1.0, tau=64.0, K=15, T=150, alpha=1,
+    def __init__(self, max_chunks=None, max_time=None, chunksize=256, kappa=1.0, tau=64.0, K=15, T=150, alpha=1,
                  gamma=1, eta=0.01, scale=1.0, var_converge=0.0001):
         """
         Initialize HDP model
@@ -53,6 +52,7 @@ class HDP(Abstract_Model):
         convergence. Used when updating variational parameters
         for a single document.
         """
+        super().__init__()
         self.hyperparameters["max_chunks"] = max_chunks
         self.hyperparameters["max_time"] = max_time
         self.hyperparameters["chunksize"] = chunksize
@@ -122,10 +122,10 @@ class HDP(Abstract_Model):
         else:
             partition = [dataset.get_corpus(), []]
 
-        if self.id2word == None:
+        if self.id2word is None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
 
-        if self.id_corpus == None:
+        if self.id_corpus is None:
             self.id_corpus = [self.id2word.doc2bow(
                 document) for document in partition[0]]
 
@@ -135,8 +135,7 @@ class HDP(Abstract_Model):
 
         self.trained_model = hdpmodel.HdpModel(**self.hyperparameters)
 
-        result = {}
-
+        result = dict()
         result["topic-word-matrix"] = self.trained_model.get_topics()
 
         if topics > 0:
@@ -148,7 +147,6 @@ class HDP(Abstract_Model):
             result["topics"] = topics_output
 
         result["topic-document-matrix"] = self._get_topic_document_matrix()
-
         if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
                 document) for document in partition[1]]
@@ -190,8 +188,7 @@ class HDP(Abstract_Model):
         """
         Return the most significative words for each topic.
         """
-        if topics > 0:
-            topic_terms = []
+        topic_terms = []
         for i in range(len(self.trained_model.get_topics())):
             topic_terms.append(self.trained_model.show_topic(
                 i,

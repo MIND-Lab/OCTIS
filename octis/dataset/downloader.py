@@ -82,16 +82,22 @@ def download_dataset(dataset_name, target_dir, cache_path):
 
         only_docs, labels, partition = [], [], []
         for d in corpus.text.split("\n"):
-            dsplit = d.strip().split("\t")
-            only_docs.append(dsplit[0])
-            if len(dsplit) > 1:
-                partition.append(dsplit[1])
-                if len(dsplit) > 2:
-                    labels.append(dsplit[2])
+            if len(d.strip()) > 0:
+                dsplit = d.strip().split("\t")
+                only_docs.append(dsplit[0])
+                if len(dsplit) > 1:
+                    partition.append(dsplit[1])
+                    if len(dsplit) > 2:
+                        labels.append(dsplit[2])
+
+        vocab = [word for word in vocabulary.text.split("\n") if len(word) > 0]
+        metadata = json.loads(metadata.text)
+
+        metadata["info"]["name"] = dataset_name
 
         # Store a zipped pickle
-        cache = dict(corpus=only_docs, labels=labels, partitions=partition, metadata=json.loads(metadata.text),
-                     vocabulary=vocabulary.text.split("\n"))
+        cache = dict(corpus=only_docs, labels=labels, partitions=partition, metadata=metadata,
+                     vocabulary=vocab)
         compressed_content = codecs.encode(pickle.dumps(cache), 'zlib_codec')
         with open(cache_path, 'wb') as f:
             f.write(compressed_content)

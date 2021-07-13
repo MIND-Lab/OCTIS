@@ -1,11 +1,11 @@
-from octis.models.model import Abstract_Model
+from octis.models.model import AbstractModel
 import numpy as np
 from sklearn.decomposition import NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
 import octis.configuration.defaults as defaults
 
 
-class NMF_scikit(Abstract_Model):
+class NMF_scikit(AbstractModel):
 
     def __init__(self, dataset, num_topics=100, init=None, alpha=0, l1_ratio=0, max_iter=100, tol=1e-4,
                  regularization='both', beta_loss='frobenius', solver='cd', use_partitions=True):
@@ -58,7 +58,7 @@ class NMF_scikit(Abstract_Model):
         self.use_partitions = use_partitions
         self.update_with_test = False
 
-        vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b[\w+|\-]+\b",
+        vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b[\w|\-]+\b",
                                      vocabulary=list(dataset.get_vocabulary()))
 
         if self.use_partitions:

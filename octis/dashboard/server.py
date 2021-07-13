@@ -1,6 +1,14 @@
+import os
+import sys
+from pathlib import Path
+
+sys.path.append(os.getcwd())
+octispath = Path(os.path.dirname(__file__)).parent.absolute().parent.absolute()
+sys.path.append(str(octispath))
+
 import argparse
 import webbrowser
-import octis.dashboard.frameworkScanner as fs
+import frameworkScanner as fs
 import octis.configuration.defaults as defaults
 from multiprocessing import Process, Pool
 import json
@@ -9,7 +17,6 @@ import tkinter as tk
 import pandas as pd
 import numpy as np
 from tkinter import filedialog
-import os
 
 
 app = Flask(__name__)
@@ -209,12 +216,21 @@ def startExperiment():
                 for key, content in json.loads(singleValue).items():
                     if key != "metric" and key != "type":
                         metric["parameters"][key] = typed(content)
+
                     if key == "type" and content == "track":
                         optimize = False
                 if optimize:
                     expParams["optimize_metrics"].append(metric)
                 else:
                     expParams["track_metrics"].append(metric)
+
+
+
+    if expParams["optimize_metrics"][0]["name"]=="F1Score" and not expParams["partitioning"]:
+        return VisualizeExperiments()
+    for trackedMetric in expParams["track_metrics"]:
+        if trackedMetric["name"] == "F1Score" and not expParams["partitioning"]:
+            return VisualizeExperiments()
 
     print(expParams)
 
@@ -285,14 +301,11 @@ def ManageExperiments():
     for exp in exp_list:
         exp_info = queueManager.getExperimentInfo(
             exp_list[exp]["batchId"], exp_list[exp]["experimentId"])
-        if exp_info != False:
+        if exp_info is not None:
             exp_list[exp].update(exp_info)
     order = queueManager.getOrder()
     running = queueManager.getRunning()
-    return render_template("ManageExperiments.html",
-                           order=order,
-                           experiments=exp_list,
-                           running=running)
+    return render_template("ManageExperiments.html", order=order, experiments=exp_list, running=running)
 
 
 @ app.route("/pauseExp", methods=["POST"])
@@ -331,7 +344,7 @@ def deleteExp():
     """
     data = request.json['data']
     print(queueManager.getRunning())
-    if queueManager.getRunning() != None and queueManager.getRunning() == data:
+    if queueManager.getRunning() is not None and queueManager.getRunning() == data:
         queueManager.pause()
         queueManager.deleteFromOrder(data)
     else:
@@ -445,14 +458,23 @@ if __name__ == '__main__':
     """
     Initialize the server
     """
-    from octis.dashboard.queueManager import QueueManager
+    from queueManager import QueueManager
 
-    queueManager = QueueManager()
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, help="port", default=5000)
     parser.add_argument("--host", type=str, help="host", default='localhost')
+    parser.add_argument("--dashboardState", type=str, help="dashboardState", default="")
 
     args = parser.parse_args()
+
+    dashboardState = None
+    if args.dashboardState != "":
+        dashboardState = args.dashboardState
+    else:
+        dashboardState = os.path.join(os.getcwd(),"queueManagerState.json")
+
+    queueManager = QueueManager(dashboardState)
 
     url = 'http://' + str(args.host) + ':' + str(args.port)
     webbrowser.open_new(url)
