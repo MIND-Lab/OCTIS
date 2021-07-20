@@ -243,7 +243,7 @@ Available Models
 +-------------------------------------------+-----------------------------------------------------------+
 
 
-.. _(Bianchi et al. 2020): https://www.aclweb.org/anthology/2021.eacl-main.143/
+.. _(Bianchi et al. 2021): https://www.aclweb.org/anthology/2021.eacl-main.143/
 .. _(Dieng et al. 2020): https://www.aclweb.org/anthology/2020.tacl-1.29 
 .. _(Blei et al. 2004): https://people.eecs.berkeley.edu/~jordan/papers/hdp.pdf
 .. _(Blei et al. 2003): https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
