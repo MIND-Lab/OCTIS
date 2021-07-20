@@ -153,7 +153,7 @@ Make sure that the dataset is in the following format:
     * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document (optional).
     * vocabulary: a .txt file where each line represents a word of the vocabulary
 
-The partition can be "train" for the training partition, "test" for testing partition, or "val" for the validation partition. An example of dataset can be found here: `sample_dataset_`.
+The partition can be "train" for the training partition, "test" for testing partition, or "val" for the validation partition. An example of dataset can be found here: `sample_dataset`_.
 
 Disclaimer
 ~~~~~~~~~~~~~
