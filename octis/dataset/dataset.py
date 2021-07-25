@@ -76,7 +76,7 @@ class Dataset:
                             test_corpus.append(self.__corpus[i])
                     return train_corpus, test_corpus
         else:
-            return self.__corpus
+            return [self.__corpus]
 
 
     # Edges getter
@@ -324,19 +324,19 @@ class Dataset:
                 self.__metadata = dict()
             df = pd.read_csv(self.dataset_path + "/corpus.tsv", sep='\t', header=None)
             if len(df.keys()) > 1:
-                df[1] = df[1].replace("train", "a_train")
-                df[1] = df[1].replace("val", "b_val")
-                df = df.sort_values(1).reset_index(drop=True)
+                #just make sure docs are sorted in the right way (train - val - test)
+                final_df = df[df[1] == 'train'].append(df[df[1] == 'val'])
+                final_df = final_df.append(df[df[1] == 'test'])
+                self.__metadata['last-training-doc'] = len(final_df[final_df[1] == 'train'])
+                self.__metadata['last-validation-doc'] = len(final_df[final_df[1] == 'val']) + \
+                                                         len(final_df[final_df[1] == 'train'])
 
-                self.__metadata['last-training-doc'] = len(df[df[1] == 'a_train'])
-                self.__metadata['last-validation-doc'] = len(df[df[1] == 'b_val']) + len(df[df[1] == 'a_train'])
-
-                self.__corpus = [d.split() for d in df[0].tolist()]
-                if len(df.keys()) > 2:
+                self.__corpus = [d.split() for d in final_df[0].tolist()]
+                if len(final_df.keys()) > 2:
                     if multilabel:
-                        self.__labels = [doc.split() for doc in df[2].tolist()]
+                        self.__labels = [doc.split() for doc in final_df[2].tolist()]
                     else:
-                        self.__labels = df[2].tolist()
+                        self.__labels = final_df[2].tolist()
 
             else:
                 self.__corpus = [d.split() for d in df[0].tolist()]
