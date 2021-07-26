@@ -2,6 +2,14 @@
 History
 =======
 
+1.8.3 (2021-07-26)
+------------------
+* Gensim migration from 3.8 to >=4.0.0
+
+1.8.2 (2021-07-25)
+------------------
+* Fixed unwanted sorting of documents
+
 1.8.1 (2021-07-08)
 ------------------
 * Fixed gensim version (#22)

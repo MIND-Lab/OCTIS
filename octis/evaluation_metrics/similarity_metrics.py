@@ -91,7 +91,7 @@ class WordEmbeddingsPairwiseSimilarity(AbstractMetric):
                 sim = 0
                 for word1 in list1[:self.topk]:
                     for word2 in list2[:self.topk]:
-                        if word1 in self.wv.wv.vocab and word2 in self.wv.wv.vocab:
+                        if word1 in self.wv.key_to_index.keys() and word2 in self.wv.key_to_index.keys():
                             sim = sim + self.wv.similarity(word1, word2)
                             word_counts = word_counts + 1
                 sim = sim / word_counts
@@ -134,11 +134,11 @@ class WordEmbeddingsCentroidSimilarity(AbstractMetric):
                 centroid2 = np.zeros(self.wv.vector_size)
                 count1, count2 = 0, 0
                 for word1 in list1[:self.topk]:
-                    if word1 in self.wv.wv.vocab:
+                    if word1 in self.wv.key_to_index.keys():
                         centroid1 = centroid1 + self.wv[word1]
                         count1 += 1
                 for word2 in list2[:self.topk]:
-                    if word2 in self.wv.wv.vocab:
+                    if word2 in self.wv.key_to_index.keys():
                         centroid2 = centroid2 + self.wv[word2]
                         count2 += 1
                 centroid1 = centroid1 / count1
