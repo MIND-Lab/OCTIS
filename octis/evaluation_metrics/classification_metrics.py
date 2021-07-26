@@ -74,9 +74,9 @@ class ClassificationScore(AbstractMetric):
             test_labels = [label2id[l] for l in test_labels]
 
             if self.kernel == 'linear':
-                clf = svm.LinearSVC(verbose=False)
+                clf = svm.LinearSVC(verbose=False, max_iter=4000)
             else:
-                clf = svm.SVC(kernel=self.kernel, verbose=False)
+                clf = svm.SVC(kernel=self.kernel, verbose=False, max_iter=4000)
 
         ###########
         clf.fit(x_train, train_labels)
