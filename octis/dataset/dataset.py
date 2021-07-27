@@ -142,7 +142,7 @@ class Dataset:
         """
         file = Path(file_name)
         if file.is_file():
-            with open(file_name, 'r') as corpus_file:
+            with open(file_name, 'r', encoding='latin-1') as corpus_file:
                 corpus = [line.strip().split() for line in corpus_file]
             self.__corpus = corpus
         else:
