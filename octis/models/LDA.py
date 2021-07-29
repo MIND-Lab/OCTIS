@@ -213,8 +213,10 @@ class LDA(AbstractModel):
         hyperparams["corpus"] = self.id_corpus
         hyperparams["id2word"] = self.id2word
         self.hyperparameters.update(hyperparams)
-        self.hyperparameters.pop('beta_log')
-        self.hyperparameters.pop('alpha_log')
+        if 'beta_log' in self.hyperparameters.keys():
+            self.hyperparameters.pop('beta_log')
+        if 'alpha_log' in self.hyperparameters.keys():
+            self.hyperparameters.pop('alpha_log')
         self.hyperparameters['minimum_probability'] = 0.0
         self.hyperparameters['minimum_phi_value'] = 0.0
 
