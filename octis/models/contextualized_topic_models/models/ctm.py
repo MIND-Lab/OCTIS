@@ -43,7 +43,7 @@ class CTM(object):
 
         assert isinstance(input_size, int) and input_size > 0, \
             "input_size must by type int > 0."
-        assert isinstance(num_topics, int) and input_size > 0, \
+        assert (isinstance(num_topics, int) or isinstance(num_topics, np.int64)) and num_topics > 0, \
             "num_topics must by type int > 0."
         assert model_type in ['LDA', 'prodLDA'], \
             "model must be 'LDA' or 'prodLDA'."
