@@ -122,7 +122,7 @@ Available Datasets
 ============================
 
 +--------------+--------------+--------+---------+----------+
-| Name         | Source       | # Docs | # Words | # Labels |
+|Name in OCTIS | Source       | # Docs | # Words | # Labels |
 +==============+==============+========+=========+==========+
 | 20NewsGroup  | 20Newsgroup_ |  16309 |    1612 |       20 |
 +--------------+--------------+--------+---------+----------+
@@ -138,6 +138,9 @@ Available Datasets
 .. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 .. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 
+
+Load a Custom Dataset
+============================
 Otherwise, you can load a custom preprocessed dataset in the following way:
 
 .. code-block:: python
@@ -150,7 +153,7 @@ Make sure that the dataset is in the following format:
     * corpus file: a .tsv file (tab-separated) that contains up to three columns, i.e. the document, the partitition, and the label associated to the document (optional).
     * vocabulary: a .txt file where each line represents a word of the vocabulary
 
-The partition can be "train" for the training partition, "test" for testing partition, or "val" for the validation partition. An example of dataset can be found here: `sample_dataset_`.
+The partition can be "train" for the training partition, "test" for testing partition, or "val" for the validation partition. An example of dataset can be found here: `sample_dataset`_.
 
 Disclaimer
 ~~~~~~~~~~~~~
@@ -222,7 +225,7 @@ Available Models
 +-------------------------------------------+-----------------------------------------------------------+
 | Name                                      | Implementation                                            |
 +===========================================+===========================================================+
-| CTM `(Bianchi et al. 2020)`_              | https://github.com/MilaNLProc/contextualized-topic-models |
+| CTM `(Bianchi et al. 2021)`_              | https://github.com/MilaNLProc/contextualized-topic-models |
 +-------------------------------------------+-----------------------------------------------------------+
 | ETM `(Dieng et al. 2020)`_                | https://github.com/adjidieng/ETM                          |
 +-------------------------------------------+-----------------------------------------------------------+
@@ -240,7 +243,7 @@ Available Models
 +-------------------------------------------+-----------------------------------------------------------+
 
 
-.. _(Bianchi et al. 2020): https://www.aclweb.org/anthology/2021.eacl-main.143/
+.. _(Bianchi et al. 2021): https://www.aclweb.org/anthology/2021.eacl-main.143/
 .. _(Dieng et al. 2020): https://www.aclweb.org/anthology/2020.tacl-1.29 
 .. _(Blei et al. 2004): https://people.eecs.berkeley.edu/~jordan/papers/hdp.pdf
 .. _(Blei et al. 2003): https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
@@ -417,7 +420,8 @@ Dashboard
 OCTIS includes a user friendly graphical interface for creating, monitoring and viewing experiments.
 Following the implementation standards of datasets, models and metrics the dashboard will automatically update and allow you to use your own custom implementations.
 
-To run rhe dashboard, while in the project directory run the following command:
+To run rhe dashboard you need to clone the repo.
+While in the project directory run the following command:
 
 .. code-block:: bash
 

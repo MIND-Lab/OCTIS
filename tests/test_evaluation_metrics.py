@@ -11,7 +11,7 @@ from octis.evaluation_metrics.classification_metrics import AccuracyScore, Recal
 from octis.evaluation_metrics.diversity_metrics import TopicDiversity, InvertedRBO, KLDivergence, LogOddsRatio, \
     WordEmbeddingsInvertedRBO
 from octis.evaluation_metrics.similarity_metrics import WordEmbeddingsRBOMatch, PairwiseJaccardSimilarity, RBO, \
-    WordEmbeddingsCentroidSimilarity
+    WordEmbeddingsCentroidSimilarity, WordEmbeddingsPairwiseSimilarity
 
 from octis.evaluation_metrics.coherence_metrics import *
 from octis.dataset.dataset import Dataset
@@ -134,6 +134,12 @@ def test_similarity_measures(dataset, model_output):
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
     assert 0 <= score <= 1
+
+    metric = WordEmbeddingsPairwiseSimilarity(topk=10)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == float
+    assert 0 <= score <= 1
+
 
 
 def test_irbo(dataset, model_output):

@@ -2,6 +2,28 @@
 History
 =======
 
+1.8.3 (2021-07-26)
+------------------
+* Gensim migration from 3.8 to >=4.0.0
+
+1.8.2 (2021-07-25)
+------------------
+* Fixed unwanted sorting of documents
+
+1.8.1 (2021-07-08)
+------------------
+* Fixed gensim version (#22)
+
+1.8.0 (2021-06-18)
+------------------
+* Added per-topic kl-uniform significance
+
+
+1.7.1 (2021-06-09)
+------------------
+* Handling multilabel classification
+* Fixed preprocessing when dataset is not split (#17)
+
 1.6.0 (2021-05-20)
 ------------------
 * Added regularization hyperparameter to NMF_scikit

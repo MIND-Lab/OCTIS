@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from tqdm.contrib.concurrent import process_map  # or thread_map
 from pathlib import Path
 from octis.dataset.dataset import Dataset
+from collections import Counter
 
 """
 Maps the language to its corresponding spacy model
@@ -15,7 +16,7 @@ spacy_model_mapping = {'chinese': 'zh_core_web_sm', 'danish': 'nl_core_news_sm',
                        'english': 'en_core_web_sm', 'french': 'fr_core_news_sm', 'german': 'de_core_news_sm',
                        'greek': 'el_core_news_sm', 'italian': 'it_core_news_sm', 'japanese': 'ja_core_news_sm',
                        'lithuanian': 'lt_core_news_sm', 'norwegian': 'nb_core_news_sm', 'polish': 'pl_core_news_sm',
-                       'portoguese': 'pt_core_news_sm', 'romanian': 'ro_core_news_sm', 'russian': 'ru_core_news_sm',
+                       'portuguese': 'pt_core_news_sm', 'romanian': 'ro_core_news_sm', 'russian': 'ru_core_news_sm',
                        'spanish': 'es_core_news_sm'}
 
 
@@ -119,7 +120,7 @@ class Preprocessing:
         self.min_doc_words = min_words_docs
         self.preprocessing_steps = []
 
-    def preprocess_dataset(self, documents_path, labels_path=None):
+    def preprocess_dataset(self, documents_path, labels_path=None, multilabel=False):
         """
         preprocess the input dataset
 
@@ -128,6 +129,8 @@ class Preprocessing:
         :param labels_path: path to the documents file. Each row of the file represents a label. Its index corresponds
         to the index of the documents file (default: None)
         :type labels_path: str
+        :param multilabel: if true, a document is supposed to have more than one label (labels are split by whitespace)
+        :type multilabel: bool
 
         :return octis.dataset.dataset.Dataset
         """
@@ -152,7 +155,11 @@ class Preprocessing:
         print(len(vocabulary))
         final_docs, final_labels, document_indexes = [], [], []
         if labels_path is not None:
-            labels = [line.strip() for line in open(labels_path, 'r').readlines()]
+            if multilabel:
+                labels = [line.strip().split() for line in open(labels_path, 'r').readlines()]
+            else:
+                labels = [line.strip() for line in open(labels_path, 'r').readlines()]
+
             for i, doc, label in zip(range(len(docs)), docs, labels):
                 vocab = set(vocabulary)
                 new_doc = [w for w in doc.split() if w in vocab]
@@ -160,6 +167,17 @@ class Preprocessing:
                     final_docs.append(new_doc)
                     final_labels.append(label)
                     document_indexes.append(i)
+
+            labels_to_remove = set([k for k, v in dict(Counter(final_labels)).items() if v <= 3])
+            if len(labels_to_remove) > 0:
+                docs = final_docs
+                labels = final_labels
+                document_indexes, final_labels, final_docs = [], [], []
+                for i, doc, label in zip(range(len(docs)), docs, labels):
+                    if label not in labels_to_remove:
+                        final_docs.append(doc)
+                        final_labels.append(label)
+                        document_indexes.append(i)
         else:
             for i, doc in enumerate(docs):
                 vocab = set(vocabulary)
@@ -172,24 +190,27 @@ class Preprocessing:
         if self.verbose:
             print("words filtering done")
         metadata = {"total_documents": len(docs), "vocabulary_length": len(vocabulary),
-                    "preprocessing-info": self.preprocessing_steps, "labels": list(set(final_labels)),
-                    "total_labels": len(set(final_labels))}
+                    "preprocessing-info": self.preprocessing_steps
+                    # ,"labels": list(set(final_labels)), "total_labels": len(set(final_labels))
+                    }
         if self.split:
             if len(final_labels) > 0:
                 train, test, y_train, y_test = train_test_split(
-                    range(len(final_docs)), final_labels, test_size=0.15, random_state=1, stratify=final_labels)
+                    range(len(final_docs)), final_labels, test_size=0.15, random_state=1, shuffle=True)#stratify=final_labels)
 
-                train, validation = train_test_split(train, test_size=3 / 17, random_state=1, stratify=y_train)
+                train, validation = train_test_split(train, test_size=3 / 17, random_state=1, shuffle=True)# stratify=y_train)
+
                 partitioned_labels = [final_labels[doc] for doc in train + validation + test]
                 partitioned_corpus = [final_docs[doc] for doc in train + validation + test]
                 document_indexes = [document_indexes[doc] for doc in train + validation + test]
                 metadata["last-training-doc"] = len(train)
                 metadata["last-validation-doc"] = len(validation) + len(train)
                 if self.save_original_indexes:
-                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=partitioned_labels,
-                                   document_indexes=document_indexes)
+                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata,
+                                   labels=partitioned_labels, document_indexes=document_indexes)
                 else:
-                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata, labels=partitioned_labels)
+                    return Dataset(partitioned_corpus, vocabulary=vocabulary, metadata=metadata,
+                                   labels=partitioned_labels)
             else:
                 train, test = train_test_split(range(len(final_docs)), test_size=0.15, random_state=1)
                 train, validation = train_test_split(train, test_size=3 / 17, random_state=1)
@@ -206,11 +227,11 @@ class Preprocessing:
                                    document_indexes=document_indexes)
         else:
             if self.save_original_indexes:
-                Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels,
-                        document_indexes=document_indexes)
+                return Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels,
+                               document_indexes=document_indexes)
             else:
 
-                Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
+                return Dataset(final_docs, vocabulary=vocabulary, metadata=metadata, labels=final_labels)
 
     def filter_words(self, docs):
         if self.vocabulary is not None:
@@ -229,7 +250,7 @@ class Preprocessing:
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(df_max_freq=self.max_df, df_min_freq=self.min_df, lowercase=self.lowercase,
                                          max_features=self.max_features, stop_words=self.stopwords,
-                                         token_pattern=r"(?u)\b[\w{" + str(self.min_chars) + r",}|\-]+\b")
+                                         token_pattern=r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b")
 
         else:
 
@@ -239,7 +260,7 @@ class Preprocessing:
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
             vectorizer = TfidfVectorizer(max_df=self.max_df, min_df=self.min_df, lowercase=self.lowercase,
-                                         token_pattern=r"(?u)\b[\w{" + str(self.min_chars) + r",}|\-]+\b",
+                                         token_pattern=r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b",
                                          stop_words=self.stopwords)
 
         vectorizer.fit_transform(docs)

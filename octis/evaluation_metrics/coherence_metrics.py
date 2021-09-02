@@ -117,7 +117,7 @@ class WECoherencePairwise(AbstractMetric):
                 if len(topic) > 0:
                     local_simi = []
                     for w1, w2 in itertools.combinations(topic[0:self.topk], 2):
-                        if w1 in self._wv.vocab and w2 in self._wv.vocab:
+                        if w1 in self._wv.key_to_index.keys() and w2 in self._wv.key_to_index.keys():
                             local_simi.append(self._wv.similarity(w1, w2))
                     arrays.append(np.mean(local_simi))
             return np.mean(arrays)
@@ -167,7 +167,7 @@ class WECoherenceCentroid(AbstractMetric):
             for topic in topics:
                 topic_coherence = 0
                 for w1, w2 in itertools.combinations(topic, 2):
-                    if w1 in self._wv.vocab and w2 in self._wv.vocab:
+                    if w1 in self._wv.key_to_index.keys() and w2 in self._wv.key_to_index.keys():
                         distance = spatial.distance.cosine(self._wv.__getitem__(w1), self._wv.__getitem__(w2))
                         topic_coherence += distance - 1
                         count = count + 1

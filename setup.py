@@ -48,6 +48,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/MIND-LAB/OCTIS',
-    version='1.6.0',
+    version='1.8.3',
     zip_safe=False,
 )

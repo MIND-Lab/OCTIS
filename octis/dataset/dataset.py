@@ -40,42 +40,44 @@ class Dataset:
 
     # Partitioned Corpus getter
     def get_partitioned_corpus(self, use_validation=True):
-        last_training_doc = self.__metadata["last-training-doc"]
-        # gestire l'eccezione se last_validation_doc non è definito, restituire
-        # il validation vuoto
-        if use_validation:
-            last_validation_doc = self.__metadata["last-validation-doc"]
-            if self.__corpus is not None and last_training_doc != 0:
-                train_corpus = []
-                test_corpus = []
-                validation_corpus = []
+        if "last-training-doc" in self.__metadata:
+            last_training_doc = self.__metadata["last-training-doc"]
+            if use_validation:
+                last_validation_doc = self.__metadata["last-validation-doc"]
+                if self.__corpus is not None and last_training_doc != 0:
+                    train_corpus = []
+                    test_corpus = []
+                    validation_corpus = []
 
-                for i in range(last_training_doc):
-                    train_corpus.append(self.__corpus[i])
-                for i in range(last_training_doc, last_validation_doc):
-                    validation_corpus.append(self.__corpus[i])
-                for i in range(last_validation_doc, len(self.__corpus)):
-                    test_corpus.append(self.__corpus[i])
-                return train_corpus, validation_corpus, test_corpus
-        else:
-            if self.__corpus is not None and last_training_doc != 0:
-                if "last-validation-doc" in self.__metadata.keys():
-                    last_validation_doc = self.__metadata["last-validation-doc"]
-                else:
-                    last_validation_doc = 0
-
-                train_corpus = []
-                test_corpus = []
-                for i in range(last_training_doc):
-                    train_corpus.append(self.__corpus[i])
-
-                if last_validation_doc != 0:
+                    for i in range(last_training_doc):
+                        train_corpus.append(self.__corpus[i])
+                    for i in range(last_training_doc, last_validation_doc):
+                        validation_corpus.append(self.__corpus[i])
                     for i in range(last_validation_doc, len(self.__corpus)):
                         test_corpus.append(self.__corpus[i])
-                else:
-                    for i in range(last_training_doc, len(self.__corpus)):
-                        test_corpus.append(self.__corpus[i])
-                return train_corpus, test_corpus
+                    return train_corpus, validation_corpus, test_corpus
+            else:
+                if self.__corpus is not None and last_training_doc != 0:
+                    if "last-validation-doc" in self.__metadata.keys():
+                        last_validation_doc = self.__metadata["last-validation-doc"]
+                    else:
+                        last_validation_doc = 0
+
+                    train_corpus = []
+                    test_corpus = []
+                    for i in range(last_training_doc):
+                        train_corpus.append(self.__corpus[i])
+
+                    if last_validation_doc != 0:
+                        for i in range(last_validation_doc, len(self.__corpus)):
+                            test_corpus.append(self.__corpus[i])
+                    else:
+                        for i in range(last_training_doc, len(self.__corpus)):
+                            test_corpus.append(self.__corpus[i])
+                    return train_corpus, test_corpus
+        else:
+            return [self.__corpus]
+
 
     # Edges getter
     def get_edges(self):
@@ -293,9 +295,11 @@ class Dataset:
 
             df = pd.DataFrame(data=corpus)
             df = pd.concat([df, pd.DataFrame(partition)], axis=1)
+
+            labs = [' '.join(lab) for lab in self.__labels]
             if self.__labels:
-                df = pd.concat([df, pd.DataFrame(self.__labels)], axis=1)
-            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=None)
+                df = pd.concat([df, pd.DataFrame(labs)], axis=1)
+            df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=False)
 
             self._save_vocabulary(path + "/vocabulary.txt")
             self._save_metadata(path + "/metadata.json")
@@ -305,7 +309,7 @@ class Dataset:
         except:
             raise Exception("error in saving the dataset")
 
-    def load_custom_dataset_from_folder(self, path):
+    def load_custom_dataset_from_folder(self, path, multilabel=False):
         """
         Loads all the dataset from a folder
         Parameters
@@ -320,16 +324,20 @@ class Dataset:
                 self.__metadata = dict()
             df = pd.read_csv(self.dataset_path + "/corpus.tsv", sep='\t', header=None)
             if len(df.keys()) > 1:
-                df[1] = df[1].replace("train", "a_train")
-                df[1] = df[1].replace("val", "b_val")
-                df = df.sort_values(1).reset_index(drop=True)
+                #just make sure docs are sorted in the right way (train - val - test)
+                final_df = df[df[1] == 'train'].append(df[df[1] == 'val'])
+                final_df = final_df.append(df[df[1] == 'test'])
+                self.__metadata['last-training-doc'] = len(final_df[final_df[1] == 'train'])
+                self.__metadata['last-validation-doc'] = len(final_df[final_df[1] == 'val']) + \
+                                                         len(final_df[final_df[1] == 'train'])
 
-                self.__metadata['last-training-doc'] = len(df[df[1] == 'a_train'])
-                self.__metadata['last-validation-doc'] = len(df[df[1] == 'b_val']) + len(df[df[1] == 'a_train'])
+                self.__corpus = [d.split() for d in final_df[0].tolist()]
+                if len(final_df.keys()) > 2:
+                    if multilabel:
+                        self.__labels = [doc.split() for doc in final_df[2].tolist()]
+                    else:
+                        self.__labels = final_df[2].tolist()
 
-                self.__corpus = [d.split() for d in df[0].tolist()]
-                if len(df.keys()) > 2:
-                    self.__labels = df[2].tolist()
             else:
                 self.__corpus = [d.split() for d in df[0].tolist()]
                 self.__metadata['last-training-doc'] = len(df[0])
