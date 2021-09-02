@@ -2,6 +2,10 @@
 History
 =======
 
+dev (2021-09-xx)
+------------------
+* Bug fix preprocessing (#26)
+
 1.8.3 (2021-07-26)
 ------------------
 * Gensim migration from 3.8 to >=4.0.0
