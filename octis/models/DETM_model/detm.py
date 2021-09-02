@@ -1,15 +1,15 @@
 """This file defines a dynamic etm object.
 """
 import torch
-import torch.nn.functional as F 
-import numpy as np 
-import math 
+import torch.nn.functional as F
+import numpy as np
+import math
 from torch import nn
 
 
 class DETM(nn.Module):
-    def __init__(self, num_topics, num_times, vocab_size, t_hidden_size, eta_hidden_size,
-                 rho_size, emb_size, enc_drop, eta_nlayers, delta, train_embeddings, 
+    def __init__(self, num_topics, num_times, vocab_size, t_hidden_size, eta_hidden_size, eta_dropout,
+                 rho_size, emb_size, enc_drop, eta_nlayers, delta, train_embeddings,
                  theta_act, embeddings):
         super(DETM, self).__init__()
 
@@ -26,7 +26,7 @@ class DETM(nn.Module):
         self.eta_nlayers = eta_nlayers
         self.t_drop = nn.Dropout(enc_drop)
         self.delta = delta
-        self.train_embeddings = rain_embeddings
+        self.train_embeddings = train_embeddings
 
         self.theta_act = self.get_activation(theta_act)
 
@@ -42,10 +42,10 @@ class DETM(nn.Module):
         ## define the variational parameters for the topic embeddings over time (alpha) ... alpha is K x T x L
         self.mu_q_alpha = nn.Parameter(torch.randn(num_topics, num_times, rho_size))
         self.logsigma_q_alpha = nn.Parameter(torch.randn(num_topics, num_times, rho_size))
-    
+
         ## define variational distribution for \theta_{1:D} via amortizartion... theta is K x D
         self.q_theta = nn.Sequential(
-                    nn.Linear(vocab_size+num_topics, t_hidden_size), 
+                    nn.Linear(vocab_size+num_topics, t_hidden_size),
                     self.theta_act,
                     nn.Linear(t_hidden_size, t_hidden_size),
                     theta_act,
@@ -115,8 +115,8 @@ class DETM(nn.Module):
         kl_0 = self.get_kl(self.mu_q_alpha[:, 0, :], self.logsigma_q_alpha[:, 0, :], p_mu_0, logsigma_p_0)
         kl_alpha.append(kl_0)
         for t in range(1, self.num_times):
-            alphas[t] = self.reparameterize(self.mu_q_alpha[:, t, :], self.logsigma_q_alpha[:, t, :]) 
-            
+            alphas[t] = self.reparameterize(self.mu_q_alpha[:, t, :], self.logsigma_q_alpha[:, t, :])
+
             p_mu_t = alphas[t-1]
             logsigma_p_t = torch.log(self.delta * torch.ones(self.num_topics, self.rho_size).to(self.device))
             kl_t = self.get_kl(self.mu_q_alpha[:, t, :], self.logsigma_q_alpha[:, t, :], p_mu_t, logsigma_p_t)
@@ -167,7 +167,7 @@ class DETM(nn.Module):
         logsigma_theta = self.logsigma_q_theta(q_theta)
         z = self.reparameterize(mu_theta, logsigma_theta)
         theta = F.softmax(z, dim=-1)
-        kl_theta = self.get_kl(mu_theta, logsigma_theta, eta_td, torch.zeros(self.num_topics).to(device))
+        kl_theta = self.get_kl(mu_theta, logsigma_theta, eta_td, torch.zeros(self.num_topics).to(self.device))
         return theta, kl_theta
 
     def get_beta(self, alpha):
@@ -177,10 +177,10 @@ class DETM(nn.Module):
             logit = self.rho(alpha.view(alpha.size(0)*alpha.size(1), self.rho_size))
         else:
             tmp = alpha.view(alpha.size(0)*alpha.size(1), self.rho_size)
-            logit = torch.mm(tmp, self.rho.permute(1, 0)) 
+            logit = torch.mm(tmp, self.rho.permute(1, 0))
         logit = logit.view(alpha.size(0), alpha.size(1), -1)
         beta = F.softmax(logit, dim=-1)
-        return beta 
+        return beta
 
     def get_nll(self, theta, beta, bows):
         theta = theta.unsqueeze(1)
@@ -189,11 +189,11 @@ class DETM(nn.Module):
         loglik = torch.log(loglik+1e-6)
         nll = -loglik * bows
         nll = nll.sum(-1)
-        return nll  
+        return nll
 
     def forward(self, bows, normalized_bows, times, rnn_inp, num_docs):
         bsz = normalized_bows.size(0)
-        coeff = num_docs / bsz 
+        coeff = num_docs / bsz
         alpha, kl_alpha = self.get_alpha()
         eta, kl_eta = self.get_eta(rnn_inp)
         theta, kl_theta = self.get_theta(eta, normalized_bows, times)
