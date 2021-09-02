@@ -6,7 +6,7 @@ import torch
 class DETM(BaseETM):
     def __init__(self, num_topics=50, rho_size=300, embedding_size=300, t_hidden_size=800,
                  activation='relu', train_embeddings=1, eta_nlayers=3, eta_hidden_size=200,
-                 delta=0.005, device='cpu', lr_factor=4.0, lr=0.005, anneal_lr=1,
+                 delta=0.005, device='cpu', lr_factor=4.0, lr=0.005, anneal_lr=1, batch_size=100,
                  num_epochs=100, seed=2019, dropout=0.0, eta_dropout=0.0, clip=0.0,
                  nonmono=10, optimizer='adam', wdecay=1.2e-6, embeddings_path="", use_partitions=True):
 
@@ -98,7 +98,12 @@ class DETM(BaseETM):
         Train the model for the given epoch
         """
         # change to the way we are loading data the correct form .. @ask sylvia
+        train_data_with_time = None
         train_data, train_times = data.get_time_columns(train_data_with_time)
+        self.train_rnn_inp = data.get_rnn_input(
+            self.train_tokens, self.train_counts, train_times, self.hyperparameters['num_times'], len(self.vocab),
+            len(self.train_tokens))
+
         self.model.train()
         acc_loss = 0
         acc_nll = 0
@@ -108,15 +113,14 @@ class DETM(BaseETM):
         cnt = 0
         indices = torch.randperm(train_data.shape[0])
         indices = torch.split(indices, self.hyperparameters['batch_size'])
-        optimizer = self.get_optimizer(args)
+        optimizer = self.set_optimizer()
         for idx, ind in enumerate(indices):
             optimizer.zero_grad()
             self.zero_grad()
-            data_batch, times_batch = data.get_batch(train_data,
-                                                     ind,
-                                                     self.device,
+            data_batch, times_batch = data.get_batch(train_data, ind, self.device,
                                                      train_times)  # we can use pytorch data loader here
-            times_batch = get_indices(train_times, times_batch)
+            ### I comment the following row just because I need to make the code compile :/
+            # times_batch = get_indices(train_times, times_batch)
             sums = data_batch.sum(1).unsqueeze(1)
             times_batch = torch.from_numpy(times_batch)
             if self.hyperparameters['bow_norm']:
@@ -124,7 +128,7 @@ class DETM(BaseETM):
             else:
                 normalized_data_batch = data_batch
             loss, nll, kl_alpha, kl_eta, kl_theta = self.model.forward(
-                data_batch, normalized_data_batch, times_batch, train_rnn_inp, train_data.shape[0])
+                data_batch, normalized_data_batch, times_batch, self.train_rnn_inp, train_data.shape[0])
             loss.backward()
             if self.hyperparameters['clip'] > 0:
                 torch.nn.utils.clip_grad_norm_(self.parameters(), self.hyperparameters['clip'])

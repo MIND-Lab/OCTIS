@@ -1,5 +1,9 @@
 from octis.models.model import AbstractModel
-
+import pickle as pkl
+import numpy as np
+from torch import nn, optim
+import gensim
+import torch
 
 class BaseETM(AbstractModel):
     """
@@ -33,7 +37,7 @@ class BaseETM(AbstractModel):
             optimizer = optim.SGD(self.model.parameters(), lr=self.hyperparameters['lr'])
 
         return optimizer
-    
+
 
     @staticmethod
     def preprocess(vocab2id, train_corpus, test_corpus=None, validation_corpus=None):
