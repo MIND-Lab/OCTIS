@@ -42,7 +42,6 @@ class CTM(AbstractModel):
         """
 
         super().__init__()
-
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
         self.hyperparameters['activation'] = activation
@@ -66,7 +65,7 @@ class CTM(AbstractModel):
 
         self.use_partitions = use_partitions
 
-        hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
+        hidden_sizes = tuple([int(num_neurons) for _ in range(num_layers)])
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
         if self.use_partitions:
@@ -144,7 +143,7 @@ class CTM(AbstractModel):
                 self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
 
         self.hyperparameters['hidden_sizes'] = tuple(
-            [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])
+            [int(self.hyperparameters["num_neurons"]) for _ in range(self.hyperparameters["num_layers"])])
 
     def inference(self, x_test):
         assert isinstance(self.use_partitions, bool) and self.use_partitions

@@ -15,7 +15,7 @@ import pickle as pkl
 class ETM(AbstractModel):
 
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
-                 activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
+                 activation='relu', dropout=0.5, log_lr=2e-3, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
                  use_partitions=True):
         super(ETM, self).__init__()
@@ -27,7 +27,7 @@ class ETM(AbstractModel):
         self.hyperparameters['embedding_size'] = int(embedding_size)
         self.hyperparameters['activation'] = activation
         self.hyperparameters['dropout'] = float(dropout)
-        self.hyperparameters['lr'] = float(lr)
+        self.hyperparameters['lr'] = 10**float(log_lr)
         self.hyperparameters['optimizer'] = optimizer
         self.hyperparameters['batch_size'] = int(batch_size)
         self.hyperparameters['clip'] = float(clip)
@@ -109,7 +109,7 @@ class ETM(AbstractModel):
         self.optimizer = self.set_optimizer()
 
     def set_optimizer(self):
-        self.hyperparameters['lr'] = float(self.hyperparameters['lr'])
+        #self.hyperparameters['lr'] = float(self.hyperparameters['lr'])
         self.hyperparameters['wdecay'] = float(self.hyperparameters['wdecay'])
         if self.hyperparameters['optimizer'] == 'adam':
             optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparameters['lr'],
@@ -294,6 +294,9 @@ class ETM(AbstractModel):
         for k in hyperparameters.keys():
             if k in self.hyperparameters.keys():
                 self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
+            elif 'log_lr' in k:
+                self.hyperparameters['lr'] = 10**hyperparameters.get('log_lr', np.log10(self.hyperparameters['lr']))
+
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
