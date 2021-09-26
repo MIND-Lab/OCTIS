@@ -2,6 +2,7 @@ from octis.models.DETM_model import detm
 from octis.models.base_etm import BaseETM
 from octis.models.DETM_model import data
 import torch
+import warnings
 
 class DETM(BaseETM):
     def __init__(self, num_topics=50, rho_size=300, embedding_size=300, t_hidden_size=800,
@@ -9,6 +10,10 @@ class DETM(BaseETM):
                  delta=0.005, device='cpu', lr_factor=4.0, lr=0.005, anneal_lr=1, batch_size=100,
                  num_epochs=100, seed=2019, dropout=0.0, eta_dropout=0.0, clip=0.0,
                  nonmono=10, optimizer='adam', wdecay=1.2e-6, embeddings_path="", use_partitions=True):
+
+        warnings.simplefilter('always', Warning)
+        warnings.warn("Don't use this because it doesn't work :)",
+                      Warning)
 
         super(DETM, self).__init__()
         self.hyperparameters = dict()

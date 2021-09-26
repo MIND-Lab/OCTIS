@@ -215,7 +215,7 @@ class Dataset:
         """
         data = self.get_vocabulary()
         if data is not None:
-            with open(file_name, 'w') as outfile:
+            with open(file_name, 'w', encoding='utf8') as outfile:
                 for word in data:
                     outfile.write(word + "\n")
         else:
@@ -268,12 +268,12 @@ class Dataset:
         else:
             raise Exception("error in loading vocabulary")
 
-    def save(self, path):
+    def save(self, path, multilabel=False):
         """
         Saves all the dataset info in a folder
         Parameters
         ----------
-        path : path to the folder in wich files are saved.
+        path : path to the folder in which files are saved.
                If the folder doesn't exist it will be created
         """
         Path(path).mkdir(parents=True, exist_ok=True)
@@ -295,7 +295,10 @@ class Dataset:
             df = pd.DataFrame(data=corpus)
             df = pd.concat([df, pd.DataFrame(partition)], axis=1)
 
-            labs = [' '.join(lab) for lab in self.__labels]
+            if multilabel:
+                labs = [' '.join(lab) for lab in self.__labels]
+            else:
+                labs = self.__labels
             if self.__labels:
                 df = pd.concat([df, pd.DataFrame(labs)], axis=1)
             df.to_csv(path + '/corpus.tsv', sep='\t', index=False, header=False)
