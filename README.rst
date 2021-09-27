@@ -121,23 +121,28 @@ Just use one of the dataset names listed below. Note: it is case-sensitive!
 Available Datasets
 ============================
 
-+--------------+--------------+--------+---------+----------+
-|Name in OCTIS | Source       | # Docs | # Words | # Labels |
-+==============+==============+========+=========+==========+
-| 20NewsGroup  | 20Newsgroup_ |  16309 |    1612 |       20 |
-+--------------+--------------+--------+---------+----------+
-| BBC_News     | BBC-News_    |   2225 |    2949 |        5 |
-+--------------+--------------+--------+---------+----------+
-| DBLP         | DBLP_        |  54595 |    1513 |        4 |
-+--------------+--------------+--------+---------+----------+
-| M10          | M10_         |   8355 |    1696 |       10 |
-+--------------+--------------+--------+---------+----------+
++--------------+--------------+--------+---------+----------+----------+
+|Name in OCTIS | Source       | # Docs | # Words | # Labels | Language |
++==============+==============+========+=========+==========+==========+
+| 20NewsGroup  | 20Newsgroup_ |  16309 |    1612 |       20 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| BBC_News     | BBC-News_    |   2225 |    2949 |        5 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| DBLP         | DBLP_        |  54595 |    1513 |        4 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| M10          | M10_         |   8355 |    1696 |       10 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| DBPedia_IT   | DBPedia_IT_  |   4251 |    2047 |        5 | Italian  |
++--------------+--------------+--------+---------+----------+----------+
+| Europarl_IT  | Europarl_IT_ |   3613 |    2000 |       NA | Italian  |
++--------------+--------------+--------+---------+----------+----------+
 
 .. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
 .. _BBC-News: https://github.com/MIND-Lab/OCTIS
 .. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 .. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
-
+.. _DBPedia_IT: https://www.dbpedia.org/resources/ontology/
+.. _Europarl_IT: https://www.statmt.org/europarl/
 
 Load a Custom Dataset
 ============================
