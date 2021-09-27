@@ -35,7 +35,7 @@ class Preprocessing:
         :param vocabulary: the vocabulary of the corpus to preprocess (default: None)
         :type vocabulary: list
         :param max_features: maximum number of words that the vocabulary must contain. The less frequent
-        words will be removed (default: None)
+        words will be removed. If it's not None, then max_df and min_df are ignored (default: None)
         :type max_features: int
         :param min_df: words below this minumum document frequency will be removed (default: 0.0)
         :type min_df: float
@@ -248,8 +248,9 @@ class Preprocessing:
             self.preprocessing_steps.append('filter words with document frequency lower than ' + str(self.min_df) +
                                             ' and higher than ' + str(self.max_df))
             self.preprocessing_steps.append('filter words with less than ' + str(self.min_chars) + " character")
-            vectorizer = TfidfVectorizer(df_max_freq=self.max_df, df_min_freq=self.min_df, lowercase=self.lowercase,
-                                         max_features=self.max_features, stop_words=self.stopwords,
+            # we ignore df_max_freq e df_min_freq because self.max_features is not None
+            vectorizer = TfidfVectorizer(lowercase=self.lowercase, max_features=self.max_features,
+                                         stop_words=self.stopwords,
                                          token_pattern=r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b")
 
         else:

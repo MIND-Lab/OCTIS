@@ -175,7 +175,7 @@ class WordEmbeddingsInvertedRBOCentroid(AbstractMetric):
                 indexed_list2 = [word2index[word] for word in list2]
                 rbo_val = weirbo_centroid(
                     indexed_list1[:self.topk], indexed_list2[:self.topk], p=self.weight, index2word=index2word,
-                    word2vec=self.wv, norm=self.norm)[2]
+                    embedding_space=self.wv, norm=self.norm)[2]
 
                 collect.append(rbo_val)
             return 1 - np.mean(collect)

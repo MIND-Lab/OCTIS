@@ -3,6 +3,7 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
+import numpy as np
 
 from octis.models.contextualized_topic_models.networks.inference_network import CombinedInferenceNetwork, ContextualInferenceNetwork
 
@@ -29,7 +30,7 @@ class DecoderNetwork(nn.Module):
         """
         super(DecoderNetwork, self).__init__()
         assert isinstance(input_size, int), "input_size must by type int."
-        assert isinstance(n_components, int) and n_components > 0, \
+        assert (isinstance(n_components, int) or isinstance(n_components, np.int64)) and n_components > 0, \
             "n_components must be type int > 0."
         assert model_type in ['prodLDA', 'LDA'], \
             "model type must be 'prodLDA' or 'LDA'"

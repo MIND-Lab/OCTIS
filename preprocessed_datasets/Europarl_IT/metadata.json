@@ -1,0 +1,1 @@
+{"total_documents": 5000, "vocabulary_length": 2000, "preprocessing-info": ["lowercase", "remove_punctuation", "lemmatize", "filter words with document frequency lower than 0.001 and higher than 0.5", "filter words with less than 2 character", "filter documents with less than 5 words"], "last-training-doc": 2530, "last-validation-doc": 3073}
