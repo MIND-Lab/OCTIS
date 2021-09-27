@@ -2,7 +2,7 @@
 History
 =======
 
-dev (2021-09-xx)
+1.9.0 (2021-09-27)
 ------------------
 * Bug fix preprocessing (#26)
 * Bug fix ctm (#28)
