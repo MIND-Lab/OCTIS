@@ -5,7 +5,6 @@ from os.path import join, exists
 from pathlib import Path
 
 import pandas as pd
-from werkzeug.utils import header_property
 
 from octis.dataset.downloader import get_data_home, _pkl_filepath, download_dataset
 
