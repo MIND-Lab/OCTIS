@@ -15,7 +15,7 @@ class CTM(AbstractModel):
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
                  inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens",
-                 num_samples = 30):
+                 num_samples=30):
         """
         initialization of CTM
 
@@ -61,7 +61,6 @@ class CTM(AbstractModel):
         self.hyperparameters["bert_path"] = bert_path
         self.hyperparameters["num_layers"] = num_layers
         self.hyperparameters["bert_model"] = bert_model
-        self.hyperparameters["num_samples"] = num_samples
 
         self.use_partitions = use_partitions
 
@@ -85,7 +84,12 @@ class CTM(AbstractModel):
                                 bert_model=self.hyperparameters["bert_model"])
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            self.X_train, self.input_size = self.preprocess(self.vocab, train=data_corpus)
+            self.vocab = dataset.get_vocabulary()
+
+            self.X_train, self.input_size = self.preprocess(
+                self.vocab, train=data_corpus, bert_train_path=self.hyperparameters['bert_path'] + "_train.pkl",
+                bert_model=self.hyperparameters["bert_model"])
+            self.X_test, self.X_valid = None, None
 
     def train_model(self, hyperparameters=None, top_words=10):
         """

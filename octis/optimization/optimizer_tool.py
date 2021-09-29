@@ -37,7 +37,7 @@ def importClass(class_name, module_name, module_path):
     return imported_class
 
 
-def load_model(optimization_object):
+def load_model(optimization_object, dataset):
     """
     Load the topic model for the resume of the optimization
 
@@ -45,6 +45,7 @@ def load_model(optimization_object):
     :type optimization_object: dict
     :return: topic model used during the BO.
     :rtype: object model
+    :param dataset: dataset
     """
 
     model_parameters = optimization_object['model_attributes']
@@ -54,7 +55,7 @@ def load_model(optimization_object):
     module_path = os.path.join(framework_path, "models")
     module_path = os.path.join(module_path, model_name + ".py")
     model = importClass(model_name, model_name, module_path)
-    model_instance = model()
+    model_instance = model(dataset=dataset)
     model_instance.hyperparameters.update(model_parameters)
     model_instance.use_partitions = use_partitioning
 

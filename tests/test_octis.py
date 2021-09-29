@@ -33,8 +33,8 @@ def test_model_output_lda(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = LDA(num_topics=num_topics, iterations=5)
-    output = model.train_model(dataset)
+    model = LDA(dataset, num_topics=num_topics, iterations=5)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -58,10 +58,10 @@ def test_model_output_lda(data_dir):
 
 def test_model_output_etm(data_dir):
     dataset = Dataset()
-    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    dataset.load_custom_dataset_from_folder(data_dir + '/20Newsgroup')
     num_topics = 3
-    model = ETM(num_topics=num_topics, num_epochs=5)
-    output = model.train_model(dataset)
+    model = ETM(dataset, num_topics=num_topics, num_epochs=5)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -87,8 +87,8 @@ def test_model_output_etm_not_partitioned(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = ETM(num_topics=num_topics, num_epochs=5, use_partitions=False)
-    output = model.train_model(dataset)
+    model = ETM(dataset, num_topics=num_topics, num_epochs=5, use_partitions=False)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' not in output.keys()
@@ -110,8 +110,8 @@ def test_model_output_lda_tomotopy(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = LDATOMOTO(num_topics=num_topics, alpha=0.1)
-    output = model.train_model(dataset)
+    model = LDATOMOTO(dataset, num_topics=num_topics, alpha=0.1)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -137,8 +137,8 @@ def test_model_output_nmf(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = NMF(num_topics=num_topics, w_max_iter=10, h_max_iter=10, use_partitions=True)
-    output = model.train_model(dataset)
+    model = NMF(dataset, num_topics=num_topics, w_max_iter=10, h_max_iter=10, use_partitions=True)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -164,8 +164,8 @@ def test_model_output_nmf_scikit(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = NMF_scikit(num_topics=num_topics, use_partitions=True)
-    output = model.train_model(dataset)
+    model = NMF_scikit(dataset, num_topics=num_topics, use_partitions=True, topic_lower_bound=1)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -191,8 +191,8 @@ def test_model_output_ctm_zeroshot(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = CTM(num_topics=num_topics, num_epochs=5, inference_type='zeroshot')
-    output = model.train_model(dataset)
+    model = CTM(dataset, num_topics=num_topics, num_epochs=5, inference_type='zeroshot')
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -218,8 +218,8 @@ def test_model_output_ctm_combined(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined')
-    output = model.train_model(dataset)
+    model = CTM(dataset, num_topics=num_topics, num_epochs=5, inference_type='combined')
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -245,9 +245,9 @@ def test_model_output_ctm_combined_not_partition(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = CTM(num_topics=num_topics, num_epochs=5, inference_type='combined',use_partitions=False,
+    model = CTM(dataset, num_topics=num_topics, num_epochs=5, inference_type='combined',use_partitions=False,
                 bert_path='./not_part')
-    output = model.train_model(dataset)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' not in output.keys()
@@ -269,8 +269,8 @@ def test_model_output_prodlda(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = ProdLDA(num_topics=num_topics, num_epochs=5)
-    output = model.train_model(dataset)
+    model = ProdLDA(dataset, num_topics=num_topics, num_epochs=5)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' in output.keys()
@@ -296,8 +296,8 @@ def test_model_output_prodlda_not_partitioned(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
-    model = ProdLDA(num_topics=num_topics, num_epochs=5, use_partitions=False)
-    output = model.train_model(dataset)
+    model = ProdLDA(dataset, num_topics=num_topics, num_epochs=5, use_partitions=False)
+    output = model.train_model()
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
     assert 'test-topic-document-matrix' not in output.keys()

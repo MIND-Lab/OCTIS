@@ -204,7 +204,7 @@ class LDA(AbstractModel):
                                            * hyperparams["num_topics"]
         elif "alpha" in hyperparams:
             if isinstance(hyperparams["alpha"], float):
-                hyperparams["alpha"] = [hyperparams["alpha"] * hyperparams["num_topics"]]
+                hyperparams["alpha"] = [hyperparams["alpha"]] * hyperparams["num_topics"]
 
         if "beta_log" in hyperparams:
             if isinstance(hyperparams["beta_log"], float):
@@ -219,7 +219,6 @@ class LDA(AbstractModel):
             self.hyperparameters.pop('alpha_log')
         self.hyperparameters['minimum_probability'] = 0.0
         self.hyperparameters['minimum_phi_value'] = 0.0
-
 
 
         self.trained_model = ldamodel.LdaModel(**self.hyperparameters)

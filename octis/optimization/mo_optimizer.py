@@ -54,22 +54,25 @@ class MOOptimizer:
     def objective(self, x):
         metrics_results = [[] for _ in self.metrics]
         with open(self.options.progress_load_from_and_save_to + "_split.csv", 'a') as fw:
-            for i in range(self.model_runs):
-                model_output = self.model.train_model(hyperparameters=x)
-                if self.save_models:
-                    name = str(self.current_call) + "_" + str(i)
-                    save_model_path = self.model_path_models + name
-                    save_model_output(model_output, save_model_path)
+            try:
+                for i in range(self.model_runs):
+                    model_output = self.model.train_model(hyperparameters=x)
+                    if self.save_models:
+                        name = str(self.current_call) + "_" + str(i)
+                        save_model_path = self.model_path_models + name
+                        save_model_output(model_output, save_model_path)
 
-                for m in range(len(self.metrics)):
-                    metric_score = self.metrics[m].score(model_output)
-                    metrics_results[m].append(metric_score)
-                    if m == 0:
-                        fw.write(str(metric_score))
-                    else:
-                        fw.write(";" + str(metric_score))
-                fw.write("#")
-            fw.write("\n")
+                    for m in range(len(self.metrics)):
+                        metric_score = self.metrics[m].score(model_output)
+                        metrics_results[m].append(metric_score)
+                        if m == 0:
+                            fw.write(str(metric_score))
+                        else:
+                            fw.write(";" + str(metric_score))
+                        fw.write("#")
+                    fw.write("\n")
+            except Exception as e:  # work on python 3.x
+                print(e)
 
         median_metrics_results = [np.median(res) for res in metrics_results]
         self.current_call += 1
