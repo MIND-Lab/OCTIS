@@ -7,7 +7,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
 from octis.models.ETM_model import etm
 from octis.models.base_etm import BaseETM
-import gensim
 import pickle as pkl
 
 

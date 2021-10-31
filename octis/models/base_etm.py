@@ -1,8 +1,7 @@
-from gensim.models.keyedvectors import load_word2vec_format
 from octis.models.model import AbstractModel
 import pickle as pkl
 import numpy as np
-from torch import nn, optim
+from torch import optim
 from gensim.models import KeyedVectors
 import torch
 
