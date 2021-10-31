@@ -123,7 +123,7 @@ class ETM(BaseETM):
             self.optimizer.zero_grad()
             self.model.zero_grad()
             data_batch = data.get_batch(self.train_tokens, self.train_counts, ind, len(self.vocab.keys()),
-                                        self.hyperparameters['embedding_size'], self.device)
+                                        self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
@@ -179,7 +179,7 @@ class ETM(BaseETM):
                     self.model.zero_grad()
                     val_data_batch = data.get_batch(self.valid_tokens, self.valid_counts,
                                                     ind, len(self.vocab.keys()),
-                                                    self.hyperparameters['embedding_size'], self.device)
+                                                    self.device)
                     sums = val_data_batch.sum(1).unsqueeze(1)
                     if self.hyperparameters['bow_norm']:
                         val_normalized_data_batch = val_data_batch / sums
@@ -245,7 +245,7 @@ class ETM(BaseETM):
         for idx, ind in enumerate(indices):
             data_batch = data.get_batch(self.test_tokens, self.test_counts,
                                         ind, len(self.vocab.keys()),
-                                        self.hyperparameters['embedding_size'], self.device)
+                                        self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
