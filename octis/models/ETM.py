@@ -16,7 +16,7 @@ class ETM(BaseETM):
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
-                 use_partitions=True):
+                 embeddings_type='pickle', binary_embeddings=True, use_partitions=True):
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = int(num_topics)
@@ -34,6 +34,10 @@ class ETM(BaseETM):
         self.hyperparameters['bow_norm'] = int(bow_norm)
         self.hyperparameters['train_embeddings'] = bool(train_embeddings)
         self.hyperparameters['embeddings_path'] = embeddings_path
+        assert embeddings_type in ['pickle', 'word2vec', 'keyedvectors'], \
+            "embeddings_type must be 'pickle', 'word2vec' or 'keyedvectors'."
+        self.hyperparameters['embeddings_type'] = embeddings_type
+        self.hyperparameters['binary_embeddings'] = binary_embeddings
         self.top_word = top_word
         self.early_stopping = None
         self.device = device
