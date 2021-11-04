@@ -102,7 +102,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.6, 3.7 and 3.8, and for PyPy. 
+3. The pull request should work for Python 3.6, 3.7 and 3.8, and for PyPI. 
    Make sure you have `enabled workflow actions for your GitHub fork 
    <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository>`_ 
    and that the tests pass for all supported Python versions.
