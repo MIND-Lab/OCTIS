@@ -16,6 +16,23 @@ class ETM(BaseETM):
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
                  embeddings_type='pickle', binary_embeddings=True, use_partitions=True):
+        """
+        initialization of ETM
+
+        :param embeddings_path: string, path to embeddings file. Can be a binary file for
+            the 'pickle', 'keyedvectors' and 'word2vec' types or a text file for 'word2vec'. 
+            This parameter is only used if 'train_embeddings' is set to False
+        :param embeddings_type: string, defines the format of the embeddings file.
+            Possible values are 'pickle', 'keyedvectors' or 'word2vec'. If set to 'pickle',
+            you must provide a file created with 'pickle' containing an array of word 
+            embeddings, composed by words and their respective vectors. If set to 'keyedvectors', 
+            you must provide a file containing a saved gensim.models.KeyedVectors instance. 
+            If set to 'word2vec', you must provide a file with the original word2vec format. 
+            This parameter is only used if 'train_embeddings' is set to False (default 'pickle')
+        :param binary_embeddings: bool, indicates if the original word2vec embeddings file is binary
+            or textual. This parameter is only used if both 'embeddings_type' is set to 'word2vec' 
+            and 'train_embeddings' is set to False. Otherwise, it will be ignored (default True)
+        """
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = int(num_topics)
