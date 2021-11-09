@@ -15,7 +15,7 @@ class ETM(BaseETM):
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
-                 embeddings_type='pickle', binary_embeddings=True, use_partitions=True):
+                 embeddings_type='pickle', binary_embeddings=True, headerless_embeddings=False, use_partitions=True):
         """
         initialization of ETM
 
@@ -32,6 +32,10 @@ class ETM(BaseETM):
         :param binary_embeddings: bool, indicates if the original word2vec embeddings file is binary
             or textual. This parameter is only used if both 'embeddings_type' is set to 'word2vec' 
             and 'train_embeddings' is set to False. Otherwise, it will be ignored (default True)
+        :param headerless_embeddings: bool, indicates if the original word2vec embeddings textual file 
+            has a header line in the format "<no_of_vectors> <vector_length>". This parameter is only 
+            used if 'embeddings_type' is set to 'word2vec', 'train_embeddings' is set to False and
+            'binary_embeddings' is set to False. Otherwise, it will be ignored (default False)
         """
         super(ETM, self).__init__()
         self.hyperparameters = dict()
@@ -54,6 +58,7 @@ class ETM(BaseETM):
             "embeddings_type must be 'pickle', 'word2vec' or 'keyedvectors'."
         self.hyperparameters['embeddings_type'] = embeddings_type
         self.hyperparameters['binary_embeddings'] = binary_embeddings
+        self.hyperparameters['headerless_embeddings'] = headerless_embeddings
         self.top_word = top_word
         self.early_stopping = None
         self.device = device

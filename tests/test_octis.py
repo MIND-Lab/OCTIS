@@ -224,6 +224,34 @@ def test_model_output_etm_with_text_word2vec_embeddings_file(data_dir, embedding
     assert type(output['test-topic-document-matrix']) == np.ndarray
     assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
 
+def test_model_output_etm_with_headerless_text_word2vec_embeddings_file(data_dir, embeddings_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = ETM(num_topics=num_topics, num_epochs=5, train_embeddings=False, 
+        embeddings_type='word2vec', embeddings_path=embeddings_dir +'/test_example/headerless_example.txt', 
+        binary_embeddings=False, headerless_embeddings=True)
+    output = model.train_model(dataset)
+    assert 'topics' in output.keys()
+    assert 'topic-word-matrix' in output.keys()
+    assert 'test-topic-document-matrix' in output.keys()
+
+    # check topics format
+    assert type(output['topics']) == list
+    assert len(output['topics']) == num_topics
+
+    # check topic-word-matrix format
+    assert type(output['topic-word-matrix']) == np.ndarray
+    assert output['topic-word-matrix'].shape == (num_topics, len(dataset.get_vocabulary()))
+
+    # check topic-document-matrix format
+    assert type(output['topic-document-matrix']) == np.ndarray
+    assert output['topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[0]))
+
+    # check test-topic-document-matrix format
+    assert type(output['test-topic-document-matrix']) == np.ndarray
+    assert output['test-topic-document-matrix'].shape == (num_topics, len(dataset.get_partitioned_corpus()[2]))
+
 def test_model_output_etm_with_keyedvectors_embeddings_file(data_dir, embeddings_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')

@@ -50,7 +50,8 @@ class BaseETM(AbstractModel):
 
         vectors = self._load_word_vectors(self.hyperparameters['embeddings_path'],
                                         self.hyperparameters['embeddings_type'],
-                                        self.hyperparameters['binary_embeddings'])
+                                        self.hyperparameters['binary_embeddings'],
+                                        self.hyperparameters['headerless_embeddings'])
         embeddings = np.zeros((len(self.vocab.keys()), self.hyperparameters['embedding_size']))
         for i, word in enumerate(self.vocab.values()):
             try:
@@ -59,7 +60,7 @@ class BaseETM(AbstractModel):
                 embeddings[i] = np.random.normal(scale=0.6, size=(self.hyperparameters['embedding_size'],))
         self.embeddings = torch.from_numpy(embeddings).to(self.device)
 
-    def _load_word_vectors(self, embeddings_path, embeddings_type, binary_embeddings=True):
+    def _load_word_vectors(self, embeddings_path, embeddings_type, binary_embeddings=True, headerless_embeddings=False):
         """
         Reads word embeddings from a specified file and format.
 
@@ -73,12 +74,17 @@ class BaseETM(AbstractModel):
             If set to 'word2vec', you must provide a file with the original word2vec format
         :param binary_embeddings: bool, indicates if the original word2vec embeddings file is binary
             or textual (default True)
+        :param headerless_embeddings: bool, indicates if the original word2vec embeddings textual file 
+            has a header line in the format "<no_of_vectors> <vector_length>" (default False)
         :returns: gensim.models.KeyedVectors or dict
         """
         if embeddings_type == 'keyedvectors':
             return KeyedVectors.load(embeddings_path, mmap='r')
         elif embeddings_type == 'word2vec':
-            return KeyedVectors.load_word2vec_format(embeddings_path, binary=binary_embeddings)
+            return KeyedVectors.load_word2vec_format(
+                embeddings_path, 
+                binary=binary_embeddings,
+                no_header=headerless_embeddings)
 
         vectors = {}
         embs = pkl.load(open(embeddings_path, 'rb'))
