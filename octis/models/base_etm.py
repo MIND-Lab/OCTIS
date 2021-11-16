@@ -1,8 +1,8 @@
 from octis.models.model import AbstractModel
 import pickle as pkl
 import numpy as np
-from torch import nn, optim
-import gensim
+from torch import optim
+from gensim.models import KeyedVectors
 import torch
 
 class BaseETM(AbstractModel):
@@ -45,24 +45,56 @@ class BaseETM(AbstractModel):
         raise NotImplementedError("Subclasses should implement this!")
 
     def load_embeddings(self):
-        if not self.hyperparameters['train_embeddings']:
-            vectors = {}
-            embs = pkl.load(open(self.hyperparameters['embeddings_path'], 'rb'))
-            for l in embs:
-                line = l.split()
-                word = line[0]
-                if word in self.vocab.values():
-                    vect = np.array(line[1:]).astype(np.float)
-                    vectors[word] = vect
-            embeddings = np.zeros((len(self.vocab.keys()), self.hyperparameters['embedding_size']))
-            words_found = 0
-            for i, word in enumerate(self.vocab.values()):
-                try:
-                    embeddings[i] = vectors[word]
-                    words_found += 1
-                except KeyError:
-                    embeddings[i] = np.random.normal(scale=0.6, size=(self.hyperparameters['embedding_size'],))
-            self.embeddings = torch.from_numpy(embeddings).to(self.device)
+        if self.hyperparameters['train_embeddings']:
+            return
+
+        vectors = self._load_word_vectors(self.hyperparameters['embeddings_path'],
+                                        self.hyperparameters['embeddings_type'],
+                                        self.hyperparameters['binary_embeddings'],
+                                        self.hyperparameters['headerless_embeddings'])
+        embeddings = np.zeros((len(self.vocab.keys()), self.hyperparameters['embedding_size']))
+        for i, word in enumerate(self.vocab.values()):
+            try:
+                embeddings[i] = vectors[word]
+            except KeyError:
+                embeddings[i] = np.random.normal(scale=0.6, size=(self.hyperparameters['embedding_size'],))
+        self.embeddings = torch.from_numpy(embeddings).to(self.device)
+
+    def _load_word_vectors(self, embeddings_path, embeddings_type, binary_embeddings=True, headerless_embeddings=False):
+        """
+        Reads word embeddings from a specified file and format.
+
+        :param embeddings_path: string, path to embeddings file. Can be a binary file for
+            the 'pickle', 'keyedvectors' and 'word2vec' types or a text file for 'word2vec'
+        :param embeddings_type: string, defines the format of the embeddings file.
+            Possible values are 'pickle', 'keyedvectors' or 'word2vec'. If set to 'pickle',
+            you must provide a file created with 'pickle' containing an array of word 
+            embeddings, composed by words and their respective vectors. If set to 'keyedvectors', 
+            you must provide a file containing a saved gensim.models.KeyedVectors instance. 
+            If set to 'word2vec', you must provide a file with the original word2vec format
+        :param binary_embeddings: bool, indicates if the original word2vec embeddings file is binary
+            or textual (default True)
+        :param headerless_embeddings: bool, indicates if the original word2vec embeddings textual file 
+            has a header line in the format "<no_of_vectors> <vector_length>" (default False)
+        :returns: gensim.models.KeyedVectors or dict
+        """
+        if embeddings_type == 'keyedvectors':
+            return KeyedVectors.load(embeddings_path, mmap='r')
+        elif embeddings_type == 'word2vec':
+            return KeyedVectors.load_word2vec_format(
+                embeddings_path, 
+                binary=binary_embeddings,
+                no_header=headerless_embeddings)
+
+        vectors = {}
+        embs = pkl.load(open(embeddings_path, 'rb'))
+        for l in embs:
+            line = l.split()
+            word = line[0]
+            if word in self.vocab.values():
+                vect = np.array(line[1:]).astype(np.float)
+                vectors[word] = vect
+        return vectors
 
     def filter_pretrained_embeddings(self, pretrained_embeddings_path, save_embedding_path, vocab_path, binary=True):
         """
@@ -77,7 +109,7 @@ class BaseETM(AbstractModel):
             for line in fr.readlines():
                 vocab.append(line.strip().split(" ")[0])
 
-        w2v_model = gensim.models.KeyedVectors.load_word2vec_format(pretrained_embeddings_path, binary=binary)
+        w2v_model = KeyedVectors.load_word2vec_format(pretrained_embeddings_path, binary=binary)
         embeddings = []
         for word in vocab:
             if word in w2v_model.vocab:
