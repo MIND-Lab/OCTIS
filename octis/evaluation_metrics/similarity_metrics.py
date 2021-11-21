@@ -170,6 +170,7 @@ class WordEmbeddingsWeightedSumSimilarity(AbstractMetric):
         else:
             self.wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=self.binary)
         self.topk = topk
+        self.id2word = id2word
 
     def score(self, model_output):
         """
