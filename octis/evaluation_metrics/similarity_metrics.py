@@ -19,6 +19,7 @@ class WordEmbeddingsRBOMatch(WordEmbeddingsInvertedRBO):
         :param word2vec_path: word embedding space in gensim word2vec format
         :param weight: Weight of each agreement at depth d. When set to 1.0, there is no weight, the rbo returns to
         average overlap. (Default 0.9)
+        :param binary: If True, indicates whether the data is in binary word2vec format.
         :param normalize: if true, normalize the cosine similarity
         """
         super().__init__(word2vec_path=word2vec_path, binary=binary, normalize=normalize, weight=weight, topk=topk)
@@ -43,6 +44,7 @@ class WordEmbeddingsRBOCentroid(WordEmbeddingsInvertedRBOCentroid):
         :param word2vec_path: word embedding space in gensim word2vec format
         :param weight: Weight of each agreement at depth d. When set to 1.0, there is no weight, the rbo returns to
         average overlap. (Default 0.9)
+        :param binary: If True, indicates whether the data is in binary word2vec format.
         :param normalize: if true, normalize the cosine similarity
         """
         super().__init__(word2vec_path=word2vec_path, binary=binary, normalize=normalize, weight=weight, topk=topk)
@@ -57,7 +59,7 @@ class WordEmbeddingsRBOCentroid(WordEmbeddingsInvertedRBOCentroid):
 
 
 class WordEmbeddingsPairwiseSimilarity(AbstractMetric):
-    def __init__(self, word2vec_path=None, topk=10):
+    def __init__(self, word2vec_path=None, topk=10, binary=False):
         """
         Initialize metric WE pairwise similarity
 
@@ -65,12 +67,13 @@ class WordEmbeddingsPairwiseSimilarity(AbstractMetric):
         ----------
         :param topk: top k words on which the topic diversity will be computed
         :param word2vec_path: word embedding space in gensim word2vec format
+        :param binary: If True, indicates whether the data is in binary word2vec format.
         """
         super().__init__()
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
-            self.wv = KeyedVectors.load_word2vec_format( word2vec_path, binary=self.binary)
+            self.wv = KeyedVectors.load_word2vec_format( word2vec_path, binary=binary)
 
         self.topk = topk
 
@@ -101,7 +104,7 @@ class WordEmbeddingsPairwiseSimilarity(AbstractMetric):
 
 
 class WordEmbeddingsCentroidSimilarity(AbstractMetric):
-    def __init__(self, word2vec_path=None, topk=10):
+    def __init__(self, word2vec_path=None, topk=10, binary=False):
         """
         Initialize metric WE centroid similarity
 
@@ -109,12 +112,14 @@ class WordEmbeddingsCentroidSimilarity(AbstractMetric):
         ----------
         :param topk: top k words on which the topic diversity will be computed
         :param word2vec_path: word embedding space in gensim word2vec format
+        :param binary: If True, indicates whether the data is in binary word2vec format.
+
         """
         super().__init__()
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
-            self.wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=self.binary)
+            self.wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=binary)
         self.topk = topk
 
     def score(self, model_output):
@@ -156,19 +161,21 @@ def get_word2index(list1, list2):
 
 
 class WordEmbeddingsWeightedSumSimilarity(AbstractMetric):
-    def __init__(self, id2word, word2vec_path=None, topk=10):
+    def __init__(self, id2word, word2vec_path=None, topk=10, binary=False):
         """
         Initialize metric WE Weighted Sum similarity
 
         :param id2word: dictionary mapping each id to the word of the vocabulary
         :param topk: top k words on which the topic diversity will be computed
         :param word2vec_path: word embedding space in gensim word2vec format
+        :param binary: If True, indicates whether the data is in binary word2vec format.
+
         """
         super().__init__()
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
         else:
-            self.wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=self.binary)
+            self.wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=binary)
         self.topk = topk
         self.id2word = id2word
 
