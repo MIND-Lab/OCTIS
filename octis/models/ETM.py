@@ -7,7 +7,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
 from octis.models.ETM_model import etm
 from octis.models.base_etm import BaseETM
-import gensim
 import pickle as pkl
 
 
@@ -16,7 +15,28 @@ class ETM(BaseETM):
     def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
-                 use_partitions=True):
+                 embeddings_type='pickle', binary_embeddings=True, headerless_embeddings=False, use_partitions=True):
+        """
+        initialization of ETM
+
+        :param embeddings_path: string, path to embeddings file. Can be a binary file for
+            the 'pickle', 'keyedvectors' and 'word2vec' types or a text file for 'word2vec'. 
+            This parameter is only used if 'train_embeddings' is set to False
+        :param embeddings_type: string, defines the format of the embeddings file.
+            Possible values are 'pickle', 'keyedvectors' or 'word2vec'. If set to 'pickle',
+            you must provide a file created with 'pickle' containing an array of word 
+            embeddings, composed by words and their respective vectors. If set to 'keyedvectors', 
+            you must provide a file containing a saved gensim.models.KeyedVectors instance. 
+            If set to 'word2vec', you must provide a file with the original word2vec format. 
+            This parameter is only used if 'train_embeddings' is set to False (default 'pickle')
+        :param binary_embeddings: bool, indicates if the original word2vec embeddings file is binary
+            or textual. This parameter is only used if both 'embeddings_type' is set to 'word2vec' 
+            and 'train_embeddings' is set to False. Otherwise, it will be ignored (default True)
+        :param headerless_embeddings: bool, indicates if the original word2vec embeddings textual file 
+            has a header line in the format "<no_of_vectors> <vector_length>". This parameter is only 
+            used if 'embeddings_type' is set to 'word2vec', 'train_embeddings' is set to False and
+            'binary_embeddings' is set to False. Otherwise, it will be ignored (default False)
+        """
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = int(num_topics)
@@ -34,6 +54,11 @@ class ETM(BaseETM):
         self.hyperparameters['bow_norm'] = int(bow_norm)
         self.hyperparameters['train_embeddings'] = bool(train_embeddings)
         self.hyperparameters['embeddings_path'] = embeddings_path
+        assert embeddings_type in ['pickle', 'word2vec', 'keyedvectors'], \
+            "embeddings_type must be 'pickle', 'word2vec' or 'keyedvectors'."
+        self.hyperparameters['embeddings_type'] = embeddings_type
+        self.hyperparameters['binary_embeddings'] = binary_embeddings
+        self.hyperparameters['headerless_embeddings'] = headerless_embeddings
         self.top_word = top_word
         self.early_stopping = None
         self.device = device
@@ -119,7 +144,7 @@ class ETM(BaseETM):
             self.optimizer.zero_grad()
             self.model.zero_grad()
             data_batch = data.get_batch(self.train_tokens, self.train_counts, ind, len(self.vocab.keys()),
-                                        self.hyperparameters['embedding_size'], self.device)
+                                        self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
@@ -175,7 +200,7 @@ class ETM(BaseETM):
                     self.model.zero_grad()
                     val_data_batch = data.get_batch(self.valid_tokens, self.valid_counts,
                                                     ind, len(self.vocab.keys()),
-                                                    self.hyperparameters['embedding_size'], self.device)
+                                                    self.device)
                     sums = val_data_batch.sum(1).unsqueeze(1)
                     if self.hyperparameters['bow_norm']:
                         val_normalized_data_batch = val_data_batch / sums
@@ -241,7 +266,7 @@ class ETM(BaseETM):
         for idx, ind in enumerate(indices):
             data_batch = data.get_batch(self.test_tokens, self.test_counts,
                                         ind, len(self.vocab.keys()),
-                                        self.hyperparameters['embedding_size'], self.device)
+                                        self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
