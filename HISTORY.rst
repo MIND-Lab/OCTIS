@@ -2,6 +2,12 @@
 History
 =======
 
+1.10.0 (2021-11-21)
+--------------------
+* ETM now supports different formats of word embeddings (#36)
+* Bug fix similarity measures (#41)
+* Minor fixes
+
 1.9.0 (2021-09-27)
 ------------------
 * Bug fix preprocessing (#26)
