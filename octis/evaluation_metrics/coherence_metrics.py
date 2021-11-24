@@ -8,7 +8,7 @@ import octis.configuration.citations as citations
 import numpy as np
 import itertools
 from scipy import spatial
-from sklearn.preprocessing import normalize
+from sklearn.metrics import pairwise_distances
 from operator import add
 
 
@@ -109,18 +109,28 @@ class WECoherencePairwise(AbstractMetric):
                 similarities
         """
         topics = model_output["topics"]
-        if self.topk > len(topics[0]):
-            raise Exception('Words in topics are less than topk')
-        else:
-            arrays = []
-            for _, topic in enumerate(topics):
-                if len(topic) > 0:
-                    local_simi = []
-                    for w1, w2 in itertools.combinations(topic[0:self.topk], 2):
-                        if w1 in self._wv.key_to_index.keys() and w2 in self._wv.key_to_index.keys():
-                            local_simi.append(self._wv.similarity(w1, w2))
-                    arrays.append(np.mean(local_simi))
-            return np.mean(arrays)
+
+        result = 0.0
+        for topic in topics:
+            E = []
+
+            # Create matrix E (normalize word embeddings of
+            # words represented as vectors in wv)
+            for word in topic[0:self.topk]:
+                if word in self._wv.key_to_index.keys():
+                    word_embedding = self._wv.__getitem__(word)
+                    normalized_we = word_embedding/word_embedding.sum()
+                    E.append(normalized_we)
+            E = np.array(E)
+
+            # Perform cosine similarity between E rows
+            distances = np.sum(pairwise_distances(E, metric='cosine'))
+            topic_coherence = (distances)/(2*self.topk*(self.topk-1))
+
+            # Update result with the computed coherence of the topic
+            result += topic_coherence
+        result = result/len(topics)
+        return result
 
 
 class WECoherenceCentroid(AbstractMetric):
@@ -141,7 +151,8 @@ class WECoherenceCentroid(AbstractMetric):
         if self.word2vec_path is None:
             self._wv = api.load('word2vec-google-news-300')
         else:
-            self._wv = KeyedVectors.load_word2vec_format(self.word2vec_path, binary=self.binary)
+            self._wv = KeyedVectors.load_word2vec_format(
+                self.word2vec_path, binary=self.binary)
 
     @staticmethod
     def info():
@@ -163,15 +174,32 @@ class WECoherenceCentroid(AbstractMetric):
             raise Exception('Words in topics are less than topk')
         else:
             result = 0
-            count = 0
             for topic in topics:
+                E = []
+                # average vector of the words in topic (centroid)
+                t = [0] * len(self._wv.__getitem__(topic[0]))
+
+                # Create matrix E (normalize word embeddings of
+                # words represented as vectors in wv) and
+                # average vector of the words in topic
+                for word in topic:
+                    if word in self._wv.key_to_index.keys():
+                        word_embedding = self._wv.__getitem__(word)
+                        normalized_we = word_embedding/sum(word_embedding)
+                        E.append(normalized_we)
+                        t = list(map(add, t, word_embedding))
+                t = np.array(t)
+                t = t/(len(t)*sum(t))
+
                 topic_coherence = 0
-                for w1, w2 in itertools.combinations(topic, 2):
-                    if w1 in self._wv.key_to_index.keys() and w2 in self._wv.key_to_index.keys():
-                        distance = spatial.distance.cosine(self._wv.__getitem__(w1), self._wv.__getitem__(w2))
-                        topic_coherence += distance - 1
-                        count = count + 1
-                topic_coherence = topic_coherence/count
+                # Perform cosine similarity between each word embedding in E
+                # and t.
+                for word_embedding in E:
+                    distance = spatial.distance.cosine(word_embedding, t)
+                    topic_coherence += distance
+                topic_coherence = topic_coherence/self.topk
+
+                # Update result with the computed coherence of the topic
                 result += topic_coherence
             result /= len(topics)
             return result
