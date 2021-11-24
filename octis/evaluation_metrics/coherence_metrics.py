@@ -182,7 +182,7 @@ class WECoherenceCentroid(AbstractMetric):
                 # Create matrix E (normalize word embeddings of
                 # words represented as vectors in wv) and
                 # average vector of the words in topic
-                for word in topic:
+                for word in topic[0:self.topk]:
                     if word in self._wv.key_to_index.keys():
                         word_embedding = self._wv.__getitem__(word)
                         normalized_we = word_embedding/sum(word_embedding)
