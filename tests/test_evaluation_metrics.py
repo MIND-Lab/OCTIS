@@ -80,6 +80,7 @@ def test_npmi_coherence_measures(dataset, model_output):
     assert type(score) == np.float64 or type(score) == float
     assert -1 <= score <= 1
 
+
 def test_we_coherence_measures(dataset, model_output):
     metric = WECoherenceCentroid(topk=5)
     score = metric.score(model_output)
@@ -90,6 +91,23 @@ def test_we_coherence_measures(dataset, model_output):
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == np.float32 or type(score) == float
     assert -1 <= score <= 1
+
+
+def test_we_coherence_measures_oov(dataset):
+    model_output = {'topics':
+                        [['dsa', 'dsadgfd', '11111', '22222', 'bbbbbbbb'],
+                         ['aaaaa', 'bbb', 'cc', 'd', 'EEE']]}
+    metric = WECoherenceCentroid(topk=5)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == np.float32 or type(score) == float
+    assert -1 <= score <= 1
+    print(score)
+
+    metric = WECoherencePairwise(topk=10)
+    score = metric.score(model_output)
+    assert type(score) == np.float64 or type(score) == np.float32 or type(score) == float
+    assert -1 <= score <= 1
+    print(score)
 
 
 def test_diversity_measures(dataset, model_output):
@@ -139,7 +157,6 @@ def test_similarity_measures(dataset, model_output):
     score = metric.score(model_output)
     assert type(score) == np.float64 or type(score) == float
     assert 0 <= score <= 1
-
 
 
 def test_irbo(dataset, model_output):
