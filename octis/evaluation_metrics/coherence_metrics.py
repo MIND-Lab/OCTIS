@@ -192,7 +192,8 @@ class WECoherenceCentroid(AbstractMetric):
                         t = list(map(add, t, word_embedding))
 
                 t = np.array(t)
-                t = t/(len(t)*sum(t))
+                if sum(t) != 0:
+                    t = t/(len(t)*sum(t))
 
                 if len(E) > 0:
                     topic_coherence = 0
