@@ -71,9 +71,9 @@ class SOOptimizer:
             with open(self.save_path + "additional_metrics.csv", 'w') as fw:
                 for k, v in x.items():
                     fw.write(str(k) + "\t")
-                fw.write(str(self.metric.__class__))
+                fw.write(str(self.metric.__class__).split(".")[-1])
                 for ar in self.additional_metrics:
-                    fw.write("\t" + str(ar.__class__))
+                    fw.write("\t" + str(ar.__class__).split(".")[-1] +"\n")
 
         with open(self.save_path + "additional_metrics.csv", 'a') as fw:
             for k, v in x.items():
