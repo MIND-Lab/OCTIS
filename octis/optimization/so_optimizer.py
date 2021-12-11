@@ -10,12 +10,13 @@ import pickle
 class SOOptimizer:
 
     def __init__(self, model, dataset, search_space=None, config_file=None, model_runs=2, number_of_calls=10, metric=None,
-                 progress_file=None, maximize=True, acq_func='ucb', save_results=True, save_path="results/"):
+                 progress_file=None, maximize=True, acq_func='ucb', save_results=True, save_path="results/", add_metrics=[]):
 
         self.model = model
         self.dataset = dataset
         self.model_runs = model_runs
         self.metric = metric
+        self.additional_metrics = add_metrics
         self.progress_file = progress_file
         self.maximize = maximize
         self.number_of_calls = number_of_calls
@@ -50,6 +51,7 @@ class SOOptimizer:
     #@staticmethod
     def objective(self, x):
         metrics_results = []
+        add_metrics_results = np.zeros((self.model_runs, len(self.additional_metrics)))
 
         for i in range(self.model_runs):
             model_output = self.model.train_model(hyperparameters=x)
@@ -59,10 +61,20 @@ class SOOptimizer:
                 save_model_output(model_output, save_model_path)
 
             metrics_results.append(self.metric.score(model_output))
-
+            for j in range(len(self.additional_metrics)):
+                add_metrics_results[i, j]= self.additional_metrics[j].score(model_output)
         self.current_call += 1
         result = np.median(metrics_results)
-        print(result)
+        add_results = np.median(add_metrics_results, axis=0)
+
+        with open(self.save_path + "/additional_metrics.csv", 'a') as fw:
+            for hyperparam in x:
+                fw.write(hyperparam + "\t")
+            fw.write(str(result))
+            for ar in add_results:
+                fw.write("\t" + str(ar))
+            fw.write("\n")
+        print(result, add_results)
         return result
 
     def optimize(self):
