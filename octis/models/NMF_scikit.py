@@ -8,7 +8,7 @@ import octis.configuration.defaults as defaults
 class NMF_scikit(AbstractModel):
 
     def __init__(self, dataset, num_topics=100, init=None, alpha=0, l1_ratio=0, max_iter=100, tol=1e-4,
-                 regularization='both', beta_loss='frobenius', solver='cd', use_partitions=True):
+                 regularization='both', beta_loss='frobenius', solver='cd', topic_lower_bound=5, use_partitions=True):
         """
         Initialize NMF model
 
@@ -54,6 +54,7 @@ class NMF_scikit(AbstractModel):
         self.hyperparameters["regularization"] = regularization
         self.hyperparameters["beta_loss"] = beta_loss
         self.hyperparameters["solver"] = solver
+        self.hyperparameters["topic_lower_bound"] = topic_lower_bound
 
         self.use_partitions = use_partitions
         self.update_with_test = False
@@ -136,7 +137,9 @@ class NMF_scikit(AbstractModel):
 
         self.hyperparameters.update(hyperparams)
         print(self.hyperparameters)
-        model = NMF(**self.hyperparameters)
+        hyperparams = self.hyperparameters.copy()
+        hyperparams.pop("topic_lower_bound")
+        model = NMF(**hyperparams)
 
         W = model.fit_transform(self.train_corpus)
         #W = W / W.sum(axis=1, keepdims=True)
@@ -149,12 +152,15 @@ class NMF_scikit(AbstractModel):
         mask = (H.T == 0).all(0)
         # Update x to only include the columns where non-zero values occur.
         masked_H = H[~mask]
-
-        result["topic-word-matrix"] = masked_H
-
-        result["topics"] = self.get_topics(masked_H, topics)
-
-        result["topic-document-matrix"] = np.array(W).transpose()[~mask]
+        print(masked_H.shape[0])
+        if masked_H.shape[0] < self.hyperparameters['topic_lower_bound']:
+            result["topic-word-matrix"] = None
+            result["topics"] = None
+            result["topic-document-matrix"] = None
+        else:
+            result["topic-word-matrix"] = masked_H
+            result["topics"] = self.get_topics(masked_H, topics)
+            result["topic-document-matrix"] = np.array(W).transpose()[~mask]
 
         if self.use_partitions:
             if self.update_with_test:

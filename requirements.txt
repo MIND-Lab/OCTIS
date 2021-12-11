@@ -7,9 +7,8 @@ scikit-optimize>=0.8.1
 matplotlib
 torch
 numpy
-libsvm
 flask
 sentence_transformers
 git+https://github.com/MIND-Lab/dragonfly#egg=dragonfly-opt
 requests
-tomotopy
+git+https://https://github.com/silviatti/gensim/tree/fix_3181#egg=gensim

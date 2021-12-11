@@ -41,9 +41,9 @@ def dataset(data_dir):
 
 
 @pytest.fixture
-def model():
+def model(dataset):
     # Load model
-    model = LDA(num_topics=5, iterations=200)
+    model = LDA(dataset=dataset, num_topics=5, iterations=200)
 
     return model
 
@@ -139,9 +139,9 @@ def test_simple_optimization(dataset, model, metric, search_space, data_dir_test
 
 def test_resume_optimization(dataset, model, metric, search_space, data_dir_test):
     # Choose number of call and number of model_runs
-    number_of_call = 4
+    number_of_call = 2
     model_runs = 2
-    n_random_starts = 3
+    n_random_starts = 1
 
     save_path = data_dir_test + "test_resume_optimization/"
 
@@ -338,9 +338,9 @@ def test_extra_metrics(dataset, model, metric, extra_metric, search_space, data_
 
 def test_extra_metrics_resume(dataset, model, metric, extra_metric, search_space, data_dir_test):
     # Choose number of call and number of model_runs
-    number_of_call = 4
+    number_of_call = 2
     model_runs = 2
-    n_random_starts = 3
+    n_random_starts = 1
 
     # Optimize the function npmi using Bayesian Optimization
     save_path = data_dir_test + "test_extrametricsResume_fun/"

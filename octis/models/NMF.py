@@ -8,7 +8,7 @@ import octis.configuration.defaults as defaults
 
 class NMF(AbstractModel):
 
-    def __init__(self, num_topics=100, chunksize=2000, passes=1, kappa=1.0, minimum_probability=0.01, w_max_iter=200,
+    def __init__(self, dataset, num_topics=100, chunksize=2000, passes=1, kappa=1.0, minimum_probability=0.01, w_max_iter=200,
                  w_stop_condition=0.0001, h_max_iter=50, h_stop_condition=0.001, eval_every=10, normalize=True,
                  random_state=None, use_partitions=True):
         """
@@ -73,6 +73,17 @@ class NMF(AbstractModel):
         self.id_corpus = None
         self.update_with_test = False
 
+        if self.use_partitions:
+            self.partition = dataset.get_partitioned_corpus(use_validation=False)
+        else:
+            self.partition = [dataset.get_corpus(), []]
+
+        if self.id2word is None:
+            self.id2word = corpora.Dictionary(dataset.get_corpus())
+        if self.id_corpus is None:
+            self.id_corpus = [self.id2word.doc2bow(
+                document) for document in self.partition[0]]
+
     def info(self):
         """
         Returns model informations
@@ -105,7 +116,7 @@ class NMF(AbstractModel):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters=None, top_words=10):
+    def train_model(self, hyperparameters=None, top_words=10):
         """
         Train the model and return output
 
@@ -125,16 +136,7 @@ class NMF(AbstractModel):
         """
         if hyperparameters is None:
             hyperparameters = {}
-        if self.use_partitions:
-            partition = dataset.get_partitioned_corpus(use_validation=False)
-        else:
-            partition = [dataset.get_corpus(), []]
 
-        if self.id2word is None:
-            self.id2word = corpora.Dictionary(dataset.get_corpus())
-        if self.id_corpus is None:
-            self.id_corpus = [self.id2word.doc2bow(
-                document) for document in partition[0]]
 
         hyperparameters["corpus"] = self.id_corpus
         hyperparameters["id2word"] = self.id2word
@@ -158,7 +160,7 @@ class NMF(AbstractModel):
 
         if self.use_partitions:
             new_corpus = [self.id2word.doc2bow(
-                document) for document in partition[1]]
+                document) for document in self.partition[1]]
             if self.update_with_test:
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)

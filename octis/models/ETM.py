@@ -14,8 +14,8 @@ import pickle as pkl
 
 class ETM(AbstractModel):
 
-    def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
-                 activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
+    def __init__(self, dataset, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
+                 activation='relu', dropout=0.5, log_lr=2e-3, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
                  use_partitions=True):
         super(ETM, self).__init__()
@@ -27,7 +27,7 @@ class ETM(AbstractModel):
         self.hyperparameters['embedding_size'] = int(embedding_size)
         self.hyperparameters['activation'] = activation
         self.hyperparameters['dropout'] = float(dropout)
-        self.hyperparameters['lr'] = float(lr)
+        self.hyperparameters['lr'] = 10**float(log_lr)
         self.hyperparameters['optimizer'] = optimizer
         self.hyperparameters['batch_size'] = int(batch_size)
         self.hyperparameters['clip'] = float(clip)
@@ -46,10 +46,27 @@ class ETM(AbstractModel):
         self.optimizer = None
         self.embeddings = None
 
-    def train_model(self, dataset, hyperparameters=None, top_words=10):
+        self.set_model(dataset)
+
+    def train_model(self, hyperparameters=None, top_words=10):
         if hyperparameters is None:
             hyperparameters = {}
-        self.set_model(dataset, hyperparameters)
+
+        self.set_default_hyperparameters(hyperparameters)
+        self.load_embeddings()
+        ## define model and optimizer
+        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'], vocab_size=len(self.vocab.keys()),
+                             t_hidden_size=int(self.hyperparameters['t_hidden_size']),
+                             rho_size=int(self.hyperparameters['rho_size']),
+                             emb_size=int(self.hyperparameters['embedding_size']),
+                             theta_act=self.hyperparameters['activation'],
+                             embeddings=self.embeddings,
+                             train_embeddings=self.hyperparameters['train_embeddings'],
+                             enc_drop=self.hyperparameters['dropout']).to(self.device)
+        print('model: {}'.format(self.model))
+
+        self.optimizer = self.set_optimizer()
+
         self.top_word = top_words
         self.early_stopping = EarlyStopping(patience=5, verbose=True)
 
@@ -68,7 +85,7 @@ class ETM(AbstractModel):
 
         return result
 
-    def set_model(self, dataset, hyperparameters):
+    def set_model(self, dataset):
         if self.use_partitions:
             train_data, validation_data, testing_data = dataset.get_partitioned_corpus(use_validation=True)
 
@@ -93,23 +110,9 @@ class ETM(AbstractModel):
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        self.set_default_hyperparameters(hyperparameters)
-        self.load_embeddings()
-        ## define model and optimizer
-        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'], vocab_size=len(self.vocab.keys()),
-                             t_hidden_size=int(self.hyperparameters['t_hidden_size']),
-                             rho_size=int(self.hyperparameters['rho_size']),
-                             emb_size=int(self.hyperparameters['embedding_size']),
-                             theta_act=self.hyperparameters['activation'],
-                             embeddings=self.embeddings,
-                             train_embeddings=self.hyperparameters['train_embeddings'],
-                             enc_drop=self.hyperparameters['dropout']).to(self.device)
-        print('model: {}'.format(self.model))
-
-        self.optimizer = self.set_optimizer()
 
     def set_optimizer(self):
-        self.hyperparameters['lr'] = float(self.hyperparameters['lr'])
+        #self.hyperparameters['lr'] = float(self.hyperparameters['lr'])
         self.hyperparameters['wdecay'] = float(self.hyperparameters['wdecay'])
         if self.hyperparameters['optimizer'] == 'adam':
             optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparameters['lr'],
@@ -294,6 +297,9 @@ class ETM(AbstractModel):
         for k in hyperparameters.keys():
             if k in self.hyperparameters.keys():
                 self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
+            elif 'log_lr' in k:
+                self.hyperparameters['lr'] = 10**hyperparameters.get('log_lr', np.log10(self.hyperparameters['lr']))
+
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions

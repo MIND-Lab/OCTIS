@@ -34,8 +34,8 @@ def dataset(root_dir):
 
 @pytest.fixture
 def model_output(dataset):
-    model = LDA(num_topics=3, iterations=5)
-    output = model.train_model(dataset)
+    model = LDA(dataset, num_topics=3, iterations=5)
+    output = model.train_model()
     return output
 
 

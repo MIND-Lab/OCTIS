@@ -7,12 +7,13 @@ from octis.models.pytorchavitm.avitm import avitm_model
 
 class AVITM(AbstractModel):
 
-    def __init__(self, num_topics=10, model_type='prodLDA', activation='softplus',
+    def __init__(self, dataset, num_topics=10, model_type='prodLDA', activation='softplus',
                  dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, num_samples=10,
                  use_partitions=True):
         """
+            :param dataset: list of sentences for training the model
             :param num_topics : int, number of topic components, (default 10)
             :param model_type : string, 'prodLDA' or 'LDA' (default 'prodLDA')
             :param num_layers : int, number of layers (default 2)
@@ -50,9 +51,24 @@ class AVITM(AbstractModel):
         self.use_partitions = use_partitions
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
-    def train_model(self, dataset, hyperparameters=None, top_words=10):
+        if self.use_partitions:
+            train, validation, test = dataset.get_partitioned_corpus(use_validation=True)
+
+            data_corpus_train = [' '.join(i) for i in train]
+            data_corpus_test = [' '.join(i) for i in test]
+            data_corpus_validation = [' '.join(i) for i in validation]
+
+            self.vocab = dataset.get_vocabulary()
+            self.X_train, self.X_test, self.X_valid, self.input_size = \
+                self.preprocess(self.vocab, data_corpus_train, test=data_corpus_test,
+                                validation=data_corpus_validation)
+        else:
+            self.vocab = dataset.get_vocabulary()
+            data_corpus = [' '.join(i) for i in dataset.get_corpus()]
+            self.X_train, self.input_size = self.preprocess(self.vocab, train=data_corpus)
+
+    def train_model(self, hyperparameters=None, top_words=10):
         """
-            :param dataset: list of sentences for training the model
             :param hyperparameters: dict, with the below information:
 
             num_topics : int, number of topic components, (default 10)
@@ -73,24 +89,8 @@ class AVITM(AbstractModel):
             hyperparameters = {}
         self.set_params(hyperparameters)
 
-        if self.use_partitions:
-            train, validation, test = dataset.get_partitioned_corpus(use_validation=True)
-
-            data_corpus_train = [' '.join(i) for i in train]
-            data_corpus_test = [' '.join(i) for i in test]
-            data_corpus_validation = [' '.join(i) for i in validation]
-
-            self.vocab = dataset.get_vocabulary()
-            x_train, x_test, x_valid, input_size = \
-                self.preprocess(self.vocab, data_corpus_train, test=data_corpus_test,
-                                validation=data_corpus_validation)
-        else:
-            self.vocab = dataset.get_vocabulary()
-            data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            x_train, input_size = self.preprocess(self.vocab, train=data_corpus)
-
         self.model = avitm_model.AVITM_model(
-            input_size=input_size, num_topics=self.hyperparameters['num_topics'],
+            input_size=self.input_size, num_topics=self.hyperparameters['num_topics'],
             model_type=self.hyperparameters['model_type'], hidden_sizes=self.hyperparameters['hidden_sizes'],
             activation=self.hyperparameters['activation'], dropout=self.hyperparameters['dropout'],
             learn_priors=self.hyperparameters['learn_priors'], batch_size=self.hyperparameters['batch_size'],
@@ -102,10 +102,10 @@ class AVITM(AbstractModel):
         )
 
         if self.use_partitions:
-            self.model.fit(x_train, x_valid)
-            result = self.inference(x_test)
+            self.model.fit(self.X_train, self.X_valid)
+            result = self.inference(self.X_test)
         else:
-            self.model.fit(x_train, None)
+            self.model.fit(self.X_train, None)
             result = self.model.get_info()
         return result
 

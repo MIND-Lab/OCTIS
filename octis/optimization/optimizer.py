@@ -412,7 +412,7 @@ class Optimizer:
         self._load_metric(optimization_object, dataset)
 
         # Load the model
-        self.model = load_model(optimization_object)
+        self.model = load_model(optimization_object, self.dataset)
         # Creation of the hyperparameters
         self.hyperparameters = list(sorted(self.search_space.keys()))
         # Choice of the optimizer

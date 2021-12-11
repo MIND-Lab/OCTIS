@@ -15,7 +15,7 @@ class CTM(AbstractModel):
                  solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
                  prior_variance=None, num_layers=2, num_neurons=100, use_partitions=True,
                  inference_type="zeroshot", bert_path="", bert_model="bert-base-nli-mean-tokens",
-                 num_samples = 30):
+                 num_samples=30):
         """
         initialization of CTM
 
@@ -42,7 +42,6 @@ class CTM(AbstractModel):
         """
 
         super().__init__()
-
         self.hyperparameters['num_topics'] = num_topics
         self.hyperparameters['model_type'] = model_type
         self.hyperparameters['activation'] = activation
@@ -62,11 +61,10 @@ class CTM(AbstractModel):
         self.hyperparameters["bert_path"] = bert_path
         self.hyperparameters["num_layers"] = num_layers
         self.hyperparameters["bert_model"] = bert_model
-        self.hyperparameters["num_samples"] = num_samples
 
         self.use_partitions = use_partitions
 
-        hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
+        hidden_sizes = tuple([int(num_neurons) for _ in range(num_layers)])
         self.hyperparameters['hidden_sizes'] = tuple(hidden_sizes)
 
         if self.use_partitions:
@@ -86,7 +84,12 @@ class CTM(AbstractModel):
                                 bert_model=self.hyperparameters["bert_model"])
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
-            self.X_train, self.input_size = self.preprocess(self.vocab, train=data_corpus)
+            self.vocab = dataset.get_vocabulary()
+
+            self.X_train, self.input_size = self.preprocess(
+                self.vocab, train=data_corpus, bert_train_path=self.hyperparameters['bert_path'] + "_train.pkl",
+                bert_model=self.hyperparameters["bert_model"])
+            self.X_test, self.X_valid = None, None
 
     def train_model(self, hyperparameters=None, top_words=10):
         """
@@ -144,7 +147,7 @@ class CTM(AbstractModel):
                 self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
 
         self.hyperparameters['hidden_sizes'] = tuple(
-            [self.hyperparameters["num_neurons"] for _ in range(self.hyperparameters["num_layers"])])
+            [int(self.hyperparameters["num_neurons"]) for _ in range(self.hyperparameters["num_layers"])])
 
     def inference(self, x_test):
         assert isinstance(self.use_partitions, bool) and self.use_partitions
