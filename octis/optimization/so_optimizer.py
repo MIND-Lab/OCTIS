@@ -70,14 +70,14 @@ class SOOptimizer:
         if not os.path.exists(self.save_path + "additional_metrics.csv"):
             with open(self.save_path + "additional_metrics.csv", 'w') as fw:
                 for k, v in x.items():
-                    fw.write(k + "\t")
-                fw.write(self.metric.__class__.split('.')[-1])
+                    fw.write(str(k) + "\t")
+                fw.write(self.metric.__class__)
                 for ar in self.additional_metrics:
-                    fw.write("\t" + ar.__class__.split('.')[-1])
+                    fw.write("\t" + ar.__class__)
 
         with open(self.save_path + "additional_metrics.csv", 'a') as fw:
             for k, v in x.items():
-                fw.write(v + "\t")
+                fw.write(str(v) + "\t")
             fw.write(str(result))
             for ar in add_results:
                 fw.write("\t" + str(ar))
