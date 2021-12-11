@@ -67,9 +67,17 @@ class SOOptimizer:
         result = np.median(metrics_results)
         add_results = np.median(add_metrics_results, axis=0)
 
-        with open(self.save_path + "/additional_metrics.csv", 'a') as fw:
-            for hyperparam in x:
-                fw.write(hyperparam + "\t")
+        if not os.path.exists(self.save_path + "additional_metrics.csv"):
+            with open(self.save_path + "additional_metrics.csv", 'w') as fw:
+                for k, v in x.items():
+                    fw.write(k + "\t")
+                fw.write(self.metric.__class__.split('.')[-1])
+                for ar in self.additional_metrics:
+                    fw.write("\t" + ar.__class__.split('.')[-1])
+
+        with open(self.save_path + "additional_metrics.csv", 'a') as fw:
+            for k, v in x.items():
+                fw.write(v + "\t")
             fw.write(str(result))
             for ar in add_results:
                 fw.write("\t" + str(ar))
