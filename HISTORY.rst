@@ -1,6 +1,11 @@
 =======
 History
 =======
+
+1.10.2 (2021-12-20)
+--------------------
+* Bug fix optimizer evaluation with additional metrics (#46)
+
 1.10.1 (2021-12-08)
 --------------------
 * Bug fix Coherence with word embeddings (#43, #45)
