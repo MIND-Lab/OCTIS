@@ -218,7 +218,7 @@ class KLDivergence(AbstractMetric):
         kl_div = 0
         count = 0
         for i, j in itertools.combinations(range(len(beta)), 2):
-            kl_div += _LOR(beta[i], beta[j])
+            kl_div += _KL(beta[i], beta[j])
             count += 1
         return kl_div / count
 
