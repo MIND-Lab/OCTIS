@@ -6,7 +6,7 @@ scikit-learn==0.24.2
 scikit-optimize>=0.8.1
 matplotlib
 torch
-numpy
+numpy>=1.21.0
 libsvm
 flask
 sentence_transformers
