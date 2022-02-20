@@ -2,6 +2,9 @@
 History
 =======
 
+1.10.3 (2022-02-20)
+* Fix KL Divergence in diversity metrics (#51, #52)
+
 1.10.2 (2021-12-20)
 --------------------
 * Bug fix optimizer evaluation with additional metrics (#46)
