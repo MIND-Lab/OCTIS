@@ -101,6 +101,16 @@ To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 +--------------------------------------------------------------------------------+------------------+
 
 
+`Emil Rijcken`_ kindly wrote two guides on how to use OCTIS with practical examples:
+
+* `A beginner's guide to OCTIS vol. 1`_
+* `A beginner's guide to OCTIS vol. 2`_
+
+.. _Emil Rijcken: https://emilrijcken.medium.com/ 
+.. _A beginner's guide to OCTIS vol. 1: https://towardsdatascience.com/a-beginners-guide-to-octis-optimizing-and-comparing-topic-models-is-simple-590554ec9ba6
+.. _A beginner's guide to OCTIS vol. 2: https://towardsdatascience.com/a-beginners-guide-to-octis-vol-2-optimizing-topic-models-1214e58be1e5
+
+
 **************************
 Datasets and Preprocessing
 **************************
@@ -494,7 +504,7 @@ Past Contributors
 Credits
 *****************************
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations. A special thanks goes to tenggaard_ who helped us find many bugs in early octis releases :) 
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations. A special thanks goes to tenggaard_ who helped us find many bugs in early octis releases and to `Emil Rijcken`_ who kindly wrote two guides on how to use OCTIS :)
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`Click to read the paper`: https://www.aclweb.org/anthology/2021.eacl-demos.31/
