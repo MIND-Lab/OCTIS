@@ -92,6 +92,7 @@ def download_dataset(dataset_name, target_dir, cache_path):
 
         vocab = [word for word in vocabulary.text.split("\n") if len(word) > 0]
         metadata = json.loads(metadata.text)
+        metadata["info"] = {}
 
         metadata["info"]["name"] = dataset_name
 
