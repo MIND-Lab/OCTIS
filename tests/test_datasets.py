@@ -88,3 +88,8 @@ def test_partitions_custom(data_dir):
     partitions = dataset.get_partitioned_corpus()
     assert len(partitions[0]) == 5847
     assert len(partitions[1]) == 1254
+
+
+def test_fetch_encoding():
+    dataset = Dataset()
+    dataset.fetch_dataset('DBPedia_IT')
