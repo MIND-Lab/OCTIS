@@ -471,6 +471,20 @@ If you decide to use this resource, please cite:
         url = "https://www.aclweb.org/anthology/2021.eacl-demos.31",
         pages = "263--270",
     }
+    
+    @inproceedings{DBLP:conf/clic-it/TerragniF21,
+      author    = {Silvia Terragni and Elisabetta Fersini},
+      editor    = {Elisabetta Fersini and Marco Passarotti and Viviana Patti},
+      title     = {{OCTIS 2.0: Optimizing and Comparing Topic Models in Italian Is Even
+                   Simpler!}},
+      booktitle = {Proceedings of the Eighth Italian Conference on Computational Linguistics,
+                   CLiC-it 2021, Milan, Italy, January 26-28, 2022},
+      series    = {{CEUR} Workshop Proceedings},
+      volume    = {3033},
+      publisher = {CEUR-WS.org},
+      year      = {2021},
+      url       = {http://ceur-ws.org/Vol-3033/paper55.pdf},
+}
 
 *****************************
 Team
