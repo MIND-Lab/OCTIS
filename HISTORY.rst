@@ -2,7 +2,16 @@
 History
 =======
 
+1.10.4 (2022-05-20)
+--------------------
+* Update metadata Italian datasets
+* Fix dataset encoding (#57)
+* Fix word embeddings topic coherence (#58)
+* Fix dataset name BBC_News (#59)
+
+
 1.10.3 (2022-02-20)
+--------------------
 * Fix KL Divergence in diversity metrics (#51, #52)
 
 1.10.2 (2021-12-20)
