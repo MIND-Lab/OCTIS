@@ -125,8 +125,8 @@ class WECoherencePairwise(AbstractMetric):
                 E = np.array(E)
 
                 # Perform cosine similarity between E rows
-                distances = np.sum(pairwise_distances(E, metric='cosine'))
-                topic_coherence = distances/(2*self.topk*(self.topk-1))
+                distances = np.sum(1 - pairwise_distances(E, metric='cosine') - np.diag(np.ones(len(E))))
+                topic_coherence = distances/(self.topk*(self.topk-1))
             else:
                 topic_coherence = -1
 
