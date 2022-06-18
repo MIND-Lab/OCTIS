@@ -18,8 +18,8 @@ class CTM(object):
 
     def __init__(self, input_size, bert_input_size, inference_type="zeroshot", num_topics=10, model_type='prodLDA',
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2, learn_priors=True, batch_size=64,
-                 lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, reduce_on_plateau=False, topic_prior_mean=0.0,
-                 topic_prior_variance=None, num_data_loader_workers=0, num_samples=30):
+                 lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, num_samples=10,
+                 reduce_on_plateau=False, topic_prior_mean=0.0, topic_prior_variance=None, num_data_loader_workers=0):
         """
         :param input_size: int, dimension of input
         :param bert_input_size: int, dimension of input that comes from BERT embeddings
@@ -50,10 +50,10 @@ class CTM(object):
         self.learn_priors = learn_priors
         self.batch_size = batch_size
         self.lr = lr
+        self.num_samples = num_samples
         self.bert_size = bert_input_size
         self.momentum = momentum
         self.solver = solver
-        self.num_samples = num_samples
         self.num_epochs = num_epochs
         self.reduce_on_plateau = reduce_on_plateau
         self.num_data_loader_workers = num_data_loader_workers
@@ -409,4 +409,3 @@ class CTM(object):
 
                 final_thetas.append(np.array(collect_theta))
         return np.sum(final_thetas, axis=0) / self.num_samples
-

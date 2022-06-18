@@ -1,23 +1,42 @@
 from __future__ import print_function
 from octis.models.early_stopping.pytorchtools import EarlyStopping
-
 import torch
 import numpy as np
 from octis.models.ETM_model import data
 from sklearn.feature_extraction.text import CountVectorizer
 from torch import nn, optim
 from octis.models.ETM_model import etm
-from octis.models.model import AbstractModel
-import gensim
+from octis.models.base_etm import BaseETM
 import pickle as pkl
 
 
-class ETM(AbstractModel):
+class ETM(BaseETM):
 
     def __init__(self, dataset, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
                  activation='relu', dropout=0.5, log_lr=2e-3, optimizer='adam', batch_size=128, clip=0.0,
                  wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
-                 use_partitions=True):
+                 embeddings_type='pickle', binary_embeddings=True, headerless_embeddings=False, use_partitions=True):
+        """
+        initialization of ETM
+
+        :param embeddings_path: string, path to embeddings file. Can be a binary file for
+            the 'pickle', 'keyedvectors' and 'word2vec' types or a text file for 'word2vec'.
+            This parameter is only used if 'train_embeddings' is set to False
+        :param embeddings_type: string, defines the format of the embeddings file.
+            Possible values are 'pickle', 'keyedvectors' or 'word2vec'. If set to 'pickle',
+            you must provide a file created with 'pickle' containing an array of word
+            embeddings, composed by words and their respective vectors. If set to 'keyedvectors',
+            you must provide a file containing a saved gensim.models.KeyedVectors instance.
+            If set to 'word2vec', you must provide a file with the original word2vec format.
+            This parameter is only used if 'train_embeddings' is set to False (default 'pickle')
+        :param binary_embeddings: bool, indicates if the original word2vec embeddings file is binary
+            or textual. This parameter is only used if both 'embeddings_type' is set to 'word2vec'
+            and 'train_embeddings' is set to False. Otherwise, it will be ignored (default True)
+        :param headerless_embeddings: bool, indicates if the original word2vec embeddings textual file
+            has a header line in the format "<no_of_vectors> <vector_length>". This parameter is only
+            used if 'embeddings_type' is set to 'word2vec', 'train_embeddings' is set to False and
+            'binary_embeddings' is set to False. Otherwise, it will be ignored (default False)
+        """
         super(ETM, self).__init__()
         self.hyperparameters = dict()
         self.hyperparameters['num_topics'] = int(num_topics)
@@ -35,6 +54,11 @@ class ETM(AbstractModel):
         self.hyperparameters['bow_norm'] = int(bow_norm)
         self.hyperparameters['train_embeddings'] = bool(train_embeddings)
         self.hyperparameters['embeddings_path'] = embeddings_path
+        assert embeddings_type in ['pickle', 'word2vec', 'keyedvectors'], \
+            "embeddings_type must be 'pickle', 'word2vec' or 'keyedvectors'."
+        self.hyperparameters['embeddings_type'] = embeddings_type
+        self.hyperparameters['binary_embeddings'] = binary_embeddings
+        self.hyperparameters['headerless_embeddings'] = headerless_embeddings
         self.top_word = top_word
         self.early_stopping = None
         self.device = device
@@ -150,7 +174,7 @@ class ETM(AbstractModel):
             self.optimizer.zero_grad()
             self.model.zero_grad()
             data_batch = data.get_batch(self.train_tokens, self.train_counts, ind, len(self.vocab.keys()),
-                                        self.hyperparameters['embedding_size'], self.device)
+                                        self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
@@ -206,7 +230,7 @@ class ETM(AbstractModel):
                     self.model.zero_grad()
                     val_data_batch = data.get_batch(self.valid_tokens, self.valid_counts,
                                                     ind, len(self.vocab.keys()),
-                                                    self.hyperparameters['embedding_size'], self.device)
+                                                    self.device)
                     sums = val_data_batch.sum(1).unsqueeze(1)
                     if self.hyperparameters['bow_norm']:
                         val_normalized_data_batch = val_data_batch / sums
@@ -260,7 +284,6 @@ class ETM(AbstractModel):
         info['topic-word-matrix'] = gammas
         info['topic-document-matrix'] = theta.cpu().detach().numpy().T
         info['topics'] = topic_w
-        print(info['topics'])
         return info
 
     def inference(self):
@@ -273,7 +296,7 @@ class ETM(AbstractModel):
         for idx, ind in enumerate(indices):
             data_batch = data.get_batch(self.test_tokens, self.test_counts,
                                         ind, len(self.vocab.keys()),
-                                        self.hyperparameters['embedding_size'], self.device)
+                                        self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
@@ -304,12 +327,9 @@ class ETM(AbstractModel):
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
 
+
     @staticmethod
     def preprocess(vocab2id, train_corpus, test_corpus=None, validation_corpus=None):
-        # def split_bow(bow_in, n_docs):
-        #    indices = np.asarray([np.asarray([w for w in bow_in[doc, :].indices]) for doc in range(n_docs)])
-        #    counts = np.asarray([np.asarray([c for c in bow_in[doc, :].data]) for doc in range(n_docs)])
-        #    return np.expand_dims(indices, axis=0), np.expand_dims(counts, axis=0)
 
         def split_bow(bow_in, n_docs):
             indices = [[w for w in bow_in[doc, :].indices] for doc in range(n_docs)]
@@ -349,46 +369,3 @@ class ETM(AbstractModel):
                 return x_train_tokens, x_train_count, x_val_tokens, x_val_count
             else:
                 return x_train_tokens, x_train_count
-
-    def load_embeddings(self):
-        if not self.hyperparameters['train_embeddings']:
-            vectors = {}
-            embs = pkl.load(open(self.hyperparameters['embeddings_path'], 'rb'))
-            for l in embs:
-                line = l.split()
-                word = line[0]
-                if word in self.vocab.values():
-                    vect = np.array(line[1:]).astype(np.float)
-                    vectors[word] = vect
-            embeddings = np.zeros((len(self.vocab.keys()), self.hyperparameters['embedding_size']))
-            words_found = 0
-            for i, word in enumerate(self.vocab.values()):
-                try:
-                    embeddings[i] = vectors[word]
-                    words_found += 1
-                except KeyError:
-                    embeddings[i] = np.random.normal(scale=0.6, size=(self.hyperparameters['embedding_size'],))
-            self.embeddings = torch.from_numpy(embeddings).to(self.device)
-
-    def filter_pretrained_embeddings(self, pretrained_embeddings_path, save_embedding_path, vocab_path, binary=True):
-        """
-        Filter the embeddings from a set of word2vec-format pretrained embeddings based on the vocabulary
-        This should allow you to avoid to load the whole embedding space every time you do Bayesian Optimization
-        but just the embeddings that are in the vocabulary.
-        :param pretrained_embeddings_path:
-        :return:
-        """
-        vocab = []
-        with open(vocab_path, 'r') as fr:
-            for line in fr.readlines():
-                vocab.append(line.strip().split(" ")[0])
-
-        w2v_model = gensim.models.KeyedVectors.load_word2vec_format(pretrained_embeddings_path, binary=binary)
-        embeddings = []
-        for word in vocab:
-            if word in w2v_model.vocab:
-                line = word
-                for w in w2v_model[word].tolist():
-                    line = line + " " + str(w)
-                embeddings.append(line)
-        pkl.dump(embeddings, open(save_embedding_path, 'wb'))
