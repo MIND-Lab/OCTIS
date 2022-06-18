@@ -101,6 +101,16 @@ To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 +--------------------------------------------------------------------------------+------------------+
 
 
+`Emil Rijcken`_ kindly wrote two guides on how to use OCTIS with practical examples:
+
+* `A beginner's guide to OCTIS vol. 1`_
+* `A beginner's guide to OCTIS vol. 2`_
+
+.. _Emil Rijcken: https://emilrijcken.medium.com/ 
+.. _A beginner's guide to OCTIS vol. 1: https://towardsdatascience.com/a-beginners-guide-to-octis-optimizing-and-comparing-topic-models-is-simple-590554ec9ba6
+.. _A beginner's guide to OCTIS vol. 2: https://towardsdatascience.com/a-beginners-guide-to-octis-vol-2-optimizing-topic-models-1214e58be1e5
+
+
 **************************
 Datasets and Preprocessing
 **************************
@@ -121,23 +131,28 @@ Just use one of the dataset names listed below. Note: it is case-sensitive!
 Available Datasets
 ============================
 
-+--------------+--------------+--------+---------+----------+
-|Name in OCTIS | Source       | # Docs | # Words | # Labels |
-+==============+==============+========+=========+==========+
-| 20NewsGroup  | 20Newsgroup_ |  16309 |    1612 |       20 |
-+--------------+--------------+--------+---------+----------+
-| BBC_News     | BBC-News_    |   2225 |    2949 |        5 |
-+--------------+--------------+--------+---------+----------+
-| DBLP         | DBLP_        |  54595 |    1513 |        4 |
-+--------------+--------------+--------+---------+----------+
-| M10          | M10_         |   8355 |    1696 |       10 |
-+--------------+--------------+--------+---------+----------+
++--------------+--------------+--------+---------+----------+----------+
+|Name in OCTIS | Source       | # Docs | # Words | # Labels | Language |
++==============+==============+========+=========+==========+==========+
+| 20NewsGroup  | 20Newsgroup_ |  16309 |    1612 |       20 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| BBC_News     | BBC-News_    |   2225 |    2949 |        5 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| DBLP         | DBLP_        |  54595 |    1513 |        4 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| M10          | M10_         |   8355 |    1696 |       10 | English  |
++--------------+--------------+--------+---------+----------+----------+
+| DBPedia_IT   | DBPedia_IT_  |   4251 |    2047 |        5 | Italian  |
++--------------+--------------+--------+---------+----------+----------+
+| Europarl_IT  | Europarl_IT_ |   3613 |    2000 |       NA | Italian  |
++--------------+--------------+--------+---------+----------+----------+
 
 .. _20Newsgroup: https://scikit-learn.org/0.19/datasets/twenty_newsgroups.html
 .. _BBC-News: https://github.com/MIND-Lab/OCTIS
 .. _DBLP: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
 .. _M10: https://dblp.org/rec/conf/ijcai/PanWZZW16.html?view=bibtex
-
+.. _DBPedia_IT: https://www.dbpedia.org/resources/ontology/
+.. _Europarl_IT: https://www.statmt.org/europarl/
 
 Load a Custom Dataset
 ============================
@@ -456,6 +471,20 @@ If you decide to use this resource, please cite:
         url = "https://www.aclweb.org/anthology/2021.eacl-demos.31",
         pages = "263--270",
     }
+    
+    @inproceedings{DBLP:conf/clic-it/TerragniF21,
+      author    = {Silvia Terragni and Elisabetta Fersini},
+      editor    = {Elisabetta Fersini and Marco Passarotti and Viviana Patti},
+      title     = {{OCTIS 2.0: Optimizing and Comparing Topic Models in Italian Is Even
+                   Simpler!}},
+      booktitle = {Proceedings of the Eighth Italian Conference on Computational Linguistics,
+                   CLiC-it 2021, Milan, Italy, January 26-28, 2022},
+      series    = {{CEUR} Workshop Proceedings},
+      volume    = {3033},
+      publisher = {CEUR-WS.org},
+      year      = {2021},
+      url       = {http://ceur-ws.org/Vol-3033/paper55.pdf},
+}
 
 *****************************
 Team
@@ -489,7 +518,7 @@ Past Contributors
 Credits
 *****************************
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations. A special thanks goes to tenggaard_ who helped us find many bugs in early octis releases :) 
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template. Thanks to all the developers that released their topic models' implementations. A special thanks goes to tenggaard_ who helped us find many bugs in early octis releases and to `Emil Rijcken`_ who kindly wrote two guides on how to use OCTIS :)
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`Click to read the paper`: https://www.aclweb.org/anthology/2021.eacl-demos.31/

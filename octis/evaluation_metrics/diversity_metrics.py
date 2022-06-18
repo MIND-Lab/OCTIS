@@ -175,7 +175,7 @@ class WordEmbeddingsInvertedRBOCentroid(AbstractMetric):
                 indexed_list2 = [word2index[word] for word in list2]
                 rbo_val = weirbo_centroid(
                     indexed_list1[:self.topk], indexed_list2[:self.topk], p=self.weight, index2word=index2word,
-                    word2vec=self.wv, norm=self.norm)[2]
+                    embedding_space=self.wv, norm=self.norm)[2]
 
                 collect.append(rbo_val)
             return 1 - np.mean(collect)
@@ -218,7 +218,7 @@ class KLDivergence(AbstractMetric):
         kl_div = 0
         count = 0
         for i, j in itertools.combinations(range(len(beta)), 2):
-            kl_div += _LOR(beta[i], beta[j])
+            kl_div += _KL(beta[i], beta[j])
             count += 1
         return kl_div / count
 

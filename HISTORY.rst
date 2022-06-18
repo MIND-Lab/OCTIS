@@ -5,6 +5,40 @@ History
 ------------------
 * Fix LDA alpha and beta log
 
+1.10.4 (2022-05-20)
+--------------------
+* Update metadata Italian datasets
+* Fix dataset encoding (#57)
+* Fix word embeddings topic coherence (#58)
+* Fix dataset name BBC_News (#59)
+
+
+1.10.3 (2022-02-20)
+--------------------
+* Fix KL Divergence in diversity metrics (#51, #52)
+
+1.10.2 (2021-12-20)
+--------------------
+* Bug fix optimizer evaluation with additional metrics (#46)
+
+1.10.1 (2021-12-08)
+--------------------
+* Bug fix Coherence with word embeddings (#43, #45)
+
+1.10.0 (2021-11-21)
+--------------------
+* ETM now supports different formats of word embeddings (#36)
+* Bug fix similarity measures (#41)
+* Minor fixes
+
+1.9.0 (2021-09-27)
+------------------
+* Bug fix preprocessing (#26)
+* Bug fix ctm (#28)
+* Bug fix weirbo_centroid (#31)
+* Added new Italian datasets
+* Minor fixes
+
 1.8.3 (2021-07-26)
 ------------------
 * Gensim migration from 3.8 to >=4.0.0

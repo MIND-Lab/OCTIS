@@ -146,13 +146,17 @@ class OptimizerEvaluation:
         for hyperparameter in list(self.x_iters.keys()):
             df[hyperparameter] = self.x_iters[hyperparameter]
 
-        for metric, i in zip(self.extra_metrics, range(n_extra_metrics)):
+        for j, metric in enumerate(self.extra_metrics):
             try:
-                df[metric.info()["name"] + '(not optimized)'] = [np.median(
-                    self.dict_model_runs[metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
+                df[metric.info()["name"] + '(not optimized)'] = [
+                    np.median(self.info['dict_model_runs'][
+                                  str(j) + '_' + metric.__class__.__name__]['iteration_' + str(i)])
+                    for i in range(n_row)]
             except:
-                df[metric.__class__.__name__ + '(not optimized)'] = [np.median(
-                    self.dict_model_runs[metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
+                df[metric.__class__.__name__ + '(not optimized)'] = [
+                    np.median(self.info['dict_model_runs'][
+                                str(j) + '_' + metric.__class__.__name__]['iteration_' + str(i)])
+                    for i in range(n_row)]
 
         if not name_file.endswith(".csv"):
             name_file = name_file + ".csv"

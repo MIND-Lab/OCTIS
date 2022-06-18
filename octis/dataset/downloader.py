@@ -73,11 +73,11 @@ def download_dataset(dataset_name, target_dir, cache_path):
     vocabulary = requests.get(dataset_url + "/vocabulary.txt")
 
     if corpus and metadata and vocabulary:
-        with open(corpus_path, 'w') as f:
+        with open(corpus_path, 'w', encoding='utf8') as f:
             f.write(corpus.text)
-        with open(metadata_path, 'w') as f:
+        with open(metadata_path, 'w', encoding='utf8') as f:
             f.write(metadata.text)
-        with open(vocabulary_path, 'w') as f:
+        with open(vocabulary_path, 'w', encoding='utf8') as f:
             f.write(vocabulary.text)
 
         only_docs, labels, partition = [], [], []
@@ -92,6 +92,7 @@ def download_dataset(dataset_name, target_dir, cache_path):
 
         vocab = [word for word in vocabulary.text.split("\n") if len(word) > 0]
         metadata = json.loads(metadata.text)
+        metadata["info"] = {}
 
         metadata["info"]["name"] = dataset_name
 
