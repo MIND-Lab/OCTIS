@@ -301,10 +301,10 @@ Available metrics
 
 * **Coherence Metrics**:
 
-    * `UMass Coherence`_ : :code:`Coherence({'measure':'u_mass'}`
-    * `C_V Coherence`_ : :code:`Coherence({'measure':'c_v'}`
-    * `UCI Coherence`_ : :code:`Coherence({'measure':'c_uci'}`
-    * `NPMI Coherence`_ : :code:`Coherence({'measure':'c_npmi'}`
+    * `UMass Coherence`_ : :code:`Coherence(measure='u_mass')`
+    * `C_V Coherence`_ : :code:`Coherence(measure='c_v')`
+    * `UCI Coherence`_ : :code:`Coherence(measure='c_uci')`
+    * `NPMI Coherence`_ : :code:`Coherence(measure='c_npmi')`
     * `Word Embedding-based Coherence Pairwise`_ : :code:`WECoherencePairwise()`
     * `Word Embedding-based Coherence Centroid`_ : :code:`WECoherenceCentroid()`
 
