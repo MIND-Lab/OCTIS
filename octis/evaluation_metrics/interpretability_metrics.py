@@ -1,5 +1,4 @@
 from octis.evaluation_metrics.metrics import AbstractMetric
-from gensim.corpora.dictionary import Dictionary
 from octis.evaluation_metrics.diversity_metrics import TopicDiversity
 from octis.evaluation_metrics.coherence_metrics import Coherence,_load_default_texts
 
