@@ -17,15 +17,12 @@ class TopicInterpretability(AbstractMetric):
         texts : list of documents (list of lists of strings)
         topk : how many most likely words to consider in
         the evaluation
-        measure : (default 'c_npmi') measure to use.
         """
         super().__init__()
         if texts is None:
             self._texts = _load_default_texts()
         else:
             self._texts = texts
-        self._dictionary = Dictionary(self._texts)
-        self.topk = topk
         self.c_npmi = Coherence(texts, topk=topk, measure='c_npmi')
         self.topic_diversity = TopicDiversity(topk=topk)
 
