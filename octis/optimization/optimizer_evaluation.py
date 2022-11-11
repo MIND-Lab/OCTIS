@@ -2,8 +2,6 @@ import json
 import numpy as np
 import pandas as pd
 from octis.optimization.optimizer_tool import check_instance, save_search_space, convert_type
-from octis.evaluation_metrics.diversity_metrics import TopicDiversity
-from octis.evaluation_metrics.coherence_metrics import Coherence
 
 class OptimizerEvaluation:
 
@@ -22,9 +20,7 @@ class OptimizerEvaluation:
         dict_metric_parameters = dict()
 
         for mp in metric_parameters:
-            if isinstance(getattr(optimizer.metric,mp),(Coherence,TopicDiversity)):
-                pass
-            elif check_instance(getattr(optimizer.metric, mp)):
+            if check_instance(getattr(optimizer.metric, mp)):
                 dict_metric_parameters.update({mp: getattr(optimizer.metric, mp)})
 
         # Creation of model hyper-parameters saved in the json file
