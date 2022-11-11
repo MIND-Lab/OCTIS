@@ -22,10 +22,10 @@ class OptimizerEvaluation:
         dict_metric_parameters = dict()
 
         for mp in metric_parameters:
-                if isinstance(getattr(optimizer.metric,mp),(Coherence,TopicDiversity)):
-                    pass
-                elif check_instance(getattr(optimizer.metric, mp)):
-                    dict_metric_parameters.update({mp: getattr(optimizer.metric, mp)})
+            if isinstance(getattr(optimizer.metric,mp),(Coherence,TopicDiversity)):
+                pass
+            elif check_instance(getattr(optimizer.metric, mp)):
+                dict_metric_parameters.update({mp: getattr(optimizer.metric, mp)})
 
         # Creation of model hyper-parameters saved in the json file
         model_parameters = optimizer.model.hyperparameters
