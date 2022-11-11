@@ -22,7 +22,6 @@ class OptimizerEvaluation:
         dict_metric_parameters = dict()
 
         for mp in metric_parameters:
-            for mp in (metric_parameters):
                 if isinstance(getattr(optimizer.metric,mp),(Coherence,TopicDiversity)):
                     pass
                 elif check_instance(getattr(optimizer.metric, mp)):
