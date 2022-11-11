@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from octis.optimization.optimizer_tool import check_instance, save_search_space, convert_type
 
-
 class OptimizerEvaluation:
 
     def __init__(self, optimizer, BO_results):

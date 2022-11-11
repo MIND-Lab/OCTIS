@@ -22,6 +22,7 @@ class TopicInterpretability(AbstractMetric):
             self._texts = _load_default_texts()
         else:
             self._texts = texts
+        self.topk=topk
         self.c_npmi = Coherence(texts, topk=topk, measure='c_npmi')
         self.topic_diversity = TopicDiversity(topk=topk)
 
