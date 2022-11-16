@@ -1,6 +1,7 @@
 # mypy: ignore-errors
 # flake8: noqa
 
+import re
 import string
 import multiprocessing as mp
 import spacy
@@ -16,7 +17,7 @@ from tqdm import tqdm
 """
 Maps the language to its corresponding spacy model
 """
-spacy_model_mapping = {
+SPACY_MODEL_MAPPING = {
     "chinese": "zh_core_web_sm",
     "danish": "nl_core_news_sm",
     "dutch": "nl_core_news_sm",
@@ -36,6 +37,9 @@ spacy_model_mapping = {
 }
 
 
+EMAIL_PATTERN = "\S*@\S*\s?"
+
+
 class Preprocessing:
     def __init__(
         self,
@@ -47,6 +51,7 @@ class Preprocessing:
         remove_punctuation: bool = True,
         punctuation: str = string.punctuation,
         remove_numbers: bool = True,
+        remove_emails: bool = True,
         lemmatize: bool = True,
         stopword_list: str | list[str] = None,
         min_chars: int = 1,
@@ -57,7 +62,7 @@ class Preprocessing:
         num_processes: int = None,
         save_original_indexes=True,
         remove_stopwords_spacy: bool = True,
-        entities: list[str] = None,
+        entities: list[str] = None,        
     ):
         """
         init Preprocessing
@@ -79,6 +84,8 @@ class Preprocessing:
         :type punctuation: str
         :param remove_numbers: if true, numbers will be removed
         :type remove_numbers: bool
+        :param remove_emails: if true, email addresses will be removed
+        :type remove_emails: bool
         :param remove_stopwords_spacy: bool , if true use spacy to remove stopwords (default: true)
         :param lemmatize: if true, words will be lemmatized using a spacy model according to the language that has been
         set (default: true)
@@ -117,11 +124,12 @@ class Preprocessing:
         self.language = language
         self.num_processes = num_processes
         self.remove_numbers = remove_numbers
+        self.remove_emails = remove_emails
         self.save_original_indexes = save_original_indexes
         self.entities = entities
 
         if self.lemmatize:
-            lang = spacy_model_mapping[self.language]
+            lang = SPACY_MODEL_MAPPING[self.language]
             try:
                 self.spacy_model = spacy.load(lang)
             except IOError:
@@ -403,8 +411,6 @@ class Preprocessing:
 
         else:
 
-            # string.punctuation
-
             self.preprocessing_steps.append(
                 "filter words with document frequency lower than "
                 + str(self.min_df)
@@ -435,6 +441,10 @@ class Preprocessing:
         for d in tqdm(docs):
 
             new_d = " ".join(d.split())
+
+            if self.remove_emails:
+                new_d = re.sub(EMAIL_PATTERN, "", new_d)
+                
             if self.lowercase:
                 new_d = new_d.lower()
 
