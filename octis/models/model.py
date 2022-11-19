@@ -72,9 +72,10 @@ def load_model_output(output_path, vocabulary_path=None, top_words=10):
     Parameters
     ----------
     :param output_path: path in which th model output is saved
-    :param vocabulary_path: path in which the vocabulary is saved (optional, used to retrieve the top k words of each
-     topic)
-    :param top_words: top k words to retrieve for each topic (in case a vocabulary path is given)
+    :param vocabulary_path: path in which the vocabulary is saved (optional,
+     used to retrieve the top k words of each topic)
+    :param top_words: top k words to retrieve for each topic (in case a
+     vocabulary path is given)
     """
     output = dict(np.load(output_path, allow_pickle=True))
     if vocabulary_path is not None:
@@ -86,15 +87,19 @@ def load_model_output(output_path, vocabulary_path=None, top_words=10):
         for topic in output["topic-word-matrix"]:
             top_k = np.argsort(topic)[-top_words:]
             top_k_words = list(
-                reversed([[index2vocab[str(i)], float(topic[i])] for i in top_k]))
+                reversed([[
+                    index2vocab[str(i)], float(topic[i])] for i in top_k]))
             topics_output.append(top_k_words)
 
         output["topic-word-matrix"] = output["topic-word-matrix"].tolist()
-        output["topic-document-matrix"] = output["topic-document-matrix"].tolist()
+        output["topic-document-matrix"] = output[
+            "topic-document-matrix"].tolist()
         if "test-topic-word-matrix" in output:
-            output["test-topic-word-matrix"] = output["test-topic-word-matrix"].tolist()
+            output["test-topic-word-matrix"] = output[
+                "test-topic-word-matrix"].tolist()
         if "test-topic-document-matrix" in output:
-            output["test-topic-document-matrix"] = output["test-topic-document-matrix"].tolist()
+            output["test-topic-document-matrix"] = output[
+                "test-topic-document-matrix"].tolist()
 
         output["topics"] = topics_output
     return output

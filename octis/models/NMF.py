@@ -8,9 +8,11 @@ import octis.configuration.defaults as defaults
 
 class NMF(AbstractModel):
 
-    def __init__(self, num_topics=100, chunksize=2000, passes=1, kappa=1.0, minimum_probability=0.01, w_max_iter=200,
-                 w_stop_condition=0.0001, h_max_iter=50, h_stop_condition=0.001, eval_every=10, normalize=True,
-                 random_state=None, use_partitions=True):
+    def __init__(
+        self, num_topics=100, chunksize=2000, passes=1, kappa=1.0,
+        minimum_probability=0.01, w_max_iter=200,
+        w_stop_condition=0.0001, h_max_iter=50, h_stop_condition=0.001,
+        eval_every=10, normalize=True, random_state=None, use_partitions=True):
         """
         Initialize NMF model
 
@@ -163,7 +165,8 @@ class NMF(AbstractModel):
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)
 
-                result["test-topic-word-matrix"] = self.trained_model.get_topics()
+                result[
+                    "test-topic-word-matrix"] = self.trained_model.get_topics()
 
                 if top_words > 0:
                     topics_output = []
@@ -174,9 +177,11 @@ class NMF(AbstractModel):
                         topics_output.append(top_k_words)
                     result["test-topics"] = topics_output
 
-                result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+                result["test-topic-document-matrix"] = (
+                    self._get_topic_document_matrix())
             else:
-                result["test-topic-document-matrix"] = self._get_topic_document_matrix(new_corpus)
+                result["test-topic-document-matrix"] = (
+                    self._get_topic_document_matrix(new_corpus))
         return result
 
     def _get_topics_words(self, topk):
@@ -201,11 +206,13 @@ class NMF(AbstractModel):
         if test_corpus is None:
             for document in self.id_corpus:
                 doc_topic_tuples.append(
-                    self.trained_model.get_document_topics(document, minimum_probability=0))
+                    self.trained_model.get_document_topics(
+                        document, minimum_probability=0))
         else:
             for document in test_corpus:
                 doc_topic_tuples.append(
-                    self.trained_model.get_document_topics(document, minimum_probability=0))
+                    self.trained_model.get_document_topics(
+                        document, minimum_probability=0))
         topic_document = np.zeros((
             self.hyperparameters["num_topics"],
             len(doc_topic_tuples)))
