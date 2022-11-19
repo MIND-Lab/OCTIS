@@ -13,16 +13,18 @@ class LDA(AbstractModel):
     use_partitions = True
     update_with_test = False
 
-    def __init__(self, num_topics=100, distributed=False, chunksize=2000, passes=1, update_every=1, alpha="symmetric",
-                 eta=None, decay=0.5, offset=1.0, eval_every=10, iterations=50, gamma_threshold=0.001,
-                 random_state=None):
+    def __init__(
+        self, num_topics=100, distributed=False, chunksize=2000,
+        passes=1, update_every=1, alpha="symmetric", eta=None, decay=0.5,
+        offset=1.0, eval_every=10, iterations=50, gamma_threshold=0.001,
+            random_state=None):
         """
         Initialize LDA model
 
         Parameters
         ----------
-        num_topics (int, optional) – The number of requested latent topics to be
-        extracted from the training corpus.
+        num_topics (int, optional) – The number of requested latent topics to
+        be extracted from the training corpus.
 
         distributed (bool, optional) – Whether distributed computing should be
         used to accelerate training.
@@ -79,7 +81,8 @@ class LDA(AbstractModel):
         gamma parameters to continue iterating.
 
         random_state ({np.random.RandomState, int}, optional) – Either a
-        randomState object or a seed to generate one. Useful for reproducibility.
+        randomState object or a seed to generate one. 
+        Useful for reproducibility.
 
 
         """
@@ -151,8 +154,8 @@ class LDA(AbstractModel):
         ----------
         dataset : dataset to use to build the model
         hyperparams : hyperparameters to build the model
-        top_words : if greater than 0 returns the most significant words for each topic in the output
-                 (Default True)
+        top_words : if greater than 0 returns the most significant words for
+                    each topic in the output (Default True)
         Returns
         -------
         result : dictionary with up to 3 entries,
@@ -163,7 +166,8 @@ class LDA(AbstractModel):
             hyperparams = {}
 
         if self.use_partitions:
-            train_corpus, test_corpus = dataset.get_partitioned_corpus(use_validation=False)
+            train_corpus, test_corpus = dataset.get_partitioned_corpus(
+                use_validation=False)
         else:
             train_corpus = dataset.get_corpus()
 
@@ -211,7 +215,8 @@ class LDA(AbstractModel):
                 self.trained_model.update(new_corpus)
                 self.id_corpus.extend(new_corpus)
 
-                result["test-topic-word-matrix"] = self.trained_model.get_topics()
+                result["test-topic-word-matrix"] = (
+                    self.trained_model.get_topics())
 
                 if top_words > 0:
                     topics_output = []
@@ -222,7 +227,8 @@ class LDA(AbstractModel):
                         topics_output.append(top_k_words)
                     result["test-topics"] = topics_output
 
-                result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+                result["test-topic-document-matrix"] = (
+                    self._get_topic_document_matrix())
 
             else:
                 test_document_topic_matrix = []

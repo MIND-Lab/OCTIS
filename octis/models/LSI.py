@@ -33,14 +33,15 @@ class LSI(AbstractModel):
         execution on several machines) will be used.
 
         onepass (bool, optional) – Whether the one-pass algorithm should be
-        used for training. Pass False to force a multi-pass stochastic algorithm.
+        used for training. Pass False to force a multi-pass stochastic
+        algorithm.
 
-        power_iters (int, optional) – Number of power iteration steps to be used.
-        Increasing the number of power iterations improves accuracy, but lowers
-        performance
+        power_iters (int, optional) – Number of power iteration steps to be
+        used. Increasing the number of power iterations improves accuracy,
+        but lowers performance
 
-        extra_samples (int, optional) – Extra samples to be used besides the rank
-        k. Can improve accuracy.
+        extra_samples (int, optional) – Extra samples to be used besides the
+        rank k. Can improve accuracy.
         """
         self.hyperparameters["num_topics"] = num_topics
         self.hyperparameters["chunksize"] = chunksize
@@ -130,7 +131,6 @@ class LSI(AbstractModel):
                 topics_output.append(top_k_words)
             result["topics"] = topics_output
 
-
         result["topic-document-matrix"] = self._get_topic_document_matrix()
 
         if self.use_partitions:
@@ -140,7 +140,8 @@ class LSI(AbstractModel):
                 self.trained_model.add_documents(new_corpus)
                 self.id_corpus.extend(new_corpus)
 
-                result["test-topic-word-matrix"] = self._get_topic_word_matrix()
+                result["test-topic-word-matrix"] = (
+                    self._get_topic_word_matrix())
 
                 if top_words > 0:
                     topics_output = []
@@ -151,7 +152,8 @@ class LSI(AbstractModel):
                         topics_output.append(top_k_words)
                     result["test-topics"] = topics_output
 
-                result["test-topic-document-matrix"] = self._get_topic_document_matrix()
+                result["test-topic-document-matrix"] = (
+                    self._get_topic_document_matrix())
 
             else:
                 test_document_topic_matrix = []
