@@ -2,6 +2,12 @@
 History
 =======
 
+next_release
+---------------
+* Improve preprocessing #70
+* Bug fix CTM num_topics #76
+
+
 1.10.4 (2022-05-20)
 --------------------
 * Update metadata Italian datasets
