@@ -20,15 +20,18 @@ class Optimizer:
     Class Optimizer to perform Bayesian Optimization on Topic Model
     """
 
-    def optimize(self, model, dataset, metric, search_space, extra_metrics=None,
-                 number_of_call=5, n_random_starts=1,
-                 initial_point_generator="lhs",  # work only for version skopt 8.0!!!
-                 optimization_type='Maximize', model_runs=5, surrogate_model="RF",
-                 kernel=1.0 * Matern(length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5),
-                 acq_func="LCB", random_state=False, x0=None, y0=None,
-                 save_models=True, save_step=1, save_name="result", save_path="results/", early_stop=False,
-                 early_step=5,
-                 plot_best_seen=False, plot_model=False, plot_name="B0_plot", log_scale_plot=False, topk=10):
+    def optimize(
+        self, model, dataset, metric, search_space, extra_metrics=None,
+        number_of_call=5, n_random_starts=1,
+        initial_point_generator="lhs",  # work only for version skopt 8.0!!!
+        optimization_type='Maximize', model_runs=5, surrogate_model="RF",
+        kernel=1.0 * Matern(
+            length_scale=1.0, length_scale_bounds=(1e-1, 10.0), nu=1.5),
+        acq_func="LCB", random_state=False, x0=None, y0=None,
+        save_models=True, save_step=1, save_name="result",
+        save_path="results/", early_stop=False, early_step=5,
+        plot_best_seen=False, plot_model=False, plot_name="B0_plot",
+            log_scale_plot=False, topk=10):
         """
         Perform hyper-parameter optimization for a Topic Model
 
@@ -208,20 +211,22 @@ class Optimizer:
 
         # Compute the score of the hyper-parameter configuration
         different_model_runs = []
-        different_model_runs_extra_metrics = [[] for i in range(len(self.extra_metrics))]
+        different_model_runs_extra_metrics = [[] for i in range(len(
+            self.extra_metrics))]
 
         for i in range(self.model_runs):
 
             # Prepare model
-            model_output = self.model.train_model(self.dataset, params,
-                                                  self.topk)
+            model_output = self.model.train_model(
+                self.dataset, params, self.topk)
             # Score of the model
             score = self.metric.score(model_output)
             different_model_runs.append(score)
 
             # Update of the extra metric values
             for j, extra_metric in enumerate(self.extra_metrics):
-                different_model_runs_extra_metrics[j].append(extra_metric.score(model_output))
+                different_model_runs_extra_metrics[j].append(
+                    extra_metric.score(model_output))
 
             # Save the model for each run
             if self.save_models:
@@ -234,8 +239,9 @@ class Optimizer:
             'iteration_' + str(self.current_call)] = different_model_runs
 
         for j, extra_metric in enumerate(self.extra_metrics):
-            self.dict_model_runs[self.extra_metric_names[j]]['iteration_' + str(self.current_call)] = \
-                different_model_runs_extra_metrics[j]
+            self.dict_model_runs[self.extra_metric_names[j]][
+                'iteration_' + str(self.current_call)] = (
+                    different_model_runs_extra_metrics[j])
 
         # The output for BO is the median over different_model_runs
         result = np.median(different_model_runs)
@@ -245,13 +251,20 @@ class Optimizer:
 
         # Boxplot for matrix_model_runs
         if self.plot_model:
-            name_plot = self.save_path + self.plot_name + "_model_runs_" + self.name_optimized_metric
-            plot_model_runs(self.dict_model_runs[self.name_optimized_metric], self.current_call, name_plot)
+            name_plot = ''.join([
+                self.save_path, self.plot_name,
+                "_model_runs_", self.name_optimized_metric])
+            plot_model_runs(
+                self.dict_model_runs[
+                    self.name_optimized_metric], self.current_call, name_plot)
 
             # Boxplot of extrametrics (if any)
             for j in range(len(self.extra_metrics)):
-                name_plot = self.save_path + self.plot_name + "_model_runs_" + self.extra_metric_names[j]
-                plot_model_runs(self.dict_model_runs[self.extra_metric_names[j]], self.current_call, name_plot)
+                name_plot = ''.join([
+                    self.save_path, self.plot_name,
+                    "_model_runs_" + self.extra_metric_names[j]])
+                plot_model_runs(self.dict_model_runs[
+                    self.extra_metric_names[j]], self.current_call, name_plot)
 
         return result
 
@@ -266,18 +279,21 @@ class Optimizer:
         # For loop to perform Bayesian Optimization
         for i in range(self.number_of_previous_calls, self.number_of_call):
 
-            # Next point proposed by BO and evaluation of the objective function
+            # Next point proposed by BO and evaluation of the objective
+            # function
             print("Current call: ", self.current_call)
             start_time = time.time()
 
-            # Next point proposed by BO and evaluation of the objective function
+            # Next point proposed by BO and evaluation of the objective
+            # function
             if i < self.lenx0:
                 next_x = [self.x0[name][i] for name in self.hyperparameters]
                 # next_x = self.x0[i]
                 if len(self.y0) == 0:
                     f_val = self._objective_function(next_x)
                 else:
-                    self.dict_model_runs[self.name_optimized_metric]['iteration_' + str(i)] = self.y0[i]
+                    self.dict_model_runs[self.name_optimized_metric][
+                        'iteration_' + str(i)] = self.y0[i]
                     f_val = -self.y0[i] if self.optimization_type == 'Maximize' else self.y0[i]
 
             else:
@@ -294,8 +310,11 @@ class Optimizer:
 
             # Plot best seen
             if self.plot_best_seen:
-                plot_bayesian_optimization(res.func_vals, self.save_path + self.plot_name + "_best_seen",
-                                           self.log_scale_plot, conv_max=self.optimization_type == 'Maximize')
+                plot_bayesian_optimization(
+                    res.func_vals,
+                    self.save_path + self.plot_name + "_best_seen",
+                    self.log_scale_plot,
+                    conv_max=self.optimization_type == 'Maximize')
 
             # Create an object related to the BO optimization
             results = OptimizerEvaluation(self, BO_results=res)
@@ -306,8 +325,8 @@ class Optimizer:
                 results.save(name_json)
 
             # Early stop condition
-            if i >= len(self.x0) and self.early_stop and early_condition(res.func_vals, self.early_step,
-                                                                         self.n_random_starts):
+            if i >= len(self.x0) and self.early_stop and early_condition(
+                    res.func_vals, self.early_step, self.n_random_starts):
                 print("Stop because of early stopping condition")
                 break
 
@@ -320,7 +339,8 @@ class Optimizer:
         """
         Load the metric from the json file, useful for the resume method
 
-        :param optimization_object: dictionary of the information saved during the optimization
+        :param optimization_object: dictionary of the information saved during
+            the optimization
         :type optimization_object: dict
         :param dataset: the considered dataset
         :type dataset: OCTIS dataset object
@@ -334,12 +354,14 @@ class Optimizer:
         if self.name_optimized_metric.startswith('F1Score'):
             metric_parameters.update({'dataset': dataset})
 
-        self.metric = select_metric(metric_parameters, self.name_optimized_metric)
+        self.metric = select_metric(
+            metric_parameters, self.name_optimized_metric)
 
         # Extra metrics
         self.extra_metrics = []
         self.extra_metric_names = optimization_object['extra_metric_names']
-        dict_extra_metric_parameters = optimization_object['extra_metric_attributes']
+        dict_extra_metric_parameters = optimization_object[
+            'extra_metric_attributes']
 
         for name in self.extra_metric_names:
             metric_parameters = dict_extra_metric_parameters[name]
@@ -357,7 +379,8 @@ class Optimizer:
 
         :param name_path: name of the json file
         :type name_path: str
-        :return: result of BO optimization (scikit-optimize object), surrogate model (scikit-learn object)
+        :return: result of BO optimization (scikit-optimize object),
+            surrogate model (scikit-learn object)
         :rtype: tuple
         """
 
@@ -365,7 +388,8 @@ class Optimizer:
         with open(name_path, 'rb') as file:
             optimization_object = json.load(file)
 
-        self.search_space = load_search_space(optimization_object["search_space"])
+        self.search_space = load_search_space(
+            optimization_object["search_space"])
         self.acq_func = optimization_object["acq_func"]
         self.surrogate_model = optimization_object["surrogate_model"]
         self.kernel = eval(optimization_object["kernel"])
@@ -391,7 +415,8 @@ class Optimizer:
         self.x0 = optimization_object['x0']
         self.y0 = optimization_object['y0']
         self.n_random_starts = optimization_object['n_random_starts']
-        self.initial_point_generator = optimization_object['initial_point_generator']
+        self.initial_point_generator = optimization_object[
+            'initial_point_generator']
         self.topk = optimization_object['topk']
         self.time_eval = optimization_object["time_eval"]
         res = None
@@ -399,10 +424,13 @@ class Optimizer:
         # Load the dataset
         dataset = Dataset()
         if not optimization_object["is_cached"]:
-            dataset.load_custom_dataset_from_folder(optimization_object["dataset_path"])
+            dataset.load_custom_dataset_from_folder(
+                optimization_object["dataset_path"])
         else:
-            dp = optimization_object["dataset_path"][:-(len(optimization_object["dataset_name"]) + len("_py3.pkz"))]
-            dataset.fetch_dataset(optimization_object["dataset_name"], data_home=dp)
+            dp = optimization_object["dataset_path"][:-(len(
+                optimization_object["dataset_name"]) + len("_py3.pkz"))]
+            dataset.fetch_dataset(
+                optimization_object["dataset_name"], data_home=dp)
 
         self.dataset = dataset
 
@@ -418,9 +446,12 @@ class Optimizer:
 
         # Update number_of_call for restarting
         for i in range(self.number_of_previous_calls):
-            next_x = [optimization_object["x_iters"][key][i] for key in self.hyperparameters]
-            f_val = -optimization_object["f_val"][i] if self.optimization_type == 'Maximize' else \
-                optimization_object["f_val"][i]
+            next_x = [optimization_object["x_iters"][key][i]
+                      for key in self.hyperparameters]
+            if self.optimization_type == 'Maximize':
+                f_val = -optimization_object["f_val"][i]
+            else:
+                f_val = optimization_object["f_val"][i]
             res = opt.tell(next_x, f_val)
 
             # Create the directory where the results are saved
@@ -482,7 +513,8 @@ class Optimizer:
             print("Error: the number of initial_points must be >=1 !!!")
             return -1
 
-        if self.initial_point_generator not in ['lhs', 'sobol', 'halton', 'hammersly', 'grid', 'random']:
+        if self.initial_point_generator not in [
+                'lhs', 'sobol', 'halton', 'hammersly', 'grid', 'random']:
             print("Error: wrong initial_point_generator")
             return -1
 
