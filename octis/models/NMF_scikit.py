@@ -7,8 +7,9 @@ import octis.configuration.defaults as defaults
 
 class NMF_scikit(AbstractModel):
 
-    def __init__(self, num_topics=100, init=None, alpha=0, l1_ratio=0, regularization='both',
-                 use_partitions=True):
+    def __init__(
+        self, num_topics=100, init=None, alpha=0, l1_ratio=0,
+        regularization='both', use_partitions=True):
         """
         Initialize NMF model
 
@@ -79,7 +80,7 @@ class NMF_scikit(AbstractModel):
         self.id2word = None
         self.id_corpus = None
 
-    def train_model(self, dataset, hyperparameters=None, topics=10):
+    def train_model(self, dataset, hyperparameters=None, top_words=10):
         """
         Train the model and return output
 
@@ -87,7 +88,7 @@ class NMF_scikit(AbstractModel):
         ----------
         dataset : dataset to use to build the model
         hyperparameters : hyperparameters to build the model
-        topics : if greather than 0 returns the most significant words
+        top_words : if greather than 0 returns the most significant words
                  for each topic in the output
                  Default True
 
@@ -102,11 +103,13 @@ class NMF_scikit(AbstractModel):
             hyperparameters = {}
 
         if self.id2word is None or self.id_corpus is None:
-            vectorizer = TfidfVectorizer(min_df=0.0, token_pattern=r"(?u)\b[\w|\-]+\b",
-                                         vocabulary=dataset.get_vocabulary())
+            vectorizer = TfidfVectorizer(
+                min_df=0.0, token_pattern=r"(?u)\b[\w|\-]+\b",
+                vocabulary=dataset.get_vocabulary())
 
             if self.use_partitions:
-                partition = dataset.get_partitioned_corpus(use_validation=False)
+                partition = dataset.get_partitioned_corpus(
+                    use_validation=False)
                 corpus = partition[0]
             else:
                 corpus = dataset.get_corpus()
@@ -114,7 +117,8 @@ class NMF_scikit(AbstractModel):
             real_corpus = [" ".join(document) for document in corpus]
             X = vectorizer.fit_transform(real_corpus)
 
-            self.id2word = {i: k for i, k in enumerate(vectorizer.get_feature_names())}
+            self.id2word = {i: k for i, k in enumerate(
+                vectorizer.get_feature_names())}
             if self.use_partitions:
                 test_corpus = []
                 for document in partition[1]:
@@ -128,9 +132,12 @@ class NMF_scikit(AbstractModel):
         #hyperparameters["corpus"] = self.id_corpus
         #hyperparameters["id2word"] = self.id2word
         self.hyperparameters.update(hyperparameters)
-        model = NMF(n_components=self.hyperparameters["num_topics"], init=self.hyperparameters["init"],
-                    alpha=self.hyperparameters["alpha"], l1_ratio=self.hyperparameters["l1_ratio"],
-                    regularization=self.hyperparameters['regularization'])
+        model = NMF(
+            n_components=self.hyperparameters["num_topics"],
+            init=self.hyperparameters["init"],
+            alpha=self.hyperparameters["alpha"],
+            l1_ratio=self.hyperparameters["l1_ratio"],
+            regularization=self.hyperparameters['regularization'])
 
         W = model.fit_transform(self.id_corpus)
         #W = W / W.sum(axis=1, keepdims=True)
@@ -141,8 +148,8 @@ class NMF_scikit(AbstractModel):
 
         result["topic-word-matrix"] = H
 
-        if topics > 0:
-            result["topics"] = self.get_topics(H, topics)
+        if top_words > 0:
+            result["topics"] = self.get_topics(H, top_words)
 
         result["topic-document-matrix"] = np.array(W).transpose()
 
@@ -152,8 +159,8 @@ class NMF_scikit(AbstractModel):
 
                 result["test-topic-word-matrix"] = W
 
-                if topics > 0:
-                    result["test-topics"] = self.get_topics(W, topics)
+                if top_words > 0:
+                    result["test-topics"] = self.get_topics(W, top_words)
 
                 result["test-topic-document-matrix"] = H
 
@@ -163,11 +170,11 @@ class NMF_scikit(AbstractModel):
 
         return result
 
-    def get_topics(self, H, topics):
+    def get_topics(self, H, top_words):
         topic_list = []
         for topic in H:
             words_list = sorted(
                 list(enumerate(topic)), key=lambda x: x[1])
-            topk = [tup[0] for tup in words_list[0:topics]]
+            topk = [tup[0] for tup in words_list[0:top_words]]
             topic_list.append([self.id2word[i] for i in topk])
         return topic_list
