@@ -23,7 +23,7 @@ class ContextualInferenceNetwork(nn.Module):
         """
         super(ContextualInferenceNetwork, self).__init__()
         assert isinstance(input_size, int), "input_size must by type int."
-        assert isinstance(output_size, int), "output_size must be type int."
+        assert isinstance(output_size, int) or isinstance(output_size, np.int64), "output_size must be type int."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
         assert activation in ['softplus', 'relu', 'sigmoid', 'tanh', 'leakyrelu',
