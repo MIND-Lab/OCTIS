@@ -9,7 +9,7 @@ class NMF_scikit(AbstractModel):
 
     def __init__(
         self, num_topics=100, init=None, alpha=0, l1_ratio=0,
-        regularization='both', use_partitions=True):
+            regularization='both', use_partitions=True):
         """
         Initialize NMF model
 

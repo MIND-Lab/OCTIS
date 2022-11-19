@@ -18,4 +18,6 @@ class NeuralLDA(AVITM):
             use_partitions=use_partitions)
 
     def train_model(self, dataset, hyperparameters=None, top_words=10):
-        return super().train_model(dataset, hyperparameters, top_words)
+        return super().train_model(
+            dataset=dataset, hyperparameters=hyperparameters,
+            top_words=top_words)
