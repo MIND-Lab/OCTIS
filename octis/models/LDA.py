@@ -81,7 +81,7 @@ class LDA(AbstractModel):
         gamma parameters to continue iterating.
 
         random_state ({np.random.RandomState, int}, optional) – Either a
-        randomState object or a seed to generate one. 
+        randomState object or a seed to generate one.s
         Useful for reproducibility.
 
 

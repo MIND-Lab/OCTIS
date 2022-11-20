@@ -108,7 +108,7 @@ class BaseETM(AbstractModel):
             line = emb.split()
             word = line[0]
             if word in self.vocab.values():
-                vect = np.array(line[1:]).astype(np.float)
+                vect = np.array(line[1:]).astype(float)
                 vectors[word] = vect
         return vectors
 
