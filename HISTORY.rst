@@ -6,6 +6,8 @@ next_release
 ---------------
 * Improve preprocessing #70
 * Bug fix CTM num_topics #76
+* Add seed parameter to CTM #65
+* Minor fixes
 
 
 1.10.4 (2022-05-20)
