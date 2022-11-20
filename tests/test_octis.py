@@ -418,6 +418,19 @@ def test_model_output_nmf_scikit(data_dir):
         num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
+def test_model_output_ctm_zeroshot_seeded(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = CTM(num_topics=num_topics, seed=10, num_epochs=5, inference_type='zeroshot')
+    output = model.train_model(dataset)
+
+    model_2 = CTM(num_topics=num_topics, seed=10, num_epochs=5, inference_type='zeroshot')
+    output_2 = model_2.train_model(dataset)
+
+    assert output['topics'] == output_2['topics']
+
+
 def test_model_output_ctm_zeroshot(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
