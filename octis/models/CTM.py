@@ -3,10 +3,14 @@ from sklearn.feature_extraction.text import CountVectorizer
 from octis.models.model import AbstractModel
 from octis.models.contextualized_topic_models.datasets import dataset
 from octis.models.contextualized_topic_models.models import ctm
-from octis.models.contextualized_topic_models.utils.data_preparation import bert_embeddings_from_list
+from octis.models.contextualized_topic_models.utils.data_preparation import (
+    bert_embeddings_from_list)
 
 import os
 import pickle as pkl
+import torch
+import numpy as np
+import random
 
 
 class CTM(AbstractModel):
@@ -15,7 +19,7 @@ class CTM(AbstractModel):
         self, num_topics=10, model_type='prodLDA', activation='softplus',
         dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
         solver='adam', num_epochs=100, reduce_on_plateau=False, prior_mean=0.0,
-        prior_variance=None, num_layers=2, num_neurons=100,
+        prior_variance=None, num_layers=2, num_neurons=100, seed=None,
         use_partitions=True, num_samples=10, inference_type="zeroshot",
             bert_path="", bert_model="bert-base-nli-mean-tokens"):
         """
@@ -36,6 +40,7 @@ class CTM(AbstractModel):
         :param num_epochs : int, number of epochs to train for, (default 100)
         :param num_samples: int, number of times theta needs to be sampled
             (default: 10)
+        :param seed : int, the random seed. Not used if None (default None).
         :param use_partitions: bool, if true the model will be trained on the
             training set and evaluated on the test set (default: true)
         :param reduce_on_plateau : bool, reduce learning rate by 10x on
@@ -70,6 +75,7 @@ class CTM(AbstractModel):
         self.hyperparameters["bert_path"] = bert_path
         self.hyperparameters["num_layers"] = num_layers
         self.hyperparameters["bert_model"] = bert_model
+        self.hyperparameters["seed"] = seed
         self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
@@ -92,6 +98,7 @@ class CTM(AbstractModel):
 
         self.set_params(hyperparameters)
         self.vocab = dataset.get_vocabulary()
+        set_seed(seed=hyperparameters['seed'])
 
         if self.use_partitions:
             train, validation, test = dataset.get_partitioned_corpus(
@@ -179,6 +186,16 @@ class CTM(AbstractModel):
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
+
+    @staticmethod
+    def set_seed(seed=None):
+        if seed is not None:
+            torch.manual_seed(seed)
+            torch.cuda.manual_seed(seed)
+            np.random.seed(seed)
+            random.seed(seed)
+            torch.backends.cudnn.enabled = False
+            torch.backends.cudnn.deterministic = True
 
     @staticmethod
     def preprocess(
