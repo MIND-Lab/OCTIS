@@ -99,7 +99,6 @@ class CTM(AbstractModel):
         self.set_params(hyperparameters)
         self.vocab = dataset.get_vocabulary()
         self.set_seed(seed=self.hyperparameters['seed'])
-        print(self.hyperparameters['seed'])
 
         if self.use_partitions:
             train, validation, test = dataset.get_partitioned_corpus(
