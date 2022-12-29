@@ -111,7 +111,8 @@ class CTM(AbstractModel):
                                  num_samples=self.hyperparameters['num_samples'],
                                  topic_prior_mean=self.hyperparameters["prior_mean"],
                                  reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
-                                 topic_prior_variance=self.hyperparameters["prior_variance"])
+                                 topic_prior_variance=self.hyperparameters["prior_variance"],
+                                 top_word = top_words)
             self.model.fit(x_train, x_valid, verbose=False)
             result = self.inference(x_test)
             return result
@@ -133,7 +134,8 @@ class CTM(AbstractModel):
                              num_samples=self.hyperparameters['num_samples'],
                              topic_prior_mean=self.hyperparameters["prior_mean"],
                              reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
-                             topic_prior_variance=self.hyperparameters["prior_variance"])
+                             topic_prior_variance=self.hyperparameters["prior_variance"],
+                             top_word = top_words)
 
 
         self.model.fit(x_train, None, verbose=False)
