@@ -18,7 +18,7 @@ class CTM(object):
 
     def __init__(self, input_size, bert_input_size, inference_type="zeroshot", num_topics=10, model_type='prodLDA',
                  hidden_sizes=(100, 100), activation='softplus', dropout=0.2, learn_priors=True, batch_size=64,
-                 lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, num_samples=10,
+                 lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, num_samples=10, top_word = 10,
                  reduce_on_plateau=False, topic_prior_mean=0.0, topic_prior_variance=None, num_data_loader_workers=0):
         """
         :param input_size: int, dimension of input
@@ -80,6 +80,7 @@ class CTM(object):
         self.batch_size = batch_size
         self.lr = lr
         self.num_samples = num_samples
+        self.top_word = top_word
         self.bert_size = bert_input_size
         self.momentum = momentum
         self.solver = solver
@@ -342,6 +343,7 @@ class CTM(object):
         Args
             k : (int) number of words to return per topic, default 10.
         """
+        k = self.top_word
         assert k <= self.input_size, "k must be <= input size."
         component_dists = self.best_components
         topics = defaultdict(list)
