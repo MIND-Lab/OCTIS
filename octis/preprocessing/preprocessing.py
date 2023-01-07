@@ -12,64 +12,84 @@ from collections import Counter
 """
 Maps the language to its corresponding spacy model
 """
-spacy_model_mapping = {'chinese': 'zh_core_web_sm', 'danish': 'nl_core_news_sm', 'dutch': 'nl_core_news_sm',
-                       'english': 'en_core_web_sm', 'french': 'fr_core_news_sm', 'german': 'de_core_news_sm',
-                       'greek': 'el_core_news_sm', 'italian': 'it_core_news_sm', 'japanese': 'ja_core_news_sm',
-                       'lithuanian': 'lt_core_news_sm', 'norwegian': 'nb_core_news_sm', 'polish': 'pl_core_news_sm',
-                       'portuguese': 'pt_core_news_sm', 'romanian': 'ro_core_news_sm', 'russian': 'ru_core_news_sm',
-                       'spanish': 'es_core_news_sm'}
+spacy_model_mapping = {
+    'chinese': 'zh_core_web_sm', 'danish': 'nl_core_news_sm',
+    'dutch': 'nl_core_news_sm', 'english': 'en_core_web_sm',
+    'french': 'fr_core_news_sm', 'german': 'de_core_news_sm',
+    'greek': 'el_core_news_sm', 'italian': 'it_core_news_sm',
+    'japanese': 'ja_core_news_sm', 'lithuanian': 'lt_core_news_sm',
+    'norwegian': 'nb_core_news_sm', 'polish': 'pl_core_news_sm',
+    'portuguese': 'pt_core_news_sm', 'romanian': 'ro_core_news_sm',
+    'russian': 'ru_core_news_sm', 'spanish': 'es_core_news_sm'}
 
 
 class Preprocessing:
-    def __init__(self, lowercase: bool = True, vocabulary: List[str] = None, max_features: int = None,
-                 min_df: float = 0.0, max_df: float = 1.0, remove_punctuation: bool = True,
-                 punctuation: str = string.punctuation, remove_numbers: bool = True, lemmatize: bool = True,
-                 stopword_list: Union[str, List[str]] = None, min_chars: int = 1, min_words_docs: int = 0,
-                 language: str = 'english', split: bool = True, verbose: bool = False, num_processes: int = None,
-                 save_original_indexes=True, remove_stopwords_spacy: bool = True):
+    def __init__(
+        self, lowercase: bool = True, vocabulary: List[str] = None,
+        max_features: int = None, min_df: float = 0.0, max_df: float = 1.0,
+        remove_punctuation: bool = True, punctuation: str = string.punctuation,
+        remove_numbers: bool = True, lemmatize: bool = True,
+        stopword_list: Union[str, List[str]] = None, min_chars: int = 1,
+        min_words_docs: int = 0, language: str = 'english', split: bool = True,
+        verbose: bool = False, num_processes: int = None,
+        save_original_indexes=True, remove_stopwords_spacy: bool = True):
         """
         init Preprocessing
 
-        :param lowercase: if true, words in documents are reduced to lowercase (default: true)
+        :param lowercase: if true, words in documents are reduced to
+            lowercase (default: true)
         :type lowercase: boolean
-        :param vocabulary: the vocabulary of the corpus to preprocess (default: None)
+        :param vocabulary: the vocabulary of the corpus to preprocess
+            (default: None)
         :type vocabulary: list
-        :param max_features: maximum number of words that the vocabulary must contain. The less frequent
-        words will be removed. If it's not None, then max_df and min_df are ignored (default: None)
+        :param max_features: maximum number of words that the vocabulary must
+            contain. The less frequent words will be removed. If it's not None,
+            then max_df and min_df are ignored (default: None)
         :type max_features: int
-        :param min_df: words below this minumum document frequency will be removed (default: 0.0)
+        :param min_df: words below this minumum document frequency will be
+            removed (default: 0.0)
         :type min_df: float
-        :param max_df: words above this maximum document frequency will be removed (default: 1.0)
+        :param max_df: words above this maximum document frequency will be
+            removed (default: 1.0)
         :type max_df: float
-        :param remove_punctuation: if true, punctuation will be removed (default: true)
+        :param remove_punctuation: if true, punctuation will be removed
+            (default: true)
         :type remove_punctuation: bool
-        :param punctuation: string containing all the punctuation chars that need to be removed (default:
+        :param punctuation: string containing all the punctuation chars that
+            need to be removed (default:
         string.punctuation)
         :type punctuation: str
         :param remove_numbers: if true, numbers will be removed
         :type remove_numbers: bool
-        :param remove_stopwords_spacy: bool , if true use spacy to remove stopwords (default: true)
-        :param lemmatize: if true, words will be lemmatized using a spacy model according to the language that has been
-        set (default: true)
+        :param remove_stopwords_spacy: bool , if true use spacy to remove
+            stopwords (default: true)
+        :param lemmatize: if true, words will be lemmatized using a spacy model
+            according to the language that has been set (default: true)
         :type lemmatize: bool
-        :param stopword_list: if a list of strings is passed, the strings will be removed from the texts. Otherwise,
-        if a str is passed, it represents the language of the stopwords that need to be removed. The stopwords are
-        spacy's stopwords (default: None)
+        :param stopword_list: if a list of strings is passed, the strings will
+            be removed from the texts. Otherwise, if a str is passed, it
+            represents the language of the stopwords that need to be removed.
+            The stopwords are spacy's stopwords (default: None)
         :type stopword_list: str or list of str
-        :param min_chars: mininum number of characters that a token should have (default: 1)
+        :param min_chars: mininum number of characters that a token should have
+            (default: 1)
         :type min_chars: int
-        :param min_words_docs: minimun number of words that a document should contain (default: 0)
+        :param min_words_docs: minimun number of words that a document should
+            contain (default: 0)
         :type min_words_docs: int
-        :param language: language of the documents. It needs to be set for the lemmatizer (default: english)
+        :param language: language of the documents. It needs to be set for the
+            lemmatizer (default: english)
         :type language: str
-        :param split: if true, the corpus will be split in train (85%), testing (7.5%) and validation (7.5%) set (
-        default: true)
+        :param split: if true, the corpus will be split in train (85%),
+            testing (7.5%) and validation (7.5%) set (default: true)
         :type split: bool
-        :param verbose: if true, some steps of the preprocessing will be printed on screen (default: false)
+        :param verbose: if true, some steps of the preprocessing will be
+            printed on screen (default: false)
         :type verbose: bool
         :param num_processes: number of processes to run the preprocessing
         :type num_processes: int
-        :param save_original_indexes: if true, it keeps track of the original indexes of the documents
+        :param save_original_indexes: if true, it keeps track of the original
+            indexes of the documents
         """
         self.vocabulary = vocabulary
         self.lowercase = lowercase
@@ -150,16 +170,18 @@ class Preprocessing:
 
         vocabulary = self.filter_words(docs)
         print("created vocab")
-        # with Pool(self.num_processes) as p:
-        #    final_docs, final_labels = p.starmap(self._foo, product(docs, vocabulary, labels_path, repeat=2))
         print(len(vocabulary))
         final_docs, final_labels, document_indexes = [], [], []
         if labels_path is not None:
             if multilabel:
-                labels = [line.strip().split() for line in open(labels_path, 'r').readlines()]
+                labels = [
+                    line.strip().split()
+                    for line in open(labels_path, 'r').readlines()]
             else:
-                labels = [line.strip() for line in open(labels_path, 'r').readlines()]
-            
+                labels = [
+                    line.strip()
+                    for line in open(labels_path, 'r').readlines()]
+
             vocab = set(vocabulary)
             for i, doc, label in zip(range(len(docs)), docs, labels):
                 new_doc = [w for w in doc.split() if w in vocab]
@@ -168,7 +190,8 @@ class Preprocessing:
                     final_labels.append(label)
                     document_indexes.append(i)
 
-            labels_to_remove = set([k for k, v in dict(Counter(final_labels)).items() if v <= 3])
+            labels_to_remove = set([k for k, v in dict(
+                Counter(final_labels)).items() if v <= 3])
             if len(labels_to_remove) > 0:
                 docs = final_docs
                 labels = final_labels

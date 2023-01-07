@@ -2,6 +2,7 @@
 import json
 import time
 from pathlib import Path
+import numpy as np
 
 # utils from skopt and sklearn
 from sklearn.gaussian_process.kernels import *
@@ -11,8 +12,10 @@ from octis.dataset.dataset import Dataset
 # utils from other files of the framework
 from octis.models.model import save_model_output
 from octis.optimization.optimizer_evaluation import OptimizerEvaluation
-from octis.optimization.optimizer_tool import choose_optimizer, early_condition, load_model, select_metric
-from octis.optimization.optimizer_tool import load_search_space, plot_bayesian_optimization, plot_model_runs
+from octis.optimization.optimizer_tool import (
+    choose_optimizer, early_condition, load_model, select_metric)
+from octis.optimization.optimizer_tool import (
+    load_search_space, plot_bayesian_optimization, plot_model_runs)
 
 
 class Optimizer:
@@ -41,50 +44,67 @@ class Optimizer:
         :type dataset: OCTIS dataset
         :param metric: metric used for the optimization
         :type metric: OCTIS metric
-        :param search_space: a dictionary of hyperparameters to optimize (each parameter is defined as a skopt space)
+        :param search_space: a dictionary of hyperparameters to optimize
+            (each parameter is defined as a skopt space)
         :type search_space: skopt space object
-        :param extra_metrics: list of extra-metrics to compute during the optimization
+        :param extra_metrics: list of extra-metrics to compute during the
+            optimization
         :type extra_metrics: list of metrics, optional
         :param number_of_call: number of evaluations of metric
         :type number_of_call: int, optional
-        :param n_random_starts: number of evaluations of metric with random points before approximating it with surrogate model
+        :param n_random_starts: number of evaluations of metric with random
+            points before approximating it with surrogate model
         :type n_random_starts: int, optional
-        :param initial_point_generator: set an initial point generator. Can be either "random", "sobol", "halton" ,"hammersly","lhs"
+        :param initial_point_generator: set an initial point generator.
+            Can be either "random", "sobol", "halton" ,"hammersly","lhs"
         :type initial_point_generator: str, optional
-        :param optimization_type: Set "Maximize" if you want to maximize metric, "Minimize" if you want to minimize
+        :param optimization_type: Set "Maximize" if you want to maximize
+            metric, "Minimize" if you want to minimize
         :type optimization type: str, optional
         :param model_runs:
         :type: int, optional
-        :param surrogate_model: set a surrogate model. Can be either "GP" (Gaussian Process), "RF" (Random Forest) or "ET" (Extra-Tree)
+        :param surrogate_model: set a surrogate model. Can be either "GP"
+            (Gaussian Process), "RF" (Random Forest) or "ET" (Extra-Tree)
         :type: str, optional
         :param kernel: set a kernel function
-        :param acq_func: Function to minimize over the surrogate model. Can be either: "LCB" (Lower Confidence Bound), "EI" (Expected improvement) OR "PI" (Probability of Improvement)
+        :param acq_func: Function to minimize over the surrogate model.
+            Can be either: "LCB" (Lower Confidence Bound), "EI" (Expected
+            improvement) OR "PI" (Probability of Improvement)
         :type: str, optional
-        :param random_state: Set random state to something other than None for reproducible results.
+        :param random_state: Set random state to something other than None for
+            reproducible results.
         :type: int, optional
         :param x0: List of initial input points.
         :type: list, optional
         :param y0: Evaluation of initial input points.
         :type: list, optional
-        :param save_models: if 'True' save all the topic models generated during the optimization process
+        :param save_models: if 'True' save all the topic models generated
+            during the optimization process
         :type: bool, optional
-        :param save_step: decide how much to save the results of the optimization
+        :param save_step: decide how much to save the results of the
+            optimization
         :type: int, optional
-        :param save_name: name of the file where the results of the optimization will be saved
+        :param save_name: name of the file where the results of the
+            optimization will be saved
         :type: str, optional
-        :param save_path: Path where the results of the optimization (json file) will be saved
+        :param save_path: Path where the results of the optimization (json file
+            ) will be saved
         :type save_path: str, optional
-        :param early_stop: if "True" stop the optimization if there is no improvement after early_step evaluations
+        :param early_stop: if "True" stop the optimization if there is no
+            improvement after early_step evaluations
         :type early_stop: bool, optional
-        :param early_step: number of iterations with no improvement after which optimization will be stopped (if early_stop is True)
+        :param early_step: number of iterations with no improvement after which
+            optimization will be stopped (if early_stop is True)
         :type early_step: int, optional
-        :param plot_best_seen: If "True" save a convergence plot of the result of a Bayesian_optimization (i.e. the best seen for each iteration)
+        :param plot_best_seen: If "True" save a convergence plot of the result
+            of a Bayesian_optimization (i.e. the best seen for each iteration)
         :type plot_best_seen: bool, optional
         :param plot_model: If "True" save the boxplot of all the model runs
         :type plot_model: bool, optional
         :param plot_name: Set the name of the plots (best_seen and model_runs).
         :type plot_name: str, optional
-        :param log_scale_plot: if "True" use the logarithmic scale for the plots.
+        :param log_scale_plot: if "True" use the logarithmic scale for the
+            plots.
         :type log_scale_plot: bool, optional
         :param topk:
         :type topk: int, optional
@@ -139,7 +159,8 @@ class Optimizer:
         i = 0
         self.extra_metric_names = []
         for extra_metric in extra_metrics:
-            self.extra_metric_names.append(str(i) + '_' + extra_metric.__class__.__name__)
+            self.extra_metric_names.append(
+                str(i) + '_' + extra_metric.__class__.__name__)
             self.dict_model_runs[self.extra_metric_names[i]] = dict()
             i = i + 1
 
@@ -294,7 +315,8 @@ class Optimizer:
                 else:
                     self.dict_model_runs[self.name_optimized_metric][
                         'iteration_' + str(i)] = self.y0[i]
-                    f_val = -self.y0[i] if self.optimization_type == 'Maximize' else self.y0[i]
+                    f_val = -self.y0[i] if (
+                        self.optimization_type == 'Maximize') else self.y0[i]
 
             else:
                 next_x = opt.ask()

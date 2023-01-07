@@ -1,7 +1,8 @@
 import json
 import numpy as np
 import pandas as pd
-from octis.optimization.optimizer_tool import check_instance, save_search_space, convert_type
+from octis.optimization.optimizer_tool import (
+    check_instance, save_search_space, convert_type)
 
 
 class OptimizerEvaluation:
@@ -11,7 +12,8 @@ class OptimizerEvaluation:
         Create an object with all the information about Bayesian Optimization
 
         :param optimizer: list of setting of the BO experiment
-        :param BO_results: object of Scikit-optimize where the results of BO  are saved
+        :param BO_results: object of Scikit-optimize where the results of BO
+            are saved
         """
         search_space = optimizer.search_space
         optimization_type = optimizer.optimization_type
@@ -22,7 +24,8 @@ class OptimizerEvaluation:
 
         for mp in metric_parameters:
             if check_instance(getattr(optimizer.metric, mp)):
-                dict_metric_parameters.update({mp: getattr(optimizer.metric, mp)})
+                dict_metric_parameters.update(
+                    {mp: getattr(optimizer.metric, mp)})
 
         # Creation of model hyper-parameters saved in the json file
         model_parameters = optimizer.model.hyperparameters
@@ -35,12 +38,14 @@ class OptimizerEvaluation:
         # Creation of extra metric-parameters saved in the json file
         dict_extra_metric_parameters = dict()
 
-        for em, em_name in zip(optimizer.extra_metrics, optimizer.extra_metric_names):
+        for em, em_name in zip(
+                optimizer.extra_metrics, optimizer.extra_metric_names):
             metric_parameters = em.get_params()
             dict_extra_metric_parameters.update({em_name: dict()})
             for mp in metric_parameters:
                 if check_instance(getattr(em, mp)):
-                    dict_extra_metric_parameters[em_name].update({mp: getattr(em, mp)})
+                    dict_extra_metric_parameters[em_name].update(
+                        {mp: getattr(em, mp)})
 
         # Info about optimization
         self.info = dict()
@@ -54,7 +59,9 @@ class OptimizerEvaluation:
         self.info.update({"kernel": str(optimizer.kernel)})
         self.info.update({"acq_func": optimizer.acq_func})
         self.info.update({"surrogate_model": optimizer.surrogate_model})
-        self.info.update({"optimization_type": "Maximize" if optimization_type == "Maximize" else "Minimize"})
+        self.info.update({
+            "optimization_type": "Maximize" if (
+                optimization_type == "Maximize") else "Minimize"})
         self.info.update({"model_runs": optimizer.model_runs})
         self.info.update({"save_models": optimizer.save_models})
         self.info.update({"save_step": optimizer.save_step})
@@ -66,21 +73,25 @@ class OptimizerEvaluation:
         self.info.update({"plot_best_seen": optimizer.plot_best_seen})
         self.info.update({"plot_name": optimizer.plot_name})
         self.info.update({"log_scale_plot": optimizer.log_scale_plot})
-        self.info.update({"search_space": save_search_space(optimizer.search_space)})
+        self.info.update({"search_space": save_search_space(
+            optimizer.search_space)})
         self.info.update({"model_name": optimizer.model.__class__.__name__})
         self.info.update({"model_attributes": dict_model_parameters})
         self.info.update({"use_partitioning": optimizer.model.use_partitions})
         self.info.update({"metric_name": optimizer.name_optimized_metric})
-        self.info.update({"extra_metric_names": [name for name in optimizer.extra_metric_names]})
+        self.info.update({"extra_metric_names": [
+            name for name in optimizer.extra_metric_names]})
         self.info.update({"metric_attributes": dict_metric_parameters})
-        self.info.update({"extra_metric_attributes": dict_extra_metric_parameters})
+        self.info.update({
+            "extra_metric_attributes": dict_extra_metric_parameters})
         self.info.update({"current_call": optimizer.current_call})
         self.info.update({"number_of_call": optimizer.number_of_call})
         self.info.update({"random_state": optimizer.random_state})
         self.info.update({"x0": optimizer.x0})
         self.info.update({"y0": optimizer.y0})
         self.info.update({"n_random_starts": optimizer.n_random_starts})
-        self.info.update({"initial_point_generator": optimizer.initial_point_generator})
+        self.info.update({
+            "initial_point_generator": optimizer.initial_point_generator})
         self.info.update({"topk": optimizer.topk})
         self.info.update({"time_eval": optimizer.time_eval})
         self.info.update({"dict_model_runs": optimizer.dict_model_runs})
@@ -100,7 +111,8 @@ class OptimizerEvaluation:
         lenList = len(BO_results.x_iters)
         for i, name in enumerate(name_hyperparameters):
             self.x_iters.update(
-                {name: [convert_type(BO_results.x_iters[j][i]) for j in range(lenList)]})
+                {name: [convert_type(BO_results.x_iters[j][i])
+                 for j in range(lenList)]})
 
         self.info.update({"f_val": self.func_vals})
         self.info.update({"x_iters": self.x_iters})
@@ -137,11 +149,15 @@ class OptimizerEvaluation:
         df['num_iteration'] = [i for i in range(n_row)]
         df['time'] = [self.info['time_eval'][i] for i in range(n_row)]
         df['Median(model_runs)'] = [np.median(
-            self.info['dict_model_runs'][self.info['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
+            self.info['dict_model_runs'][
+                self.info['metric_name']]['iteration_' + str(i)])
+            for i in range(n_row)]
         df['Mean(model_runs)'] = [np.mean(
             self.info['dict_model_runs'][self.info['metric_name']]['iteration_' + str(i)]) for i in range(n_row)]
         df['Standard_Deviation(model_runs)'] = [np.std(
-            self.info['dict_model_runs'][self.metric.__class__.__name__]['iteration_' + str(i)]) for i in range(n_row)]
+            self.info['dict_model_runs'][
+                self.metric.__class__.__name__]['iteration_' + str(i)])
+            for i in range(n_row)]
 
         for hyperparameter in list(self.x_iters.keys()):
             df[hyperparameter] = self.x_iters[hyperparameter]
@@ -150,12 +166,14 @@ class OptimizerEvaluation:
             try:
                 df[metric.info()["name"] + '(not optimized)'] = [
                     np.median(self.info['dict_model_runs'][
-                                  str(j) + '_' + metric.__class__.__name__]['iteration_' + str(i)])
+                        str(j) + '_' + metric.__class__.__name__][
+                            'iteration_' + str(i)])
                     for i in range(n_row)]
             except:
                 df[metric.__class__.__name__ + '(not optimized)'] = [
                     np.median(self.info['dict_model_runs'][
-                                str(j) + '_' + metric.__class__.__name__]['iteration_' + str(i)])
+                                str(j) + '_' + metric.__class__.__name__][
+                                    'iteration_' + str(i)])
                     for i in range(n_row)]
 
         if not name_file.endswith(".csv"):
