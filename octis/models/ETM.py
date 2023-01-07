@@ -273,7 +273,7 @@ class ETM(BaseETM):
                     break
                 else:
                     top_words = list(
-                        gammas[k].argsort()[-self.top_word:][::-1])
+                        gammas[k].argsort()[-self.top_words:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
                 topic_w.append(topic_words)
 
