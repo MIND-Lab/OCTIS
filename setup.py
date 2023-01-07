@@ -20,18 +20,18 @@ test_requirements = ['pytest>=3', ]
 setup(
     author="Silvia Terragni",
     author_email='s.terragni4@campus.unimib.it',
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
-    description="octis: a library for Optimizing and Comparing Topic Models.",
+    description="OCTIS: a library for Optimizing and Comparing Topic Models.",
     entry_points={
         'console_scripts': [
             'octis=octis.cli:main',

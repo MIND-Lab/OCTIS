@@ -16,7 +16,7 @@ class ETM(BaseETM):
         self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300,
         embedding_size=300, activation='relu', dropout=0.5, lr=0.005,
         optimizer='adam', batch_size=128, clip=0.0, wdecay=1.2e-6, bow_norm=1,
-        device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
+        device='cpu', train_embeddings=True, embeddings_path=None,
             embeddings_type='pickle', binary_embeddings=True,
             headerless_embeddings=False, use_partitions=True):
         """
@@ -69,7 +69,6 @@ class ETM(BaseETM):
         self.hyperparameters['embeddings_type'] = embeddings_type
         self.hyperparameters['binary_embeddings'] = binary_embeddings
         self.hyperparameters['headerless_embeddings'] = headerless_embeddings
-        self.top_word = top_word
         self.early_stopping = None
         self.device = device
         self.test_tokens, self.test_counts = None, None
@@ -274,7 +273,7 @@ class ETM(BaseETM):
                     break
                 else:
                     top_words = list(
-                        gammas[k].argsort()[-self.top_word:][::-1])
+                        gammas[k].argsort()[-self.top_words:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
                 topic_w.append(topic_words)
 
@@ -304,11 +303,10 @@ class ETM(BaseETM):
 
         info = self.get_info()
         emp_array = np.empty((0, self.hyperparameters['num_topics']))
-        topic_doc = np.asarray(topic_d)
-        length = topic_doc.shape[0]
+
         # batch concatenation
-        for i in range(length):
-            emp_array = np.concatenate([emp_array, topic_doc[i]])
+        for i in range(len(topic_d)):
+            emp_array = np.concatenate([emp_array, topic_d[i]])
         info['test-topic-document-matrix'] = emp_array.T
 
         return info

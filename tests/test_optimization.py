@@ -9,7 +9,6 @@ from skopt.space.space import Real
 from octis.dataset.dataset import Dataset
 from octis.evaluation_metrics.coherence_metrics import Coherence
 from octis.evaluation_metrics.classification_metrics import F1Score
-# %% load the libraries
 from octis.models.LDA import LDA
 from octis.optimization.optimizer import Optimizer
 
@@ -73,7 +72,8 @@ def search_space():
     return search_space
 
 
-def test_simple_optimization(dataset, model, metric, search_space, data_dir_test):
+def test_simple_optimization(
+        dataset, model, metric, search_space, data_dir_test):
     save_path = data_dir_test + "test_simple_optimization/"
     save_name = "result_simple_optimization.json"
     # Choose number of call and number of model_runs
@@ -85,8 +85,8 @@ def test_simple_optimization(dataset, model, metric, search_space, data_dir_test
     optimizer = Optimizer()
     optimization_result = optimizer.optimize(
         model, dataset, metric, search_space, number_of_call=number_of_call,
-        model_runs=model_runs, n_random_starts=n_random_starts, save_path=save_path,
-        save_name=save_name)
+        model_runs=model_runs, n_random_starts=n_random_starts,
+        save_path=save_path, save_name=save_name)
 
     # check the integrity of optimization_result
     assert optimization_result.info["metric_name"] == metric.__class__.__name__
@@ -101,17 +101,22 @@ def test_simple_optimization(dataset, model, metric, search_space, data_dir_test
 
     assert len(optimization_result.func_vals) == number_of_call
     assert len(optimization_result.info["x_iters"]) == 2
-    assert all([len(optimization_result.info["x_iters"][el]) == number_of_call for el in
-                optimization_result.info["x_iters"].keys()])
-    assert all([len(optimization_result.info["dict_model_runs"][metric.__class__.__name__][el]) == model_runs for el in
-                optimization_result.info["dict_model_runs"][metric.__class__.__name__].keys()])
+    assert all([
+        len(optimization_result.info["x_iters"][el]) == number_of_call
+        for el in optimization_result.info["x_iters"].keys()])
+    assert all(
+        [len(optimization_result.info["dict_model_runs"][
+            metric.__class__.__name__][el]) == model_runs
+         for el in optimization_result.info["dict_model_runs"][
+            metric.__class__.__name__].keys()])
 
     # check the existence of the output file
     assert os.path.isfile(save_path + save_name)
 
     for i in range(number_of_call):
         for j in range(model_runs):
-            assert os.path.isfile(save_path + "models/" + str(i) + "_" + str(j) + ".npz")
+            assert os.path.isfile(save_path + "models/" +
+                                  str(i) + "_" + str(j) + ".npz")
 
     # check the integrity of the json file
     f = open(save_path + save_name)
@@ -130,14 +135,18 @@ def test_simple_optimization(dataset, model, metric, search_space, data_dir_test
     assert all([type(el) == float for el in file["f_val"]])
 
     assert len(file["x_iters"]) == 2
-    assert all([len(file["x_iters"][el]) == number_of_call for el in file["x_iters"].keys()])
+    assert all([len(file["x_iters"][el]) ==
+               number_of_call for el in file["x_iters"].keys()])
 
     assert len(file["dict_model_runs"]) == 1
-    assert all([len(file["dict_model_runs"][metric.__class__.__name__][el]) == model_runs for el in
-                file["dict_model_runs"][metric.__class__.__name__].keys()])
+    assert all([
+        len(file["dict_model_runs"][
+            metric.__class__.__name__][el]) == model_runs
+        for el in file["dict_model_runs"][metric.__class__.__name__].keys()])
 
 
-def test_resume_optimization(dataset, model, metric, search_space, data_dir_test):
+def test_resume_optimization(
+        dataset, model, metric, search_space, data_dir_test):
     # Choose number of call and number of model_runs
     number_of_call = 4
     model_runs = 2
@@ -145,30 +154,37 @@ def test_resume_optimization(dataset, model, metric, search_space, data_dir_test
 
     save_path = data_dir_test + "test_resume_optimization/"
 
-    # Optimize the function npmi using Bayesian Optimization (simple Optimization)
+    # Optimize the function npmi using BO (simple Optimization)
     optimizer = Optimizer()
     optimization_result = optimizer.optimize(
         model, dataset, metric, search_space, number_of_call=number_of_call,
-        model_runs=model_runs, n_random_starts=n_random_starts, save_path=save_path)
+        model_runs=model_runs,
+        n_random_starts=n_random_starts, save_path=save_path)
 
     # Resume the optimization
     extra_evaluations = 2
     path = optimization_result.name_json
     optimizer = Optimizer()
-    optimization_result = optimizer.resume_optimization(path, extra_evaluations=extra_evaluations)
+    optimization_result = optimizer.resume_optimization(
+        path, extra_evaluations=extra_evaluations)
 
     # check the integrity of optimization_result
-    assert optimization_result.info["number_of_call"] == number_of_call + extra_evaluations
-    assert len(optimization_result.func_vals) == number_of_call + extra_evaluations
-    assert all([len(optimization_result.info["x_iters"][el]) == number_of_call + extra_evaluations for el in
-                optimization_result.info["x_iters"].keys()])
+    assert optimization_result.info["number_of_call"] == (
+        number_of_call + extra_evaluations)
+    assert len(optimization_result.func_vals) == (
+        number_of_call + extra_evaluations)
+    assert all([
+        len(optimization_result.info["x_iters"][el]) == (
+            number_of_call + extra_evaluations)
+        for el in optimization_result.info["x_iters"].keys()])
 
     # check the existence of the output file
     assert os.path.isfile(save_path + "result.json")
 
     for i in range(number_of_call + extra_evaluations):
         for j in range(model_runs):
-            assert os.path.isfile(save_path + "models/" + str(i) + "_" + str(j) + ".npz")
+            assert os.path.isfile(save_path + "models/" +
+                                  str(i) + "_" + str(j) + ".npz")
 
     # check the integrity of the json file
     f = open(save_path + "result.json")
@@ -176,14 +192,15 @@ def test_resume_optimization(dataset, model, metric, search_space, data_dir_test
 
     assert len(file) == 38
     assert len(file["f_val"]) == number_of_call + extra_evaluations
-    assert all([len(file["x_iters"][el]) == number_of_call + extra_evaluations for el in file["x_iters"].keys()])
+    assert all([len(file["x_iters"][el]) == number_of_call +
+               extra_evaluations for el in file["x_iters"].keys()])
 
 
-def test_optimization_graphics(dataset, model, metric, search_space, data_dir_test):
+def test_optimization_graphics(
+        dataset, model, metric, search_space, data_dir_test):
     # Choose number of call and number of model_runs
     number_of_call = 4
     model_runs = 3
-    n_random_starts = 3
 
     # Optimize the function npmi using Bayesian Optimization
     save_path = data_dir_test + "test_plot_fun/"
@@ -191,7 +208,9 @@ def test_optimization_graphics(dataset, model, metric, search_space, data_dir_te
     # Optimize the function npmi using Bayesian Optimization
     optimizer = Optimizer()
     optimizer.optimize(model, dataset, metric, search_space,
-                       number_of_call=number_of_call, model_runs=model_runs, save_path=save_path, plot_model=True,
+                       number_of_call=number_of_call,
+                       model_runs=model_runs,
+                       save_path=save_path, plot_model=True,
                        plot_best_seen=True, plot_name="B0_plot")
 
     assert os.path.isfile(save_path + "result.json")
@@ -199,7 +218,8 @@ def test_optimization_graphics(dataset, model, metric, search_space, data_dir_te
     assert os.path.isfile(save_path + "B0_plot_best_seen.png")
 
 
-def test_optimization_acq_function(dataset, model, metric, search_space, data_dir_test):
+def test_optimization_acq_function(
+        dataset, model, metric, search_space, data_dir_test):
     acq_names = ['PI', 'EI', 'LCB']
     # Choose number of call and number of model_runs
     number_of_call = 4
@@ -213,8 +233,10 @@ def test_optimization_acq_function(dataset, model, metric, search_space, data_di
         save_path_specific = save_path + '/' + acq_name
         optimizer = Optimizer()
         optimization_result = optimizer.optimize(
-            model, dataset, metric, search_space, number_of_call=number_of_call,
-            model_runs=model_runs, save_path=save_path_specific, acq_func=acq_name)
+            model, dataset, metric, search_space,
+            number_of_call=number_of_call,
+            model_runs=model_runs, save_path=save_path_specific,
+            acq_func=acq_name)
 
         assert os.path.isfile(save_path_specific + "/result.json")
         assert optimization_result.info["acq_func"] == acq_name
@@ -225,7 +247,8 @@ def test_optimization_acq_function(dataset, model, metric, search_space, data_di
         assert file["acq_func"] == acq_name
 
 
-def test_optimization_surrogate_model(dataset, model, metric, search_space, data_dir_test):
+def test_optimization_surrogate_model(
+        dataset, model, metric, search_space, data_dir_test):
     surrogate_models = ['RF', 'GP', 'ET']
 
     # Choose number of call and number of model_runs
@@ -256,7 +279,8 @@ def test_optimization_surrogate_model(dataset, model, metric, search_space, data
 
 
 # def test_initial_point_generator(save_path):
-#     initial_point_generators = ['lhs', 'sobol', 'halton', 'hammersly', 'grid', 'random']
+#     initial_point_generators = ['lhs', 'sobol', 'halton', 'hammersly',
+#                                 'grid', 'random']
 #     # %% Load dataset
 #     dataset = Dataset()
 #     dataset.load_custom_dataset(data_dir + '/M10')
@@ -295,7 +319,8 @@ def test_optimization_surrogate_model(dataset, model, metric, search_space, data
 #
 # # %%
 
-def test_extra_metrics(dataset, model, metric, extra_metric, search_space, data_dir_test):
+def test_extra_metrics(
+        dataset, model, metric, extra_metric, search_space, data_dir_test):
     # Choose number of call and number of model_runs
     number_of_call = 4
     model_runs = 2
@@ -304,7 +329,7 @@ def test_extra_metrics(dataset, model, metric, extra_metric, search_space, data_
     # Optimize the function npmi using Bayesian Optimization
     save_path = data_dir_test + "test_extrametrics_fun/"
 
-    # %% Optimize the function npmi using Bayesian Optimization (simple Optimization)
+    # %% Optimize the function npmi using BO (simple Optimization)
     optimizer = Optimizer()
     optimizer.optimize(model, dataset, metric, search_space,
                        number_of_call=number_of_call,
@@ -329,14 +354,20 @@ def test_extra_metrics(dataset, model, metric, extra_metric, search_space, data_
 
     assert len(file["dict_model_runs"]) == 2
 
-    assert all([len(file["dict_model_runs"][metric.__class__.__name__][el]) == model_runs for el in
-                file["dict_model_runs"][metric.__class__.__name__].keys()])
+    assert all([
+        len(file["dict_model_runs"][metric.__class__.__name__][el]) == (
+            model_runs)
+        for el in file["dict_model_runs"][metric.__class__.__name__].keys()])
 
-    assert all([len(file["dict_model_runs"]["0_" + extra_metric.__class__.__name__][el]) == model_runs for el in
-                file["dict_model_runs"]["0_" + extra_metric.__class__.__name__].keys()])
+    assert all([
+        len(file["dict_model_runs"][
+            "0_" + extra_metric.__class__.__name__][el]) == model_runs
+        for el in file["dict_model_runs"][
+            "0_" + extra_metric.__class__.__name__].keys()])
 
 
-def test_extra_metrics_resume(dataset, model, metric, extra_metric, search_space, data_dir_test):
+def test_extra_metrics_resume(
+        dataset, model, metric, extra_metric, search_space, data_dir_test):
     # Choose number of call and number of model_runs
     number_of_call = 4
     model_runs = 2
@@ -345,22 +376,24 @@ def test_extra_metrics_resume(dataset, model, metric, extra_metric, search_space
     # Optimize the function npmi using Bayesian Optimization
     save_path = data_dir_test + "test_extrametricsResume_fun/"
 
-    # Optimize the function npmi using Bayesian Optimization (simple Optimization)
+    # Optimize the function npmi using BO (simple Optimization)
     optimizer = Optimizer()
-    optimization_result = optimizer.optimize(model, dataset, metric, search_space,
-                                             number_of_call=number_of_call,
-                                             model_runs=model_runs,
-                                             n_random_starts=n_random_starts,
-                                             save_path=save_path,
-                                             extra_metrics=[extra_metric],
-                                             plot_best_seen=True,
-                                             plot_model=True)
+    optimization_result = optimizer.optimize(
+        model, dataset, metric, search_space,
+        number_of_call=number_of_call,
+        model_runs=model_runs,
+        n_random_starts=n_random_starts,
+        save_path=save_path,
+        extra_metrics=[extra_metric],
+        plot_best_seen=True,
+        plot_model=True)
 
     # # Resume the optimization
     extra_evaluations = 2
     path = optimization_result.name_json
     optimizer = Optimizer()
-    optimization_result = optimizer.resume_optimization(path, extra_evaluations=extra_evaluations)
+    optimization_result = optimizer.resume_optimization(
+        path, extra_evaluations=extra_evaluations)
 
     # check the integrity of the json file
     assert os.path.isfile(save_path + "result.json")
@@ -373,16 +406,22 @@ def test_extra_metrics_resume(dataset, model, metric, extra_metric, search_space
 
     assert len(file) == 38
     assert len(file["f_val"]) == number_of_call + extra_evaluations
-    assert all([len(file["x_iters"][el]) == number_of_call + extra_evaluations for el in file["x_iters"].keys()])
+    assert all([len(file["x_iters"][el]) == number_of_call +
+               extra_evaluations for el in file["x_iters"].keys()])
 
     assert len(file["dict_model_runs"]) == 2
-    assert all([len(file["dict_model_runs"][metric.__class__.__name__][el]) == model_runs for el in
-                file["dict_model_runs"][metric.__class__.__name__].keys()])
-    assert all([len(file["dict_model_runs"]["0_" + extra_metric.__class__.__name__][el]) == model_runs for el in
-                file["dict_model_runs"]["0_" + extra_metric.__class__.__name__].keys()])
+    assert all(
+        [len(file["dict_model_runs"][
+            metric.__class__.__name__][el]) == model_runs
+         for el in file["dict_model_runs"][metric.__class__.__name__].keys()])
+    assert all([len(file["dict_model_runs"][
+        "0_" + extra_metric.__class__.__name__][el]) == model_runs
+        for el in file["dict_model_runs"][
+        "0_" + extra_metric.__class__.__name__].keys()])
 
 
-def test_initial_input(dataset, model, metric, extra_metric, search_space, data_dir_test):
+def test_initial_input(
+        dataset, model, metric, extra_metric, search_space, data_dir_test):
     # Choose number of call and number of model_runs
     number_of_call = 4
     model_runs = 2
@@ -393,14 +432,15 @@ def test_initial_input(dataset, model, metric, extra_metric, search_space, data_
     # Optimize the function npmi using Bayesian Optimization
     save_path = data_dir_test + "test_initial_output_fun/"
 
-    # Optimize the function npmi using Bayesian Optimization (simple Optimization)
+    # Optimize the function npmi using BO (simple Optimization)
     optimizer = Optimizer()
-    optimization_result = optimizer.optimize(model, dataset, metric, search_space,
-                                             number_of_call=number_of_call,
-                                             model_runs=model_runs,
-                                             x0=x0,
-                                             save_path=save_path,
-                                             extra_metrics=[metric])
+    optimization_result = optimizer.optimize(
+        model, dataset, metric, search_space,
+        number_of_call=number_of_call,
+        model_runs=model_runs,
+        x0=x0,
+        save_path=save_path,
+        extra_metrics=[metric])
 
     assert os.path.isfile(save_path + "result.json")
 
@@ -410,8 +450,11 @@ def test_initial_input(dataset, model, metric, extra_metric, search_space, data_
     assert len(file) == 38
     assert len(file["x0"]["eta"]) == 3
     assert type(file["x0"]["eta"]) == list
-    assert all([file["x0"]["eta"][i] == x0["eta"][i] for i in range(len(x0["eta"]))])
+    assert all(
+        [file["x0"]["eta"][i] == x0["eta"][i] for i in range(len(x0["eta"]))])
 
     assert len(file["x0"]["alpha"]) == 3
     assert type(file["x0"]["alpha"]) == list
-    assert all([file["x0"]["alpha"][i] == x0["alpha"][i] for i in range(len(x0["alpha"]))])
+    assert all(
+        [file["x0"]["alpha"][i] == x0["alpha"][i]
+         for i in range(len(x0["alpha"]))])
