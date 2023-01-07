@@ -22,8 +22,9 @@ class CTM(object):
         num_topics=10, model_type='prodLDA', hidden_sizes=(100, 100),
         activation='softplus', dropout=0.2, learn_priors=True, batch_size=64,
         lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, num_samples=10,
-        reduce_on_plateau=False, topic_prior_mean=0.0,
+        reduce_on_plateau=False, topic_prior_mean=0.0, top_words=10,
             topic_prior_variance=None, num_data_loader_workers=0):
+
         """
         :param input_size: int, dimension of input
         :param bert_input_size: int, dimension of input that comes from BERT
@@ -91,6 +92,7 @@ class CTM(object):
         self.batch_size = batch_size
         self.lr = lr
         self.num_samples = num_samples
+        self.top_words = top_words
         self.bert_size = bert_input_size
         self.momentum = momentum
         self.solver = solver
@@ -363,20 +365,19 @@ class CTM(object):
         top_doc_arr = np.array([i.cpu().detach().numpy() for i in top_doc])
         return top_doc_arr
 
-    def get_topics(self, k=10):
+    def get_topics(self):
         """
         Retrieve topic words.
 
-        Args
-            k : (int) number of words to return per topic, default 10.
         """
-        assert k <= self.input_size, "k must be <= input size."
+        assert self.top_words <= (
+            self.input_size, "top_words must be <= input size.")
         component_dists = self.best_components
         topics = defaultdict(list)
         topics_list = []
         if self.num_topics is not None:
             for i in range(self.num_topics):
-                _, idxs = torch.topk(component_dists[i], k)
+                _, idxs = torch.topk(component_dists[i], self.top_words)
                 component_words = [self.train_data.idx2token[idx]
                                    for idx in idxs.cpu().numpy()]
                 topics[i] = component_words
