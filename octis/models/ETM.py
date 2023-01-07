@@ -12,30 +12,40 @@ import pickle as pkl
 
 class ETM(BaseETM):
 
-    def __init__(self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300, embedding_size=300,
-                 activation='relu', dropout=0.5, lr=0.005, optimizer='adam', batch_size=128, clip=0.0,
-                 wdecay=1.2e-6, bow_norm=1, device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
-                 embeddings_type='pickle', binary_embeddings=True, headerless_embeddings=False, use_partitions=True):
+    def __init__(
+        self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300,
+        embedding_size=300, activation='relu', dropout=0.5, lr=0.005,
+        optimizer='adam', batch_size=128, clip=0.0, wdecay=1.2e-6, bow_norm=1,
+        device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
+            embeddings_type='pickle', binary_embeddings=True,
+            headerless_embeddings=False, use_partitions=True):
         """
         initialization of ETM
 
-        :param embeddings_path: string, path to embeddings file. Can be a binary file for
-            the 'pickle', 'keyedvectors' and 'word2vec' types or a text file for 'word2vec'. 
+        :param embeddings_path: string, path to embeddings file.
+            Can be a binary file for the 'pickle', 'keyedvectors' and
+            'word2vec' types or a text file for 'word2vec'.
             This parameter is only used if 'train_embeddings' is set to False
-        :param embeddings_type: string, defines the format of the embeddings file.
-            Possible values are 'pickle', 'keyedvectors' or 'word2vec'. If set to 'pickle',
-            you must provide a file created with 'pickle' containing an array of word 
-            embeddings, composed by words and their respective vectors. If set to 'keyedvectors', 
-            you must provide a file containing a saved gensim.models.KeyedVectors instance. 
-            If set to 'word2vec', you must provide a file with the original word2vec format. 
-            This parameter is only used if 'train_embeddings' is set to False (default 'pickle')
-        :param binary_embeddings: bool, indicates if the original word2vec embeddings file is binary
-            or textual. This parameter is only used if both 'embeddings_type' is set to 'word2vec' 
-            and 'train_embeddings' is set to False. Otherwise, it will be ignored (default True)
-        :param headerless_embeddings: bool, indicates if the original word2vec embeddings textual file 
-            has a header line in the format "<no_of_vectors> <vector_length>". This parameter is only 
-            used if 'embeddings_type' is set to 'word2vec', 'train_embeddings' is set to False and
-            'binary_embeddings' is set to False. Otherwise, it will be ignored (default False)
+        :param embeddings_type: string, defines the format of the embeddings
+            file. Possible values are 'pickle', 'keyedvectors' or 'word2vec'.
+            If set to 'pickle', you must provide a file created with 'pickle'
+            containing an array of word embeddings, composed by words and
+            their respective vectors. If set to 'keyedvectors', you must
+            provide a file containing a saved gensim.models.KeyedVectors
+            instance. If set to 'word2vec', you must provide a file with the
+            original word2vec format. This parameter is only used if
+            'train_embeddings' is set to False (default 'pickle')
+        :param binary_embeddings: bool, indicates if the original word2vec
+            embeddings file is binary or textual. This parameter is only used
+            if both 'embeddings_type' is set to 'word2vec' and
+            'train_embeddings' is set to False. Otherwise, it will be ignored
+            (default True)
+        :param headerless_embeddings: bool, indicates if the original word2vec
+            embeddings textual file has a header line in the format
+            "<no_of_vectors> <vector_length>". This parameter is only used if
+            'embeddings_type' is set to 'word2vec', 'train_embeddings' is set
+            to False and 'binary_embeddings' is set to False. Otherwise, it
+            will be ignored (default False)
         """
         super(ETM, self).__init__()
         self.hyperparameters = dict()
@@ -94,7 +104,8 @@ class ETM(BaseETM):
 
     def set_model(self, dataset, hyperparameters):
         if self.use_partitions:
-            train_data, validation_data, testing_data = dataset.get_partitioned_corpus(use_validation=True)
+            train_data, validation_data, testing_data = (
+                dataset.get_partitioned_corpus(use_validation=True))
 
             data_corpus_train = [' '.join(i) for i in train_data]
             data_corpus_test = [' '.join(i) for i in testing_data]
@@ -104,8 +115,10 @@ class ETM(BaseETM):
             self.vocab = {i: w for i, w in enumerate(vocab)}
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
-            self.train_tokens, self.train_counts, self.test_tokens, self.test_counts, self.valid_tokens, \
-            self.valid_counts = self.preprocess(vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
+            (self.train_tokens, self.train_counts, self.test_tokens,
+             self.test_counts, self.valid_tokens, self.valid_counts
+             ) = self.preprocess(
+                vocab2id, data_corpus_train, data_corpus_test, data_corpus_val)
 
         else:
             data_corpus = [' '.join(i) for i in dataset.get_corpus()]
@@ -113,21 +126,25 @@ class ETM(BaseETM):
             self.vocab = {i: w for i, w in enumerate(vocab)}
             vocab2id = {w: i for i, w in enumerate(vocab)}
 
-            self.train_tokens, self.train_counts = self.preprocess(vocab2id, data_corpus, None)
+            self.train_tokens, self.train_counts = self.preprocess(
+                vocab2id, data_corpus, None)
 
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device(
+            "cuda" if torch.cuda.is_available() else "cpu")
 
         self.set_default_hyperparameters(hyperparameters)
         self.load_embeddings()
-        ## define model and optimizer
-        self.model = etm.ETM(num_topics=self.hyperparameters['num_topics'], vocab_size=len(self.vocab.keys()),
-                             t_hidden_size=int(self.hyperparameters['t_hidden_size']),
-                             rho_size=int(self.hyperparameters['rho_size']),
-                             emb_size=int(self.hyperparameters['embedding_size']),
-                             theta_act=self.hyperparameters['activation'],
-                             embeddings=self.embeddings,
-                             train_embeddings=self.hyperparameters['train_embeddings'],
-                             enc_drop=self.hyperparameters['dropout']).to(self.device)
+        # define model and optimizer
+        self.model = etm.ETM(
+            num_topics=self.hyperparameters['num_topics'],
+            vocab_size=len(self.vocab.keys()),
+            t_hidden_size=int(self.hyperparameters['t_hidden_size']),
+            rho_size=int(self.hyperparameters['rho_size']),
+            emb_size=int(self.hyperparameters['embedding_size']),
+            theta_act=self.hyperparameters['activation'],
+            embeddings=self.embeddings,
+            train_embeddings=self.hyperparameters['train_embeddings'],
+            enc_drop=self.hyperparameters['dropout']).to(self.device)
         print('model: {}'.format(self.model))
 
         self.optimizer = self.set_optimizer()
@@ -143,14 +160,16 @@ class ETM(BaseETM):
         for idx, ind in enumerate(indices):
             self.optimizer.zero_grad()
             self.model.zero_grad()
-            data_batch = data.get_batch(self.train_tokens, self.train_counts, ind, len(self.vocab.keys()),
-                                        self.device)
+            data_batch = data.get_batch(
+                self.train_tokens, self.train_counts, ind,
+                len(self.vocab.keys()), self.device)
             sums = data_batch.sum(1).unsqueeze(1)
             if self.hyperparameters['bow_norm']:
                 normalized_data_batch = data_batch / sums
             else:
                 normalized_data_batch = data_batch
-            recon_loss, kld_theta = self.model(data_batch, normalized_data_batch)
+            recon_loss, kld_theta = self.model(
+                data_batch, normalized_data_batch)
             total_loss = recon_loss + kld_theta
             total_loss.backward()
             if self.hyperparameters["clip"] > 0:
@@ -167,10 +186,12 @@ class ETM(BaseETM):
                 cur_kl_theta = round(acc_kl_theta_loss / cnt, 2)
                 cur_real_loss = round(cur_loss + cur_kl_theta, 2)
 
-                print('Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} .. Rec_loss: {}'
-                      ' .. NELBO: {}'.format(epoch + 1, idx, len(indices),
-                                             self.optimizer.param_groups[0]['lr'],
-                                             cur_kl_theta, cur_loss, cur_real_loss))
+                print(
+                    'Epoch: {} .. batch: {}/{} .. LR: {} .. KL_theta: {} ..'
+                    ' Rec_loss: {} .. NELBO: {}'.format(
+                        epoch + 1, idx, len(indices),
+                        self.optimizer.param_groups[0]['lr'],
+                        cur_kl_theta, cur_loss, cur_real_loss))
 
             self.data_list.append(normalized_data_batch)
 
@@ -178,9 +199,11 @@ class ETM(BaseETM):
         cur_kl_theta = round(acc_kl_theta_loss / cnt, 2)
         cur_real_loss = round(cur_loss + cur_kl_theta, 2)
         print('*' * 100)
-        print('Epoch----->{} .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
-            epoch + 1, self.optimizer.param_groups[0]['lr'], cur_kl_theta, cur_loss,
-            cur_real_loss))
+        print(
+            'Epoch----->{} .. LR: {} .. KL_theta: {} .. '
+            'Rec_loss: {} .. NELBO: {}'.format(
+                epoch + 1, self.optimizer.param_groups[0]['lr'], cur_kl_theta,
+                cur_loss, cur_real_loss))
         print('*' * 100)
 
         # VALIDATION ###
@@ -194,21 +217,22 @@ class ETM(BaseETM):
                 val_acc_kl_theta_loss = 0
                 val_cnt = 0
                 indices = torch.arange(0, len(self.valid_tokens))
-                indices = torch.split(indices, self.hyperparameters['batch_size'])
+                indices = torch.split(
+                    indices, self.hyperparameters['batch_size'])
                 for idx, ind in enumerate(indices):
                     self.optimizer.zero_grad()
                     self.model.zero_grad()
-                    val_data_batch = data.get_batch(self.valid_tokens, self.valid_counts,
-                                                    ind, len(self.vocab.keys()),
-                                                    self.device)
+                    val_data_batch = data.get_batch(
+                        self.valid_tokens, self.valid_counts,
+                        ind, len(self.vocab.keys()), self.device)
                     sums = val_data_batch.sum(1).unsqueeze(1)
                     if self.hyperparameters['bow_norm']:
                         val_normalized_data_batch = val_data_batch / sums
                     else:
                         val_normalized_data_batch = val_data_batch
 
-                    val_recon_loss, val_kld_theta = self.model(val_data_batch,
-                                                               val_normalized_data_batch)
+                    val_recon_loss, val_kld_theta = self.model(
+                        val_data_batch, val_normalized_data_batch)
 
                     val_acc_loss += torch.sum(val_recon_loss).item()
                     val_acc_kl_theta_loss += torch.sum(val_kld_theta).item()
@@ -219,9 +243,11 @@ class ETM(BaseETM):
                 val_cur_kl_theta = round(val_acc_kl_theta_loss / cnt, 2)
                 val_cur_real_loss = round(val_cur_loss + val_cur_kl_theta, 2)
                 print('*' * 100)
-                print('VALIDATION .. LR: {} .. KL_theta: {} .. Rec_loss: {} .. NELBO: {}'.format(
-                    self.optimizer.param_groups[0]['lr'], val_cur_kl_theta, val_cur_loss,
-                    val_cur_real_loss))
+                print(
+                    'VALIDATION .. LR: {} .. KL_theta: {} .. Rec_loss: {}'
+                    ' .. NELBO: {}'.format(
+                        self.optimizer.param_groups[0]['lr'], val_cur_kl_theta,
+                        val_cur_loss, val_cur_real_loss))
                 print('*' * 100)
                 if np.isnan(val_cur_real_loss):
                     return False
@@ -247,7 +273,8 @@ class ETM(BaseETM):
                     topic_w = None
                     break
                 else:
-                    top_words = list(gammas[k].argsort()[-self.top_word:][::-1])
+                    top_words = list(
+                        gammas[k].argsort()[-self.top_word:][::-1])
                 topic_words = [self.vocab[a] for a in top_words]
                 topic_w.append(topic_words)
 
@@ -289,18 +316,21 @@ class ETM(BaseETM):
     def set_default_hyperparameters(self, hyperparameters):
         for k in hyperparameters.keys():
             if k in self.hyperparameters.keys():
-                self.hyperparameters[k] = hyperparameters.get(k, self.hyperparameters[k])
+                self.hyperparameters[k] = hyperparameters.get(
+                    k, self.hyperparameters[k])
 
     def partitioning(self, use_partitions=False):
         self.use_partitions = use_partitions
 
-    
     @staticmethod
-    def preprocess(vocab2id, train_corpus, test_corpus=None, validation_corpus=None):
+    def preprocess(
+            vocab2id, train_corpus, test_corpus=None, validation_corpus=None):
 
         def split_bow(bow_in, n_docs):
-            indices = [[w for w in bow_in[doc, :].indices] for doc in range(n_docs)]
-            counts = [[c for c in bow_in[doc, :].data] for doc in range(n_docs)]
+            indices = [
+                [w for w in bow_in[doc, :].indices] for doc in range(n_docs)]
+            counts = [
+                [c for c in bow_in[doc, :].data] for doc in range(n_docs)]
             return indices, counts
 
         vec = CountVectorizer(
@@ -324,15 +354,20 @@ class ETM(BaseETM):
 
             if validation_corpus is not None:
                 x_validation = vec.transform(validation_corpus)
-                x_val_tokens, x_val_count = split_bow(x_validation, x_validation.shape[0])
+                x_val_tokens, x_val_count = split_bow(
+                    x_validation, x_validation.shape[0])
 
-                return x_train_tokens, x_train_count, x_test_tokens, x_test_count, x_val_tokens, x_val_count
+                return (
+                    x_train_tokens, x_train_count, x_test_tokens,
+                    x_test_count, x_val_tokens, x_val_count)
             else:
-                return x_train_tokens, x_train_count, x_test_tokens, x_test_count
+                return (
+                    x_train_tokens, x_train_count, x_test_tokens, x_test_count)
         else:
             if validation_corpus is not None:
                 x_validation = vec.transform(validation_corpus)
-                x_val_tokens, x_val_count = split_bow(x_validation, x_validation.shape[0])
+                x_val_tokens, x_val_count = split_bow(
+                    x_validation, x_validation.shape[0])
                 return x_train_tokens, x_train_count, x_val_tokens, x_val_count
             else:
                 return x_train_tokens, x_train_count

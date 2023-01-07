@@ -8,7 +8,8 @@ from torch import optim
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 
-from octis.models.contextualized_topic_models.networks.decoding_network import DecoderNetwork
+from octis.models.contextualized_topic_models.networks.decoding_network import (
+    DecoderNetwork)
 from octis.models.early_stopping.pytorchtools import EarlyStopping
 
 
@@ -16,49 +17,60 @@ class CTM(object):
     """Class to train the contextualized topic model
     """
 
-    def __init__(self, input_size, bert_input_size, inference_type="zeroshot", num_topics=10, model_type='prodLDA',
-                 hidden_sizes=(100, 100), activation='softplus', dropout=0.2, learn_priors=True, batch_size=64,
-                 lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, num_samples=10, top_word = 10,
-                 reduce_on_plateau=False, topic_prior_mean=0.0, topic_prior_variance=None, num_data_loader_workers=0):
+    def __init__(
+        self, input_size, bert_input_size, inference_type="zeroshot",
+        num_topics=10, model_type='prodLDA', hidden_sizes=(100, 100),
+        activation='softplus', dropout=0.2, learn_priors=True, batch_size=64,
+        lr=2e-3, momentum=0.99, solver='adam', num_epochs=100, num_samples=10,
+        reduce_on_plateau=False, topic_prior_mean=0.0, top_words=10,
+            topic_prior_variance=None, num_data_loader_workers=0):
+
         """
         :param input_size: int, dimension of input
-        :param bert_input_size: int, dimension of input that comes from BERT embeddings
-        :param inference_type: string, you can choose between the contextual model and the combined model
+        :param bert_input_size: int, dimension of input that comes from BERT
+            embeddings
+        :param inference_type: string, you can choose between the contextual
+            model and the combined model
         :param num_topics: int, number of topic components, (default 10)
         :param model_type: string, 'prodLDA' or 'LDA' (default 'prodLDA')
         :param hidden_sizes: tuple, length = n_layers, (default (100, 100))
-        :param activation: string, 'softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu', 'rrelu', 'elu',
-         'selu' (default 'softplus')
+        :param activation: string, 'softplus', 'relu', 'sigmoid', 'swish',
+            'tanh', 'leakyrelu', 'rrelu', 'elu', 'selu' (default 'softplus')
         :param dropout: float, dropout to use (default 0.2)
-        :param learn_priors: bool, make priors a learnable parameter (default True)
+        :param learn_priors: bool, make priors a learnable parameter (default
+            True)
         :param batch_size: int, size of batch to use for training (default 64)
         :param lr: float, learning rate to use for training (default 2e-3)
         :param momentum: float, momentum to use for training (default 0.99)
         :param solver: string, optimizer 'adam' or 'sgd' (default 'adam')
         :param num_samples: int, number of times theta needs to be sampled
         :param num_epochs: int, number of epochs to train for, (default 100)
-        :param reduce_on_plateau: bool, reduce learning rate by 10x on plateau of 10 epochs (default False)
-        :param num_data_loader_workers: int, number of data loader workers (default cpu_count). set it to 0 if you are using Windows
+        :param reduce_on_plateau: bool, reduce learning rate by 10x on plateau
+            of 10 epochs (default False)
+        :param num_data_loader_workers: int, number of data loader workers
+            (default cpu_count). set it to 0 if you are using Windows
         """
 
         assert isinstance(input_size, int) and input_size > 0, \
             "input_size must by type int > 0."
-        assert (isinstance(num_topics, int) or isinstance(num_topics, np.int64)) and num_topics > 0, \
+        assert (isinstance(num_topics, int) or isinstance(
+            num_topics, np.int64)) and num_topics > 0, \
             "num_topics must by type int > 0."
         assert model_type in ['LDA', 'prodLDA'], \
             "model must be 'LDA' or 'prodLDA'."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
-                              'rrelu', 'elu', 'selu'], \
-            "activation must be 'softplus', 'relu', 'sigmoid', 'swish', 'leakyrelu'," \
-            " 'rrelu', 'elu', 'selu' or 'tanh'."
+        assert activation in [
+            'softplus', 'relu', 'sigmoid', 'swish', 'tanh', 'leakyrelu',
+            'rrelu', 'elu', 'selu'], \
+            ("activation must be 'softplus', 'relu', 'sigmoid', 'swish', "
+             "'leakyrelu', 'rrelu', 'elu', 'selu' or 'tanh'.")
         assert dropout >= 0, "dropout must be >= 0."
-        # assert isinstance(learn_priors, bool), "learn_priors must be boolean."
         assert isinstance(batch_size, int) and batch_size > 0, \
             "batch_size must be int > 0."
         assert lr > 0, "lr must be > 0."
-        assert isinstance(momentum, float) and momentum > 0 and momentum <= 1, \
+        assert isinstance(
+            momentum, float) and momentum > 0 and momentum <= 1, \
             "momentum must be 0 < float <= 1."
         assert solver in ['adagrad', 'adam', 'sgd', 'adadelta', 'rmsprop'], \
             "solver must be 'adam', 'adadelta', 'sgd', 'rmsprop' or 'adagrad'"
@@ -80,7 +92,7 @@ class CTM(object):
         self.batch_size = batch_size
         self.lr = lr
         self.num_samples = num_samples
-        self.top_word = top_word
+        self.top_words = top_words
         self.bert_size = bert_input_size
         self.momentum = momentum
         self.solver = solver
@@ -91,20 +103,25 @@ class CTM(object):
         self.topic_prior_variance = topic_prior_variance
         # init inference avitm network
         self.model = DecoderNetwork(
-            input_size, self.bert_size, inference_type, num_topics, model_type, hidden_sizes, activation,
-            dropout, self.learn_priors, self.topic_prior_mean, self.topic_prior_variance)
+            input_size, self.bert_size, inference_type, num_topics,
+            model_type, hidden_sizes, activation,
+            dropout, self.learn_priors, self.topic_prior_mean,
+            self.topic_prior_variance)
         self.early_stopping = EarlyStopping(patience=5, verbose=False)
         # init optimizer
         if self.solver == 'adam':
-            self.optimizer = optim.Adam(self.model.parameters(), lr=lr, betas=(self.momentum, 0.99))
+            self.optimizer = optim.Adam(self.model.parameters(), lr=lr, betas=(
+                self.momentum, 0.99))
         elif self.solver == 'sgd':
-            self.optimizer = optim.SGD(self.model.parameters(), lr=lr, momentum=self.momentum)
+            self.optimizer = optim.SGD(
+                self.model.parameters(), lr=lr, momentum=self.momentum)
         elif self.solver == 'adagrad':
             self.optimizer = optim.Adagrad(self.model.parameters(), lr=lr)
         elif self.solver == 'adadelta':
             self.optimizer = optim.Adadelta(self.model.parameters(), lr=lr)
         elif self.solver == 'rmsprop':
-            self.optimizer = optim.RMSprop(self.model.parameters(), lr=lr, momentum=self.momentum)
+            self.optimizer = optim.RMSprop(
+                self.model.parameters(), lr=lr, momentum=self.momentum)
         # init lr scheduler
         if self.reduce_on_plateau:
             self.scheduler = ReduceLROnPlateau(self.optimizer, patience=10)
@@ -141,7 +158,8 @@ class CTM(object):
         logvar_det_division = \
             prior_variance.log().sum() - posterior_log_variance.sum(dim=1)
         # combine terms
-        KL = 0.5 * (var_division + diff_term - self.num_topics + logvar_det_division)
+        KL = 0.5 * (
+            var_division + diff_term - self.num_topics + logvar_det_division)
         # Reconstruction term
         RL = -torch.sum(inputs * torch.log(word_dists + 1e-10), dim=1)
         loss = KL + RL
@@ -165,14 +183,15 @@ class CTM(object):
 
             # forward pass
             self.model.zero_grad()
-            prior_mean, prior_variance, \
-            posterior_mean, posterior_variance, posterior_log_variance, \
-            word_dists, topic_word, topic_document = self.model(X, X_bert)
+            (prior_mean, prior_variance,
+             posterior_mean, posterior_variance, posterior_log_variance,
+             word_dists, topic_word, topic_document) = self.model(X, X_bert)
             topic_doc_list.extend(topic_document)
 
             # backward pass
-            loss = self._loss(X, word_dists, prior_mean, prior_variance,
-                              posterior_mean, posterior_variance, posterior_log_variance)
+            loss = self._loss(
+                X, word_dists, prior_mean, prior_variance,
+                posterior_mean, posterior_variance, posterior_log_variance)
             loss.backward()
             self.optimizer.step()
 
@@ -201,12 +220,13 @@ class CTM(object):
 
             # forward pass
             self.model.zero_grad()
-            prior_mean, prior_variance, \
-            posterior_mean, posterior_variance, posterior_log_variance, \
-            word_dists, topic_word, topic_document = self.model(X, X_bert)
+            (prior_mean, prior_variance,
+             posterior_mean, posterior_variance, posterior_log_variance,
+             word_dists, topic_word, topic_document) = self.model(X, X_bert)
 
-            loss = self._loss(X, word_dists, prior_mean, prior_variance,
-                              posterior_mean, posterior_variance, posterior_log_variance)
+            loss = self._loss(
+                X, word_dists, prior_mean, prior_variance,
+                posterior_mean, posterior_variance, posterior_log_variance)
 
             # compute train loss
             samples_processed += X.size()[0]
@@ -216,7 +236,8 @@ class CTM(object):
 
         return samples_processed, val_loss
 
-    def fit(self, train_dataset, validation_dataset=None, save_dir=None, verbose=True):
+    def fit(self, train_dataset, validation_dataset=None,
+            save_dir=None, verbose=True):
         """
         Train the CTM model.
 
@@ -242,15 +263,17 @@ class CTM(object):
                    Save Dir: {}".format(
                 self.num_topics, self.topic_prior_mean,
                 self.topic_prior_variance, self.model_type,
-                self.hidden_sizes, self.activation, self.dropout, self.learn_priors,
-                self.lr, self.momentum, self.reduce_on_plateau, save_dir))
+                self.hidden_sizes, self.activation, self.dropout,
+                self.learn_priors, self.lr, self.momentum,
+                self.reduce_on_plateau, save_dir))
 
         self.model_dir = save_dir
         self.train_data = train_dataset
         self.validation_data = validation_dataset
 
-        train_loader = DataLoader(self.train_data, batch_size=self.batch_size, shuffle=True,
-                                  num_workers=self.num_data_loader_workers)
+        train_loader = DataLoader(
+            self.train_data, batch_size=self.batch_size, shuffle=True,
+            num_workers=self.num_data_loader_workers)
 
         # init training variables
         train_loss = 0
@@ -261,7 +284,8 @@ class CTM(object):
             self.nn_epoch = epoch
             # train epoch
             s = datetime.datetime.now()
-            sp, train_loss, topic_word, topic_document = self._train_epoch(train_loader)
+            sp, train_loss, topic_word, topic_document = self._train_epoch(
+                train_loader)
             samples_processed += sp
             e = datetime.datetime.now()
 
@@ -276,17 +300,21 @@ class CTM(object):
             self.best_loss_train = train_loss
             if self.validation_data is not None:
                 validation_loader = DataLoader(
-                    self.validation_data, batch_size=self.batch_size, shuffle=True,
-                    num_workers=self.num_data_loader_workers)
+                    self.validation_data, batch_size=self.batch_size,
+                    shuffle=True, num_workers=self.num_data_loader_workers)
                 # train epoch
                 s = datetime.datetime.now()
-                val_samples_processed, val_loss = self._validation(validation_loader)
+                val_samples_processed, val_loss = self._validation(
+                    validation_loader)
                 e = datetime.datetime.now()
 
                 if verbose:
-                    print("Epoch: [{}/{}]\tSamples: [{}/{}]\tValidation Loss: {}\tTime: {}".format(
-                        epoch + 1, self.num_epochs, val_samples_processed,
-                        len(self.validation_data) * self.num_epochs, val_loss, e - s))
+                    print(
+                        "Epoch: [{}/{}]\tSamples: [{}/{}]"
+                        "\tValidation Loss: {}\tTime: {}".format(
+                            epoch + 1, self.num_epochs, val_samples_processed,
+                            len(self.validation_data) * self.num_epochs,
+                            val_loss, e - s))
 
                 if np.isnan(val_loss) or np.isnan(train_loss):
                     break
@@ -323,7 +351,8 @@ class CTM(object):
                 topic_document_mat.append(topic_document)
 
         results = self.get_info()
-        results['test-topic-document-matrix'] = np.asarray(self.get_thetas(dataset)).T
+        results['test-topic-document-matrix'] = np.asarray(
+            self.get_thetas(dataset)).T
 
         return results
 
@@ -365,17 +394,20 @@ class CTM(object):
         topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
 
-        info['topic-document-matrix'] = np.asarray(self.get_thetas(self.train_data)).T
+        info['topic-document-matrix'] = np.asarray(
+            self.get_thetas(self.train_data)).T
 
         info['topic-word-matrix'] = topic_word_dist
         return info
 
     def _format_file(self):
-        model_dir = "AVITM_nc_{}_tpm_{}_tpv_{}_hs_{}_ac_{}_do_{}_lr_{}_mo_{}_rp_{}". \
-            format(self.num_topics, 0.0, 1 - (1. / self.num_topics),
-                   self.model_type, self.hidden_sizes, self.activation,
-                   self.dropout, self.lr, self.momentum,
-                   self.reduce_on_plateau)
+        model_dir = (
+            "AVITM_nc_{}_tpm_{}_tpv_{}_hs_{}_ac_{}_do_{}_"
+            "lr_{}_mo_{}_rp_{}".format(
+                self.num_topics, 0.0, 1 - (1. / self.num_topics),
+                self.model_type, self.hidden_sizes, self.activation,
+                self.dropout, self.lr, self.momentum,
+                self.reduce_on_plateau))
         return model_dir
 
     def save(self, models_dir=None):
@@ -415,14 +447,16 @@ class CTM(object):
 
     def get_thetas(self, dataset):
         """
-        Get the document-topic distribution for a dataset of topics. Includes multiple sampling to reduce variation via
+        Get the document-topic distribution for a dataset of topics. 
+        Includes multiple sampling to reduce variation via
         the parameter num_samples.
         :param dataset: a PyTorch Dataset containing the documents
         """
         self.model.eval()
 
         loader = DataLoader(
-            dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_data_loader_workers)
+            dataset, batch_size=self.batch_size, shuffle=False,
+            num_workers=self.num_data_loader_workers)
         final_thetas = []
         for sample_index in range(self.num_samples):
             with torch.no_grad():
@@ -437,7 +471,8 @@ class CTM(object):
                         x_bert = x_bert.cuda()
                     # forward pass
                     self.model.zero_grad()
-                    collect_theta.extend(self.model.get_theta(x, x_bert).cpu().numpy().tolist())
+                    collect_theta.extend(
+                        self.model.get_theta(x, x_bert).cpu().numpy().tolist())
 
                 final_thetas.append(np.array(collect_theta))
         return np.sum(final_thetas, axis=0) / self.num_samples

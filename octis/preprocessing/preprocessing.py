@@ -159,9 +159,9 @@ class Preprocessing:
                 labels = [line.strip().split() for line in open(labels_path, 'r').readlines()]
             else:
                 labels = [line.strip() for line in open(labels_path, 'r').readlines()]
-
+            
+            vocab = set(vocabulary)
             for i, doc, label in zip(range(len(docs)), docs, labels):
-                vocab = set(vocabulary)
                 new_doc = [w for w in doc.split() if w in vocab]
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
@@ -179,8 +179,8 @@ class Preprocessing:
                         final_labels.append(label)
                         document_indexes.append(i)
         else:
+            vocab = set(vocabulary)
             for i, doc in enumerate(docs):
-                vocab = set(vocabulary)
                 new_doc = [w for w in doc.split() if w in vocab]
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
