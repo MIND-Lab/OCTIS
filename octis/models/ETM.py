@@ -303,11 +303,10 @@ class ETM(BaseETM):
 
         info = self.get_info()
         emp_array = np.empty((0, self.hyperparameters['num_topics']))
-        topic_doc = np.asarray(topic_d)
-        length = topic_doc.shape[0]
+
         # batch concatenation
-        for i in range(length):
-            emp_array = np.concatenate([emp_array, topic_doc[i]])
+        for i in range(len(topic_d)):
+            emp_array = np.concatenate([emp_array, topic_d[i]])
         info['test-topic-document-matrix'] = emp_array.T
 
         return info
