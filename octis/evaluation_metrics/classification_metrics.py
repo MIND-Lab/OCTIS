@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn import svm
-from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
+from sklearn.metrics import (
+    f1_score, precision_score, recall_score, accuracy_score)
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 
@@ -17,7 +18,9 @@ stored_svm_results = [None, None]
 
 
 class ClassificationScore(AbstractMetric):
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
+    def __init__(
+            self, dataset, average='micro', use_log=False, scale=True,
+            kernel='linear', same_svm=False):
         AbstractMetric.__init__(self)
 
         self._train_document_representations = None
@@ -34,8 +37,10 @@ class ClassificationScore(AbstractMetric):
         self.kernel = kernel
 
     def score(self, model_output):
-        self._train_document_representations = model_output["topic-document-matrix"].T
-        self._test_document_representations = model_output["test-topic-document-matrix"].T
+        self._train_document_representations = model_output[
+            "topic-document-matrix"].T
+        self._test_document_representations = model_output[
+            "test-topic-document-matrix"].T
 
         if self.use_log:
             self._train_document_representations = np.log(
@@ -67,8 +72,8 @@ class ClassificationScore(AbstractMetric):
             for i, lab in enumerate(list(train_labels)):
                 label2id[lab] = i
 
-            train_labels = [label2id[l] for l in train_labels]
-            test_labels = [label2id[l] for l in test_labels]
+            train_labels = [label2id[lab] for lab in train_labels]
+            test_labels = [label2id[lab] for lab in test_labels]
 
             if self.kernel == 'linear':
                 clf = svm.LinearSVC(verbose=False)
@@ -97,11 +102,11 @@ def compute_SVM_output(model_output, metric, super_metric):
     predicted_test_labels = None
     flag = True
 
-    if stored_average == metric.average and \
-        stored_use_log == metric.use_log and \
-        stored_scale == metric.scale and \
-        stored_kernel == metric.kernel and \
-        stored_model_output_hash == model_output_hash:
+    if (stored_average == metric.average and
+        stored_use_log == metric.use_log and
+        stored_scale == metric.scale and
+        stored_kernel == metric.kernel and
+            stored_model_output_hash == model_output_hash):
         test_labels, predicted_test_labels = stored_svm_results
     else:
         test_labels, predicted_test_labels = super_metric.score(model_output)
@@ -118,9 +123,12 @@ def compute_SVM_output(model_output, metric, super_metric):
 
 
 class F1Score(ClassificationScore):
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
-        super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
+    def __init__(
+        self, dataset, average='micro', use_log=False,
+            scale=True, kernel='linear', same_svm=False):
+        super().__init__(
+            dataset=dataset, average=average,
+            use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {
@@ -134,22 +142,28 @@ class F1Score(ClassificationScore):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model. keys 'topic-document-matrix' and
+        model_output : dictionary, output of the model. keys
+                       'topic-document-matrix' and
                        'test-topic-document-matrix' are required.
 
         Returns
         -------
         score : score
         """
-        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
-        return f1_score(test_labels, predicted_test_labels, average=self.average)
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(
+            model_output, self, super())
+        return f1_score(
+            test_labels, predicted_test_labels, average=self.average)
 
 
 class PrecisionScore(ClassificationScore):
 
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
-        super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
+    def __init__(
+        self, dataset, average='micro', use_log=False, scale=True,
+            kernel='linear', same_svm=False):
+        super().__init__(
+            dataset=dataset, average=average,
+            use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {"citation": citations.em_f1_score, "name": "Precision"}
@@ -160,22 +174,27 @@ class PrecisionScore(ClassificationScore):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model. 'topic-document-matrix' and
-                       'test-topic-document-matrix' keys are required.
+        model_output : dictionary, output of the model. 'topic-document-matrix'
+                       and 'test-topic-document-matrix' keys are required.
 
         Returns
         -------
         score : score
         """
-        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
-        return precision_score(test_labels, predicted_test_labels, average=self.average)
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(
+            model_output, self, super())
+        return precision_score(
+            test_labels, predicted_test_labels, average=self.average)
 
 
 class RecallScore(ClassificationScore):
 
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
-        super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
+    def __init__(
+        self, dataset, average='micro', use_log=False, scale=True,
+            kernel='linear', same_svm=False):
+        super().__init__(
+            dataset=dataset, average=average, use_log=use_log, scale=scale,
+            kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {"citation": citations.em_f1_score, "name": "Precision"}
@@ -186,22 +205,27 @@ class RecallScore(ClassificationScore):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model. 'topic-document-matrix' and
-                       'test-topic-document-matrix' keys are required.
+        model_output : dictionary, output of the model. 'topic-document-matrix'
+                       and 'test-topic-document-matrix' keys are required.
 
         Returns
         -------
         score : score
         """
-        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
-        return recall_score(test_labels, predicted_test_labels, average=self.average)
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(
+            model_output, self, super())
+        return recall_score(
+            test_labels, predicted_test_labels, average=self.average)
 
 
 class AccuracyScore(ClassificationScore):
 
-    def __init__(self, dataset, average='micro', use_log=False, scale=True, kernel='linear', same_svm=False):
-        super().__init__(dataset=dataset, average=average,
-                         use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
+    def __init__(
+            self, dataset, average='micro', use_log=False, scale=True,
+            kernel='linear', same_svm=False):
+        super().__init__(
+            dataset=dataset, average=average,
+            use_log=use_log, scale=scale, kernel=kernel, same_svm=same_svm)
 
     def info(self):
         return {"citation": citations.em_f1_score, "name": "Precision"}
@@ -212,12 +236,13 @@ class AccuracyScore(ClassificationScore):
 
         Parameters
         ----------
-        model_output : dictionary, output of the model. 'topic-document-matrix' and
-                       'test-topic-document-matrix' keys are required.
+        model_output : dictionary, output of the model. 'topic-document-matrix'
+                       and 'test-topic-document-matrix' keys are required.
 
         Returns
         -------
         score : score
         """
-        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(model_output, self, super())
+        test_labels, predicted_test_labels, self.same_svm = compute_SVM_output(
+            model_output, self, super())
         return accuracy_score(test_labels, predicted_test_labels)
