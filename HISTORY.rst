@@ -2,11 +2,14 @@
 History
 =======
 
-next_release
+1.11.0
 ---------------
 * Improve preprocessing #70
 * Bug fix CTM num_topics #76
+* Add top_words parameter to CTM model #84
 * Add seed parameter to CTM #65
+* Update some requirements
+* Add testing for python 3.9 and remove 3.6
 * Minor fixes
 
 
