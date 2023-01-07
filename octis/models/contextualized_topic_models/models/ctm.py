@@ -370,8 +370,7 @@ class CTM(object):
         Retrieve topic words.
 
         """
-        assert self.top_words <= (
-            self.input_size, "top_words must be <= input size.")
+        assert self.top_words <= self.input_size, "top_words must be <= input size."  # noqa
         component_dists = self.best_components
         topics = defaultdict(list)
         topics_list = []
