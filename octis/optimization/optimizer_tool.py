@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from skopt.learning import GaussianProcessRegressor, RandomForestRegressor, ExtraTreesRegressor
+from skopt.learning import (
+    GaussianProcessRegressor, RandomForestRegressor, ExtraTreesRegressor)
 from skopt import Optimizer as skopt_optimizer
 from skopt.utils import dimensions_aslist
 import os
@@ -41,7 +42,8 @@ def load_model(optimization_object):
     """
     Load the topic model for the resume of the optimization
 
-    :param optimization_object: dictionary of optimization attributes saved in the jaon file
+    :param optimization_object: dictionary of optimization attributes saved in
+        the json file
     :type optimization_object: dict
     :return: topic model used during the BO.
     :rtype: object model
@@ -96,11 +98,13 @@ def choose_optimizer(optimizer):
     # Random forest
     if optimizer.surrogate_model == "RF":
         estimator = RandomForestRegressor(
-            n_estimators=100, min_samples_leaf=3, random_state=optimizer.random_state)
+            n_estimators=100, min_samples_leaf=3,
+            random_state=optimizer.random_state)
     # Extra Tree
     elif optimizer.surrogate_model == "ET":
         estimator = ExtraTreesRegressor(
-            n_estimators=100, min_samples_leaf=3, random_state=optimizer.random_state)
+            n_estimators=100, min_samples_leaf=3,
+            random_state=optimizer.random_state)
     # GP Minimize
     elif optimizer.surrogate_model == "GP":
         estimator = GaussianProcessRegressor(
@@ -110,32 +114,36 @@ def choose_optimizer(optimizer):
         estimator = "dummy"
 
     if estimator == "dummy":
-        opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                              acq_func=optimizer.acq_func,
-                              acq_optimizer='sampling',
-                              initial_point_generator=optimizer.initial_point_generator,
-                              random_state=optimizer.random_state)
+        opt = skopt_optimizer(
+            params_space_list, base_estimator=estimator,
+            acq_func=optimizer.acq_func,
+            acq_optimizer='sampling',
+            initial_point_generator=optimizer.initial_point_generator,
+            random_state=optimizer.random_state)
     else:
-        opt = skopt_optimizer(params_space_list, base_estimator=estimator,
-                              acq_func=optimizer.acq_func,
-                              acq_optimizer='sampling',
-                              n_initial_points=optimizer.n_random_starts,
-                              initial_point_generator=optimizer.initial_point_generator,
-                              # work only for version skopt 8.0!!!
-                              acq_optimizer_kwargs={
-                                  "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
-                              acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
-                              random_state=optimizer.random_state)
+        opt = skopt_optimizer(
+            params_space_list, base_estimator=estimator,
+            acq_func=optimizer.acq_func,
+            acq_optimizer='sampling',
+            n_initial_points=optimizer.n_random_starts,
+            initial_point_generator=optimizer.initial_point_generator,
+            # work only for version skopt 8.0!!!
+            acq_optimizer_kwargs={
+                "n_points": 10000, "n_restarts_optimizer": 5, "n_jobs": 1},
+            acq_func_kwargs={"xi": 0.01, "kappa": 1.96},
+            random_state=optimizer.random_state)
     return opt
 
 
 def convergence_res(values, optimization_type="minimize"):
     """
-    Compute the list of values to plot the convergence plot (i.e. the best seen at each iteration)
+    Compute the list of values to plot the convergence plot (i.e. the best
+        seen at each iteration)
 
     :param values: the result(s) for which to compute the convergence trace.
     :type values: list
-    :param optimization_type: "minimize" if the problem is a minimization problem, "maximize" otherwise
+    :param optimization_type: "minimize" if the problem is a minimization
+        problem, "maximize" otherwise
     :type optimization_type: str
     :return: a list with the best min seen for each iteration
     :rtype: list
@@ -212,9 +220,10 @@ def plot_bayesian_optimization(values, name_plot,
     :type values: list
     :param name_plot: Name of the plot
     :type name_plot: str
-    :param log_scale: 'True' if you want a log scale for y-axis, 'False' otherwise
+    :param log_scale: 'True' if log scale for y-axis, 'False' otherwise
     :type log_scale: bool, optional
-    :param conv_max: 'True' for a minimization problem, 'False' for a maximization problem
+    :param conv_max: 'True' for a minimization problem, 'False' for a
+        maximization problem
     :type conv_max: bool, optional
     """
     if conv_max:
@@ -271,7 +280,7 @@ def check_instance(obj):
 
     :param obj: an object of the optimization to be saved
     :type obj: [str,float, int, bool, etc.]
-    :return: 'True' if the object can be inserted in a json file, 'False' otherwise
+    :return: 'True' if the object is json format, 'False' otherwise
     :rtype: bool
     """
     types = [str, float, int, bool]
@@ -287,7 +296,7 @@ def save_search_space(search_space):
     """
     Save the search space in the json file
 
-    :param search_space: dictionary of the search space (scikit-optimize object)
+    :param search_space: dictionary of the search space (scikopt object)
     :type search_space: dict
     :return: dictionary for the seach space, which can be saved in a json file
     :rtype: dict
@@ -297,11 +306,15 @@ def save_search_space(search_space):
     ss = dict()
     for key in list(search_space.keys()):
         if type(search_space[key]) == Real:
-            ss[key] = ['Real', search_space[key].bounds, search_space[key].prior]
+            ss[key] = [
+                'Real', search_space[key].bounds, search_space[key].prior]
         elif type(search_space[key]) == Integer:
-            ss[key] = ['Integer', search_space[key].bounds, search_space[key].prior]
+            ss[key] = [
+                'Integer', search_space[key].bounds, search_space[key].prior]
         elif type(search_space[key]) == Categorical:
-            ss[key] = ['Categorical', search_space[key].categories, search_space[key].prior]
+            ss[key] = [
+                'Categorical', search_space[key].categories,
+                search_space[key].prior]
 
     return ss
 
@@ -310,7 +323,8 @@ def load_search_space(search_space):
     """
     Load the search space from the json file
 
-    :param search_space: dictionary of the search space (insertable in a json file)
+    :param search_space: dictionary of the search space (insertable in a json
+        file)
     :type dict:
     :return: dictionary for the search space (for scikit optimize)
     :rtype: dict
@@ -320,11 +334,16 @@ def load_search_space(search_space):
     ss = dict()
     for key in list(search_space.keys()):
         if search_space[key][0] == 'Real':
-            ss[key] = Real(low=search_space[key][1][0], high=search_space[key][1][1], prior=search_space[key][2])
+            ss[key] = Real(
+                low=search_space[key][1][0],
+                high=search_space[key][1][1],
+                prior=search_space[key][2])
         elif search_space[key][0] == 'Integer':
-            ss[key] = Integer(low=search_space[key][1][0], high=search_space[key][1][1], prior=search_space[key][2])
+            ss[key] = Integer(
+                low=search_space[key][1][0],
+                high=search_space[key][1][1],
+                prior=search_space[key][2])
         elif search_space[key][0] == 'Categorical':
             ss[key] = Categorical(categories=search_space[key][1])
 
     return ss
-

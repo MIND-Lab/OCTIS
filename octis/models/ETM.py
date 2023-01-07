@@ -83,7 +83,7 @@ class ETM(BaseETM):
         if hyperparameters is None:
             hyperparameters = {}
         self.set_model(dataset, hyperparameters)
-        self.top_word = top_words
+        self.top_words = top_words
         self.early_stopping = EarlyStopping(patience=5, verbose=True, path=op_path)
 
         for epoch in range(0, self.hyperparameters['num_epochs']):
