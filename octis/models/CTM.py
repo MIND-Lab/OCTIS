@@ -116,13 +116,11 @@ class CTM(AbstractModel):
                 bert_test_path=self.hyperparameters['bert_path'] + "_test.pkl",
                 bert_val_path=self.hyperparameters['bert_path'] + "_val.pkl",
                 bert_model=self.hyperparameters["bert_model"])
+
             self.model = ctm.CTM(
-                input_size=input_size, bert_input_size=x_train.X_bert.shape[1],
-                model_type='prodLDA',
-                num_topics=self.hyperparameters['num_topics'],
-                dropout=self.hyperparameters['dropout'],
-                activation=self.hyperparameters['activation'],
-                lr=self.hyperparameters['lr'],
+                input_size=input_size, bert_input_size=x_train.X_bert.shape[1], model_type='prodLDA',
+                num_topics=self.hyperparameters['num_topics'], dropout=self.hyperparameters['dropout'],
+                activation=self.hyperparameters['activation'], lr=self.hyperparameters['lr'],
                 inference_type=self.hyperparameters['inference_type'],
                 hidden_sizes=self.hyperparameters['hidden_sizes'],
                 solver=self.hyperparameters['solver'],
@@ -133,7 +131,9 @@ class CTM(AbstractModel):
                 num_samples=self.hyperparameters['num_samples'],
                 topic_prior_mean=self.hyperparameters["prior_mean"],
                 reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
-                topic_prior_variance=self.hyperparameters["prior_variance"])
+                topic_prior_variance=self.hyperparameters["prior_variance"],
+                top_words=top_words)
+
             self.model.fit(x_train, x_valid, verbose=False)
             result = self.inference(x_test)
             return result
@@ -147,23 +147,19 @@ class CTM(AbstractModel):
                 bert_model=self.hyperparameters["bert_model"])
 
         self.model = ctm.CTM(
-            input_size=input_size, bert_input_size=x_train.X_bert.shape[1],
-            model_type='prodLDA',
-            num_topics=self.hyperparameters['num_topics'],
-            dropout=self.hyperparameters['dropout'],
-            activation=self.hyperparameters['activation'],
-            lr=self.hyperparameters['lr'],
-            inference_type=self.hyperparameters['inference_type'],
-            hidden_sizes=self.hyperparameters['hidden_sizes'],
-            solver=self.hyperparameters['solver'],
-            momentum=self.hyperparameters['momentum'],
-            num_epochs=self.hyperparameters['num_epochs'],
-            learn_priors=self.hyperparameters['learn_priors'],
-            batch_size=self.hyperparameters['batch_size'],
-            num_samples=self.hyperparameters['num_samples'],
-            topic_prior_mean=self.hyperparameters["prior_mean"],
-            reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
-            topic_prior_variance=self.hyperparameters["prior_variance"])
+             input_size=input_size, bert_input_size=x_train.X_bert.shape[1], model_type='prodLDA',
+             num_topics=self.hyperparameters['num_topics'], dropout=self.hyperparameters['dropout'],
+             activation=self.hyperparameters['activation'], lr=self.hyperparameters['lr'],
+             inference_type=self.hyperparameters['inference_type'],
+             hidden_sizes=self.hyperparameters['hidden_sizes'], solver=self.hyperparameters['solver'],
+             momentum=self.hyperparameters['momentum'], num_epochs=self.hyperparameters['num_epochs'],
+             learn_priors=self.hyperparameters['learn_priors'],
+             batch_size=self.hyperparameters['batch_size'],
+             num_samples=self.hyperparameters['num_samples'],
+             topic_prior_mean=self.hyperparameters["prior_mean"],
+             reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
+             topic_prior_variance=self.hyperparameters["prior_variance"],
+             top_words=top_words)
 
         self.model.fit(x_train, None, verbose=False)
         result = self.model.get_info()
