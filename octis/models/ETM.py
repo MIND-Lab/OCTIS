@@ -16,7 +16,7 @@ class ETM(BaseETM):
         self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300,
         embedding_size=300, activation='relu', dropout=0.5, lr=0.005,
         optimizer='adam', batch_size=128, clip=0.0, wdecay=1.2e-6, bow_norm=1,
-        device='cpu', top_word=10, train_embeddings=True, embeddings_path=None,
+        device='cpu', train_embeddings=True, embeddings_path=None,
             embeddings_type='pickle', binary_embeddings=True,
             headerless_embeddings=False, use_partitions=True):
         """
@@ -69,7 +69,6 @@ class ETM(BaseETM):
         self.hyperparameters['embeddings_type'] = embeddings_type
         self.hyperparameters['binary_embeddings'] = binary_embeddings
         self.hyperparameters['headerless_embeddings'] = headerless_embeddings
-        self.top_word = top_word
         self.early_stopping = None
         self.device = device
         self.test_tokens, self.test_counts = None, None
@@ -84,7 +83,7 @@ class ETM(BaseETM):
         if hyperparameters is None:
             hyperparameters = {}
         self.set_model(dataset, hyperparameters)
-        self.top_word = top_words
+        self.top_words = top_words
         self.early_stopping = EarlyStopping(patience=5, verbose=True)
 
         for epoch in range(0, self.hyperparameters['num_epochs']):
