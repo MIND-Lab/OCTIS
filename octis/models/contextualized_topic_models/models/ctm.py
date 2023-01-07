@@ -365,21 +365,19 @@ class CTM(object):
         top_doc_arr = np.array([i.cpu().detach().numpy() for i in top_doc])
         return top_doc_arr
 
-    def get_topics(self, k=10):
+    def get_topics(self):
         """
         Retrieve topic words.
 
-        Args
-            k : (int) number of words to return per topic, default 10.
         """
-        k = self.top_word
-        assert k <= self.input_size, "k must be <= input size."
+        assert self.top_words <= (
+            self.input_size, "top_words must be <= input size.")
         component_dists = self.best_components
         topics = defaultdict(list)
         topics_list = []
         if self.num_topics is not None:
             for i in range(self.num_topics):
-                _, idxs = torch.topk(component_dists[i], k)
+                _, idxs = torch.topk(component_dists[i], self.top_words)
                 component_words = [self.train_data.idx2token[idx]
                                    for idx in idxs.cpu().numpy()]
                 topics[i] = component_words
