@@ -79,12 +79,15 @@ class ETM(BaseETM):
         self.optimizer = None
         self.embeddings = None
 
-    def train_model(self, dataset, hyperparameters=None, top_words=10, op_path='checkpoint.pt'):
+    def train_model(
+            self, dataset, hyperparameters=None, top_words=10,
+            op_path='checkpoint.pt'):
         if hyperparameters is None:
             hyperparameters = {}
         self.set_model(dataset, hyperparameters)
         self.top_words = top_words
-        self.early_stopping = EarlyStopping(patience=5, verbose=True, path=op_path)
+        self.early_stopping = EarlyStopping(
+            patience=5, verbose=True, path=op_path)
 
         for epoch in range(0, self.hyperparameters['num_epochs']):
             continue_training = self._train_epoch(epoch)
