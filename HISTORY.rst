@@ -2,6 +2,11 @@
 History
 =======
 
+1.11.1
+---------------
+* fix gensim requirements #87 
+
+
 1.11.0
 ---------------
 * Improve preprocessing #70
