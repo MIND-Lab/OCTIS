@@ -471,7 +471,7 @@ If you decide to use this resource, please cite:
         url = "https://www.aclweb.org/anthology/2021.eacl-demos.31",
         pages = "263--270",
     }
-    
+
     @inproceedings{DBLP:conf/clic-it/TerragniF21,
       author    = {Silvia Terragni and Elisabetta Fersini},
       editor    = {Elisabetta Fersini and Marco Passarotti and Viviana Patti},
@@ -484,7 +484,8 @@ If you decide to use this resource, please cite:
       publisher = {CEUR-WS.org},
       year      = {2021},
       url       = {http://ceur-ws.org/Vol-3033/paper55.pdf},
-}
+    }
+
 
 *****************************
 Team
