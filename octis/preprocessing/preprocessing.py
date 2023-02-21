@@ -159,7 +159,7 @@ class Preprocessing:
         if self.num_processes is not None:
             # with Pool(self.num_processes) as p:
             #    docs = p.map(self.simple_preprocessing_steps, docs)
-            chunksize = max(1, len(docs) // self.num_processes)
+            chunksize = max(1, len(docs) // (self.num_processes * 20))
             docs_list = process_map(self.simple_preprocessing_steps, docs, max_workers=self.num_processes, chunksize=chunksize)
         else:
             docs = list(map(self.simple_preprocessing_steps, tqdm(docs)))
