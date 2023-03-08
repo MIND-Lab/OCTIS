@@ -100,16 +100,23 @@ To easily understand how to use OCTIS, we invite you to try our tutorials out :)
 | How to optimize the hyperparameters of a neural topic model (CTM on M10)       | |colab2|         |
 +--------------------------------------------------------------------------------+------------------+
 
+Some tutorials on Medium:
+===========================
 
-`Emil Rijcken`_ kindly wrote two guides on how to use OCTIS with practical examples:
+Two guides on how to use OCTIS with practical examples:
 
-* `A beginner's guide to OCTIS vol. 1`_
-* `A beginner's guide to OCTIS vol. 2`_
+* `A beginner's guide to OCTIS vol. 1`_ by `Emil Rijcken`_
+* `A beginner's guide to OCTIS vol. 2`_ by `Emil Rijcken`_
+
+A tutorial on topic modeling on song lyrics:
+
+* `OCTIS - The Future of Topic Modeling`_ by `Nicolas Pogeant`_
 
 .. _Emil Rijcken: https://emilrijcken.medium.com/ 
 .. _A beginner's guide to OCTIS vol. 1: https://towardsdatascience.com/a-beginners-guide-to-octis-optimizing-and-comparing-topic-models-is-simple-590554ec9ba6
 .. _A beginner's guide to OCTIS vol. 2: https://towardsdatascience.com/a-beginners-guide-to-octis-vol-2-optimizing-topic-models-1214e58be1e5
-
+.. _OCTIS - The Future of Topic Modeling: https://medium.com/mlearning-ai/octis-the-future-of-topic-modeling-45ef8cd66089
+.. _Nicolas Pogeant: https://medium.com/@npogeant
 
 **************************
 Datasets and Preprocessing
