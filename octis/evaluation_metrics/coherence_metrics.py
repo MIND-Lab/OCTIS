@@ -13,7 +13,7 @@ from operator import add
 
 
 class Coherence(AbstractMetric):
-    def __init__(self, texts=None, topk=10, measure='c_npmi'):
+    def __init__(self, texts=None, topk=10, processes=1, measure='c_npmi'):
         """
         Initialize metric
 
@@ -23,6 +23,7 @@ class Coherence(AbstractMetric):
         topk : how many most likely words to consider in
         the evaluation
         measure : (default 'c_npmi') measure to use.
+        processes: number of processes
         other measures: 'u_mass', 'c_v', 'c_uci', 'c_npmi'
         """
         super().__init__()
@@ -32,6 +33,7 @@ class Coherence(AbstractMetric):
             self._texts = texts
         self._dictionary = Dictionary(self._texts)
         self.topk = topk
+        self.processes = processes
         self.measure = measure
 
     def info(self):
@@ -59,8 +61,13 @@ class Coherence(AbstractMetric):
         if self.topk > len(topics[0]):
             raise Exception('Words in topics are less than topk')
         else:
-            npmi = CoherenceModel(topics=topics, texts=self._texts, dictionary=self._dictionary,
-                                  coherence=self.measure, processes=1, topn=self.topk)
+            npmi = CoherenceModel(
+                topics=topics,
+                texts=self._texts,
+                dictionary=self._dictionary,
+                coherence=self.measure,
+                processes=self.processes,
+                topn=self.topk)
             return npmi.get_coherence()
 
 

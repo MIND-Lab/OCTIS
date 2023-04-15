@@ -2,6 +2,11 @@
 History
 =======
 
+1.11.2
+---------------
+* fix #91 add parameter for setting num of processes for gensim coherence
+
+
 1.11.1
 ---------------
 * fix gensim requirements #87 
