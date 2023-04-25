@@ -324,19 +324,25 @@ class Dataset:
                 self._load_metadata(self.dataset_path + "/metadata.json")
             else:
                 self.__metadata = dict()
-            df = pd.read_csv(self.dataset_path + "/corpus.tsv", sep='\t', header=None)
+            df = pd.read_csv(
+                self.dataset_path + "/corpus.tsv", sep='\t', header=None)
             if len(df.keys()) > 1:
-                #just make sure docs are sorted in the right way (train - val - test)
-                final_df = df[df[1] == 'train'].append(df[df[1] == 'val'])
-                final_df = final_df.append(df[df[1] == 'test'])
-                self.__metadata['last-training-doc'] = len(final_df[final_df[1] == 'train'])
-                self.__metadata['last-validation-doc'] = len(final_df[final_df[1] == 'val']) + \
-                                                         len(final_df[final_df[1] == 'train'])
+                # just make sure docs are sorted in the right way (train - val - test)
+                final_df = pd.concat(
+                    [df[df[1] == 'train'],
+                     df[df[1] == 'val'],
+                     df[df[1] == 'test']])
+                self.__metadata['last-training-doc'] = len(
+                    final_df[final_df[1] == 'train'])
+                self.__metadata['last-validation-doc'] = len(
+                    final_df[final_df[1] == 'val']) + len(
+                        final_df[final_df[1] == 'train'])
 
                 self.__corpus = [d.split() for d in final_df[0].tolist()]
                 if len(final_df.keys()) > 2:
                     if multilabel:
-                        self.__labels = [doc.split() for doc in final_df[2].tolist()]
+                        self.__labels = [
+                            doc.split() for doc in final_df[2].tolist()]
                     else:
                         self.__labels = final_df[2].tolist()
 
@@ -389,7 +395,9 @@ class Dataset:
 
         if cache is None:
             if download_if_missing:
-                cache = download_dataset(dataset_name, target_dir=dataset_home, cache_path=cache_path)
+                cache = download_dataset(
+                    dataset_name, target_dir=dataset_home,
+                    cache_path=cache_path)
             else:
                 raise IOError(dataset_name + ' dataset not found')
         self.is_cached = True
