@@ -5,6 +5,7 @@ History
 1.11.2
 ---------------
 * fix #91 add parameter for setting num of processes for gensim coherence
+* FIX pandas error
 
 
 1.11.1
