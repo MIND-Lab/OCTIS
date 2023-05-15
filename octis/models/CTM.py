@@ -134,7 +134,7 @@ class CTM(AbstractModel):
                 topic_prior_variance=self.hyperparameters["prior_variance"],
                 top_words=top_words)
 
-            self.model.fit(x_train, x_valid, verbose=False)
+            self.model.fit(x_train, x_valid, verbose=self.hyperparameters["verbose"], save_dir=self.hyperparameters["save_dir"])
             result = self.inference(x_test)
             return result
 
@@ -161,7 +161,7 @@ class CTM(AbstractModel):
              topic_prior_variance=self.hyperparameters["prior_variance"],
              top_words=top_words)
 
-        self.model.fit(x_train, None, verbose=False)
+        self.model.fit(x_train, None, verbose=self.hyperparameters["verbose"], save_dir=self.hyperparameters["save_dir"])
         result = self.model.get_info()
         return result
 
