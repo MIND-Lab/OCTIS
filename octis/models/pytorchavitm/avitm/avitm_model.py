@@ -348,7 +348,7 @@ class AVITM_model(object):
 
     def get_info(self):
         info = {}
-        topic_word = self.get_topics(k=self.top_words)
+        topic_word = self.get_topics(k=self.top_words) # or self.input_size
         topic_word_dist = self.get_topic_word_mat()
         # topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
