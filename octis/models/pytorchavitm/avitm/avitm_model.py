@@ -19,7 +19,7 @@ class AVITM_model(object):
     def __init__(self, input_size, num_topics=10, model_type='prodLDA', hidden_sizes=(100, 100),
                  activation='softplus', dropout=0.2, learn_priors=True, batch_size=64, lr=2e-3, momentum=0.99,
                  solver='adam', num_epochs=100, reduce_on_plateau=False, topic_prior_mean=0.0,
-                 topic_prior_variance=None, num_samples=10, num_data_loader_workers=0, verbose=False):
+                 topic_prior_variance=None, num_samples=10, num_data_loader_workers=0, verbose=False, top_words=10):
         """
         Initialize AVITM model.
 
@@ -68,6 +68,7 @@ class AVITM_model(object):
         # assert isinstance(topic_prior_variance, float), \
         #    "topic prior_variance must be type float"
 
+        self.top_words = top_words
         self.input_size = input_size
         self.num_topics = num_topics
         self.verbose = verbose
@@ -347,7 +348,7 @@ class AVITM_model(object):
 
     def get_info(self):
         info = {}
-        topic_word = self.get_topics()
+        topic_word = self.get_topics(k=self.top_words)
         topic_word_dist = self.get_topic_word_mat()
         # topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
