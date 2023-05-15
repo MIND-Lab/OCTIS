@@ -98,7 +98,7 @@ class AVITM(AbstractModel):
             solver=self.hyperparameters['solver'], num_epochs=self.hyperparameters['num_epochs'],
             reduce_on_plateau=self.hyperparameters['reduce_on_plateau'], num_samples=self.hyperparameters[
                 'num_samples'], topic_prior_mean=self.hyperparameters["prior_mean"],
-            topic_prior_variance=self.hyperparameters["prior_variance"]
+            topic_prior_variance=self.hyperparameters["prior_variance"], verbose=self.hyperparameters["verbose"], top_words=top_words,
         )
 
         if self.use_partitions:
