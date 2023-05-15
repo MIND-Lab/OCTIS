@@ -102,10 +102,10 @@ class AVITM(AbstractModel):
         )
 
         if self.use_partitions:
-            self.model.fit(x_train, x_valid)
+            self.model.fit(x_train, x_valid, save_dir=self.hyperparameters["save_dir"])
             result = self.inference(x_test)
         else:
-            self.model.fit(x_train, None)
+            self.model.fit(x_train, None, save_dir=self.hyperparameters["save_dir"])
             result = self.model.get_info()
         return result
 
