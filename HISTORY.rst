@@ -2,7 +2,11 @@
 History
 =======
 
-1.11.2
+1.12.1
+--------------
+* FIX #102 fix requirements
+
+1.12.0
 ---------------
 * fix #91 add parameter for setting num of processes for gensim coherence
 * FIX pandas error
