@@ -51,6 +51,19 @@ def test_preprocessing_english_stops_split(data_dir):
     dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
 
 
+def test_preprocessing_multiprocess(data_dir):
+    texts_path = data_dir+"/sample_texts/unprepr_docs.txt"
+    p = Preprocessing(vocabulary=None, max_features=None, remove_punctuation=True,
+                      lemmatize=False,  num_processes=10, split=False,
+                      min_chars=2, min_words_docs=1)
+    dataset = p.preprocess_dataset(
+        documents_path=texts_path,
+    )
+
+    dataset.save(data_dir+"/sample_texts/")
+    dataset.load_custom_dataset_from_folder(data_dir + "/sample_texts")
+
+
 def test_load_20ng():
     data_home = get_data_home(data_home=None)
     cache_path = _pkl_filepath(data_home, "20NewsGroup" + ".pkz")
