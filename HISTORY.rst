@@ -2,6 +2,10 @@
 History
 =======
 
+1.12.2 (not yet released)
+--------------
+* FIX #104 fix numpy version
+
 1.12.1
 --------------
 * FIX #102 fix requirements
