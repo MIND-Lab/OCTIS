@@ -2,7 +2,7 @@
 History
 =======
 
-1.13.0 (not yet released)
+1.13.0
 --------------
 * FIX #96 Fix preprocessing with num_processes not None
 * FIX #104 fix numpy version
