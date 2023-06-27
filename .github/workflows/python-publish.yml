@@ -32,7 +32,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest -n 5
+        pytest -v -n 5
     - name: Install dependencies
       run: pip install wheel
     - name: Build package
