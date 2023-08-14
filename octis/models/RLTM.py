@@ -20,7 +20,8 @@ class RLTM(AbstractModel):
         inference_dropout=0.2, policy_dropout=0.0, batch_size=256, lr=3e-4,
         momentum=0.9, solver='adamw', num_epochs=200, num_samples=10,
         seed=None, use_partitions=True, reduce_on_plateau=False, bert_path="",
-        bert_model="all-MiniLM-L6-v2", weight_decay=0.01, kl_multiplier=1.0):
+        bert_model="all-MiniLM-L6-v2", weight_decay=0.01, kl_multiplier=1.0,
+        grad_norm_clip=1.0):
         """
         initialization of RLTM
 
@@ -53,28 +54,30 @@ class RLTM(AbstractModel):
         :param weight_decay: float, L2 regularization on model weights
         :param kl_multiplier: float or int, multiplier on the KL
             divergence (default 1.0)
+        :param grad_norm_clip: float or None; clip gradient norms (default 1.0)
         """
 
         super().__init__()
 
-        self.hyperparameters['num_topics'] = num_topics
-        self.hyperparameters['activation'] = activation
-        self.hyperparameters['inference_dropout'] = inference_dropout
-        self.hyperparameters['policy_dropout'] = policy_dropout
-        self.hyperparameters['batch_size'] = batch_size
-        self.hyperparameters['lr'] = lr
-        self.hyperparameters['num_samples'] = num_samples
-        self.hyperparameters['momentum'] = momentum
-        self.hyperparameters['solver'] = solver
-        self.hyperparameters['num_epochs'] = num_epochs
-        self.hyperparameters['reduce_on_plateau'] = reduce_on_plateau
+        self.hyperparameters["num_topics"] = num_topics
+        self.hyperparameters["activation"] = activation
+        self.hyperparameters["inference_dropout"] = inference_dropout
+        self.hyperparameters["policy_dropout"] = policy_dropout
+        self.hyperparameters["batch_size"] = batch_size
+        self.hyperparameters["lr"] = lr
+        self.hyperparameters["num_samples"] = num_samples
+        self.hyperparameters["momentum"] = momentum
+        self.hyperparameters["solver"] = solver
+        self.hyperparameters["num_epochs"] = num_epochs
+        self.hyperparameters["reduce_on_plateau"] = reduce_on_plateau
         self.hyperparameters["num_neurons"] = num_neurons
         self.hyperparameters["bert_path"] = bert_path
         self.hyperparameters["num_layers"] = num_layers
         self.hyperparameters["bert_model"] = bert_model
         self.hyperparameters["seed"] = seed
         self.hyperparameters["weight_decay"] = weight_decay
-        self.hyperparameters['kl_multiplier'] = kl_multiplier
+        self.hyperparameters["kl_multiplier"] = kl_multiplier
+        self.hyperparameters["grad_norm_clip"] = grad_norm_clip
         self.use_partitions = use_partitions
 
         hidden_sizes = tuple([num_neurons for _ in range(num_layers)])
@@ -83,7 +86,7 @@ class RLTM(AbstractModel):
         self.model = None
         self.vocab = None
 
-    def train_model(self, dataset, hyperparameters=None, top_words=10):
+    def train_model(self, dataset, hyperparameters=None, top_words=10, verbose=False):
         """
         trains RLTM model
 
@@ -132,9 +135,10 @@ class RLTM(AbstractModel):
                 reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
                 weight_decay=self.hyperparameters['weight_decay'],
                 kl_multiplier=self.hyperparameters['kl_multiplier'],
+                grad_norm_clip=self.hyperparameters['grad_norm_clip'],
                 top_words=top_words)
 
-            self.model.fit(x_train, x_valid, verbose=False)
+            self.model.fit(x_train, x_valid, verbose=verbose)
             result = self.inference(x_test)
             return result
 
@@ -162,6 +166,7 @@ class RLTM(AbstractModel):
             reduce_on_plateau=self.hyperparameters['reduce_on_plateau'],
             weight_decay=self.hyperparameters['weight_decay'],
             kl_multiplier=self.hyperparameters['kl_multiplier'],
+            grad_norm_clip=self.hyperparameters['grad_norm_clip'],
             top_words=top_words)
 
         self.model.fit(x_train, None, verbose=False)

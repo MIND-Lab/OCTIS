@@ -27,7 +27,7 @@ def bert_embeddings_from_file(text_file, sbert_model_to_load, batch_size=200):
     return np.array(model.encode(train_text, show_progress_bar=True, batch_size=batch_size))
 
 
-def bert_embeddings_from_list(texts, sbert_model_to_load="bert-base-nli-mean-tokens", batch_size=100):
+def bert_embeddings_from_list(texts, sbert_model_to_load="all-MiniLM-L6-v2", batch_size=100):
     """
     Creates SBERT Embeddings from a list
     """

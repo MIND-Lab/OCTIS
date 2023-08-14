@@ -76,6 +76,19 @@ class DecoderNetwork(nn.Module):
         self.posterior_log_sigma_norm = nn.LayerNorm(n_components, elementwise_affine=False)
         self.dropout = nn.Dropout(p=policy_dropout)
         self.beta_norm = nn.LayerNorm(input_size, elementwise_affine=False)
+
+        self.apply(self._init_weights)
+    
+    def _init_weights(self, module):
+        if isinstance(module, nn.Linear):
+            nn.init.normal_(module.weight, mean=0.0, std=0.02)
+            if module.bias is not None:
+                nn.init.zeros_(module.bias)
+        elif isinstance(module, nn.LayerNorm):
+            if module.bias is not None:
+                nn.init.zeros_(module.bias)
+            if module.weight is not None:
+                nn.init.ones_(module.weight)
     
     def kl_divergence(self, p_mean, p_variance, q_mean, q_variance):
         var_division = torch.sum(p_variance ** 2 / q_variance ** 2, dim=-1)

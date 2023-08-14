@@ -12,7 +12,6 @@ from torch.utils.data import DataLoader
 
 from octis.models.rl_for_topic_models.networks.decoder_network import (
     DecoderNetwork)
-from octis.models.early_stopping.pytorchtools import EarlyStopping
 
 
 class RLTM(object):
@@ -24,7 +23,8 @@ class RLTM(object):
         activation='gelu', inference_dropout=0.2, policy_dropout=0.0,
         batch_size=256, lr=3e-4, momentum=0.9, solver='adamw', num_epochs=200,
         num_samples=10, reduce_on_plateau=False, top_words=10,
-        num_data_loader_workers=0, weight_decay=0.01, kl_multiplier=1.0):
+        num_data_loader_workers=0, weight_decay=0.01, kl_multiplier=1.0,
+        grad_norm_clip=1.0):
 
         """
         :param input_size: int, dimension of input
@@ -49,6 +49,7 @@ class RLTM(object):
         :param weight_decay: float, L2 regularization on model weights (default 0.01)
         :param kl_multiplier: float or int, multiplier on the KL
             divergence (default 1.0)
+        :param grad_norm_clip: float or None; clip gradient norms (default 1.0)
         """
 
         assert isinstance(input_size, int) and input_size > 0, \
@@ -89,6 +90,10 @@ class RLTM(object):
         assert weight_decay >= 0, "weight_decay must be >= 0"
         assert isinstance(kl_multiplier, float) or isinstance(kl_multiplier, int), \
             "kl_multiplier must be a float or int"
+        assert isinstance(grad_norm_clip, float) or grad_norm_clip is None, \
+            "grad_norm_clip must be a float or None"
+        if grad_norm_clip is not None:
+            assert grad_norm_clip > 0, "grad_norm_clip must be > 0"
 
         self.input_size = input_size
         self.num_topics = num_topics
@@ -105,12 +110,12 @@ class RLTM(object):
         self.num_epochs = num_epochs
         self.reduce_on_plateau = reduce_on_plateau
         self.num_data_loader_workers = num_data_loader_workers
+        self.grad_norm_clip = grad_norm_clip
 
         # init decoder network
         model = DecoderNetwork(
             input_size, bert_size, num_topics, hidden_sizes, activation,
             inference_dropout, policy_dropout, kl_multiplier)
-        self.early_stopping = EarlyStopping(patience=5, verbose=False)
 
         # init optimizer
         if self.solver == 'adamw':
@@ -217,6 +222,8 @@ class RLTM(object):
 
             # backward pass
             loss.backward()
+            if self.grad_norm_clip is not None:
+                nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_norm_clip)
             self.optimizer.step()
 
             # compute train loss
@@ -331,15 +338,8 @@ class RLTM(object):
                             val_loss, e - s))
 
                 if np.isnan(val_loss) or np.isnan(train_loss):
+                    print("loss is NaN")
                     break
-                else:
-                    self.early_stopping(val_loss, self.model)
-                    if self.early_stopping.early_stop:
-                        if verbose:
-                            print("Early stopping")
-                        if save_dir is not None:
-                            self.save(save_dir)
-                        break
 
     def predict(self, dataset):
         """Predict input."""

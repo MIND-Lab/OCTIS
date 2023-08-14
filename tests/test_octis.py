@@ -577,6 +577,7 @@ def test_model_output_prodlda_not_partitioned(data_dir):
         num_topics, len(dataset.get_corpus()))
 
 
+@pytest.mark.rltm
 def test_model_output_rltm_seeded(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
@@ -592,6 +593,7 @@ def test_model_output_rltm_seeded(data_dir):
     assert output['topics'] == output_2['topics']
 
 
+@pytest.mark.rltm
 def test_model_output_rltm(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
@@ -622,6 +624,7 @@ def test_model_output_rltm(data_dir):
         num_topics, len(dataset.get_partitioned_corpus()[2]))
 
 
+@pytest.mark.rltm
 def test_model_output_rltm_not_partition(data_dir):
     dataset = Dataset()
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
