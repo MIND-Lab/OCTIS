@@ -9,6 +9,7 @@ from octis.models.LDA import LDA
 from octis.models.LDA_tomopy import LDA_tomopy as LDATOMOTO
 from octis.models.ETM import ETM
 from octis.models.CTM import CTM
+from octis.models.RLTM import RLTM
 from octis.models.NMF import NMF
 from octis.models.NMF_scikit import NMF_scikit
 from octis.models.ProdLDA import ProdLDA
@@ -556,6 +557,78 @@ def test_model_output_prodlda_not_partitioned(data_dir):
     dataset.load_custom_dataset_from_folder(data_dir + '/M10')
     num_topics = 3
     model = ProdLDA(num_topics=num_topics, num_epochs=5, use_partitions=False)
+    output = model.train_model(dataset)
+    assert 'topics' in output.keys()
+    assert 'topic-word-matrix' in output.keys()
+    assert 'test-topic-document-matrix' not in output.keys()
+
+    # check topics format
+    assert type(output['topics']) == list
+    assert len(output['topics']) == num_topics
+
+    # check topic-word-matrix format
+    assert type(output['topic-word-matrix']) == np.ndarray
+    assert output['topic-word-matrix'].shape == (
+        num_topics, len(dataset.get_vocabulary()))
+
+    # check topic-document-matrix format
+    assert type(output['topic-document-matrix']) == np.ndarray
+    assert output['topic-document-matrix'].shape == (
+        num_topics, len(dataset.get_corpus()))
+
+
+def test_model_output_rltm_seeded(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = RLTM(
+        num_topics=num_topics, seed=10, num_epochs=5)
+    output = model.train_model(dataset)
+
+    model_2 = RLTM(
+        num_topics=num_topics, seed=10, num_epochs=5)
+    output_2 = model_2.train_model(dataset)
+
+    assert output['topics'] == output_2['topics']
+
+
+def test_model_output_rltm(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = RLTM(num_topics=num_topics, num_epochs=5)
+    output = model.train_model(dataset)
+    assert 'topics' in output.keys()
+    assert 'topic-word-matrix' in output.keys()
+    assert 'test-topic-document-matrix' in output.keys()
+
+    # check topics format
+    assert type(output['topics']) == list
+    assert len(output['topics']) == num_topics
+
+    # check topic-word-matrix format
+    assert type(output['topic-word-matrix']) == np.ndarray
+    assert output['topic-word-matrix'].shape == (num_topics, len(
+        dataset.get_vocabulary()))
+
+    # check topic-document-matrix format
+    assert type(output['topic-document-matrix']) == np.ndarray
+    assert output['topic-document-matrix'].shape == (
+        num_topics, len(dataset.get_partitioned_corpus()[0]))
+
+    # check test-topic-document-matrix format
+    assert type(output['test-topic-document-matrix']) == np.ndarray
+    assert output['test-topic-document-matrix'].shape == (
+        num_topics, len(dataset.get_partitioned_corpus()[2]))
+
+
+def test_model_output_rltm_not_partition(data_dir):
+    dataset = Dataset()
+    dataset.load_custom_dataset_from_folder(data_dir + '/M10')
+    num_topics = 3
+    model = RLTM(
+        num_topics=num_topics, num_epochs=5,
+        use_partitions=False, bert_path='./not_part')
     output = model.train_model(dataset)
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()
