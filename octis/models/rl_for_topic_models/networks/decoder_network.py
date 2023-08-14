@@ -12,7 +12,7 @@ from octis.models.rl_for_topic_models.networks.inference_network import Inferenc
 
 class DecoderNetwork(nn.Module):
 
-    """AVITM Network."""
+    """RLTM Network."""
 
     def __init__(self, input_size, bert_size, n_components=10,
                  hidden_sizes=(128, 128), activation='gelu', inference_dropout=0.2,
