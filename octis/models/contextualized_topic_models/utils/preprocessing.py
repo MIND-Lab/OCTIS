@@ -34,7 +34,7 @@ class WhiteSpacePreprocessing():
 
         vectorizer = CountVectorizer(max_features=self.vocabulary_size, token_pattern=r'\b[a-zA-Z]{2,}\b')
         vectorizer.fit_transform(preprocessed_docs_tmp)
-        vocabulary = set(vectorizer.get_feature_names())
+        vocabulary = set(vectorizer.get_feature_names_out())
         preprocessed_docs_tmp = [' '.join([w for w in doc.split() if w in vocabulary])
                                  for doc in preprocessed_docs_tmp]
 
