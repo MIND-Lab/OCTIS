@@ -2,6 +2,12 @@
 History
 =======
 
+
+1.13.1
+--------------
+* FIX #106 Fix scikit-learn version
+
+
 1.13.0
 --------------
 * FIX #96 Fix preprocessing with num_processes not None
