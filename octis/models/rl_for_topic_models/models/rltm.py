@@ -19,20 +19,21 @@ class RLTM(object):
     """
 
     def __init__(
-        self, input_size, bert_size, num_topics=10, hidden_sizes=(128, 128),
-        activation='gelu', inference_dropout=0.2, policy_dropout=0.0,
-        batch_size=256, lr=3e-4, momentum=0.9, solver='adamw', num_epochs=200,
-        num_samples=10, reduce_on_plateau=False, top_words=10,
-        num_data_loader_workers=0, weight_decay=0.01, kl_multiplier=1.0,
-        grad_norm_clip=1.0):
-
+            self, input_size, bert_size, num_topics=10,
+            hidden_sizes=(128, 128), activation='gelu',
+            inference_dropout=0.2, policy_dropout=0.0,
+            batch_size=256, lr=3e-4, momentum=0.9, solver='adamw',
+            num_epochs=200, num_samples=10, reduce_on_plateau=False,
+            top_words=10, num_data_loader_workers=0, weight_decay=0.01,
+            kl_multiplier=1.0, grad_norm_clip=1.0):
         """
         :param input_size: int, dimension of input
         :param bert_input_size: int, dimension of BERT input
         :param num_topics: int, number of topic components, (default 10)
         :param hidden_sizes: tuple, length = n_layers, (default (128, 128))
-        :param activation: string, 'softplus', 'relu', 'sigmoid', 'swish',
-            'tanh', 'leakyrelu', 'rrelu', 'elu', 'selu', 'gelu' (default 'gelu')
+        :param activation: string, 'softplus', 'relu', 'sigmoid',
+            'swish', 'tanh', 'leakyrelu', 'rrelu', 'elu', 'selu',
+            'gelu' (default 'gelu')
         :param inference_dropout: float, inference dropout to use (default 0.2)
         :param policy_dropout: float, policy dropout to use (default 0.0)
         :param batch_size: int, size of batch to use for training (default 256)
@@ -46,7 +47,8 @@ class RLTM(object):
             of 10 epochs (default False)
         :param num_data_loader_workers: int, number of data loader workers
             (default cpu_count). set it to 0 if you are using Windows
-        :param weight_decay: float, L2 regularization on model weights (default 0.01)
+        :param weight_decay: float, L2 regularizationon model weights
+            (default 0.01)
         :param kl_multiplier: float or int, multiplier on the KL
             divergence (default 1.0)
         :param grad_norm_clip: float or None; clip gradient norms (default 1.0)
@@ -61,8 +63,9 @@ class RLTM(object):
             "num_topics must by type int > 0."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'tanh', 'leakyrelu',
-                              'rrelu', 'elu', 'selu', 'gelu'], \
+        assert activation in ['softplus', 'relu', 'sigmoid',
+                              'tanh', 'leakyrelu', 'rrelu',
+                              'elu', 'selu', 'gelu'], \
             "activation must be 'softplus', 'relu', 'sigmoid', 'tanh'," \
             " 'leakyrelu', 'rrelu', 'elu', 'selu', or 'gelu'."
         assert inference_dropout >= 0, "inference dropout must be >= 0."
@@ -88,7 +91,8 @@ class RLTM(object):
             and num_data_loader_workers >= 0, \
             "num_data_loader_workers must be int >= 0"
         assert weight_decay >= 0, "weight_decay must be >= 0"
-        assert isinstance(kl_multiplier, float) or isinstance(kl_multiplier, int), \
+        assert isinstance(kl_multiplier, float) \
+            or isinstance(kl_multiplier, int), \
             "kl_multiplier must be a float or int"
         assert isinstance(grad_norm_clip, float) or grad_norm_clip is None, \
             "grad_norm_clip must be a float or None"
@@ -119,8 +123,8 @@ class RLTM(object):
 
         # init optimizer
         if self.solver == 'adamw':
-            self.optimizer = self._configure_adamw(model, weight_decay, lr,
-                betas=(self.momentum, 0.999))
+            self.optimizer = self._configure_adamw(
+                model, weight_decay, lr, betas=(self.momentum, 0.999))
         if self.solver == 'adam':
             self.optimizer = optim.Adam(self.model.parameters(), lr=lr, betas=(
                 self.momentum, 0.999))
@@ -134,7 +138,7 @@ class RLTM(object):
         elif self.solver == 'rmsprop':
             self.optimizer = optim.RMSprop(
                 self.model.parameters(), lr=lr, momentum=self.momentum)
-        
+
         # init lr scheduler
         if self.reduce_on_plateau:
             self.scheduler = ReduceLROnPlateau(self.optimizer, patience=10)
@@ -156,8 +160,8 @@ class RLTM(object):
             self.USE_CUDA = True
             self.model = self.model.cuda()
         else:
-            self.USE_CUDA = False            
-    
+            self.USE_CUDA = False
+
     @staticmethod
     def _configure_adamw(model, weight_decay, lr, betas):
         whitelist_weight_modules = (nn.Linear,)
@@ -186,16 +190,26 @@ class RLTM(object):
                         no_decay.add(fpn)
         param_dict = {pn: p for pn, p in model.named_parameters()}
 
-        # for decay and no decay sets, ensure no intersection and union contains all parameters
+        # for decay and no decay sets, ensure no intersection
+        # and union contains all parameters
         inter_params = decay & no_decay
         union_params = decay | no_decay
-        assert len(inter_params) == 0, f'parameters {inter_params} made it into both decay and no_decay set'
+        assert len(inter_params) == 0, \
+            f'parameters {inter_params} made it into \
+                both decay and no_decay set'
         assert len(param_dict.keys() - union_params) == 0, \
-            f'parameters {param_dict.keys() - union_params} were not separated into either decay or no_decay set'
+            f'parameters {param_dict.keys() - union_params} \
+                were not separated into either decay or no_decay set'
 
         optim_groups = [
-            {'params': [param_dict[pn] for pn in sorted(list(decay))], 'weight_decay': weight_decay},
-            {'params': [param_dict[pn] for pn in sorted(list(no_decay))], 'weight_decay': 0.0}
+            {
+                'params': [param_dict[pn] for pn in sorted(list(decay))],
+                'weight_decay': weight_decay
+            },
+            {
+                'params': [param_dict[pn] for pn in sorted(list(no_decay))],
+                'weight_decay': 0.0
+            }
         ]
 
         return optim.AdamW(optim_groups, lr=lr, betas=betas)
@@ -223,12 +237,13 @@ class RLTM(object):
             # backward pass
             loss.backward()
             if self.grad_norm_clip is not None:
-                nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_norm_clip)
+                nn.utils.clip_grad_norm_(
+                    self.model.parameters(), self.grad_norm_clip)
             self.optimizer.step()
 
             # compute train loss
             samples_processed += X.size()[0]
-            train_loss += loss.item()
+            train_loss += loss.item() * X.size()[0]
 
         train_loss /= samples_processed
 
@@ -255,7 +270,7 @@ class RLTM(object):
 
             # compute train loss
             samples_processed += X.size()[0]
-            val_loss += loss.item()
+            val_loss += loss.item() * X.size()[0]
 
         val_loss /= samples_processed
 
@@ -311,9 +326,12 @@ class RLTM(object):
             e = datetime.datetime.now()
 
             if verbose:
-                print("Epoch: [{}/{}]\tSamples: [{}/{}]\tTrain Loss: {}\tTime: {}".format(
-                    epoch + 1, self.num_epochs, samples_processed,
-                    len(self.train_data) * self.num_epochs, train_loss, e - s))
+                print(
+                    "Epoch: [{}/{}]\tSamples: [{}/{}]\
+                        \tTrain Loss: {}\tTime: {}".format(
+                            epoch + 1, self.num_epochs, samples_processed,
+                            len(self.train_data) * self.num_epochs,
+                            train_loss, e - s))
 
             self.best_components = self.model.beta
             self.final_topic_word = topic_word
@@ -402,7 +420,6 @@ class RLTM(object):
         info = {}
         topic_word = self.get_topics()
         topic_word_dist = self.get_topic_word_mat()
-        topic_document_dist = self.get_topic_document_mat()
         info['topics'] = topic_word
 
         info['topic-document-matrix'] = np.asarray(
@@ -457,7 +474,7 @@ class RLTM(object):
 
     def get_thetas(self, dataset):
         """
-        Get the document-topic distribution for a dataset of topics. 
+        Get the document-topic distribution for a dataset of topics.
         Includes multiple sampling to reduce variation via
         the parameter num_samples.
         :param dataset: a PyTorch Dataset containing the documents
@@ -479,7 +496,8 @@ class RLTM(object):
                     # forward pass
                     self.model.zero_grad()
                     collect_theta.extend(
-                        self.model.get_topic_distribution(x_bert).cpu().numpy().tolist())
+                        self.model.get_topic_distribution(
+                            x_bert).cpu().numpy().tolist())
 
                 final_thetas.append(np.array(collect_theta))
         return np.sum(final_thetas, axis=0) / self.num_samples

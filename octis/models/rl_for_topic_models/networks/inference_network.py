@@ -2,8 +2,8 @@
 
 from collections import OrderedDict
 from torch import nn
-import torch
 import numpy as np
+
 
 class InferenceNetwork(nn.Module):
 
@@ -23,11 +23,13 @@ class InferenceNetwork(nn.Module):
         """
         super(InferenceNetwork, self).__init__()
         assert isinstance(bert_size, int), "input_size must by type int."
-        assert isinstance(output_size, int) or isinstance(output_size, np.int64), "output_size must be type int."
+        assert isinstance(output_size, int) \
+            or isinstance(output_size, np.int64), \
+            "output_size must be type int."
         assert isinstance(hidden_sizes, tuple), \
             "hidden_sizes must be type tuple."
-        assert activation in ['softplus', 'relu', 'sigmoid', 'tanh', 'leakyrelu',
-                              'rrelu', 'elu', 'selu', 'gelu'], \
+        assert activation in ['softplus', 'relu', 'sigmoid', 'tanh',
+                              'leakyrelu', 'rrelu', 'elu', 'selu', 'gelu'], \
             "activation must be 'softplus', 'relu', 'sigmoid', 'tanh'," \
             " 'leakyrelu', 'rrelu', 'elu', 'selu', or 'gelu'."
         assert dropout >= 0, "dropout must be >= 0."
@@ -55,8 +57,12 @@ class InferenceNetwork(nn.Module):
         self.dropout = nn.Dropout(p=dropout)
 
         self.hiddens = nn.Sequential(OrderedDict([
-            (f"l_{i}", nn.Sequential(nn.Linear(h_in, h_out), self.activation, nn.Dropout(p=dropout)))
-            for i, (h_in, h_out) in enumerate(zip(hidden_sizes[:-1], hidden_sizes[1:]))]))
+            (f"l_{i}", nn.Sequential(
+                nn.Linear(h_in, h_out),
+                self.activation,
+                nn.Dropout(p=dropout)))
+            for i, (h_in, h_out) in enumerate(zip(
+                hidden_sizes[:-1], hidden_sizes[1:]))]))
 
         self.output = nn.Linear(hidden_sizes[-1], output_size)
 

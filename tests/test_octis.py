@@ -221,6 +221,7 @@ def test_model_output_etm_with_binary_word2vec_embeddings_file(
     assert output['test-topic-document-matrix'].shape == (
         num_topics, len(dataset.get_partitioned_corpus()[2]))
 
+
 def test_model_output_etm_with_text_word2vec_embeddings_file(
         data_dir, embeddings_dir):
     dataset = Dataset()
@@ -229,7 +230,7 @@ def test_model_output_etm_with_text_word2vec_embeddings_file(
     model = ETM(
         num_topics=num_topics, num_epochs=5, train_embeddings=False,
         embeddings_type='word2vec',
-        embeddings_path=embeddings_dir +'/test_example/example.txt',
+        embeddings_path=embeddings_dir + '/test_example/example.txt',
         binary_embeddings=False)
     output = model.train_model(dataset)
     assert 'topics' in output.keys()
@@ -264,7 +265,8 @@ def test_model_output_etm_with_headerless_text_word2vec_embeddings_file(
     model = ETM(
         num_topics=num_topics, num_epochs=5, train_embeddings=False,
         embeddings_type='word2vec',
-        embeddings_path=embeddings_dir + '/test_example/headerless_example.txt',
+        embeddings_path=embeddings_dir +
+                        '/test_example/headerless_example.txt',
         binary_embeddings=False, headerless_embeddings=True)
     output = model.train_model(dataset)
     assert 'topics' in output.keys()
@@ -299,7 +301,7 @@ def test_model_output_etm_with_keyedvectors_embeddings_file(
     model = ETM(
         num_topics=num_topics, num_epochs=5, train_embeddings=False,
         embeddings_type='keyedvectors',
-        embeddings_path=embeddings_dir +'/test_example/example.keyedvectors')
+        embeddings_path=embeddings_dir + '/test_example/example.keyedvectors')
     output = model.train_model(dataset)
     assert 'topics' in output.keys()
     assert 'topic-word-matrix' in output.keys()

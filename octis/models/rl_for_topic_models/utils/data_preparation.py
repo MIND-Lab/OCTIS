@@ -6,15 +6,22 @@ from octis.models.rl_for_topic_models.datasets.dataset import RLTMDataset
 import os
 import pickle as pkl
 
+
 def get_bag_of_words(data, min_length):
     """
     Creates the bag of words
     """
-    vect = [np.bincount(x[x != np.array(None)].astype('int'), minlength=min_length)
-            for x in data if np.sum(x[x != np.array(None)]) != 0]
+    vect = [
+        np.bincount(
+            x[x != np.array(None)].astype('int'),
+            minlength=min_length
+        )
+        for x in data if np.sum(x[x != np.array(None)]) != 0
+    ]
 
     vect = scipy.sparse.csr_matrix(vect)
     return vect
+
 
 def bert_embeddings_from_file(text_file, sbert_model_to_load, batch_size=200):
     """
@@ -24,26 +31,35 @@ def bert_embeddings_from_file(text_file, sbert_model_to_load, batch_size=200):
     with open(text_file, encoding="utf-8") as filino:
         train_text = list(map(lambda x: x, filino.readlines()))
 
-    return np.array(model.encode(train_text, show_progress_bar=True, batch_size=batch_size))
+    return np.array(
+        model.encode(
+            train_text, show_progress_bar=True, batch_size=batch_size))
 
 
-def bert_embeddings_from_list(texts, sbert_model_to_load="all-MiniLM-L6-v2", batch_size=100):
+def bert_embeddings_from_list(
+        texts, sbert_model_to_load="all-MiniLM-L6-v2", batch_size=100):
     """
     Creates SBERT Embeddings from a list
     """
     model = SentenceTransformer(sbert_model_to_load)
-    return np.array(model.encode(texts, show_progress_bar=True, batch_size=batch_size))
+    return np.array(
+        model.encode(
+            texts, show_progress_bar=True, batch_size=batch_size))
 
 
 class QuickText:
     """
     Integrated class to handle all the text preprocessing needed
     """
-    def __init__(self, bert_model, text_for_bow, text_for_bert=None, bert_path=None):
+    def __init__(
+            self, bert_model, text_for_bow,
+            text_for_bert=None, bert_path=None):
         """
         :param bert_model: string, bert model to use
-        :param text_for_bert: list, list of sentences with the unpreprocessed text
-        :param text_for_bow: list, list of sentences with the preprocessed text
+        :param text_for_bert: list, list of sentences
+            with the unpreprocessed text
+        :param text_for_bow: list, list of sentences
+            with the preprocessed text
         """
         self.vocab_dict = {}
         self.vocab = []
@@ -96,13 +112,17 @@ class QuickText:
         else:
             if self.data_bert is None:
                 if self.text_for_bert is not None:
-                    self.data_bert = bert_embeddings_from_list(self.text_for_bert, self.bert_model)
+                    self.data_bert = bert_embeddings_from_list(
+                        self.text_for_bert, self.bert_model)
                 else:
-                    self.data_bert = bert_embeddings_from_list(self.text_for_bow, self.bert_model)
+                    self.data_bert = bert_embeddings_from_list(
+                        self.text_for_bow, self.bert_model)
                 pkl.dump(self.data_bert, open(self.bert_path, 'w'))
 
-        training_dataset = RLTMDataset(self.bow, self.data_bert, self.idx2token)
+        training_dataset = RLTMDataset(
+            self.bow, self.data_bert, self.idx2token)
         return training_dataset
+
 
 class TextHandler:
     """
@@ -118,7 +138,9 @@ class TextHandler:
         self.bow = None
 
         warnings.simplefilter('always', DeprecationWarning)
-        warnings.warn("TextHandler class is deprecated and will be removed in version 2.0. Use QuickText.", Warning)
+        warnings.warn("TextHandler class is deprecated and \
+                      will be removed in version 2.0. Use \
+                      QuickText.", Warning)
 
     def prepare(self):
         indptr = [0]
@@ -135,7 +157,8 @@ class TextHandler:
             with open(self.file_name, encoding="utf-8") as filino:
                 docs = filino.readlines()
         else:
-            raise Exception("One parameter between sentences and file_name should be selected")
+            raise Exception("One parameter between sentences and \
+                            file_name should be selected")
 
         for d in docs:
             for term in d.split():

@@ -14,8 +14,10 @@ class RLTMDataset(Dataset):
                 Document word matrix.
         """
         if X.shape[0] != len(X_bert):
-            raise Exception("Wait! BoW and Contextual Embeddings have different sizes! "
-                            "You might want to check if the BoW preparation method has removed some documents. ")
+            raise Exception("Wait! BoW and Contextual Embeddings \
+                            have different sizes! You might want \
+                            to check if the BoW preparation method \
+                            has removed some documents.")
 
         self.X = X
         self.X_bert = X_bert

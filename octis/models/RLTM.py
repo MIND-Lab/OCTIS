@@ -16,12 +16,13 @@ import random
 class RLTM(AbstractModel):
 
     def __init__(
-        self, num_topics=10, activation='gelu', num_layers=2, num_neurons=128,
-        inference_dropout=0.2, policy_dropout=0.0, batch_size=256, lr=3e-4,
-        momentum=0.9, solver='adamw', num_epochs=200, num_samples=10,
-        seed=None, use_partitions=True, reduce_on_plateau=False, bert_path="",
-        bert_model="all-MiniLM-L6-v2", weight_decay=0.01, kl_multiplier=1.0,
-        grad_norm_clip=1.0):
+            self, num_topics=10, activation='gelu', num_layers=2,
+            num_neurons=128, inference_dropout=0.2, policy_dropout=0.0,
+            batch_size=256, lr=3e-4, momentum=0.9, solver='adamw',
+            num_epochs=200, num_samples=10, seed=None, use_partitions=True,
+            reduce_on_plateau=False, bert_path="",
+            bert_model="all-MiniLM-L6-v2", weight_decay=0.01,
+            kl_multiplier=1.0, grad_norm_clip=1.0):
         """
         initialization of RLTM
 
@@ -31,9 +32,11 @@ class RLTM(AbstractModel):
             'gelu' (default 'gelu')
         :param num_layers : int, number of layers (default 2)
         :param num_neurons : int, number of neurons per layer (default 128)
-        :param inference_dropout : float, inference dropout to use (default 0.2)
+        :param inference_dropout : float, inference dropout to use
+            (default 0.2)
         :param policy_dropout : float, policy dropout to use (default 0.0)
-        :param batch_size : int, size of batch to use for training (default 256)
+        :param batch_size : int, size of batch to use for training
+            (default 256)
         :param lr : float, learning rate to use for training (default 3e-4)
         :param momentum : float, momentum to use for training (default 0.9)
         :param solver: string, optimizer 'adagrad', 'adam', 'sgd', 'adadelta',
@@ -86,7 +89,8 @@ class RLTM(AbstractModel):
         self.model = None
         self.vocab = None
 
-    def train_model(self, dataset, hyperparameters=None, top_words=10, verbose=False):
+    def train_model(self, dataset, hyperparameters=None,
+                    top_words=10, verbose=False):
         """
         trains RLTM model
 
@@ -226,7 +230,8 @@ class RLTM(AbstractModel):
         if test is not None and validation is not None:
             x_test = vec.transform(test)
             b_test = RLTM.load_bert_data(bert_test_path, test, bert_model)
-            test_data = dataset.RLTMDataset(x_test.toarray(), b_test, idx2token)
+            test_data = dataset.RLTMDataset(
+                x_test.toarray(), b_test, idx2token)
 
             x_valid = vec.transform(validation)
             b_val = RLTM.load_bert_data(bert_val_path, validation, bert_model)
@@ -242,7 +247,8 @@ class RLTM(AbstractModel):
         if test is not None and validation is None:
             x_test = vec.transform(test)
             b_test = RLTM.load_bert_data(bert_test_path, test, bert_model)
-            test_data = dataset.RLTMDataset(x_test.toarray(), b_test, idx2token)
+            test_data = dataset.RLTMDataset(
+                x_test.toarray(), b_test, idx2token)
             return train_data, test_data, input_size
         if test is None and validation is None:
             return train_data, input_size
