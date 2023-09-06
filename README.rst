@@ -263,6 +263,8 @@ Available Models
 +-------------------------------------------+-----------------------------------------------------------+
 | ProdLda `(Srivastava and Sutton 2017)`_   | https://github.com/estebandito22/PyTorchAVITM             |
 +-------------------------------------------+-----------------------------------------------------------+
+| RLTM `(Costello and Reformat 2023)`_      | https://github.com/jeremy-costello/rl-for-topic-models    |
++-------------------------------------------+-----------------------------------------------------------+
 
 
 .. _(Bianchi et al. 2021): https://www.aclweb.org/anthology/2021.eacl-main.143/
@@ -271,7 +273,8 @@ Available Models
 .. _(Blei et al. 2003): https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
 .. _(Landauer et al. 1998): http://lsa.colorado.edu/papers/dp1.LSAintro.pdf
 .. _(Lee and Seung 2000): https://papers.nips.cc/paper/1861-algorithms-for-non-negative-matrix-factorization
-.. _(Srivastava and Sutton 2017): https://arxiv.org/abs/1703.01488 
+.. _(Srivastava and Sutton 2017): https://arxiv.org/abs/1703.01488
+.. _(Costello and Reformat 2023): https://aclanthology.org/2023.findings-acl.265/
 
 If you use one of these implementations, make sure to cite the right paper.
 
