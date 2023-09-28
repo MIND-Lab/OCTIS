@@ -14,9 +14,34 @@ from torch.nn import init
 from sklearn.cluster import KMeans
 from sklearn import metrics
 from scipy import sparse
-from octis.models.vONTSS_model.hyperspherical_vae.distributions.hyperspherical_uniform import HypersphericalUniform
-from octis.models.vONTSS_model.hyperspherical_vae.distributions.von_mises_fisher import VonMisesFisher
+from octis.models.vONTSS_model.hyperspherical_vae.distributions.von_mises_fisher import VonMisesFisher, HypersphericalUniform
 from octis.models.model import AbstractModel
+from torch.distributions.kl import register_kl
+
+
+# Libraries for NLP
+import nltk
+from nltk.corpus import stopwords, wordnet
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from nltk import pos_tag
+import gensim.downloader
+import gensim
+
+# Other utilities
+import pandas as pd
+import numpy as np
+# import ot
+import matplotlib.pyplot as plt
+# import seaborn as sns
+# from datasets import Dataset
+from octis.models.vONTSS_model.utils import kld_normal
+from octis.models.vONTSS_model.preprocess import TextProcessor
+
+@register_kl(VonMisesFisher, HypersphericalUniform)
+def _kl_vmf_uniform(vmf, hyu):
+    #print(vmf.entropy() , hyu.entropy())
+    return -vmf.entropy()  + hyu.entropy()
  
 
 # Libraries for NLP
@@ -37,6 +62,11 @@ import matplotlib.pyplot as plt
 # from datasets import Dataset
 from octis.models.vONTSS_model.utils import kld_normal
 from octis.models.vONTSS_model.preprocess import TextProcessor
+
+@register_kl(VonMisesFisher, HypersphericalUniform)
+def _kl_vmf_uniform(vmf, hyu):
+    #print(vmf.entropy() , hyu.entropy())
+    return -vmf.entropy()  + hyu.entropy()
 
 
 class EmbTopic(nn.Module):
