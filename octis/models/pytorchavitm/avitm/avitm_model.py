@@ -294,7 +294,7 @@ class AVITM_model(object):
         self.model.eval()
 
         loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=False,
-                            num_workers=self.num_data_loader_workers, drop_last=True)
+                            num_workers=self.num_data_loader_workers)
 
         topic_document_mat = []
         with torch.no_grad():
@@ -413,7 +413,7 @@ class AVITM_model(object):
         self.model.eval()
 
         loader = DataLoader(
-            dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_data_loader_workers, drop_last=True)
+            dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_data_loader_workers)
         final_thetas = []
         for sample_index in range(self.num_samples):
             with torch.no_grad():
