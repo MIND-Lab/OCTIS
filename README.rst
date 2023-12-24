@@ -442,7 +442,7 @@ Dashboard
 OCTIS includes a user friendly graphical interface for creating, monitoring and viewing experiments.
 Following the implementation standards of datasets, models and metrics the dashboard will automatically update and allow you to use your own custom implementations.
 
-To run rhe dashboard you need to clone the repo.
+To run the dashboard you need to clone the repo.
 While in the project directory run the following command:
 
 .. code-block:: bash

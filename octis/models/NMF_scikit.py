@@ -118,7 +118,7 @@ class NMF_scikit(AbstractModel):
             X = vectorizer.fit_transform(real_corpus)
 
             self.id2word = {i: k for i, k in enumerate(
-                vectorizer.get_feature_names())}
+                vectorizer.get_feature_names_out())}
             if self.use_partitions:
                 test_corpus = []
                 for document in partition[1]:

@@ -2,7 +2,22 @@
 History
 =======
 
-1.11.2
+
+1.13.1
+--------------
+* FIX #106 Fix scikit-learn version
+
+
+1.13.0
+--------------
+* FIX #96 Fix preprocessing with num_processes not None
+* FIX #104 fix numpy version
+
+1.12.1
+--------------
+* FIX #102 fix requirements
+
+1.12.0
 ---------------
 * fix #91 add parameter for setting num of processes for gensim coherence
 * FIX pandas error
