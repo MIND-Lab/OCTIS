@@ -12,3 +12,4 @@ flask
 sentence_transformers
 requests
 tomotopy
+scipy<1.3
