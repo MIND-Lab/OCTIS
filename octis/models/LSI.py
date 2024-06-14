@@ -106,10 +106,10 @@ class LSI(AbstractModel):
         else:
             partition = [dataset.get_corpus(), []]
 
-        if self.id2word == None:
+        if self.id2word is None:
             self.id2word = corpora.Dictionary(dataset.get_corpus())
 
-        if self.id_corpus == None:
+        if self.id_corpus is None:
             self.id_corpus = [self.id2word.doc2bow(
                 document) for document in partition[0]]
 
