@@ -134,7 +134,7 @@ class ETM(BaseETM):
         if isinstance(self.device, str):
             self.device = torch.device(self.device)
         
-        if (self.device.type == 'cuda' and not torch.cuda.is_available()) or (self.device.type == 'mps' and torch.backends.mps.is_available()):
+        if (self.device.type == 'cuda' and not torch.cuda.is_available()) or (self.device.type == 'mps' and not torch.backends.mps.is_available()):
             self.device = torch.device('cpu')
         
         self.set_default_hyperparameters(hyperparameters)
