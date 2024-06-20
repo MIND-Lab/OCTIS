@@ -12,3 +12,4 @@ flask
 sentence_transformers
 requests
 tomotopy
+datasets==2.11.0
