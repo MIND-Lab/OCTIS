@@ -16,7 +16,7 @@ class ETM(BaseETM):
         self, num_topics=10, num_epochs=100, t_hidden_size=800, rho_size=300,
         embedding_size=300, activation='relu', dropout=0.5, lr=0.005,
         optimizer='adam', batch_size=128, clip=0.0, wdecay=1.2e-6, bow_norm=1,
-        device='cpu', train_embeddings=True, embeddings_path=None,
+        device='cuda', train_embeddings=True, embeddings_path=None,
             embeddings_type='pickle', binary_embeddings=True,
             headerless_embeddings=False, use_partitions=True):
         """
@@ -131,9 +131,12 @@ class ETM(BaseETM):
             self.train_tokens, self.train_counts = self.preprocess(
                 vocab2id, data_corpus, None)
 
-        self.device = torch.device(
-            "cuda" if torch.cuda.is_available() else "cpu")
-
+        if isinstance(self.device, str):
+            self.device = torch.device(self.device)
+        
+        if (self.device.type == 'cuda' and not torch.cuda.is_available()) or (self.device.type == 'mps' and not torch.backends.mps.is_available()):
+            self.device = torch.device('cpu')
+        
         self.set_default_hyperparameters(hyperparameters)
         self.load_embeddings()
         # define model and optimizer
