@@ -98,14 +98,14 @@ class AVITM(AbstractModel):
             solver=self.hyperparameters['solver'], num_epochs=self.hyperparameters['num_epochs'],
             reduce_on_plateau=self.hyperparameters['reduce_on_plateau'], num_samples=self.hyperparameters[
                 'num_samples'], topic_prior_mean=self.hyperparameters["prior_mean"],
-            topic_prior_variance=self.hyperparameters["prior_variance"]
+            topic_prior_variance=self.hyperparameters["prior_variance"], verbose=self.hyperparameters["verbose"], top_words=top_words,
         )
 
         if self.use_partitions:
-            self.model.fit(x_train, x_valid)
+            self.model.fit(x_train, x_valid, save_dir=self.hyperparameters["save_dir"])
             result = self.inference(x_test)
         else:
-            self.model.fit(x_train, None)
+            self.model.fit(x_train, None, save_dir=self.hyperparameters["save_dir"])
             result = self.model.get_info()
         return result
 

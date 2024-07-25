@@ -273,7 +273,7 @@ class CTM(object):
 
         train_loader = DataLoader(
             self.train_data, batch_size=self.batch_size, shuffle=True,
-            num_workers=self.num_data_loader_workers)
+            num_workers=self.num_data_loader_workers, drop_last=True)
 
         # init training variables
         train_loss = 0
@@ -301,7 +301,7 @@ class CTM(object):
             if self.validation_data is not None:
                 validation_loader = DataLoader(
                     self.validation_data, batch_size=self.batch_size,
-                    shuffle=True, num_workers=self.num_data_loader_workers)
+                    shuffle=True, num_workers=self.num_data_loader_workers, drop_last=True)
                 # train epoch
                 s = datetime.datetime.now()
                 val_samples_processed, val_loss = self._validation(
