@@ -59,7 +59,7 @@ class WordEmbeddingsRBOCentroid(WordEmbeddingsInvertedRBOCentroid):
 
 
 class WordEmbeddingsPairwiseSimilarity(AbstractMetric):
-    def __init__(self, word2vec_path=None, topk=10, binary=False):
+    def __init__(self, word2vec_path=None, topk=10, binary=False, saved_kv=False):
         """
         Initialize metric WE pairwise similarity
 
@@ -68,10 +68,13 @@ class WordEmbeddingsPairwiseSimilarity(AbstractMetric):
         :param topk: top k words on which the topic diversity will be computed
         :param word2vec_path: word embedding space in gensim word2vec format
         :param binary: If True, indicates whether the data is in binary word2vec format.
+        :param saved_kv: True if the word2vec file is saved in gensim's format (using KeyedVectors.save())
         """
         super().__init__()
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
+        elif saved_kv:
+            self.wv = KeyedVectors.load(word2vec_path)
         else:
             self.wv = KeyedVectors.load_word2vec_format( word2vec_path, binary=binary)
 
@@ -104,7 +107,7 @@ class WordEmbeddingsPairwiseSimilarity(AbstractMetric):
 
 
 class WordEmbeddingsCentroidSimilarity(AbstractMetric):
-    def __init__(self, word2vec_path=None, topk=10, binary=False):
+    def __init__(self, word2vec_path=None, topk=10, binary=False, saved_kv=False):
         """
         Initialize metric WE centroid similarity
 
@@ -113,11 +116,13 @@ class WordEmbeddingsCentroidSimilarity(AbstractMetric):
         :param topk: top k words on which the topic diversity will be computed
         :param word2vec_path: word embedding space in gensim word2vec format
         :param binary: If True, indicates whether the data is in binary word2vec format.
-
+        :param saved_kv: True if the word2vec file is saved in gensim's format (using KeyedVectors.save())
         """
         super().__init__()
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
+        elif saved_kv:
+            self.wv = KeyedVectors.load(word2vec_path)
         else:
             self.wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=binary)
         self.topk = topk
@@ -161,7 +166,7 @@ def get_word2index(list1, list2):
 
 
 class WordEmbeddingsWeightedSumSimilarity(AbstractMetric):
-    def __init__(self, id2word, word2vec_path=None, topk=10, binary=False):
+    def __init__(self, id2word, word2vec_path=None, topk=10, binary=False, saved_kv=False):
         """
         Initialize metric WE Weighted Sum similarity
 
@@ -169,11 +174,13 @@ class WordEmbeddingsWeightedSumSimilarity(AbstractMetric):
         :param topk: top k words on which the topic diversity will be computed
         :param word2vec_path: word embedding space in gensim word2vec format
         :param binary: If True, indicates whether the data is in binary word2vec format.
-
+        :param saved_kv: True if the word2vec file is saved in gensim's format (using KeyedVectors.save())
         """
         super().__init__()
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
+        elif saved_kv:
+            self.wv = KeyedVectors.load(word2vec_path)
         else:
             self.wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=binary)
         self.topk = topk
