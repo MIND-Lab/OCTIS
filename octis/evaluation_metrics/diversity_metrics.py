@@ -91,7 +91,7 @@ class InvertedRBO(AbstractMetric):
 
 class WordEmbeddingsInvertedRBO(AbstractMetric):
 
-    def __init__(self, topk=10, weight=0.9, normalize=True, word2vec_path=None, binary=True):
+    def __init__(self, topk=10, weight=0.9, normalize=True, word2vec_path=None, binary=True, saved_kv=False):
         """
         Initialize metric WE-IRBO-Match
 
@@ -102,6 +102,7 @@ class WordEmbeddingsInvertedRBO(AbstractMetric):
         :param weight: Weight of each agreement at depth d. When set to 1.0, there is no weight, the rbo returns to
         average overlap. (Default 0.9)
         :param normalize: if true, normalize the cosine similarity
+        :param saved_kv: True if the word2vec file is saved in gensim's format (using KeyedVectors.save())
         """
         super().__init__()
         self.topk = topk
@@ -111,6 +112,8 @@ class WordEmbeddingsInvertedRBO(AbstractMetric):
         self.word2vec_path = word2vec_path
         if word2vec_path is None:
             self._wv = api.load('word2vec-google-news-300')
+        elif saved_kv:
+            self._wv = KeyedVectors.load(word2vec_path)
         else:
             self._wv = KeyedVectors.load_word2vec_format(word2vec_path, binary=self.binary)
 
@@ -145,7 +148,7 @@ def get_word2index(list1, list2):
 
 
 class WordEmbeddingsInvertedRBOCentroid(AbstractMetric):
-    def __init__(self, topk=10, weight=0.9, normalize=True, word2vec_path=None, binary=True):
+    def __init__(self, topk=10, weight=0.9, normalize=True, word2vec_path=None, binary=True, saved_kv=False):
         super().__init__()
         self.topk = topk
         self.weight = weight
@@ -154,6 +157,8 @@ class WordEmbeddingsInvertedRBOCentroid(AbstractMetric):
         self.word2vec_path = word2vec_path
         if word2vec_path is None:
             self.wv = api.load('word2vec-google-news-300')
+        elif saved_kv:
+            self.wv = KeyedVectors.load(word2vec_path)
         else:
             self.wv = KeyedVectors.load_word2vec_format( word2vec_path, binary=self.binary)
 
