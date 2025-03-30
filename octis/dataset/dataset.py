@@ -119,7 +119,7 @@ class Dataset:
         else:
             raise Exception("error in saving metadata")
 
-    def _load_metadata(self, file_name):
+    def _load_metadata(self, file_name, encoding='utf-8'):
         """
         Loads metadata from json serialized format
         Parameters
@@ -128,7 +128,7 @@ class Dataset:
         """
         file = Path(file_name)
         if file.is_file():
-            with open(file_name, 'r') as metadata_file:
+            with open(file_name, 'r', encoding=encoding) as metadata_file:
                 metadata = json.load(metadata_file)
             self.__metadata = metadata
 
@@ -234,7 +234,7 @@ class Dataset:
                 for i in self.__original_indexes:
                     outfile.write(str(i) + "\n")
 
-    def _load_vocabulary(self, file_name):
+    def _load_vocabulary(self, file_name, encoding='utf-8'):
         """
         Loads vocabulary from a file
         Parameters
@@ -244,7 +244,7 @@ class Dataset:
         vocabulary = []
         file = Path(file_name)
         if file.is_file():
-            with open(file_name, 'r') as vocabulary_file:
+            with open(file_name, 'r', encoding=encoding) as vocabulary_file:
                 for line in vocabulary_file:
                     vocabulary.append(line.strip())
             self.__vocabulary = vocabulary
@@ -311,7 +311,7 @@ class Dataset:
         except:
             raise Exception("error in saving the dataset")
 
-    def load_custom_dataset_from_folder(self, path, multilabel=False):
+    def load_custom_dataset_from_folder(self, path, multilabel=False, encoding='utf-8'):
         """
         Loads all the dataset from a folder
         Parameters
@@ -321,11 +321,11 @@ class Dataset:
         self.dataset_path = path
         try:
             if exists(self.dataset_path + "/metadata.json"):
-                self._load_metadata(self.dataset_path + "/metadata.json")
+                self._load_metadata(self.dataset_path + "/metadata.json", encoding=encoding)
             else:
                 self.__metadata = dict()
             df = pd.read_csv(
-                self.dataset_path + "/corpus.tsv", sep='\t', header=None)
+                self.dataset_path + "/corpus.tsv", sep='\t', header=None, encoding=encoding)
             if len(df.keys()) > 1:
                 # just make sure docs are sorted in the right way (train - val - test)
                 final_df = pd.concat(
@@ -351,7 +351,7 @@ class Dataset:
                 self.__metadata['last-training-doc'] = len(df[0])
 
             if exists(self.dataset_path + "/vocabulary.txt"):
-                self._load_vocabulary(self.dataset_path + "/vocabulary.txt")
+                self._load_vocabulary(self.dataset_path + "/vocabulary.txt", encoding=encoding)
             else:
                 vocab = set()
                 for d in self.__corpus:
