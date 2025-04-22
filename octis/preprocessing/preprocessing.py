@@ -1,6 +1,6 @@
+import re
 import string
 from typing import List, Union
-
 import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -9,7 +9,6 @@ from tqdm import tqdm
 from pathlib import Path
 from octis.dataset.dataset import Dataset
 from collections import Counter
-
 """
 Maps the language to its corresponding spacy model
 """
@@ -160,7 +159,7 @@ class Preprocessing:
             # with Pool(self.num_processes) as p:
             #    docs = p.map(self.simple_preprocessing_steps, docs)
             chunksize = max(1, len(docs) // (self.num_processes * 20))
-            docs_list = process_map(self.simple_preprocessing_steps, docs, max_workers=self.num_processes, chunksize=chunksize)
+            docs = process_map(self.simple_preprocessing_steps, docs, max_workers=self.num_processes, chunksize=chunksize)
         else:
             docs = list(map(self.simple_preprocessing_steps, tqdm(docs)))
         if self.lowercase:
@@ -174,6 +173,12 @@ class Preprocessing:
         print("created vocab")
         print(len(vocabulary))
         final_docs, final_labels, document_indexes = [], [], []
+
+        def valid_word_or_punc(word):
+            valid_word = len([rw for rw in re.findall(r"(?u)\b[\w|\-]{" + str(self.min_chars) + r",}\b", word) if rw in vocab]) > 0
+            all_punc = len(word) == len(re.findall(r'[^\w]',word))
+            return valid_word or all_punc
+
         if labels_path is not None:
             if multilabel:
                 labels = [
@@ -186,7 +191,8 @@ class Preprocessing:
 
             vocab = set(vocabulary)
             for i, doc, label in zip(range(len(docs)), docs, labels):
-                new_doc = [w for w in doc.split() if w in vocab]
+                new_doc = [w for w in doc.split() if valid_word_or_punc(w)]
+
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
                     final_labels.append(label)
@@ -206,7 +212,7 @@ class Preprocessing:
         else:
             vocab = set(vocabulary)
             for i, doc in enumerate(docs):
-                new_doc = [w for w in doc.split() if w in vocab]
+                new_doc = [w for w in doc.split() if valid_word_or_punc(w)]
                 if len(new_doc) > self.min_doc_words:
                     final_docs.append(new_doc)
                     document_indexes.append(i)
