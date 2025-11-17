@@ -25,7 +25,18 @@ model_descriptions = {'LDA': {'name': 'Latent Dirichlet Allocation (LDA)',
                       'NMF': {'name': 'Non-negative Matrix Factorization',
                               'citation': 'Daniel D. Lee & H. Sebastian Seung (2001). Algorithms for Non-negative Matrix '
                                           'Factorization. Advances in Neural Information Processing Systems 13: '
-                                          'Proceedings of the 2000 Conference. MIT Press. pp. 556–562.'}}
+                                          'Proceedings of the 2000 Conference. MIT Press. pp. 556–562.'},
+                      'RSM' : {'name': 'Replicated Softmax Model', 
+                               'citation':  'Ruslan R. Salakhutdinov, Geoffrey E. Hinton.' 
+                                            'Replicated Softmax: An Undirected Topic Model.' 
+                                            'Advances in neural information processing systems, 22 (2009).'},   
+
+                      'oRSM' : {'name': 'Over Replicated Softmax Model',      
+                                'citation': 'Srivastava, N., Salakhutdinov, R. R., & Hinton, G. E. (2013).' 
+                                            'Modeling documents with deep boltzmann machines.' 
+                                            'arXiv preprint arXiv:1309.6865.'   
+                                          }
+                        }
 
 model_hyperparameters = {
     'LDA': {
@@ -450,4 +461,112 @@ initialization (better for sparseness)
 alpha (double, optional) – Constant that multiplies the regularization terms. Set it to zero to have no regularization. \n
 
 l1_ratio (double, optional) – The regularization mixing parameter, with 0 <= l1_ratio <= 1. For l1_ratio = 0 the penalty is an elementwise L2 penalty (aka Frobenius Norm). For l1_ratio = 1 it is an elementwise L1 penalty. For 0 < l1_ratio < 1, the penalty is a combination of L1 and L2.
+"""
+
+
+
+RSM_hyperparameters_info = """
+num_topics (int, default=50) – Number of latent topics (hidden units) in the Replicated Softmax Model.
+
+epochs (int, default=5) – Number of training epochs (full passes over the dataset).
+
+btsz (int, default=100) – Mini-batch size used during training.
+
+lr (float, default=0.01) – Learning rate for parameter updates.
+
+momentum (float, default=0.1) – Momentum coefficient (used when train_optimizer='momentum').
+
+K (int, default=1) – Number of Gibbs sampling steps for k-step Contrastive Divergence (K-CD).
+
+softstart (float, default=0.001) – Scale for random initialization of weights (weights ~ N(0,1)*softstart).
+
+decay (float, default=0) – Regularization coefficient. If >0, interaction penalty is applied (L1 or L2).
+
+penalty_L1 (bool, default=False) – If True use L1 regularization; otherwise L2 is used.
+
+penalty_local (bool, default=False) – If True apply penalty locally per-weight; otherwise apply a global penalty.
+
+epochs_per_monitor (int, default=1) – Frequency (in epochs) to record monitoring metrics when monitor=True.
+
+monitor (bool, default=False) – If True compute and store log-likelihood / perplexity during training.
+
+persistent_cd (bool, default=False) – If True use persistent contrastive divergence (PCD) chains.
+
+mean_field_cd (bool, default=True) – If True use mean-field contrastive divergence (mfcd) updates.
+
+increase_cd (bool, default=False) – If True use gradual k-step CD (k increases across epochs).
+
+increase_speed (float, default=0) – Controls speed of gradual increase of k when increase_cd is True.
+
+cd_type (str, default='mfcd') – Type of contrastive-divergence algorithm. Common values: 'mfcd' (mean-field CD), 'kcd' (k-step CD), 'pcd' or 'persistent' (persistent CD), 'gradkcd' (gradual kcd).
+
+train_optimizer (str, default='sgd') – Optimizer used for parameter updates. Options include: 'sgd', 'momentum', 'adagrad', 'rmsprop', 'adam', 'full' (full-batch), 'minibatch'.
+
+logdtm (bool, default=False) – If True apply log(1+count) transform to the document-term matrix before training.
+
+val_dtm (array or None, default=None) – Validation document-term matrix (used when training with partitions).
+
+random_state (int or None, default=None) – Seed for numpy RNG for reproducible runs.
+
+rms_decay (float, default=0.9) – RMSProp moving-average decay (used if train_optimizer='rmsprop').
+
+adam_decay1 (float, default=0.9) – Adam first-moment decay (beta1).
+
+adam_decay2 (float, default=0.999) – Adam second-moment decay (beta2).
+"""
+
+
+
+oRSM_hyperparameters_info = """
+num_topics (int, default=50) – Number of latent topics (hidden units) in the Over Replicated Softmax Model.
+
+epochs (int, default=5) – Number of training epochs (full passes over the dataset).
+
+pretrain_epochs (int, default=1) – Number of initial epochs that run the pretraining (mean-field) phase.
+
+btsz (int, default=100) – Mini-batch size used during training.
+
+M (int, default=30) – Number of hidden multinomial units in the additional replicated softmax layer (over-replication factor).
+
+lr (float, default=0.01) – Learning rate for parameter updates.
+
+momentum (float, default=0.1) – Momentum coefficient (used when train_optimizer='momentum').
+
+softstart (float, default=0.001) – Scale for random initialization of weights (weights ~ N(0,1)*softstart).
+
+decay (float, default=0) – Regularization coefficient. If >0, interaction penalty is applied (L1 or L2).
+
+penalty_L1 (bool, default=False) – If True use L1 regularization; otherwise L2 is used.
+
+penalty_local (bool, default=False) – If True apply penalty locally per-weight; otherwise apply a global penalty.
+
+cd_type (str, default='mfcd') – Type of contrastive-divergence algorithm (common values: 'mfcd' mean-field CD, 'kcd' k-step CD, 'pcd' persistent CD).
+
+train_optimizer (str, default='sgd') – Optimizer used for parameter updates. Options include: 'sgd', 'momentum', 'adagrad', 'rmsprop', 'adam'.
+
+rms_decay (float, default=0.9) – RMSProp moving-average decay (used if train_optimizer='rmsprop').
+
+adam_decay1 (float, default=0.9) – Adam first-moment decay (beta1).
+
+adam_decay2 (float, default=0.999) – Adam second-moment decay (beta2).
+
+logdtm (bool, default=False) – If True apply log(1+count) transform to the document-term matrix before training.
+
+val_dtm (array or None, default=None) – Validation document-term matrix (used when training with partitions).
+
+epochs_per_monitor (int, default=1) – Frequency (in epochs) to record monitoring metrics when monitor=True.
+
+monitor (bool, default=False) – If True compute and store monitoring metrics (e.g., perplexity) during training.
+
+random_state (int or None, default=None) – Seed for numpy RNG for reproducible runs.
+
+use_partitions (bool, default=True) – Whether the dataset partitions (train/test) are used (class attribute).
+
+softstart (float, default=0.001) – Initial scale for weight initialization.
+
+epsilon (float, default=0.01) – Convergence threshold used by mean-field updates (internal training parameter).
+
+Notes:
+- The model accepts a document-term matrix (dtm) as training input; many hyperparameters (e.g., M, btsz, lr, optimizer) influence training dynamics and convergence.
+- Pretraining uses a simplified k-CD step (pretrain_epochs) before full training.
 """

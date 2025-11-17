@@ -166,6 +166,30 @@ models_NMF = r"""
 }
             """
 
+
+models_RSM = r"""
+@article{hinton2009replicated,
+  title={Replicated softmax: an undirected topic model},
+  author={Hinton, Geoffrey E and Salakhutdinov, Russ R},
+  journal={Advances in neural information processing systems},
+  volume={22},
+  year={2009}
+}
+              """
+
+
+models_oRSM = r"""
+@article{srivastava2013modeling,
+  title={Modeling documents with deep boltzmann machines},
+  author={Srivastava, Nitish and Salakhutdinov, Ruslan R and Hinton, Geoffrey E},
+  journal={arXiv preprint arXiv:1309.6865},
+  year={2013}
+}
+               """
+
+
+
+
 sources_dblp_M10 = r"""@inproceedings{DBLP:conf/ijcai/PanWZZW16,
   author    = {Shirui Pan and
                Jia Wu and
