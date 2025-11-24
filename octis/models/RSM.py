@@ -17,47 +17,50 @@ class RSM(AbstractModel):
     update_with_test = False
 
     def __init__(
-            self, num_topics=50, epochs=5, btsz=100, 
+            self, num_topics=50, epochs=5, btsz=100,
             lr=0.01, momentum=0.1, K=1, softstart=0.001,
             decay=0, penalty_L1=False, penalty_local=False,
-            epochs_per_monitor=1, 
+            epochs_per_monitor=1,
             monitor_ppl=False, monitor_time=False,
+            increase_speed=0,
+            cd_type='mfcd', train_optimizer='sgd',
+            logdtm=False, random_state=None):
 
-            #persistent_cd = False, mean_field_cd = True, increase_cd = False, 
-            increase_speed = 0,
-            cd_type='mfcd',
-            train_optimizer='sgd', 
-            logdtm=False,
-            random_state=None):
-
-        '''  
+        '''
         Parameters
         ----------
         num_topics : number of topics
         epochs : number of training epochs
         btsz : batch size
         lr : learning rate
-        momentum : momentum of momentum optimizer (applied only if train_optimizer='momentum')
-        rms_decay : decay rate for RMSProp optimizer (applied only if train_optimizer='rmsprop')
-        adam_decay1 : first decay rate for Adam optimizer (applied only if train_optimizer='adam')
-        adam_decay2 : second decay rate for Adam optimizer (applied only if train_optimizer='adam')
+        momentum : momentum of momentum optimizer
+        (applied only if train_optimizer='momentum')
+        rms_decay : decay rate for RMSProp optimizer
+        (applied only if train_optimizer='rmsprop')
+        adam_decay1 : first decay rate for Adam optimizer
+        (applied only if train_optimizer='adam')
+        adam_decay2 : second decay rate for Adam optimizer
+        (applied only if train_optimizer='adam')
         K : number of Gibbs sampling steps when using KCD
         decay : penalization coefficient, default 0 (no penalization)
         penalty_L1 : if True uses L1 penalization, else L2 penalization
-        penalty_local : if True uses local penalization, else global penalization
-        softstart : initialization scale for weights (randomly drawn from N(0,1)*softstart)
-        logdtm : if True each cell of the dtm is transformed as log(1+cell), 
+        penalty_local : if True uses local penalization,
+        else global penalization
+        softstart : initialization scale for weights
+        (randomly drawn from N(0,1)*softstart)
+        logdtm : if True each cell of the dtm is transformed as log(1+cell),
         otherwise the raw counts are used
         monitor : if True prints training information during training
 
-        cd_type : type of contrastive divergence to use, 'kcd', 'pcd', 'mfcd' (default) or 'gradkcd'
+        cd_type : type of contrastive divergence to use,
+          'kcd', 'pcd', 'mfcd' (default) or 'gradkcd' :
                     'kcd' stands for k-step contrastive divergence
                     'pcd' stands for persistent contrastive divergence
                     'mfcd' stands for mean-field contrastive divergence
-                    'gradkcd' stands for gradual k-step contrastive divergence, 
+                    'gradkcd' stands for gradual k-step contrastive divergence,
                     where k increases over epochs by a factor increase_speed
         train_optimizer : training optimizer to use :
-                    'full' for full batch training, 
+                    'full' for full batch training,
                     'sgd' for simple stochastic gradient descent,
                     'minibatch' for mini-batch training,
                     'momentum' for mini-batch with momentum,
@@ -65,9 +68,6 @@ class RSM(AbstractModel):
                     'adam' for Adam optimizer,
                     'adagrad' for Adagrad optimizer
         '''
-
-
-
         super().__init__()
         self.hyperparameters = dict()
         self.hyperparameters["num_topics"] = num_topics
@@ -77,10 +77,7 @@ class RSM(AbstractModel):
         self.hyperparameters["K"] = K
         self.hyperparameters["softstart"] = softstart
         self.hyperparameters["epochs"] = epochs
-        #self.hyperparameters["increase_cd"] = increase_cd
         self.hyperparameters["increase_speed"] = increase_speed
-        #self.hyperparameters["mean_field_cd"] = mean_field_cd
-        #self.hyperparameters["persistent_cd"] = persistent_cd
         self.hyperparameters["monitor_time"] = monitor_time
         self.hyperparameters["monitor_ppl"] = monitor_ppl
         self.hyperparameters["epochs_per_monitor"] = epochs_per_monitor
@@ -96,7 +93,6 @@ class RSM(AbstractModel):
         self.hyperparameters['adam_decay1'] = 0.9
         self.hyperparameters['adam_decay2'] = 0.999
 
-
     def info(self):
         """
         Returns model informations
@@ -106,15 +102,11 @@ class RSM(AbstractModel):
             "name": "RSM, Replicated Softmax Model",
         }
 
-
     def hyperparameters_info(self):
         """
         Returns hyperparameters informations
         """
         return defaults.RSM_hyperparameters_info
-
-
-
 
     def train_model(self, dataset, hyperparams=None, top_words=10):
         """
@@ -137,7 +129,8 @@ class RSM(AbstractModel):
             hyperparams = {}
 
         if self.use_partitions:
-            train_corpus, test_corpus = dataset.get_partitioned_corpus(use_validation = False)
+            train_corpus, test_corpus = dataset.get_partitioned_corpus(
+                use_validation = False)
         else:
             train_corpus = dataset.get_corpus()
 
