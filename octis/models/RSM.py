@@ -22,7 +22,7 @@ class RSM(AbstractModel):
             decay=0, penalty_L1=False, penalty_local=False,
             epochs_per_monitor=1,
             monitor_ppl=False, monitor_time=False,
-            increase_speed=0,
+            increase_speed=0, rms_decay=0.9, adam_decay1=0.9, adam_decay2=0.999,
             cd_type='mfcd', train_optimizer='sgd',
             logdtm=False, random_state=None):
 
@@ -89,9 +89,9 @@ class RSM(AbstractModel):
         self.hyperparameters["logdtm"] = logdtm
         self.hyperparameters["val_dtm"] = None
         self.hyperparameters["train_optimizer"] = train_optimizer
-        self.hyperparameters['rms_decay'] = 0.9
-        self.hyperparameters['adam_decay1'] = 0.9
-        self.hyperparameters['adam_decay2'] = 0.999
+        self.hyperparameters['rms_decay'] = rms_decay
+        self.hyperparameters['adam_decay1'] = adam_decay1
+        self.hyperparameters['adam_decay2'] = adam_decay2
 
     def info(self):
         """
@@ -139,15 +139,15 @@ class RSM(AbstractModel):
 
         if self.use_partitions:
             print("Building train DTM...")
-            train_dtm = self.build_dtm(train_corpus, self.id2word)
+            self.train_dtm = self.build_dtm(train_corpus, self.id2word)
             print("Building test DTM...")
-            test_dtm = self.build_dtm(test_corpus, self.id2word)
-            hyperparams["dtm"] = train_dtm
-            hyperparams["val_dtm"] = test_dtm
+            self.test_dtm = self.build_dtm(test_corpus, self.id2word)
+            hyperparams["dtm"] = self.train_dtm
+            hyperparams["val_dtm"] = self.test_dtm
         else:
             print("Building DTM...")
-            train_dtm = self.build_dtm(train_corpus, self.id2word)
-            hyperparams["dtm"] = train_dtm
+            self.train_dtm = self.build_dtm(train_corpus, self.id2word)
+            hyperparams["dtm"] = self.train_dtm
             hyperparams["val_dtm"] = None
 
         if "num_topics" not in hyperparams:
@@ -156,31 +156,44 @@ class RSM(AbstractModel):
         self.hyperparameters.update(hyperparams)
 
         self.trained_model = self.RSM_model()
+        self.trained_model.id2word = self.id2word
         self.trained_model.train(**self.hyperparameters)
 
+        return self.get_model_output(top_words)
+
+        # result = {}
+
+        # result["topic-word-matrix"] = self.trained_model._get_topic_word_matrix()
+
+        # if top_words > 0:
+        #     result['topics'] = self.trained_model._get_topics(top_words)
+
+        # result["topic-document-matrix"] = self.trained_model._get_topic_doc(self.train_dtm)
+
+        # if self.use_partitions:
+        #     result["test-topic-document-matrix"] = self.trained_model._get_topic_doc(self.test_dtm)
+        # else:
+        #     result["test-topic-document-matrix"] = result["topic-document-matrix"]
+
+        # return result
+
+
+    def get_model_output(self, top_words=10):
         result = {}
 
         result["topic-word-matrix"] = self.trained_model._get_topic_word_matrix()
 
         if top_words > 0:
-            topics_output = []
-            for topic in result["topic-word-matrix"]:
-                top_k = np.argsort(topic)[-top_words:]
-                top_k_words = list(reversed([self.id2word[i] for i in top_k]))
-                topics_output.append(top_k_words)
-            result["topics"] = topics_output
+            result['topics'] = self.trained_model._get_topics(top_words)
 
-        #result["topics"] = self.trained_model.topic_words(topk=top_words, id2word=self.id2word)
-
-        result["topic-document-matrix"] = self.trained_model.visible2hidden(train_dtm).T
+        result["topic-document-matrix"] = self.trained_model._get_topic_doc(self.train_dtm)
 
         if self.use_partitions:
-            result["test-topic-document-matrix"] = self.trained_model.visible2hidden(test_dtm).T
+            result["test-topic-document-matrix"] = self.trained_model._get_topic_doc(self.test_dtm)
         else:
             result["test-topic-document-matrix"] = result["topic-document-matrix"]
 
-        return result
-
+        return result        
 
 
 ############### preprocessing functions
@@ -323,6 +336,7 @@ class RSM(AbstractModel):
 
 
 
+
         def _get_topic_word_matrix(self):
             """
             Return the topic representation of the words
@@ -348,6 +362,29 @@ class RSM(AbstractModel):
                 topic_word_matrix[t,:] = self.softmax_vec(w_vh.T[t,:] - w_v)
             return topic_word_matrix
 
+
+        def _get_topic_doc(self, dtm):
+            return self.visible2hidden(dtm).T
+
+
+        def _get_topics(self, topk):
+            w_vh, w_v, w_h = self.W
+            T = self.hidden
+            words = np.array([k for k in self.id2word.token2id.keys()])
+
+            toplist = []
+            for t in range(T):
+                topw = w_vh[: , t]
+                bestwords = words[np.argsort(topw)[::-1]][0:topk]
+                toplist.append(bestwords)
+
+            return toplist
+
+            # topics_output = []
+            # for topic in result["topic-word-matrix"]:
+            #     top_k = np.argsort(topic)[-top_words:]
+            #     top_k_words = list(reversed([self.id2word[i] for i in top_k]))
+            #     topics_output.append(top_k_words)
 
 
     ##################################### leapfrog trainsition operators
@@ -609,13 +646,9 @@ class RSM(AbstractModel):
                 lr=0.01, momentum=0.5, K=1, decay=0, penalty_L1=False, penalty_local=False,
                 epochs_per_monitor=1, monitor_time = False, monitor_ppl = False,
                 train_optimizer='sgd', cd_type='mfcd', logdtm=False,
-
-                #   persistent_cd = False, mean_field_cd = False, increase_cd = False,
                 rms_decay=0.9, adam_decay1=0.9, adam_decay2=0.999,
-
-                increase_speed = 0, 
-                
-                softstart=0.001, initw=None, val_dtm=None, random_state=None):
+                increase_speed = 0, softstart=0.001, 
+                initw=None, val_dtm=None, random_state=None):
 
             self.train_dtm = dtm
             hidden = num_topics
