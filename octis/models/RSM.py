@@ -195,7 +195,7 @@ class RSM(AbstractModel):
         """
         converts a tokenized corpus to a DOcument Term Matrix. id2word is a gensim dictionary.
         """
-        if (id2word == None):
+        if (id2word is None):
             id2word = corpora.Dictionary(tokenized_corpus)
         else:
             id2word = id2word
@@ -309,7 +309,7 @@ class RSM(AbstractModel):
         def topic_words(self, topk, id2word=None):
             w_vh, w_v, w_h = self.W
             T = self.hidden
-            if id2word==None:
+            if id2word is None:
                 id2word = self.id2word
             words = np.array([k for k in id2word.token2id.keys()])
 
@@ -476,7 +476,6 @@ class RSM(AbstractModel):
         def gradient_adagrad(self, v1, v2, h1, h2):
             w_vh, w_v, w_h = self.W
             vel_vh, vel_v, vel_h = self.train_cache
-            m = self.momentum
             lr = self.lr
 
             vel_vh = np.dot(v1.T, h1) - np.dot(v2.T, h2)
@@ -498,7 +497,6 @@ class RSM(AbstractModel):
         def gradient_rmsprop(self, v1, v2, h1, h2):
             w_vh, w_v, w_h,  = self.W
             vel_vh, vel_v, vel_h, rms_m2_vh, rms_m2_v, rms_m2_h = self.train_cache
-            m = self.momentum
             rms_decay = self.rms_decay
             lr = self.lr
 
@@ -589,7 +587,6 @@ class RSM(AbstractModel):
             self.gradient_step(v0,v1,h0,h1)
 
         def pcd_step(self, v0, pv0):
-            D = v0.sum(axis=1)
             h0 = self.visible2hidden(v0)
             pv1 = self.gibbs_transition(pv0)
             ph1 = self.visible2hidden(pv1)

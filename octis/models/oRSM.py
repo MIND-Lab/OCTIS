@@ -151,7 +151,7 @@ class oRSM(AbstractModel):
         """
         converts a tokenized corpus to a DOcument Term Matrix. id2word is a gensim dictionary.
         """
-        if (id2word == None):
+        if (id2word is None):
             id2word = corpora.Dictionary(tokenized_corpus)
         else:
             id2word = id2word
@@ -388,7 +388,6 @@ class oRSM(AbstractModel):
         def gradient_adagrad(self, v1, v2, h11, h12 , h21, h22):
             w_vh, w_v, w_h = self.W
             vel_vh, vel_v, vel_h = self.train_cache
-            m = self.momentum
             lr = self.lr
 
             vel_vh = np.dot((v1 + h21).T, h11) - np.dot((v2+h22).T, h12)
@@ -410,7 +409,6 @@ class oRSM(AbstractModel):
         def gradient_rmsprop(self, v1, v2, h11, h12 , h21, h22):
             w_vh, w_v, w_h,  = self.W
             vel_vh, vel_v, vel_h, rms_m2_vh, rms_m2_v, rms_m2_h = self.train_cache
-            m = self.momentum
             rms_decay = self.rms_decay
             lr = self.lr
 
@@ -495,7 +493,6 @@ class oRSM(AbstractModel):
 
 
         def pcd_step(self, v0, pv0):
-            D = v0.sum(axis=1)
             h1, h2 = self.visible_to_hiddens_gibbs(v0)
             pv1 = self.gibbs_transition(pv0)
             ph1, ph2 = self.visible_to_hiddens_gibbs(pv1)
@@ -777,7 +774,7 @@ class oRSM(AbstractModel):
         def topic_words(self, topk, id2word=None):
             w_vh, w_v, w_h = self.W
             T = self.hidden
-            if id2word==None:
+            if id2word is None:
                 id2word = self.id2word
             words = np.array([k for k in id2word.token2id.keys()])
 
