@@ -600,38 +600,42 @@ class RSM(AbstractModel):
 
     ########################################## contrastive divergence steps
 
-        def kcd_step(self, v, K, mean_h = True):
-            v0 = v
+        def kcd_step(self, ids):
+            v0 = self.dtm[ids,:]         
             h0 = self.visible2hidden(v0)
-
             v1 = v0
-            for k in range(K):
+            for k in range(self.tK):
                 v1 = self.gibbs_transition(v1)
             h1 = self.visible2hidden(v1)
 
-            if not mean_h:  #converting probabilities to binaries
+            if not self.mean_h:  #converting probabilities to binaries
                 h0 = self.unif_reject_sample(h0)
                 h1 = self.unif_reject_sample(h1)
 
             self.gradient_step(v0,v1,h0,h1)
 
 
-        def mfcd_step(self, v0):
+        def mfcd_step(self, ids):
+            v0 = self.dtm[ids,:] 
             D = v0.sum(axis=1)
             h0 = self.visible2hidden(v0)
             v1 = self.hidden2visible(h0) * D.reshape(-1, 1)
             h1 = self.visible2hidden(v1)
+
             self.gradient_step(v0,v1,h0,h1)
 
-        def pcd_step(self, v0, pv0):
+        def pcd_step(self, ids):
+            v0 = self.dtm[ids,:]
+            pv0 = self.persistent_v[ids,:]
             h0 = self.visible2hidden(v0)
             pv1 = self.gibbs_transition(pv0)
             ph1 = self.visible2hidden(pv1)
+            self.persistent_v[ids,:] = pv1
+
             self.gradient_step(v0,pv1,h0,ph1)
-            return pv1
 
 
-        def gradual_kcd(self, T, K, g=0):
+        def gradual_k(self, T, K, g=0):
             t = np.arange(1, T+1)
             k = 1 + np.floor((K-1)*((t/(T+1))**(1+g))).astype(int)
             return k
@@ -650,63 +654,40 @@ class RSM(AbstractModel):
                 increase_speed = 0, softstart=0.001, 
                 initw=None, val_dtm=None, random_state=None):
 
-            self.train_dtm = dtm
-            hidden = num_topics
-            self.momentum = momentum
-            self.lr = lr
-            self.hidden = hidden
-            self.visible = dtm.shape[1]
-            self.decay = decay
-            self.penalty = decay > 0
-            self.penL1 = penalty_L1
-            self.local_penalty = penalty_local
-
-            self.train_optimizer = train_optimizer
-            self.adam_decay1 = adam_decay1
-            self.adam_decay2 = adam_decay2
-            self.rms_decay = rms_decay
-
-
-            self.persist = (cd_type=='persistent') #persistent_cd
-            self.mean_field = (cd_type=='mfcd') #mean_field_cd
-            self.gradual = (cd_type=='gradcd') #increase_cd
-
-
-
-
-            self.K = K
-            doval = (val_dtm is not None)
-
+            ## init global variables
             if random_state is not None:
                 np.random.seed(random_state)
 
-            ##init
+            doval = (val_dtm is not None)
 
+            if logdtm:
+                self.dtm = np.log(1 + dtm)
+                if doval:
+                    self.val_dtm = np.log(1 + val_dtm)
+            else:
+                self.dtm = dtm
+                if doval:
+                    self.val_dtm = np.log(1 + val_dtm)      
+
+            self.hidden = num_topics
             N, dictsize = dtm.shape
-            batches = int(np.floor(N/btsz))
-            #self.bt_correct = (btsz**2)/N    #a bayesian would correct decay for batch size. I'm not a bayesian
+            self.visible = dictsize
+            
+            self.obs_ids = np.arange(N)
+            
 
             if initw is not None:
                 self.W = initw
 
             if self.W is None:
-                w_vh = softstart * np.random.randn(dictsize, hidden)
+                w_vh = softstart * np.random.randn(dictsize, num_topics)
                 w_v  = softstart * np.random.randn(dictsize)
-                w_h  = softstart * np.random.randn(hidden)
+                w_h  = softstart * np.random.randn(num_topics)
+                self.W = w_vh, w_v, w_h
             else:
                 print('train already available weights')
                 w_vh, w_v, w_h = self.W
-
-            vel_vh = np.zeros((dictsize, hidden))
-            vel_v = np.zeros((dictsize))
-            vel_h = np.zeros((hidden))
-
-            self.W = w_vh, w_v, w_h
-
-            if train_optimizer == 'momentum':
-                self.train_cache = vel_vh, vel_v, vel_h
-            
-            #if train_optimizer 
+                        
 
             if monitor_time:
                 self.train_time = np.empty(epochs)
@@ -720,103 +701,26 @@ class RSM(AbstractModel):
                     self.val_loglik = np.empty(len(monit_epochs))
                     self.val_ppl = np.empty(len(monit_epochs))
 
-            ## initialize k
-            if self.gradual:
-                Kvec = self.gradual_kcd(T=epochs, K=self.K, g=increase_speed)
-            else:
-                Kvec = np.ones(epochs)*self.K
-            Kvec = Kvec.astype(int)
 
-            # Initialize persistent chain - one chain for each document in the dataset
-            # Each persistent visible should have the same document length as corresponding data
-            if self.persist:
-                persistent_v = np.zeros((N, dictsize))  # Full dataset size
-                persistent_D = dtm.sum(axis=1)  # Document lengths from original data
-                
-                # Initialize each document with uniform multinomial of its actual length
-                for i in range(N):
-                    if persistent_D[i] > 0:  # Avoid empty documents
-                        persistent_v[i] = np.random.multinomial(persistent_D[i], np.ones(dictsize)/dictsize)
-        
-            obs_ids = np.arange(N)
+            ##init training hyperparams
 
-
-            if self.train_optimizer == 'sgd':
-                self.gradient_step = self.gradient_simple
-            else:
-                if self.train_optimizer == 'momentum':
-                    self.gradient_step = self.gradient_momentum
-                    self.train_cache = vel_vh, vel_v, vel_h
-                else:
-                    if self.train_optimizer == 'adagrad':
-                        self.gradient_step = self.gradient_adagrad
-                        self.train_cache = vel_vh, vel_v, vel_h
-                    else:
-                        if self.train_optimizer == 'rmsprop':
-                            self.gradient_step = self.gradient_rmsprop
-                            rms_m2_vh = np.zeros((dictsize, hidden))
-                            rms_m2_v = np.zeros((dictsize))
-                            rms_m2_h = np.zeros((hidden))
-                            self.rms_decay = 0.9
-                            self.train_cache = vel_vh, vel_v, vel_h, rms_m2_vh, rms_m2_v, rms_m2_h
-                        else:
-                            if self.train_optimizer == 'adam':
-                                self.gradient_step = self.gradient_adam
-                                adam_m1_vh = np.zeros((dictsize, hidden))
-                                adam_m1_v = np.zeros((dictsize))
-                                adam_m1_h = np.zeros((hidden))
-                                adam_m2_vh = np.zeros((dictsize, hidden))
-                                adam_m2_v = np.zeros((dictsize))
-                                adam_m2_h = np.zeros((hidden))
-                                t = 1
-                                self.adam_decay1 = 0.9
-                                self.adam_decay2 = 0.999
-                                self.train_cache = vel_vh, vel_v, vel_h, adam_m1_vh, adam_m1_v, adam_m1_h, adam_m2_vh, adam_m2_v, adam_m2_h, t
-                            else:
-                                self.gradient_step = self.gradient_simple
-
-
-            # if cd_type == 'mfcd':
-            #     self.cd_learning_step = self.mfcd_step  #input is v0
-            # else:
-            #     if cd_type == 'pcd':
-            #         self.cd_learning_step = self.pcd_step # input is v0, persistent_v, output is new persistent_v
-            #     else:
-            #           if cd_type == 'kcd':
-            #           self.cd_learning_step = self.kcd_step # input is v0, K
-            #     else:  #gradual kcd
-            #         self.cd_learning_step = self.kcd_step # input is v0, K
-
-
-            if logdtm:
-                dtm = np.log(1 + dtm)
-                if doval:
-                    val_dtm = np.log(1 + val_dtm)
-
+            self.set_train_hyper(epochs=epochs, btsz=btsz, 
+                lr=lr, momentum=momentum, K=K, decay=decay, penalty_L1=penalty_L1, penalty_local=penalty_local,
+                train_optimizer=train_optimizer, cd_type=cd_type,
+                rms_decay=rms_decay, adam_decay1=adam_decay1, adam_decay2=adam_decay2,
+                increase_speed = increase_speed)
+          
 
             ## MAIN TRAIN LOOP
             print("Training RS model...")
             for t in tqdm(range(epochs)):
                 if monitor_time:
                     current_time = time.time()
-                start_id = 0
-                np.random.shuffle(obs_ids) # apply sgd
-                dtm = dtm[obs_ids,:]
-                if self.persist:
-                    persistent_v = persistent_v[obs_ids,:]
-                for b in range(batches):
-                    v = dtm[start_id : start_id + btsz , :]
 
-                    if self.mean_field:
-                        self.mfcd_step(v)
-                    else:
-                        if self.persist:
-                            vp = persistent_v[start_id : start_id + btsz , :]
-                            persistent_v[start_id : start_id + btsz , :] = self.pcd_step(v, vp)
-                        else:
-                            self.kcd_step(v, Kvec[t])
+                if self.gradual:
+                    self.tK = self.Kvec[t]
 
-                    start_id += btsz
+                self.train_epoch()
 
                 if monitor_time:
                     elapsed_time = time.time() - current_time
@@ -837,6 +741,132 @@ class RSM(AbstractModel):
 
 
 
+        def train_epoch(self):
+                '''one epoch of training, with sgd and mini-batches'''
+                start_id = 0
+                np.random.shuffle(self.obs_ids) # apply sgd
+                dtm = self.dtm[self.obs_ids,:]
+                
+                if self.persist:
+                    self.persistent_v = self.persistent_v[self.obs_ids,:]
+
+                for b in range(self.batches):
+                    ids = np.arange(start_id, start_id + self.btsz)
+                    self.cd_learning_step(ids)
+                    start_id += self.btsz
+
+                    
+
+        def set_train_hyper(self, epochs=3, btsz=100, 
+                lr=0.01, momentum=0.5, K=1, decay=0, penalty_L1=False, penalty_local=False,
+                train_optimizer='sgd', cd_type='mfcd',
+                rms_decay=0.9, adam_decay1=0.9, adam_decay2=0.999,
+                increase_speed = 0):
+            
+            N, dictsize = self.dtm.shape
+            num_topics = self.hidden
+
+
+            self.momentum = momentum
+            self.lr = lr
+            self.decay = decay
+            self.penalty = decay > 0
+            self.penL1 = penalty_L1
+            self.local_penalty = penalty_local
+
+            self.train_optimizer = train_optimizer
+            self.adam_decay1 = adam_decay1
+            self.adam_decay2 = adam_decay2
+            self.rms_decay = rms_decay
+
+            self.persist = (cd_type=='persistent') #persistent_cd
+            self.mean_field = (cd_type=='mfcd') #mean_field_cd
+            self.gradual = (cd_type=='gradcd') #increase_cd
+
+            self.K = K
+
+            self.btsz = btsz            
+            self.batches = int(np.floor(N/btsz))
+            #self.bt_correct = (btsz**2)/N    #a bayesian would correct decay for batch size. I'm not a bayesian
+
+
+            ## initialize k
+            if self.gradual:
+                Kvec = self.gradual_k(T=epochs, K=self.K, g=increase_speed)
+            else:
+                Kvec = np.ones(epochs)*self.K
+            self.Kvec = Kvec.astype(int)
+
+            # Initialize persistent chain - one chain for each document in the dataset
+            # Each persistent visible should have the same document length as corresponding data
+            if self.persist:
+                persistent_v = np.zeros((N, dictsize))  # Full dataset size
+                persistent_D = self.dtm.sum(axis=1)  # Document lengths from original data
+                
+                # Initialize each document with uniform multinomial of its actual length
+                for i in range(N):
+                    if persistent_D[i] > 0:  # Avoid empty documents
+                        persistent_v[i] = np.random.multinomial(persistent_D[i], np.ones(dictsize)/dictsize)
+
+
+            # Initialize weights gradients
+            vel_vh = np.zeros((dictsize, num_topics))
+            vel_v = np.zeros((dictsize))
+            vel_h = np.zeros((num_topics))
+
+
+            if self.train_optimizer == 'sgd':
+                self.gradient_step = self.gradient_simple
+            else:
+                if self.train_optimizer == 'momentum':
+                    self.gradient_step = self.gradient_momentum
+                    self.train_cache = vel_vh, vel_v, vel_h
+                else:
+                    if self.train_optimizer == 'adagrad':
+                        self.gradient_step = self.gradient_adagrad
+                        self.train_cache = vel_vh, vel_v, vel_h
+                    else:
+                        if self.train_optimizer == 'rmsprop':
+                            self.gradient_step = self.gradient_rmsprop
+                            rms_m2_vh = np.zeros((dictsize, num_topics))
+                            rms_m2_v = np.zeros((dictsize))
+                            rms_m2_h = np.zeros((num_topics))
+                            self.rms_decay = 0.9
+                            self.train_cache = vel_vh, vel_v, vel_h, rms_m2_vh, rms_m2_v, rms_m2_h
+                        else:
+                            if self.train_optimizer == 'adam':
+                                self.gradient_step = self.gradient_adam
+                                adam_m1_vh = np.zeros((dictsize, num_topics))
+                                adam_m1_v = np.zeros((dictsize))
+                                adam_m1_h = np.zeros((num_topics))
+                                adam_m2_vh = np.zeros((dictsize, num_topics))
+                                adam_m2_v = np.zeros((dictsize))
+                                adam_m2_h = np.zeros((num_topics))
+                                t = 1
+                                self.adam_decay1 = 0.9
+                                self.adam_decay2 = 0.999
+                                self.train_cache = vel_vh, vel_v, vel_h, adam_m1_vh, adam_m1_v, adam_m1_h, adam_m2_vh, adam_m2_v, adam_m2_h, t
+                            else:
+                                self.gradient_step = self.gradient_simple
+
+
+            if cd_type == 'mfcd':
+                self.cd_learning_step = self.mfcd_step  #input is v0
+            else:
+                if cd_type == 'pcd':
+                    self.cd_learning_step = self.pcd_step # input is v0, persistent_v, output is new persistent_v
+                else:
+                    if cd_type == 'kcd':
+                        self.cd_learning_step = self.kcd_step # input is v0, K
+                    else:  #gradual kcd
+                        self.cd_learning_step = self.kcd_step # input is v0, change K each epoch
+
+
+
+
+
+
+
     ############ perplexity and probability
 
 
@@ -853,7 +883,6 @@ class RSM(AbstractModel):
 
 
         def ppl_upbo(self, testmatrix):
-
             """
             return the perplepxity upper bound 
             given a document term matrix
