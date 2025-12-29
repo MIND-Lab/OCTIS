@@ -5,6 +5,7 @@ import gensim.corpora as corpora
 import octis.configuration.citations as citations
 import octis.configuration.defaults as defaults
 import time
+import warnings
 
 
 ################## RSM octis class
@@ -18,12 +19,11 @@ class RSM(AbstractModel):
 
     def __init__(
             self, num_topics=50, epochs=5, btsz=100,
-            lr=0.01, momentum=0.1, K=1, softstart=0.001,
+            lr=0.01, momentum=0.9, K=1, softstart=0.001,
             decay=0, penalty_L1=False, penalty_local=False,
-            epochs_per_monitor=1,
-            monitor_ppl=False, monitor_time=False,
-            increase_speed=0, rms_decay=0.9, adam_decay1=0.9, adam_decay2=0.999,
-            cd_type='mfcd', train_optimizer='sgd',
+            monitor_ppl=False, monitor_time=False, monitor_loglik = False,
+            increase_speed=1, rms_decay=0.9, adam_decay1=0.9, adam_decay2=0.999,
+            cd_type='mfcd', train_optimizer='sgd', verbose=False,
             logdtm=False, random_state=None):
 
         '''
@@ -53,11 +53,11 @@ class RSM(AbstractModel):
         monitor : if True prints training information during training
 
         cd_type : type of contrastive divergence to use,
-          'kcd', 'pcd', 'mfcd' (default) or 'gradkcd' :
+          'kcd', 'pcd', 'mfcd' (default) or 'gradcd' :
                     'kcd' stands for k-step contrastive divergence
                     'pcd' stands for persistent contrastive divergence
                     'mfcd' stands for mean-field contrastive divergence
-                    'gradkcd' stands for gradual k-step contrastive divergence,
+                    'gradcd' stands for gradual k-step contrastive divergence,
                     where k increases over epochs by a factor increase_speed
         train_optimizer : training optimizer to use :
                     'full' for full batch training,
@@ -80,7 +80,7 @@ class RSM(AbstractModel):
         self.hyperparameters["increase_speed"] = increase_speed
         self.hyperparameters["monitor_time"] = monitor_time
         self.hyperparameters["monitor_ppl"] = monitor_ppl
-        self.hyperparameters["epochs_per_monitor"] = epochs_per_monitor
+        self.hyperparameters["monitor_loglik"] = monitor_loglik
         self.hyperparameters["penalty_L1"] = penalty_L1
         self.hyperparameters["penalty_local"] = penalty_local
         self.hyperparameters["decay"] = decay
@@ -92,6 +92,7 @@ class RSM(AbstractModel):
         self.hyperparameters['rms_decay'] = rms_decay
         self.hyperparameters['adam_decay1'] = adam_decay1
         self.hyperparameters['adam_decay2'] = adam_decay2
+        self.hyperparameters['verbose'] = verbose
 
     def info(self):
         """
@@ -125,38 +126,45 @@ class RSM(AbstractModel):
                  'topic-document-matrix'
         """
 
-        if hyperparams is None:
-            hyperparams = {}
+        # if hyperparams is None:
+        #     hyperparams = {}
 
-        if self.use_partitions:
-            train_corpus, test_corpus = dataset.get_partitioned_corpus(
-                use_validation = False)
-        else:
-            train_corpus = dataset.get_corpus()
+        # if self.use_partitions:
+        #     train_corpus, test_corpus = dataset.get_partitioned_corpus(
+        #         use_validation = False)
+        # else:
+        #     train_corpus = dataset.get_corpus()
 
-        if self.id2word is None:
-            self.id2word = self.get_vocab(dataset.get_corpus())
+        # if self.id2word is None:
+        #     self.id2word = self.get_vocab(dataset.get_corpus())
 
-        if self.use_partitions:
-            print("Building train DTM...")
-            self.train_dtm = self.build_dtm(train_corpus, self.id2word)
-            print("Building test DTM...")
-            self.test_dtm = self.build_dtm(test_corpus, self.id2word)
-            hyperparams["dtm"] = self.train_dtm
-            hyperparams["val_dtm"] = self.test_dtm
-        else:
-            print("Building DTM...")
-            self.train_dtm = self.build_dtm(train_corpus, self.id2word)
-            hyperparams["dtm"] = self.train_dtm
-            hyperparams["val_dtm"] = None
+        # if self.use_partitions:
+        #     if self.hyperparameters['verbose']:
+        #         print("Building train DTM...")
+        #     self.train_dtm = self.build_dtm(train_corpus, self.id2word)
+        #     if self.hyperparameters['verbose']:     
+        #         print("Building test DTM...")
+        #     self.test_dtm = self.build_dtm(test_corpus, self.id2word)
+        #     hyperparams["dtm"] = self.train_dtm
+        #     hyperparams["val_dtm"] = self.test_dtm
+        # else:
+        #     if self.hyperparameters['verbose']:
+        #         print("Building DTM...")
+        #     self.train_dtm = self.build_dtm(train_corpus, self.id2word)
+        #     hyperparams["dtm"] = self.train_dtm
+        #     hyperparams["val_dtm"] = None
 
-        if "num_topics" not in hyperparams:
-            hyperparams["num_topics"] = self.hyperparameters["num_topics"]
+        # if "num_topics" not in hyperparams:
+        #     hyperparams["num_topics"] = self.hyperparameters["num_topics"]
 
-        self.hyperparameters.update(hyperparams)
+        # self.hyperparameters.update(hyperparams)
 
-        self.trained_model = self.RSM_model()
-        self.trained_model.id2word = self.id2word
+        # self.trained_model = self.RSM_model()
+        # self.trained_model.id2word = self.id2word
+
+
+        self.initialize_model_structure(hyperparams=hyperparams, dataset=dataset)
+
         self.trained_model.train(**self.hyperparameters)
 
         return self.get_model_output(top_words)
@@ -194,6 +202,48 @@ class RSM(AbstractModel):
             result["test-topic-document-matrix"] = result["topic-document-matrix"]
 
         return result        
+
+
+
+
+    def initialize_model_structure(self, hyperparams, dataset):
+        if hyperparams is None:
+            hyperparams = {}
+
+        if self.use_partitions:
+            train_corpus, test_corpus = dataset.get_partitioned_corpus(
+                use_validation = False)
+        else:
+            train_corpus = dataset.get_corpus()
+
+        if self.id2word is None:
+            self.id2word = self.get_vocab(dataset.get_corpus())
+
+        if self.use_partitions:
+            if self.hyperparameters['verbose']:
+                print("Building train DTM...")
+            self.train_dtm = self.build_dtm(train_corpus, self.id2word)
+            if self.hyperparameters['verbose']:     
+                print("Building test DTM...")
+            self.test_dtm = self.build_dtm(test_corpus, self.id2word)
+            hyperparams["dtm"] = self.train_dtm
+            hyperparams["val_dtm"] = self.test_dtm
+        else:
+            if self.hyperparameters['verbose']:
+                print("Building DTM...")
+            self.train_dtm = self.build_dtm(train_corpus, self.id2word)
+            hyperparams["dtm"] = self.train_dtm
+            hyperparams["val_dtm"] = None
+
+        if "num_topics" not in hyperparams:
+            hyperparams["num_topics"] = self.hyperparameters["num_topics"]
+
+        self.hyperparameters.update(hyperparams)
+
+        self.trained_model = self.RSM_model()
+        self.trained_model.id2word = self.id2word
+
+
 
 
 ############### preprocessing functions
@@ -487,7 +537,11 @@ class RSM(AbstractModel):
             w_v += vel_v * lr
             w_h += vel_h * lr
             
-            self.W = w_vh, w_v, w_h
+            if any((np.any(np.isnan(w_vh)), np.any(np.isnan(w_v)), np.any(np.isnan(w_h)))):
+                self.stop = True
+                warnings.warn('NaN values founded in weights: stopping training')
+            else:
+                self.W = w_vh, w_v, w_h
 
 
         def gradient_momentum(self, v1, v2, h1, h2):
@@ -505,7 +559,12 @@ class RSM(AbstractModel):
             w_v += vel_v * lr
             w_h += vel_h * lr
             
-            self.W = w_vh, w_v, w_h
+            if any((np.any(np.isnan(w_vh)), np.any(np.isnan(w_v)), np.any(np.isnan(w_h)))):
+                self.stop = True
+                warnings.warn('NaN values founded in weights: stopping training')
+            else:
+                self.W = w_vh, w_v, w_h
+
             self.train_cache = vel_vh, vel_v, vel_h
 
 
@@ -525,7 +584,12 @@ class RSM(AbstractModel):
             w_v += vel_v * lr / (np.sqrt(np.sum(vel_v**2)) + 1e-8)
             w_h += vel_h * lr / (np.sqrt(np.sum(vel_h**2)) + 1e-8)
 
-            self.W = w_vh, w_v, w_h
+            if any((np.any(np.isnan(w_vh)), np.any(np.isnan(w_v)), np.any(np.isnan(w_h)))):
+                self.stop = True
+                warnings.warn('NaN values founded in weights: stopping training')
+            else:
+                self.W = w_vh, w_v, w_h
+
             self.train_cache = vel_vh, vel_v, vel_h   
 
 
@@ -549,7 +613,12 @@ class RSM(AbstractModel):
             rms_m2_h = rms_decay * rms_m2_h + (1 - rms_decay) * (vel_h**2)
             w_h += lr * vel_h / np.sqrt(rms_m2_h + 1e-8)
 
-            self.W = w_vh, w_v, w_h
+            if any((np.any(np.isnan(w_vh)), np.any(np.isnan(w_v)), np.any(np.isnan(w_h)))):
+                self.stop = True
+                warnings.warn('NaN values founded in weights: stopping training')
+            else:
+                self.W = w_vh, w_v, w_h
+
             self.train_cache = vel_vh, vel_v, vel_h, rms_m2_vh, rms_m2_v, rms_m2_h   
 
 
@@ -594,7 +663,12 @@ class RSM(AbstractModel):
             adam_m2_h_hat = adam_m2_h / bias_correction2
             w_h += lr * adam_m1_h_hat / (np.sqrt(adam_m2_h_hat) + 1e-8)
 
-            self.W = w_vh, w_v, w_h
+            if any((np.any(np.isnan(w_vh)), np.any(np.isnan(w_v)), np.any(np.isnan(w_h)))):
+                self.stop = True
+                warnings.warn('NaN values founded in weights: stopping training')
+            else:
+                self.W = w_vh, w_v, w_h
+
             self.train_cache = vel_vh, vel_v, vel_h, adam_m1_vh, adam_m1_v, adam_m1_h, adam_m2_vh, adam_m2_v, adam_m2_h, t
 
 
@@ -624,6 +698,16 @@ class RSM(AbstractModel):
 
             self.gradient_step(v0,v1,h0,h1)
 
+
+        def gradkcd_step(self, ids):
+            self.tK = self.Kvec[self.t]
+            if self.tK == 0:
+                self.mfcd_step(ids)
+            else:
+                self.kcd_step(ids)
+
+
+
         def pcd_step(self, ids):
             v0 = self.dtm[ids,:]
             pv0 = self.persistent_v[ids,:]
@@ -637,7 +721,7 @@ class RSM(AbstractModel):
 
         def gradual_k(self, T, K, g=0):
             t = np.arange(1, T+1)
-            k = 1 + np.floor((K-1)*((t/(T+1))**(1+g))).astype(int)
+            k = np.floor((K+1)*((t/(T+1))**(1+g))).astype(int)
             return k
         
 
@@ -648,15 +732,82 @@ class RSM(AbstractModel):
 
         def train(self, dtm, num_topics=5, epochs=3, btsz=100, 
                 lr=0.01, momentum=0.5, K=1, decay=0, penalty_L1=False, penalty_local=False,
-                epochs_per_monitor=1, monitor_time = False, monitor_ppl = False,
+                monitor_time = False, monitor_ppl = False, monitor_loglik=False,
                 train_optimizer='sgd', cd_type='mfcd', logdtm=False,
                 rms_decay=0.9, adam_decay1=0.9, adam_decay2=0.999,
                 increase_speed = 0, softstart=0.001, 
-                initw=None, val_dtm=None, random_state=None):
+                winit=None, val_dtm=None, random_state=None, verbose=False):
 
             ## init global variables
             if random_state is not None:
                 np.random.seed(random_state)
+
+            doval = (val_dtm is not None)
+
+            #init structure of the model
+            self.set_structure_from_dtm(winit=winit, softstart=softstart,
+                                        epochs=epochs, num_topics=num_topics, 
+                                        dtm=dtm, val_dtm=val_dtm, monitor_ppl=monitor_ppl, monitor_loglik=monitor_loglik,
+                                        monitor_time=monitor_time, logdtm=logdtm)
+
+            ##init training hyperparams
+            self.set_train_hyper(epochs=epochs, btsz=btsz, 
+                lr=lr, momentum=momentum, K=K, decay=decay, penalty_L1=penalty_L1, penalty_local=penalty_local,
+                train_optimizer=train_optimizer, cd_type=cd_type,
+                rms_decay=rms_decay, adam_decay1=adam_decay1, adam_decay2=adam_decay2,
+                increase_speed = increase_speed)
+
+            ## MAIN TRAIN LOOP
+            print("Training RS model...")
+            for t in tqdm(range(epochs)):
+
+                if monitor_time:
+                    current_time = time.time()
+
+                if self.stop:
+                    print('training stopped early')
+                    break                    
+                else:
+                    self.train_epoch()
+
+                if monitor_time:
+                    elapsed_time = time.time() - current_time
+                    self.train_time[t] = elapsed_time
+
+                if monitor_ppl:
+                    self.train_ppl[t] = self.log_ppl_upbo(dtm)
+
+                    if doval:
+                        self.val_ppl[t] = self.log_ppl_upbo(val_dtm)
+
+                if monitor_loglik:
+                    self.train_loglik[t] = np.mean(self.neg_free_energy(dtm))
+
+                    if doval:
+                        self.val_loglik[t] = np.mean(self.neg_free_energy(val_dtm))
+
+
+        def train_epoch(self):
+                '''one epoch of training, with sgd and mini-batches'''
+                start_id = 0
+
+                #if self.sgd:
+                np.random.shuffle(self.obs_ids) # apply sgd
+                self.dtm = self.dtm[self.obs_ids,:]                
+                if self.persist:
+                    self.persistent_v = self.persistent_v[self.obs_ids,:]
+
+                for b in range(self.batches):
+                    ids = np.arange(start_id, start_id + self.btsz)
+                    self.cd_learning_step(ids)
+                    start_id += self.btsz
+
+                self.t += 1
+                    
+        def set_structure_from_dtm(self, 
+                                    winit=None, dtm=None, val_dtm=None, 
+                                    softstart=0.001, num_topics=5, epochs=5,
+                                    monitor_ppl = False, monitor_time=False, monitor_loglik=False, logdtm=False):
 
             doval = (val_dtm is not None)
 
@@ -675,9 +826,14 @@ class RSM(AbstractModel):
             
             self.obs_ids = np.arange(N)
             
-
-            if initw is not None:
-                self.W = initw
+            if winit is not None:
+                ###self.W = winit WRONG: You are referencing the same arrays across runs
+                # defensive copy to avoid sharing mutable numpy arrays across runs
+                try:
+                    self.W = tuple(np.array(arr, copy=True) for arr in winit)
+                except Exception:
+                    # fallback: keep original if not iterable
+                    self.W = winit
 
             if self.W is None:
                 w_vh = softstart * np.random.randn(dictsize, num_topics)
@@ -693,72 +849,20 @@ class RSM(AbstractModel):
                 self.train_time = np.empty(epochs)
 
             if monitor_ppl:
-                monit_epochs = np.arange(stop = epochs, step = epochs_per_monitor)
-                next_monitor = 0
-                self.train_loglik = np.empty(len(monit_epochs))
-                self.train_ppl = np.empty(len(monit_epochs))
+                self.train_ppl = np.empty(epochs)
                 if doval:
-                    self.val_loglik = np.empty(len(monit_epochs))
-                    self.val_ppl = np.empty(len(monit_epochs))
+                    self.val_ppl = np.empty(epochs)
 
 
-            ##init training hyperparams
-
-            self.set_train_hyper(epochs=epochs, btsz=btsz, 
-                lr=lr, momentum=momentum, K=K, decay=decay, penalty_L1=penalty_L1, penalty_local=penalty_local,
-                train_optimizer=train_optimizer, cd_type=cd_type,
-                rms_decay=rms_decay, adam_decay1=adam_decay1, adam_decay2=adam_decay2,
-                increase_speed = increase_speed)
-          
-
-            ## MAIN TRAIN LOOP
-            print("Training RS model...")
-            for t in tqdm(range(epochs)):
-                if monitor_time:
-                    current_time = time.time()
-
-                if self.gradual:
-                    self.tK = self.Kvec[t]
-
-                self.train_epoch()
-
-                if monitor_time:
-                    elapsed_time = time.time() - current_time
-                    self.train_time[t] = elapsed_time
-
-                if monitor_ppl:
-                    if t == monit_epochs[next_monitor]:
-                        next_monitor += 1
-                        next_monitor = t + epochs_per_monitor
-
-                        self.train_loglik[t] = np.mean(self.neg_free_energy(dtm))
-                        self.train_ppl[t] = self.log_ppl_upbo(dtm)
-
-                        if doval:
-                            self.val_loglik[t] = np.mean(self.neg_free_energy(val_dtm))
-                            self.val_ppl[t] = self.log_ppl_upbo(val_dtm)
+            if monitor_loglik:
+                self.train_loglik = np.empty(epochs)
+                if doval:
+                    self.val_loglik = np.empty(epochs)
 
 
-
-
-        def train_epoch(self):
-                '''one epoch of training, with sgd and mini-batches'''
-                start_id = 0
-                np.random.shuffle(self.obs_ids) # apply sgd
-                dtm = self.dtm[self.obs_ids,:]
-                
-                if self.persist:
-                    self.persistent_v = self.persistent_v[self.obs_ids,:]
-
-                for b in range(self.batches):
-                    ids = np.arange(start_id, start_id + self.btsz)
-                    self.cd_learning_step(ids)
-                    start_id += self.btsz
-
-                    
 
         def set_train_hyper(self, epochs=3, btsz=100, 
-                lr=0.01, momentum=0.5, K=1, decay=0, penalty_L1=False, penalty_local=False,
+                lr=0.01, momentum=0.9, K=1, decay=0, penalty_L1=False, penalty_local=False,
                 train_optimizer='sgd', cd_type='mfcd',
                 rms_decay=0.9, adam_decay1=0.9, adam_decay2=0.999,
                 increase_speed = 0):
@@ -766,7 +870,7 @@ class RSM(AbstractModel):
             N, dictsize = self.dtm.shape
             num_topics = self.hidden
 
-
+            self.stop = False
             self.momentum = momentum
             self.lr = lr
             self.decay = decay
@@ -779,14 +883,19 @@ class RSM(AbstractModel):
             self.adam_decay2 = adam_decay2
             self.rms_decay = rms_decay
 
-            self.persist = (cd_type=='persistent') #persistent_cd
+            self.persist = (cd_type=='pcd') #persistent_cd
             self.mean_field = (cd_type=='mfcd') #mean_field_cd
             self.gradual = (cd_type=='gradcd') #increase_cd
+            
 
+            self.t = 0  #current epoch
             self.K = K
+            self.tK = K  #current k
+            self.mean_h = True  #whether to use mean hidden activations or sample them
 
             self.btsz = btsz            
             self.batches = int(np.floor(N/btsz))
+            #self.sgd = (train_optimizer!='full')
             #self.bt_correct = (btsz**2)/N    #a bayesian would correct decay for batch size. I'm not a bayesian
 
 
@@ -800,13 +909,13 @@ class RSM(AbstractModel):
             # Initialize persistent chain - one chain for each document in the dataset
             # Each persistent visible should have the same document length as corresponding data
             if self.persist:
-                persistent_v = np.zeros((N, dictsize))  # Full dataset size
+                self.persistent_v = np.zeros((N, dictsize))  # Full dataset size
                 persistent_D = self.dtm.sum(axis=1)  # Document lengths from original data
                 
                 # Initialize each document with uniform multinomial of its actual length
                 for i in range(N):
                     if persistent_D[i] > 0:  # Avoid empty documents
-                        persistent_v[i] = np.random.multinomial(persistent_D[i], np.ones(dictsize)/dictsize)
+                        self.persistent_v[i] = np.random.multinomial(persistent_D[i], np.ones(dictsize)/dictsize)
 
 
             # Initialize weights gradients
@@ -850,16 +959,19 @@ class RSM(AbstractModel):
                                 self.gradient_step = self.gradient_simple
 
 
-            if cd_type == 'mfcd':
+            if self.mean_field:
                 self.cd_learning_step = self.mfcd_step  #input is v0
             else:
-                if cd_type == 'pcd':
+                if self.persist:
                     self.cd_learning_step = self.pcd_step # input is v0, persistent_v, output is new persistent_v
                 else:
                     if cd_type == 'kcd':
-                        self.cd_learning_step = self.kcd_step # input is v0, K
+                        self.cd_learning_step = self.kcd_step # input is v0, K fixed
                     else:  #gradual kcd
-                        self.cd_learning_step = self.kcd_step # input is v0, change K each epoch
+                        if self.gradual:
+                            self.cd_learning_step = self.gradkcd_step # input is v0, change K each epoch
+                        else:
+                            self.cd_learning_step = self.kcd_step # input is v0, K fixed
 
 
 
