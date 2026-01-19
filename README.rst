@@ -263,7 +263,10 @@ Available Models
 +-------------------------------------------+-----------------------------------------------------------+
 | ProdLda `(Srivastava and Sutton 2017)`_   | https://github.com/estebandito22/PyTorchAVITM             |
 +-------------------------------------------+-----------------------------------------------------------+
-
+| RSM `(Hinton and Salakhutdinov 2009)`_    | https://github.com/Fede-Rausa/ReplicatedSoftmax           |
++-------------------------------------------+-----------------------------------------------------------+
+| over-RSM `(Hinton et al. 2013)`_          | https://github.com/dongwookim-ml/RSM                      |
++-------------------------------------------+-----------------------------------------------------------+
 
 .. _(Bianchi et al. 2021): https://www.aclweb.org/anthology/2021.eacl-main.143/
 .. _(Dieng et al. 2020): https://www.aclweb.org/anthology/2020.tacl-1.29 
@@ -272,6 +275,8 @@ Available Models
 .. _(Landauer et al. 1998): http://lsa.colorado.edu/papers/dp1.LSAintro.pdf
 .. _(Lee and Seung 2000): https://papers.nips.cc/paper/1861-algorithms-for-non-negative-matrix-factorization
 .. _(Srivastava and Sutton 2017): https://arxiv.org/abs/1703.01488 
+.. _(Hinton and Salakhutdinov 2009): https://proceedings.neurips.cc/paper_files/paper/2009/file/31839b036f63806cba3f47b93af8ccb5-Paper.pdf
+.. _(Hinton et al. 2013): https://arxiv.org/pdf/1309.6865
 
 If you use one of these implementations, make sure to cite the right paper.
 
