@@ -265,7 +265,7 @@ Available Models
 +-------------------------------------------+-----------------------------------------------------------+
 | RSM `(Hinton and Salakhutdinov 2009)`_    | https://github.com/Fede-Rausa/ReplicatedSoftmax           |
 +-------------------------------------------+-----------------------------------------------------------+
-| over-RSM `(Hinton et al. 2013)`_          | https://github.com/dongwookim-ml/RSM                      |
+| over-RSM `(Hinton et al. 2013)`_          | https://github.com/Fede-Rausa/ReplicatedSoftmax           |
 +-------------------------------------------+-----------------------------------------------------------+
 
 .. _(Bianchi et al. 2021): https://www.aclweb.org/anthology/2021.eacl-main.143/
