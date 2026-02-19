@@ -1,4 +1,5 @@
 from octis.models.model import AbstractModel
+from octis.models.RS_class import Replicated_Softmax
 import numpy as np
 from tqdm import tqdm
 import gensim.corpora as corpora
@@ -83,6 +84,19 @@ class RSM(AbstractModel):
                     'rmsprop' for RMSProp optimizer,
                     'adam' for Adam optimizer,
                     'adagrad' for Adagrad optimizer
+
+
+        Example usage
+        --------------------
+
+        from octis.dataset.dataset import Dataset
+        from octis.models.RSM import RSM
+        
+        dataset_20ng = Dataset()
+        dataset_20ng.fetch_dataset("20NewsGroup")
+
+        rsm = RSM(num_topics=20, epochs=500, btsz=20, lr=0.0001, cd_type='mfcd', train_optimizer='rmsprop')
+        output_rsm = rsm.train(dataset_20ng)
         """
         super().__init__()
         self.hyperparameters = dict()
@@ -236,21 +250,11 @@ class RSM(AbstractModel):
 
     ##############################################################  RSM original class
 
-    class RSM_model(object):
+    class RSM_model(Replicated_Softmax):
         def __init__(self):
-            self.W = None
+            super().__init__()
 
-        def softmax_vec(self, array):
-            exparr = np.exp(array)
-            return exparr / exparr.sum()
 
-        def softmax(self, array):
-            maxs = np.max(array, axis=1, keepdims=True)
-            lse = maxs + np.log(np.sum(np.exp(array - maxs), axis=1, keepdims=True))
-            return np.exp(array - lse)
-
-        def sigmoid(self, x):
-            return 1 / (1 + np.exp(-x))
 
         ############################## energy and probability
 
@@ -262,31 +266,6 @@ class RSM(AbstractModel):
             t3 = (v @ w_vh @ h.T).sum(axis=1)
             en = t1 + t2 + t3
             return en
-
-        def neg_free_energy(self, v):  # it's equivalent to the log pdf
-            w_vh, w_v, w_h = self.W
-            T = self.hidden
-            D = v.sum(axis=1)
-            fren = np.dot(v, w_v)
-            for j in range(T):
-                w_j = w_vh[:, j]
-                a_j = w_h[j]
-                fren += np.log(1 + np.exp(D * a_j + np.dot(v, w_j)))
-            return fren
-
-        def neg_free_energy_single_doc(self, v):  # it's equivalent to the log pdf
-            w_vh, w_v, w_h = self.W
-            T = self.hidden
-            D = v.sum()
-            fren = np.dot(v, w_v)
-            for j in range(T):
-                w_j = w_vh[:, j]
-                a_j = w_h[j]
-                fren += np.log(1 + np.exp(D * a_j + np.dot(v, w_j)))
-            return fren
-
-        def marginal_pdf(self, v):
-            return np.exp(self.neg_free_energy(v))
 
         def visible2hidden_vec(self, v):
             w_vh, w_v, w_h = self.W
@@ -310,79 +289,8 @@ class RSM(AbstractModel):
             energy = np.tile(w_v, (h.shape[0], 1)).T + np.dot(w_vh, h.T)
             return self.softmax(energy.T)
 
-        def topic_words(self, topk, id2word=None):
-            w_vh, w_v, w_h = self.W
-            T = self.hidden
-            if id2word is None:
-                id2word = self.id2word
-            words = np.array([k for k in id2word.token2id.keys()])
-
-            toplist = []
-            for t in range(T):
-                topw = w_vh[:, t]
-                bestwords = words[np.argsort(topw)[::-1]][0:topk]
-                toplist.append(bestwords)
-
-            return toplist
-
-        def _get_topic_word_matrix(self):
-            """
-            Return the topic representation of the words
-            """
-            w_vh, w_v, w_h = self.W
-            topic_word_matrix = w_vh.T
-            normalized = []
-            for words_w in topic_word_matrix:
-                minimum = min(words_w)
-                words = words_w - minimum
-                normalized.append([float(i) / sum(words) for i in words])
-            topic_word_matrix = np.array(normalized)
-            return topic_word_matrix
-
-        def _get_topic_word_matrix0(self):
-            """
-            Return the topic representation of the words
-            """
-            w_vh, w_v, w_h = self.W
-            topic_word_matrix = np.empty(w_vh.T.shape)
-            for t in range(w_vh.T.shape[0]):
-                topic_word_matrix[t, :] = self.softmax_vec(w_vh.T[t, :] - w_v)
-            return topic_word_matrix
-
-        def _get_topic_doc(self, dtm):
-            return self.visible2hidden(dtm).T
-
-        def _get_topics(self, topk):
-            w_vh, w_v, w_h = self.W
-            T = self.hidden
-            words = np.array([k for k in self.id2word.token2id.keys()])
-
-            toplist = []
-            for t in range(T):
-                topw = w_vh[:, t]
-                bestwords = words[np.argsort(topw)[::-1]][0:topk]
-                toplist.append(bestwords)
-
-            return toplist
-
-            # topics_output = []
-            # for topic in result["topic-word-matrix"]:
-            #     top_k = np.argsort(topic)[-top_words:]
-            #     top_k_words = list(reversed([self.id2word[i] for i in top_k]))
-            #     topics_output.append(top_k_words)
-
         ##################################### leapfrog trainsition operators
 
-        def multinomial_sample(self, probs, N):
-            return np.random.multinomial(N, probs, size=1)[0]
-
-        def unif_reject_sample(self, probs):
-            h_unif = np.random.rand(*probs.shape)
-            h_sample = np.array(h_unif < probs, dtype=int)
-            return h_sample
-
-        def deterministic_sample(self, probs):
-            return (probs > 0.5).astype(int)
 
         def gibbs_transition(self, v):
             D = v.sum(axis=1)
@@ -432,21 +340,6 @@ class RSM(AbstractModel):
 
         ################################## gradient descent optimization
 
-        def interaction_penalty(self, vel_vh, w_vh):
-            if self.penalty:
-                if self.penL1:  # L1 penalty
-                    if self.local_penalty:
-                        penal = self.decay * np.sign(w_vh)
-                    else:
-                        penal = self.decay * np.sum(np.abs(w_vh)) * np.sign(w_vh)
-                else:  # L2 penalty
-                    if self.local_penalty:
-                        penal = self.decay * w_vh
-                    else:
-                        penal = self.decay * np.sum(w_vh)
-
-                vel_vh = vel_vh - penal
-            return vel_vh
 
         def gradient_simple(self, v1, v2, h1, h2):
             w_vh, w_v, w_h = self.W
@@ -782,66 +675,6 @@ class RSM(AbstractModel):
 
             self.t += 1
 
-        def set_structure_from_dtm(
-            self,
-            winit=None,
-            dtm=None,
-            val_dtm=None,
-            softstart=0.001,
-            num_topics=5,
-            epochs=5,
-            monitor_ppl=False,
-            monitor_time=False,
-            monitor_loglik=False,
-            logdtm=False,
-        ):
-            doval = val_dtm is not None
-
-            if logdtm:
-                self.dtm = np.log(1 + dtm)
-                if doval:
-                    self.val_dtm = np.log(1 + val_dtm)
-            else:
-                self.dtm = dtm
-                if doval:
-                    self.val_dtm = np.log(1 + val_dtm)
-
-            self.hidden = num_topics
-            N, dictsize = dtm.shape
-            self.visible = dictsize
-
-            self.obs_ids = np.arange(N)
-
-            if winit is not None:
-                ###self.W = winit WRONG: You are referencing the same arrays across runs
-                # defensive copy to avoid sharing mutable numpy arrays across runs
-                try:
-                    self.W = tuple(np.array(arr, copy=True) for arr in winit)
-                except Exception:
-                    # fallback: keep original if not iterable
-                    self.W = winit
-
-            if self.W is None:
-                w_vh = softstart * np.random.randn(dictsize, num_topics)
-                w_v = softstart * np.random.randn(dictsize)
-                w_h = softstart * np.random.randn(num_topics)
-                self.W = w_vh, w_v, w_h
-            else:
-                print("train already available weights")
-                w_vh, w_v, w_h = self.W
-
-            if monitor_time:
-                self.train_time = np.empty(epochs)
-
-            if monitor_ppl:
-                self.train_ppl = np.empty(epochs)
-                if doval:
-                    self.val_ppl = np.empty(epochs)
-
-            if monitor_loglik:
-                self.train_loglik = np.empty(epochs)
-                if doval:
-                    self.val_loglik = np.empty(epochs)
 
         def set_train_hyper(
             self,
@@ -998,7 +831,10 @@ class RSM(AbstractModel):
             """
             mfh = self.visible2hidden(dtm)
             vprob = self.hidden2visible(mfh)
-            lpub = np.exp(-np.nansum(np.log(vprob) * dtm) / np.sum(dtm))
+            vprob = np.clip(vprob, 1e-12, None)
+            sum_dtm = np.sum(dtm)
+            assert sum_dtm > 0, 'the sum of the dtm s entries has to be positive'
+            lpub = -np.nansum(np.log(vprob) * dtm) / sum_dtm
             return lpub
 
         def ppl_approx(self, testmatrix):
