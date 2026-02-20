@@ -99,7 +99,7 @@ class oRSM(AbstractModel):
 
         from octis.dataset.dataset import Dataset
         from octis.models.oRSM import oRSM
-        
+
         dataset_20ng = Dataset()
         dataset_20ng.fetch_dataset("20NewsGroup")
 
@@ -305,7 +305,6 @@ class oRSM(AbstractModel):
         def visible2hidden(self, v):
             return self.v_to_mf_h1(v)
 
-
         def visible_to_hiddens_gibbs(self, v):
             """
             main function to compute the hidden states given visible states
@@ -330,12 +329,10 @@ class oRSM(AbstractModel):
 
             return mu1, mu2
 
-
         def sample_hidden(self, v):
             h1_probs = self.v_to_mf_h1(v)
             h1_sample = self.unif_reject_sample(h1_probs)
             return h1_sample
-
 
         ##################################### leapfrog trainsition operators
 
@@ -366,7 +363,6 @@ class oRSM(AbstractModel):
             for i in range(v.shape[0]):
                 visible_sample[i] = self.multinomial_sample(visible_probs[i], D[i])
             return visible_sample
-
 
         ######################## gradient descent optimization
 
@@ -607,9 +603,7 @@ class oRSM(AbstractModel):
 
             h1 = self.v_to_mf_h1(v)
             D = v.sum(axis=1)
-            h2 = (
-                v * self.M / D.reshape(-1, 1)
-            )
+            h2 = v * self.M / D.reshape(-1, 1)
 
             for k in range(self.tK):
                 v_model = self.sample_visible(h1, D)
@@ -786,7 +780,6 @@ class oRSM(AbstractModel):
 
             self.t += 1
 
-
         def set_train_hyper(
             self,
             epochs=3,
@@ -960,4 +953,3 @@ class oRSM(AbstractModel):
             """
             ppl = np.exp(self.log_ppl_approx(testmatrix))
             return ppl
-

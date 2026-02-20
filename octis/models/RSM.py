@@ -91,7 +91,7 @@ class RSM(AbstractModel):
 
         from octis.dataset.dataset import Dataset
         from octis.models.RSM import RSM
-        
+
         dataset_20ng = Dataset()
         dataset_20ng.fetch_dataset("20NewsGroup")
 
@@ -254,8 +254,6 @@ class RSM(AbstractModel):
         def __init__(self):
             super().__init__()
 
-
-
         ############################## energy and probability
 
         def neg_energy(self, v, h):
@@ -290,7 +288,6 @@ class RSM(AbstractModel):
             return self.softmax(energy.T)
 
         ##################################### leapfrog trainsition operators
-
 
         def gibbs_transition(self, v):
             D = v.sum(axis=1)
@@ -339,7 +336,6 @@ class RSM(AbstractModel):
                 return state
 
         ################################## gradient descent optimization
-
 
         def gradient_simple(self, v1, v2, h1, h2):
             w_vh, w_v, w_h = self.W
@@ -675,7 +671,6 @@ class RSM(AbstractModel):
 
             self.t += 1
 
-
         def set_train_hyper(
             self,
             epochs=3,
@@ -833,7 +828,7 @@ class RSM(AbstractModel):
             vprob = self.hidden2visible(mfh)
             vprob = np.clip(vprob, 1e-12, None)
             sum_dtm = np.sum(dtm)
-            assert sum_dtm > 0, 'the sum of the dtm s entries has to be positive'
+            assert sum_dtm > 0, "the sum of the dtm s entries has to be positive"
             lpub = -np.nansum(np.log(vprob) * dtm) / sum_dtm
             return lpub
 

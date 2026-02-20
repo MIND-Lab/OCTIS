@@ -1,11 +1,9 @@
 import numpy as np
 
 
-
-class Replicated_Softmax():
+class Replicated_Softmax:
     def __init__(self):
         self.W = None
-    
 
     ######  to implement in the specific class
 
@@ -21,62 +19,59 @@ class Replicated_Softmax():
     def visible2hidden(self):
         raise NotImplementedError
 
-
     ####### activations and sampling
 
     def softmax(self, x):
-        ''' 
+        """
         Softmax activation by row of the matrix x.
-        The denominator log(sum(exp(x[i]))) leads to many inf, so the 
+        The denominator log(sum(exp(x[i]))) leads to many inf, so the
         LogSumExp approximation is used instead.
-        '''
+        """
         maxs = np.max(x, axis=1, keepdims=True)
         lse = maxs + np.log(np.sum(np.exp(x - maxs), axis=1, keepdims=True))
         return np.exp(x - lse)
-    
+
     def softmax_vec(self, array):
-        '''simple softmax activation for an array vector (single document)'''
+        """simple softmax activation for an array vector (single document)"""
         exparr = np.exp(array)
         return exparr / exparr.sum()
 
     def sigmoid(self, x):
-        '''basic sigmoid activation'''
+        """basic sigmoid activation"""
         return 1 / (1 + np.exp(-x))
 
-
     def multinomial_sample(self, probs, N):
-        '''
+        """
         wrapper of np.random.multinomial
         probs: vector of probabilities for words count
         N: number of words to sample
-        '''
+        """
         return np.random.multinomial(N, probs, size=1)[0]
 
     def unif_reject_sample(self, probs):
-        '''
+        """
         function to sample topics (bernoulli distributed)
         given a vector of probabilities.
         It samples from a uniform distribution U(0,1)
         to get the thresholds for each topic.
-        '''
+        """
         h_unif = np.random.rand(*probs.shape)
         h_sample = np.array(h_unif < probs, dtype=int)
         return h_sample
 
     def deterministic_sample(self, probs):
-        '''
+        """
         function to sample topics (bernoulli distributed)
         given a vector of probabilities.
         It uses the >0.5 rule to assign 1 to each topic.
-        '''
+        """
         return (probs > 0.5).astype(int)
-
 
     ################### gradient utils
 
     def interaction_penalty(self, vel_vh, w_vh):
-        '''
-        function to adjust the gradient of the 
+        """
+        function to adjust the gradient of the
         topic-word interaction weights during a training iteration
         of a RS model by a penalty factor.
         The model shoud have the attributes:
@@ -87,7 +82,7 @@ class Replicated_Softmax():
         This function also requires two numpy arrays as arguments:
         - the interaction weigths matrix w_vh, that connects topics to words
         - the respective gradients vel_vh (also a matrix)
-        '''
+        """
         if self.penalty:
             if self.penL1:  # L1 penalty
                 if self.local_penalty:
@@ -103,14 +98,13 @@ class Replicated_Softmax():
             vel_vh = vel_vh - penal
         return vel_vh
 
-
     ############### likelihood utils
 
     def neg_free_energy(self, v):
-        '''
-        given an array v similar to the dtm, computes the 
+        """
+        given an array v similar to the dtm, computes the
         log pdf under the replicated softmax
-        '''
+        """
         w_vh, w_v, w_h = self.W
         T = self.hidden
         D = v.sum(axis=1)
@@ -121,12 +115,11 @@ class Replicated_Softmax():
             fren += np.log(1 + np.exp(D * a_j + np.dot(v, w_j)))
         return fren
 
-
     def neg_free_energy_single_doc(self, v):
-        '''
+        """
         given a one dimensional Bow vector v representing a single document,
         computes the log pdf under the replicated softmax
-        '''
+        """
         w_vh, w_v, w_h = self.W
         T = self.hidden
         D = v.sum()
@@ -137,22 +130,20 @@ class Replicated_Softmax():
             fren += np.log(1 + np.exp(D * a_j + np.dot(v, w_j)))
         return fren
 
-
     def marginal_pdf(self, v):
         return np.exp(self.neg_free_energy(v))
 
     def marginal_pdf_single_doc(self, v):
         return np.exp(self.neg_free_energy_single_doc(v))
 
-
     ############ octis output functions
 
     def topic_words(self, topk, id2word=None):
-        '''
+        """
         Given a gensim dictionary id2word,
         returns the topk most important words for each topic
         inside a list of T lists, where T is the number of topics
-        '''
+        """
         w_vh, w_v, w_h = self.W
         T = self.hidden
         if id2word is None:
@@ -168,22 +159,20 @@ class Replicated_Softmax():
         return toplist
 
     def _get_topics(self, topk):
-        '''
+        """
         Given a gensim dictionary id2word,
         returns the topk most important words for each topic
         inside a list of T lists, where T is the number of topics
         (this function is a wrapper of topic_words, used by octis class)
-        '''
+        """
         return self.topic_words(topk, self.id2word)
-
-
 
     def _get_topic_word_matrix(self):
         """
         Returns the topic representation of the words.
         Uses min-max normalization by topic of the interaction weigths
         matrix w_vh. The ranking of the words using this matrix
-        is equivalent to the ranking obtained from the unnormalized  
+        is equivalent to the ranking obtained from the unnormalized
         matrix of weigths w_vh.
         """
         w_vh, w_v, w_h = self.W
@@ -196,15 +185,13 @@ class Replicated_Softmax():
         topic_word_matrix = np.array(normalized)
         return topic_word_matrix
 
-
     def _get_topic_doc(self, dtm):
-        '''
-        given a bidimensional array dtm like, returns 
+        """
+        given a bidimensional array dtm like, returns
         the probabilities of each topic for each document
         (as an array of probabilities).
-        '''
+        """
         return self.visible2hidden(dtm).T
-
 
     ####################### train utils
 
@@ -221,9 +208,8 @@ class Replicated_Softmax():
         monitor_loglik=False,
         logdtm=False,
     ):
-        
-        '''function to initialize the weigths matrices 
-        given the dtm and the number of topics'''
+        """function to initialize the weigths matrices
+        given the dtm and the number of topics"""
         doval = val_dtm is not None
 
         if logdtm:
@@ -235,9 +221,8 @@ class Replicated_Softmax():
             if doval:
                 self.val_dtm = val_dtm
 
-
         D = self.dtm.sum(axis=1)
-        assert not np.any(D==0), 'all the documents should have positive length'
+        assert not np.any(D == 0), "all the documents should have positive length"
 
         self.hidden = num_topics
         self.F = num_topics
@@ -276,7 +261,3 @@ class Replicated_Softmax():
             self.train_loglik = np.empty(epochs)
             if doval:
                 self.val_loglik = np.empty(epochs)
-
-
-
-
