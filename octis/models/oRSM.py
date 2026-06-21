@@ -79,7 +79,7 @@ class oRSM(AbstractModel):
         (randomly drawn from N(0,1)*softstart)
         logdtm : if True each cell of the dtm is transformed as log(1+cell),
         otherwise the raw counts are used
-        monitor : if True prints training information during training
+        verbose : if True prints training information during training
 
         cd_type : type of contrastive divergence to use,
           'kcd', 'pcd', 'mfcd' (default) or 'gradcd' :
@@ -180,6 +180,32 @@ class oRSM(AbstractModel):
         return self.get_model_output(top_words)
 
     def get_model_output(self, top_words=10):
+        """
+        Collect and return the model outputs after training.
+
+        Parameters
+        ----------
+        top_words : int
+            Number of top words to return for each topic. If 0, the 'topics'
+            key is omitted from the output. Default is 10.
+
+        Returns
+        -------
+        result : dict
+            Dictionary with the following entries:
+            - 'topic-word-matrix'       : ndarray of shape (T, V), normalized
+                                        topic-word weights (min-max per topic).
+            - 'topics'                  : list of T lists, each containing the
+                                        top_words most relevant words for that
+                                        topic (present only if top_words > 0).
+            - 'topic-document-matrix'   : ndarray of shape (T, N_train), topic
+                                        activation probabilities for each
+                                        training document.
+            - 'test-topic-document-matrix' : ndarray of shape (T, N_test), topic
+                                        activation probabilities for each test
+                                        document. Equals 'topic-document-matrix'
+                                        when use_partitions is False.
+        """
         result = {}
 
         result["topic-word-matrix"] = self.trained_model._get_topic_word_matrix()
@@ -292,6 +318,32 @@ class oRSM(AbstractModel):
             return visible_sample
 
         def v_and_h2_to_h1(self, v, h2):
+            """
+            Compute the activation probabilities of the first hidden layer h1
+            given both the visible layer v and the second hidden layer h2.
+
+            Used inside the mean-field approximation loop of
+            visible_to_hiddens_gibbs, where h2 is iteratively updated.
+
+            The activation energy for document i with D_i words is:
+
+                energy_i = (D_i + M) * w_h + w_vh.T @ (v_i + h2_i)
+
+                h1_i = sigmoid(energy_i)
+
+            Parameters
+            ----------
+            v : ndarray of shape (N, V)
+                Visible states (document-term matrix).
+            h2 : ndarray of shape (N, V)
+                Current estimate of the second hidden layer activations,
+                in the same space as v (vocabulary size V).
+
+            Returns
+            -------
+            h1 : ndarray of shape (N, F)
+                Expected activation probabilities for the first hidden layer.
+            """
             w_vh, w_v, w_h = self.W
             D = v.sum(axis=1)
             energy = (np.outer(w_h, (D + self.M)) + w_vh.T @ (v + h2).T).T  # N x F
@@ -299,6 +351,34 @@ class oRSM(AbstractModel):
             return h1
 
         def v_to_mf_h1(self, v):
+            """
+            Compute the mean-field approximation of the first hidden layer h1
+            given only the visible layer v, marginalizing over h2.
+
+            This is used during pretraining, when the second hidden layer (h2)
+            is not explicitly modeled. The activation energy integrates the
+            contribution of the third layer (of size M) analytically, yielding
+            a scaled version of the standard RSM hidden activation.
+
+            Concretely, for document i with D_i words:
+
+                energy_i = (D_i + M) * w_h + (1 + M/D_i) * (v_i @ w_vh)
+
+                h1_i = sigmoid(energy_i)
+
+            Parameters
+            ----------
+            v : ndarray of shape (N, V)
+                Visible states (document-term matrix), where N is the number
+                of documents and V is the vocabulary size.
+
+            Returns
+            -------
+            h1 : ndarray of shape (N, F)
+                Expected activation probabilities for the first hidden layer,
+                where F is the number of topics.
+            """
+
             w_vh, w_v, w_h = self.W
             D = v.sum(axis=1)
             energy = np.outer((D + self.M), w_h) + (v @ w_vh) * np.reshape(
@@ -314,12 +394,28 @@ class oRSM(AbstractModel):
 
         def visible_to_hiddens_gibbs(self, v):
             """
-            main function to compute the hidden states given visible states
-            in the training of the over replicated softmax model.
-            Uses mean field approximation to get the expected values of the two hidden layers.
-            The third hidden layer is initialized as uniform random.
+            Estimate the expected values of the two hidden layers given the
+            visible layer v, using an iterative mean-field approximation.
 
-            v: visible states N x K
+            The second hidden layer mu2 is initialized as uniform random and
+            then alternately updated with h1 until convergence or until
+            max_iter_mfa iterations are reached. If convergence is not reached,
+            a RuntimeWarning is raised and the current estimates are returned.
+
+            Parameters
+            ----------
+            v : ndarray of shape (N, V)
+                Visible states (document-term matrix), where N is the number
+                of documents and V is the vocabulary size.
+
+            Returns
+            -------
+            mu1 : ndarray of shape (N, F)
+                Mean-field estimate of the first hidden layer (topic activations),
+                where F is the number of topics.
+            mu2 : ndarray of shape (N, V)
+                Mean-field estimate of the second hidden layer (prior word
+                distribution), in the vocabulary space.
             """
 
             mu2 = np.random.random(self.visible) * self.M
@@ -815,6 +911,70 @@ class oRSM(AbstractModel):
             epsilon=0.01,
             max_iter_mfa=20
         ):
+            
+            """
+            Initialize all training hyperparameters and optimizer state.
+
+            Sets instance attributes used during training, selects the gradient
+            update function (gradient_step) and the contrastive divergence step
+            functions (cd_learning_step and cd_pretrain_learning_step) according
+            to the chosen optimizer and CD variant. Also initializes the
+            persistent chain if cd_type='pcd'.
+
+            Parameters
+            ----------
+            epochs : int
+                Total number of training epochs.
+            btsz : int
+                Mini-batch size.
+            lr : float
+                Learning rate.
+            momentum : float
+                Momentum coefficient (used only when train_optimizer='momentum').
+            K : int
+                Number of Gibbs sampling steps for KCD.
+            decay : float
+                Penalty coefficient for weight regularization. Set to 0 to
+                disable regularization.
+            penalty_L1 : bool
+                If True, applies L1 regularization; otherwise applies L2.
+            penalty_local : bool
+                If True, applies the penalty element-wise (local); otherwise
+                applies a single global penalty factor.
+            train_optimizer : str
+                Optimizer to use. One of 'sgd', 'momentum', 'adagrad',
+                'rmsprop', 'adam'. Any unrecognized value falls back to 'sgd'.
+            cd_type : str
+                Contrastive divergence variant. One of 'mfcd', 'pcd', 'kcd',
+                'gradcd'.
+            rms_decay : float
+                Decay rate for RMSProp (used only when train_optimizer='rmsprop').
+            adam_decay1 : float
+                First moment decay rate for Adam (used only when
+                train_optimizer='adam').
+            adam_decay2 : float
+                Second moment decay rate for Adam (used only when
+                train_optimizer='adam').
+            increase_speed : float
+                Controls how quickly K grows when cd_type='gradcd'.
+            pretrain_epochs : int
+                Number of epochs run using the pretraining CD steps (which
+                bypass the full mean-field approximation of the second hidden
+                layer). Epochs from pretrain_epochs onward use the full
+                training CD steps.
+            M : int
+                Size of the multinomial prior layer (third hidden layer).
+                Represents the fixed total word count used as a prior over
+                topic formation.
+            epsilon : float
+                Convergence threshold for the mean-field approximation loop
+                in visible_to_hiddens_gibbs. The loop stops when the L1 change
+                in mu2 between iterations falls below this value.
+            max_iter_mfa : int
+                Maximum number of mean-field approximation iterations. If
+                convergence is not reached, the current estimate is returned
+                with a RuntimeWarning.
+            """
             N, dictsize = self.dtm.shape
             num_topics = self.hidden
 
@@ -949,7 +1109,7 @@ class oRSM(AbstractModel):
 
         def log_ppl_approx(self, dtm):
             """
-            return the log perplepxity
+            return the log perplexity
             given a document term matrix
             """
             mfh = self.v_to_mf_h1(dtm)

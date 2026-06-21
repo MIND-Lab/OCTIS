@@ -67,7 +67,7 @@ class RSM(AbstractModel):
         (randomly drawn from N(0,1)*softstart)
         logdtm : if True each cell of the dtm is transformed as log(1+cell),
         otherwise the raw counts are used
-        monitor : if True prints training information during training
+        verbose : if True prints training information during training
 
         cd_type : type of contrastive divergence to use,
           'kcd', 'pcd', 'mfcd' (default) or 'gradcd' :
@@ -163,6 +163,32 @@ class RSM(AbstractModel):
         return self.get_model_output(top_words)
 
     def get_model_output(self, top_words=10):
+        """
+        Collect and return the model outputs after training.
+
+        Parameters
+        ----------
+        top_words : int
+            Number of top words to return for each topic. If 0, the 'topics'
+            key is omitted from the output. Default is 10.
+
+        Returns
+        -------
+        result : dict
+            Dictionary with the following entries:
+            - 'topic-word-matrix'       : ndarray of shape (T, V), normalized
+                                        topic-word weights (min-max per topic).
+            - 'topics'                  : list of T lists, each containing the
+                                        top_words most relevant words for that
+                                        topic (present only if top_words > 0).
+            - 'topic-document-matrix'   : ndarray of shape (T, N_train), topic
+                                        activation probabilities for each
+                                        training document.
+            - 'test-topic-document-matrix' : ndarray of shape (T, N_test), topic
+                                        activation probabilities for each test
+                                        document. Equals 'topic-document-matrix'
+                                        when use_partitions is False.
+        """
         result = {}
 
         result["topic-word-matrix"] = self.trained_model._get_topic_word_matrix()
@@ -658,7 +684,6 @@ class RSM(AbstractModel):
             """one epoch of training, with sgd and mini-batches"""
             start_id = 0
 
-            # if self.sgd:
             np.random.shuffle(self.obs_ids)  # apply sgd
             self.dtm = self.dtm[self.obs_ids, :]
             if self.persist:
@@ -688,6 +713,58 @@ class RSM(AbstractModel):
             adam_decay2=0.999,
             increase_speed=0,
         ):
+            
+            """
+            Initialize all training hyperparameters and optimizer state.
+
+            Sets instance attributes used during training, selects the gradient
+            update function (gradient_step) and the contrastive divergence step
+            function (cd_learning_step) according to the chosen optimizer and
+            CD variant. Also initializes the persistent chain if cd_type='pcd'.
+
+            Parameters
+            ----------
+            epochs : int
+                Total number of training epochs. Used to pre-compute the schedule
+                of K values when cd_type='gradcd'.
+            btsz : int
+                Mini-batch size.
+            lr : float
+                Learning rate.
+            momentum : float
+                Momentum coefficient (used only when train_optimizer='momentum').
+            K : int
+                Number of Gibbs sampling steps for KCD. When cd_type='gradcd',
+                this is the maximum value reached at the last epoch.
+            decay : float
+                Penalty coefficient for weight regularization. Set to 0 to
+                disable regularization.
+            penalty_L1 : bool
+                If True, applies L1 regularization; otherwise applies L2.
+            penalty_local : bool
+                If True, applies the penalty element-wise (local); otherwise
+                applies a single global penalty factor.
+            train_optimizer : str
+                Optimizer to use. One of 'sgd', 'momentum', 'adagrad',
+                'rmsprop', 'adam'. Any unrecognized value falls back to 'sgd'.
+            cd_type : str
+                Contrastive divergence variant. One of 'mfcd' (mean-field CD,
+                default), 'pcd' (persistent CD), 'kcd' (k-step CD), 'gradcd'
+                (gradual k-step CD, where k grows over epochs).
+            rms_decay : float
+                Decay rate for the RMSProp moving average of squared gradients
+                (used only when train_optimizer='rmsprop').
+            adam_decay1 : float
+                Exponential decay rate for the first moment estimate in Adam
+                (used only when train_optimizer='adam').
+            adam_decay2 : float
+                Exponential decay rate for the second moment estimate in Adam
+                (used only when train_optimizer='adam').
+            increase_speed : float
+                Controls how quickly K grows when cd_type='gradcd'. Higher
+                values delay the increase towards later epochs.
+            """
+
             N, dictsize = self.dtm.shape
             num_topics = self.hidden
 
@@ -747,75 +824,65 @@ class RSM(AbstractModel):
 
             if self.train_optimizer == "sgd":
                 self.gradient_step = self.gradient_simple
+            elif self.train_optimizer == "momentum":
+                self.gradient_step = self.gradient_momentum
+                self.train_cache = vel_vh, vel_v, vel_h
+            elif self.train_optimizer == "adagrad":
+                self.gradient_step = self.gradient_adagrad
+                self.train_cache = vel_vh, vel_v, vel_h
+            elif self.train_optimizer == "rmsprop":
+                self.gradient_step = self.gradient_rmsprop
+                rms_m2_vh = np.zeros((dictsize, num_topics))
+                rms_m2_v = np.zeros((dictsize))
+                rms_m2_h = np.zeros((num_topics))
+                self.train_cache = (
+                    vel_vh,
+                    vel_v,
+                    vel_h,
+                    rms_m2_vh,
+                    rms_m2_v,
+                    rms_m2_h,
+                )
+            elif self.train_optimizer == "adam":
+                self.gradient_step = self.gradient_adam
+                adam_m1_vh = np.zeros((dictsize, num_topics))
+                adam_m1_v = np.zeros((dictsize))
+                adam_m1_h = np.zeros((num_topics))
+                adam_m2_vh = np.zeros((dictsize, num_topics))
+                adam_m2_v = np.zeros((dictsize))
+                adam_m2_h = np.zeros((num_topics))
+                t = 1
+                self.train_cache = (
+                    vel_vh,
+                    vel_v,
+                    vel_h,
+                    adam_m1_vh,
+                    adam_m1_v,
+                    adam_m1_h,
+                    adam_m2_vh,
+                    adam_m2_v,
+                    adam_m2_h,
+                    t,
+                )
             else:
-                if self.train_optimizer == "momentum":
-                    self.gradient_step = self.gradient_momentum
-                    self.train_cache = vel_vh, vel_v, vel_h
-                else:
-                    if self.train_optimizer == "adagrad":
-                        self.gradient_step = self.gradient_adagrad
-                        self.train_cache = vel_vh, vel_v, vel_h
-                    else:
-                        if self.train_optimizer == "rmsprop":
-                            self.gradient_step = self.gradient_rmsprop
-                            rms_m2_vh = np.zeros((dictsize, num_topics))
-                            rms_m2_v = np.zeros((dictsize))
-                            rms_m2_h = np.zeros((num_topics))
-                            self.rms_decay = 0.9
-                            self.train_cache = (
-                                vel_vh,
-                                vel_v,
-                                vel_h,
-                                rms_m2_vh,
-                                rms_m2_v,
-                                rms_m2_h,
-                            )
-                        else:
-                            if self.train_optimizer == "adam":
-                                self.gradient_step = self.gradient_adam
-                                adam_m1_vh = np.zeros((dictsize, num_topics))
-                                adam_m1_v = np.zeros((dictsize))
-                                adam_m1_h = np.zeros((num_topics))
-                                adam_m2_vh = np.zeros((dictsize, num_topics))
-                                adam_m2_v = np.zeros((dictsize))
-                                adam_m2_h = np.zeros((num_topics))
-                                t = 1
-                                self.adam_decay1 = 0.9
-                                self.adam_decay2 = 0.999
-                                self.train_cache = (
-                                    vel_vh,
-                                    vel_v,
-                                    vel_h,
-                                    adam_m1_vh,
-                                    adam_m1_v,
-                                    adam_m1_h,
-                                    adam_m2_vh,
-                                    adam_m2_v,
-                                    adam_m2_h,
-                                    t,
-                                )
-                            else:
-                                self.gradient_step = self.gradient_simple
+                self.gradient_step = self.gradient_simple
 
             if self.mean_field:
                 self.cd_learning_step = self.mfcd_step  # input is v0
+            elif self.persist:
+                self.cd_learning_step = (
+                    self.pcd_step
+                )  # input is v0, persistent_v, output is new persistent_v
+            elif cd_type == "kcd":
+                self.cd_learning_step = self.kcd_step  # input is v0, K fixed
+            elif self.gradual: # gradual kcd
+                self.cd_learning_step = (
+                    self.gradkcd_step
+                )  # input is v0, change K each epoch
             else:
-                if self.persist:
-                    self.cd_learning_step = (
-                        self.pcd_step
-                    )  # input is v0, persistent_v, output is new persistent_v
-                else:
-                    if cd_type == "kcd":
-                        self.cd_learning_step = self.kcd_step  # input is v0, K fixed
-                    else:  # gradual kcd
-                        if self.gradual:
-                            self.cd_learning_step = (
-                                self.gradkcd_step
-                            )  # input is v0, change K each epoch
-                        else:
-                            self.cd_learning_step = (
-                                self.kcd_step
-                            )  # input is v0, K fixed
+                self.cd_learning_step = (
+                    self.kcd_step
+                )  # input is v0, K fixed
 
         ############ perplexity and probability
 
@@ -855,6 +922,25 @@ class RSM(AbstractModel):
             return ppl
 
         def approx_prob(self, dtm):
+            """
+            Compute the approximate word probability distribution for each document.
+
+            Uses a single mean-field pass: hidden activations are estimated from
+            the visible layer, then projected back to the visible space via softmax.
+            The result is an approximation of P(v | model) for each document.
+
+            Parameters
+            ----------
+            dtm : ndarray of shape (N, V)
+                Document-term matrix, where N is the number of documents and V
+                is the vocabulary size.
+
+            Returns
+            -------
+            pdf : ndarray of shape (N, V)
+                Approximate word probability distribution for each document.
+                Each row sums to 1.
+            """
             w_vh, w_v, w_h = self.W
             D = dtm.sum(axis=1)
             # compute hidden activations

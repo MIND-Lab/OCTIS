@@ -110,6 +110,8 @@ class Replicated_Softmax:
         Given a BoW vector or document-term matrix v, computes the
         log pdf under the replicated softmax.
         Accepts both a 1D array (single document) and 2D array (batch).
+        The output is a scalar for a single document 
+        or a numpy 1D array of length N for a batch of N documents.
         """
         w_vh, w_v, w_h = self.W
         T = self.hidden
@@ -133,6 +135,10 @@ class Replicated_Softmax:
         Given a gensim dictionary id2word,
         returns the topk most important words for each topic
         inside a list of T lists, where T is the number of topics
+
+        Params:
+        topk : int : number of main words to keep for each topic.
+        id2word (optional): gensim Dictionary; if None, uses self.id2word
         """
         w_vh, w_v, w_h = self.W
         T = self.hidden
@@ -151,9 +157,10 @@ class Replicated_Softmax:
     def _get_topics(self, topk):
         """
         Given a gensim dictionary id2word,
-        returns the topk most important words for each topic
+        Returns the topk most important words for each topic
         inside a list of T lists, where T is the number of topics
         (this function is a wrapper of topic_words, used by octis class)
+        Wrapper of topic_words that uses self.id2word.
         """
         return self.topic_words(topk, self.id2word)
 
@@ -199,7 +206,82 @@ class Replicated_Softmax:
         logdtm=False,
     ):
         """function to initialize the weights matrices
-        given the dtm and the number of topics"""
+        given the dtm and the number of topics.
+        
+        
+    Initialize the model structure and weight matrices from a document-term matrix (DTM).
+
+    This method sets up all the internal state needed before training: it stores
+    the training (and optionally validation) data, initializes or restores the
+    three weight matrices of the Replicated Softmax model (topic-word interactions
+    ``w_vh``, visible biases ``w_v``, and hidden biases ``w_h``), and allocates
+    monitoring arrays for metrics tracked across epochs.
+
+    The three weight matrices are stored as ``self.W = (w_vh, w_v, w_h)``:
+      - ``w_vh``: shape ``(dictsize, num_topics)`` — interaction weights between
+        visible (word) and hidden (topic) units.
+      - ``w_v``:  shape ``(dictsize,)`` — bias for each word in the vocabulary.
+      - ``w_h``:  shape ``(num_topics,)`` — bias for each latent topic.
+
+    Parameters
+    ----------
+    winit : tuple of np.ndarray or None, optional
+        Pre-trained weight matrices ``(w_vh, w_v, w_h)`` to use as the starting
+        point instead of random initialization. Defensive copies are made to
+        prevent unintended mutation of the caller's arrays across runs.
+        If ``None`` (default), weights are randomly initialized with scale
+        ``softstart``.
+    dtm : np.ndarray of shape (N, V)
+        Training document-term matrix, where N is the number of documents and
+        V is the vocabulary size. Each row must have a positive total word count
+        (i.e., no empty documents are allowed). Required.
+    val_dtm : np.ndarray of shape (N_val, V) or None, optional
+        Validation document-term matrix with the same vocabulary size as ``dtm``.
+        When provided, validation metrics (perplexity and/or log-likelihood) are
+        also tracked if the corresponding monitor flags are set.
+        Default is ``None`` (no validation set).
+    softstart : float, optional
+        Standard deviation of the zero-mean Gaussian used to randomly initialize
+        the weight matrices when ``winit`` is ``None``. A small value (e.g. 0.001)
+        keeps initial weights close to zero to avoid saturation.
+        Default is ``0.001``.
+    num_topics : int, optional
+        Number of latent topics (hidden units) in the model.
+        Sets both ``self.hidden`` and ``self.F``.
+        Default is ``5``.
+    epochs : int, optional
+        Number of training epochs. Used only to pre-allocate the monitoring
+        arrays (``train_ppl``, ``val_ppl``, ``train_loglik``, ``val_loglik``,
+        ``train_time``) when the corresponding monitor flags are enabled.
+        Default is ``5``.
+    monitor_ppl : bool, optional
+        If ``True``, allocates ``self.train_ppl`` (and ``self.val_ppl`` when a
+        validation set is provided) as length-``epochs`` arrays to be filled
+        with per-epoch perplexity values during training.
+        Default is ``False``.
+    monitor_time : bool, optional
+        If ``True``, allocates ``self.train_time`` as a length-``epochs`` array
+        to be filled with per-epoch wall-clock times during training.
+        Default is ``False``.
+    monitor_loglik : bool, optional
+        If ``True``, allocates ``self.train_loglik`` (and ``self.val_loglik``
+        when a validation set is provided) as length-``epochs`` arrays to be
+        filled with per-epoch log-likelihood values during training.
+        Default is ``False``.
+    logdtm : bool, optional
+        If ``True``, applies a log1p transformation (``log(1 + x)``) to the
+        DTM before storing it. This can reduce the influence of very frequent
+        words and smooth the input counts.
+        Default is ``False`` (raw counts are used).
+
+    Raises
+    ------
+    ValueError
+        If any document in ``dtm`` or ``val_dtm`` has a total word count of
+        zero (i.e., an empty document is detected).
+  
+        
+        """
         doval = val_dtm is not None
 
         if logdtm:
