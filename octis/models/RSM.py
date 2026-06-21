@@ -851,7 +851,7 @@ class RSM(AbstractModel):
                 adam_m2_vh = np.zeros((dictsize, num_topics))
                 adam_m2_v = np.zeros((dictsize))
                 adam_m2_h = np.zeros((num_topics))
-                t = 1
+                t = 0
                 self.train_cache = (
                     vel_vh,
                     vel_v,
