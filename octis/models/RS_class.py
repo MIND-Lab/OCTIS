@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.special import expit
 
 
 class Replicated_Softmax:
@@ -32,13 +33,16 @@ class Replicated_Softmax:
         return np.exp(x - lse)
 
     def softmax_vec(self, array):
-        """simple softmax activation for an array vector (single document)"""
-        exparr = np.exp(array)
+        """Numerically stable softmax for a single document / 1D vector (uses the same LSE trick as softmax)."""
+        shifted = array - np.max(array)   # subtract max for stability
+        exparr = np.exp(shifted)
         return exparr / exparr.sum()
 
+
     def sigmoid(self, x):
-        """basic sigmoid activation"""
-        return 1 / (1 + np.exp(-x))
+        """Numerically stable sigmoid activation"""
+        return expit(x)
+
 
     def multinomial_sample(self, probs, N):
         """
@@ -74,13 +78,13 @@ class Replicated_Softmax:
         function to adjust the gradient of the
         topic-word interaction weights during a training iteration
         of a RS model by a penalty factor.
-        The model shoud have the attributes:
+        The model should have the attributes:
         - penalty : bool : if the penalization should be applied
         - penL1: bool : if the penalty is of type L1 or L2
         - local_penalty : bool : if the penalty should be local or global
         - decay : float : the penalty factor to use
         This function also requires two numpy arrays as arguments:
-        - the interaction weigths matrix w_vh, that connects topics to words
+        - the interaction weights matrix w_vh, that connects topics to words
         - the respective gradients vel_vh (also a matrix)
         """
         if self.penalty:
@@ -100,41 +104,27 @@ class Replicated_Softmax:
 
     ############### likelihood utils
 
+
     def neg_free_energy(self, v):
         """
-        given an array v similar to the dtm, computes the
-        log pdf under the replicated softmax
+        Given a BoW vector or document-term matrix v, computes the
+        log pdf under the replicated softmax.
+        Accepts both a 1D array (single document) and 2D array (batch).
         """
         w_vh, w_v, w_h = self.W
         T = self.hidden
-        D = v.sum(axis=1)
+        D = v.sum(axis=-1)  # works for both 1D and 2D
         fren = np.dot(v, w_v)
         for j in range(T):
             w_j = w_vh[:, j]
             a_j = w_h[j]
-            fren += np.log(1 + np.exp(D * a_j + np.dot(v, w_j)))
-        return fren
-
-    def neg_free_energy_single_doc(self, v):
-        """
-        given a one dimensional Bow vector v representing a single document,
-        computes the log pdf under the replicated softmax
-        """
-        w_vh, w_v, w_h = self.W
-        T = self.hidden
-        D = v.sum()
-        fren = np.dot(v, w_v)
-        for j in range(T):
-            w_j = w_vh[:, j]
-            a_j = w_h[j]
-            fren += np.log(1 + np.exp(D * a_j + np.dot(v, w_j)))
+            #fren += np.log(1 + np.exp(D * a_j + np.dot(v, w_j)))
+            arg = D * a_j + np.dot(v, w_j)
+            fren += np.logaddexp(0, arg)   # = log(1 + exp(arg)), numerically stable
         return fren
 
     def marginal_pdf(self, v):
         return np.exp(self.neg_free_energy(v))
-
-    def marginal_pdf_single_doc(self, v):
-        return np.exp(self.neg_free_energy_single_doc(v))
 
     ############ octis output functions
 
@@ -170,10 +160,10 @@ class Replicated_Softmax:
     def _get_topic_word_matrix(self):
         """
         Returns the topic representation of the words.
-        Uses min-max normalization by topic of the interaction weigths
+        Uses min-max normalization by topic of the interaction weights
         matrix w_vh. The ranking of the words using this matrix
         is equivalent to the ranking obtained from the unnormalized
-        matrix of weigths w_vh.
+        matrix of weights w_vh.
         """
         w_vh, w_v, w_h = self.W
         topic_word_matrix = w_vh.T
@@ -208,7 +198,7 @@ class Replicated_Softmax:
         monitor_loglik=False,
         logdtm=False,
     ):
-        """function to initialize the weigths matrices
+        """function to initialize the weights matrices
         given the dtm and the number of topics"""
         doval = val_dtm is not None
 
@@ -222,7 +212,19 @@ class Replicated_Softmax:
                 self.val_dtm = val_dtm
 
         D = self.dtm.sum(axis=1)
-        assert not np.any(D == 0), "all the documents should have positive length"
+        if np.any(D == 0):
+            raise ValueError(
+                "All training documents must have positive length; "
+                f"found {(D == 0).sum()} empty document(s)."
+            )
+    
+        if doval:
+            D_val = self.val_dtm.sum(axis=1)
+            if np.any(D_val == 0):
+                raise ValueError(
+                    "All validation documents must have positive length; "
+                    f"found {(D_val == 0).sum()} empty document(s)."
+                )
 
         self.hidden = num_topics
         self.F = num_topics

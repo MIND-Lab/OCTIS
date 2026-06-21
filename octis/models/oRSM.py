@@ -27,6 +27,7 @@ class oRSM(AbstractModel):
         momentum=0.9,
         softstart=0.001,
         epsilon=0.01,
+        max_iter_mfa=20,
         decay=0,
         penalty_L1=False,
         penalty_local=False,
@@ -54,7 +55,10 @@ class oRSM(AbstractModel):
         lr : learning rate
         M : size of the multinomial of the third layer, so the fixed number of words in the prior
         (represents the strength of the prior over the formation of topics)
-        epsilon : convergence threshold for mean field approximation of the two hidden layers
+        epsilon : convergence threshold for mean field approximation of the two hidden layers.
+        max_iter_mfa : maximum number of iterations for the mean field approximation process 
+        over the estimation of the two hidden layers. If the threshold epsilon is not reached after this number of iterations
+        the estimated values are returned anyway, with a warning.
         pretrain_epochs : number of epochs used for pretraining.
         The rest (epochs-pretrain_epochs) goes in mean field training.
         When higher than epochs there is no mean field training.
@@ -135,6 +139,7 @@ class oRSM(AbstractModel):
 
         # new params in oRSM that are not in RSM
         self.hyperparameters["M"] = M
+        self.hyperparameters["max_iter_mfa"] = max_iter_mfa
         self.hyperparameters["pretrain_epochs"] = pretrain_epochs
         self.hyperparameters["epsilon"] = epsilon
 
@@ -162,7 +167,7 @@ class oRSM(AbstractModel):
         dataset : dataset to use to build the model
         hyperparams : hyperparameters to build the model
         top_words : if greater than 0 returns the most significant words for
-                    each topic in the output (Default True)
+                    each topic in the output (Default is 10)
         Returns
         -------
         result : dictionary with up to 3 entries,
@@ -305,6 +310,8 @@ class oRSM(AbstractModel):
         def visible2hidden(self, v):
             return self.v_to_mf_h1(v)
 
+
+
         def visible_to_hiddens_gibbs(self, v):
             """
             main function to compute the hidden states given visible states
@@ -315,17 +322,22 @@ class oRSM(AbstractModel):
             v: visible states N x K
             """
 
-            converge = False
-            mu2 = np.random.random(self.visible) * self.M  # initialize mu2 randomly
+            mu2 = np.random.random(self.visible) * self.M
 
-            while not converge:
+            for i in range(self.max_iter_mfa):
                 old_mu2 = mu2
-                h2 = mu2 * self.M  # self.sample_h2(mu2, np.ones(v.shape[0])*self.M)
+                h2 = mu2 * self.M
                 mu1 = self.v_and_h2_to_h1(v, h2)
                 mu2 = self.h1_to_softmax(mu1)
 
                 if (np.abs(old_mu2 - mu2)).sum() < self.epsilon:
-                    converge = True
+                    break
+            else:
+                warnings.warn(
+                    f"Mean field approximation did not converge after {self.max_iter_mfa} iterations. "
+                    f"Residual: {(np.abs(old_mu2 - mu2)).sum():.6f} (epsilon={self.epsilon})",
+                    RuntimeWarning
+                )
 
             return mu1, mu2
 
@@ -384,7 +396,7 @@ class oRSM(AbstractModel):
                 (np.any(np.isnan(w_vh)), np.any(np.isnan(w_v)), np.any(np.isnan(w_h)))
             ):
                 self.stop = True
-                warnings.warn("NaN values founded in weights: stopping training")
+                warnings.warn("NaN values found in weights: stopping training")
             else:
                 self.W = w_vh, w_v, w_h
 
@@ -664,6 +676,7 @@ class oRSM(AbstractModel):
             btsz=100,
             pretrain_epochs=1,
             epsilon=10,
+            max_iter_mfa=20,
             lr=0.01,
             momentum=0.1,
             K=1,
@@ -725,6 +738,7 @@ class oRSM(AbstractModel):
                 pretrain_epochs=pretrain_epochs,
                 M=M,
                 epsilon=epsilon,
+                max_iter_mfa=max_iter_mfa
             )
 
             ## MAIN TRAIN LOOP
@@ -758,7 +772,7 @@ class oRSM(AbstractModel):
 
         def train_epoch(self):
             """one epoch of training, with sgd and mini-batches"""
-
+            N, dictsize = self.dtm.shape
             start_id = 0
             np.random.shuffle(self.obs_ids)  # apply sgd
             self.dtm = self.dtm[self.obs_ids, :]
@@ -768,13 +782,13 @@ class oRSM(AbstractModel):
 
             if self.t < self.pretrain_epochs:
                 for b in range(self.batches):
-                    ids = np.arange(start_id, start_id + self.btsz)
+                    ids = np.arange(start_id, min(start_id + self.btsz, N))
                     self.cd_pretrain_learning_step(ids)
                     start_id += self.btsz
 
             else:
                 for b in range(self.batches):
-                    ids = np.arange(start_id, start_id + self.btsz)
+                    ids = np.arange(start_id, min(start_id + self.btsz, N))
                     self.cd_learning_step(ids)
                     start_id += self.btsz
 
@@ -799,6 +813,7 @@ class oRSM(AbstractModel):
             pretrain_epochs=500,
             M=50,
             epsilon=0.01,
+            max_iter_mfa=20
         ):
             N, dictsize = self.dtm.shape
             num_topics = self.hidden
@@ -822,6 +837,7 @@ class oRSM(AbstractModel):
 
             self.t = 0  # current epoch
             self.pretrain_epochs = pretrain_epochs
+            self.max_iter_mfa = max_iter_mfa
             self.epsilon = epsilon
             self.M = M
             self.K = K
@@ -829,7 +845,7 @@ class oRSM(AbstractModel):
             self.mean_h = True  # whether to use mean hidden activations or sample them
 
             self.btsz = btsz
-            self.batches = int(np.floor(N / btsz))
+            self.batches = int(np.ceil(N / btsz))
             # self.bt_correct = (btsz**2)/N    #a bayesian would correct decay for batch size. I'm not a bayesian
 
             ## initialize k
@@ -861,80 +877,75 @@ class oRSM(AbstractModel):
 
             if self.train_optimizer == "sgd":
                 self.gradient_step = self.gradient_simple
+
+            elif self.train_optimizer == "momentum":
+                self.gradient_step = self.gradient_momentum
+                self.train_cache = vel_vh, vel_v, vel_h   
+
+            elif self.train_optimizer == "adagrad":             
+                self.gradient_step = self.gradient_adagrad
+                self.train_cache = vel_vh, vel_v, vel_h 
+            
+            elif self.train_optimizer == "rmsprop":           
+                self.gradient_step = self.gradient_rmsprop
+                rms_m2_vh = np.zeros((dictsize, num_topics))
+                rms_m2_v = np.zeros((dictsize))
+                rms_m2_h = np.zeros((num_topics))
+                self.train_cache = (
+                    vel_vh,
+                    vel_v,
+                    vel_h,
+                    rms_m2_vh,
+                    rms_m2_v,
+                    rms_m2_h,
+                )
+
+            elif self.train_optimizer == "adam":
+                    self.gradient_step = self.gradient_adam
+                    adam_m1_vh = np.zeros((dictsize, num_topics))
+                    adam_m1_v = np.zeros((dictsize))
+                    adam_m1_h = np.zeros((num_topics))
+                    adam_m2_vh = np.zeros((dictsize, num_topics))
+                    adam_m2_v = np.zeros((dictsize))
+                    adam_m2_h = np.zeros((num_topics))
+                    t = 1
+                    self.train_cache = (
+                        vel_vh,
+                        vel_v,
+                        vel_h,
+                        adam_m1_vh,
+                        adam_m1_v,
+                        adam_m1_h,
+                        adam_m2_vh,
+                        adam_m2_v,
+                        adam_m2_h,
+                        t,
+                    )
             else:
-                if self.train_optimizer == "momentum":
-                    self.gradient_step = self.gradient_momentum
-                    self.train_cache = vel_vh, vel_v, vel_h
-                else:
-                    if self.train_optimizer == "adagrad":
-                        self.gradient_step = self.gradient_adagrad
-                        self.train_cache = vel_vh, vel_v, vel_h
-                    else:
-                        if self.train_optimizer == "rmsprop":
-                            self.gradient_step = self.gradient_rmsprop
-                            rms_m2_vh = np.zeros((dictsize, num_topics))
-                            rms_m2_v = np.zeros((dictsize))
-                            rms_m2_h = np.zeros((num_topics))
-                            self.rms_decay = 0.9
-                            self.train_cache = (
-                                vel_vh,
-                                vel_v,
-                                vel_h,
-                                rms_m2_vh,
-                                rms_m2_v,
-                                rms_m2_h,
-                            )
-                        else:
-                            if self.train_optimizer == "adam":
-                                self.gradient_step = self.gradient_adam
-                                adam_m1_vh = np.zeros((dictsize, num_topics))
-                                adam_m1_v = np.zeros((dictsize))
-                                adam_m1_h = np.zeros((num_topics))
-                                adam_m2_vh = np.zeros((dictsize, num_topics))
-                                adam_m2_v = np.zeros((dictsize))
-                                adam_m2_h = np.zeros((num_topics))
-                                t = 1
-                                self.adam_decay1 = 0.9
-                                self.adam_decay2 = 0.999
-                                self.train_cache = (
-                                    vel_vh,
-                                    vel_v,
-                                    vel_h,
-                                    adam_m1_vh,
-                                    adam_m1_v,
-                                    adam_m1_h,
-                                    adam_m2_vh,
-                                    adam_m2_v,
-                                    adam_m2_h,
-                                    t,
-                                )
-                            else:
-                                self.gradient_step = self.gradient_simple
+                self.gradient_step = self.gradient_simple
+
 
             if self.mean_field:
                 self.cd_learning_step = self.mfcd_step  # input is v0
                 self.cd_pretrain_learning_step = self.pretrain_mfcd_step
-            else:
-                if self.persist:
+            elif self.persist:
                     self.cd_learning_step = (
                         self.pcd_step
                     )  # input is v0, persistent_v, output is new persistent_v
                     self.cd_pretrain_learning_step = self.pretrain_pcd_step
-                else:
-                    if cd_type == "kcd":
-                        self.cd_learning_step = self.kcd_step  # input is v0, K fixed
-                        self.cd_pretrain_learning_step = self.pretrain_kcd_step
-                    else:  # gradual kcd
-                        if self.gradual:
-                            self.cd_learning_step = (
-                                self.gradkcd_step
-                            )  # input is v0, change K each epoch
-                            self.cd_pretrain_learning_step = self.pretrain_gradkcd_step
-                        else:
-                            self.cd_learning_step = (
-                                self.kcd_step
-                            )  # input is v0, K fixed
-                            self.cd_pretrain_learning_step = self.pretrain_kcd_step
+            elif cd_type == "kcd":
+                    self.cd_learning_step = self.kcd_step  # input is v0, K fixed
+                    self.cd_pretrain_learning_step = self.pretrain_kcd_step
+            elif self.gradual:  # gradual kcd
+                    self.cd_learning_step = (
+                        self.gradkcd_step
+                    )  # input is v0, change K each epoch
+                    self.cd_pretrain_learning_step = self.pretrain_gradkcd_step
+            else:
+                self.cd_learning_step = (
+                    self.kcd_step
+                )  # input is v0, K fixed
+                self.cd_pretrain_learning_step = self.pretrain_kcd_step
 
         def log_ppl_approx(self, dtm):
             """
